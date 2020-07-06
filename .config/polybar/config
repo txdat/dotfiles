@@ -1,13 +1,8 @@
-[colors]
-
-[defaults]
-format-padding		= 2
-
 [settings]
 screenchange-reload	= true
 
 [global/wm]
-margin-top		= 0
+margin-top			= 0
 margin-bottom		= 0
 
 [bar/main]
@@ -38,7 +33,7 @@ font-3			= "xos4 Terminus:size=10;2"
 
 modules-left		= bspwm
 ;modules-center		= 
-modules-right		= pulseaudio wlan battery date
+modules-right		= battery pulseaudio wlan date
 
 wm-restack		= bspwm
 
