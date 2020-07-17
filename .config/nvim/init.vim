@@ -65,7 +65,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 "" Color
-Plug 'tomasr/molokai'
+Plug 'arcticicestudio/nord-vim'
 
 "*****************************************************************************
 "" Custom bundles
@@ -170,7 +170,7 @@ set ruler
 set number
 
 let no_buffers_menu=1
-silent! colorscheme molokai
+silent! colorscheme nord
 
 set mousemodel=popup
 set t_Co=256
