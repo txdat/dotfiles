@@ -4,7 +4,7 @@
 
 # terminal emulator
 super + Return
-	alacritty
+	konsole
 
 # program launcher
 super + @space
@@ -17,20 +17,21 @@ super + Escape
 #
 # bspwm hotkeys
 #
-XF86AudioLowerVolume
-	amixer -q sset Master 10%-
 
-XF86AudioRaiseVolume
-	amixer -q sset Master 10%+
+#XF86AudioLowerVolume
+#	amixer -q sset Master 10%-
 
-XF86AudioMute
-	amixer -q sset Master toggle
+#XF86AudioRaiseVolume
+#	amixer -q sset Master 10%+
 
-XF86MonBrightnessDown
-	xbacklight -dec 10
+#XF86AudioMute
+#	amixer -q sset Master toggle
 
-XF86MonBrightnessUp
-	xbacklight -inc 10
+#XF86MonBrightnessDown
+#	xbacklight -dec 10
+
+#XF86MonBrightnessUp
+#	xbacklight -inc 10
 
 # quit/restart bspwm
 super + alt + {q,r}

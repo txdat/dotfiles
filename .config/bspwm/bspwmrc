@@ -2,22 +2,21 @@
 
 sxhkd &
 
-bspc monitor -d misc dev web doc
+polybar main &
+
+feh --bg-center ~/.config/wall.png &
+
+setxkbmap -option ctrl:nocaps &
+
+bspc monitor -d 1 2 3 4 5 6 7 8
 
 bspc config focused_border_color "#F0F5F9"
 bspc config normal_border_color	 "#1E2022"
+
 bspc config border_width         1
-bspc config window_gap           0
+bspc config window_gap           5
 
 bspc config split_ratio          0.52
 bspc config borderless_monocle   true
 bspc config gapless_monocle      true
-bspc config top_padding		 0
-
-bspc rule -a Chromium desktop='^3'
-bspc rule -a mplayer2 state=floating
-bspc rule -a Kupfer.py focus=on
-bspc rule -a Screenkey manage=off
-
-setxkbmap -option ctrl:nocaps &
-polybar main &
+bspc config top_padding			 0
