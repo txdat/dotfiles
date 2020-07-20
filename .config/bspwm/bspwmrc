@@ -4,6 +4,8 @@ sxhkd &
 
 polybar main &
 
+dunst &
+
 feh --bg-center ~/.config/wall.png &
 
 setxkbmap -option ctrl:nocaps &
