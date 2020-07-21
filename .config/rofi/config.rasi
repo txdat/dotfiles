@@ -175,12 +175,11 @@ show-icons: false;
 }
 
 #window {
-    width: 33%;
+    width: 40%;
 }
 #inputbar {
     text-color: @mf;
-    padding: 6px;
-    margin: 0px 0px 2px;
+    padding: 1px;
     children: [ entry ];
 }
 #entry {
