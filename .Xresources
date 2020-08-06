@@ -18,7 +18,6 @@
 *.foreground:   nord4
 *.background:   nord0
 *.cursorColor:  nord4
-*fading: 35
 *fadeColor: nord3
 
 *.color0: nord1
@@ -39,10 +38,10 @@
 *.color15: nord6
 
 !! URxvt Appearance
-URxvt.font: xft:Cascadia Mono:style=Regular:size=10
-URxvt.boldFont: xft:Cascadia Mono:style=Bold:size=10
-URxvt.italicFont: xft:Cascadia Mono:style=Italic:size=10
-URxvt.boldItalicfont: xft:Cascadia Mono:style=Bold Italic:size=10
+URxvt.font: xft:Cascadia Mono:style=Regular:size=9
+URxvt.boldFont: xft:Cascadia Mono:style=Bold:size=9
+URxvt.italicFont: xft:Cascadia Mono:style=Italic:size=9
+URxvt.boldItalicfont: xft:Cascadia Mono:style=Bold Italic:size=9
 URxvt.letterSpace: 0
 URxvt.lineSpace: 0
 URxvt.geometry: 80x24

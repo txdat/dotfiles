@@ -18,20 +18,20 @@ super + Escape
 # bspwm hotkeys
 #
 
-#XF86AudioLowerVolume
-#	amixer -q sset Master 5%-
+XF86AudioLowerVolume
+	amixer -q sset Master 5%-
 
-#XF86AudioRaiseVolume
-#	amixer -q sset Master 5%+
+XF86AudioRaiseVolume
+	amixer -q sset Master 5%+
 
-#XF86AudioMute
-#	amixer -q sset Master toggle
+XF86AudioMute
+	amixer -q sset Master toggle
 
-#XF86MonBrightnessDown
-#	xbacklight -dec 5
+XF86MonBrightnessDown
+	xbacklight -dec 5
 
-#XF86MonBrightnessUp
-#	xbacklight -inc 5
+XF86MonBrightnessUp
+	xbacklight -inc 5
 
 # quit/restart bspwm
 super + alt + {q,r}
