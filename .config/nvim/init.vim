@@ -85,19 +85,6 @@ Plug 'autozimu/LanguageClient-neovim'
 Plug 'fatih/vim-go', {'do': ':GoInstallBinaries'}
 
 
-" html
-"" HTML Bundle
-Plug 'hail2u/vim-css3-syntax'
-Plug 'gorodinskiy/vim-coloresque'
-Plug 'tpope/vim-haml'
-Plug 'mattn/emmet-vim'
-
-
-" javascript
-"" Javascript Bundle
-Plug 'jelera/vim-javascript-syntax'
-
-
 " python
 "" Python Bundle
 Plug 'davidhalter/jedi-vim'
@@ -514,22 +501,6 @@ augroup END
 " ale
 :call extend(g:ale_linters, {
     \"go": ['golint', 'go vet'], })
-
-
-" html
-" for html files, 2 spaces
-autocmd Filetype html setlocal ts=2 sw=2 expandtab
-
-
-" javascript
-let g:javascript_enable_domhtmlcss = 1
-
-" vim-javascript
-augroup vimrc-javascript
-  autocmd!
-  autocmd FileType javascript setl tabstop=4|setl shiftwidth=4|setl expandtab softtabstop=4
-augroup END
-
 
 " python
 " vim-python
