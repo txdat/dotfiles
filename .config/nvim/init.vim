@@ -65,6 +65,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 "" Color
+Plug 'dracula/vim'
 
 "*****************************************************************************
 "" Custom bundles
@@ -153,7 +154,7 @@ set ruler
 set number
 
 let no_buffers_menu=1
-silent! colorscheme nord
+silent! colorscheme dracula
 
 set mousemodel=popup
 set t_Co=256
