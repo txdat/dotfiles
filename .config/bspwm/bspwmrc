@@ -6,7 +6,7 @@ polybar main &
 
 dunst &
 
-feh --bg-fill ~/.config/wall.jpg &
+#feh --bg-fill ~/.config/wall.jpg &
 
 setxkbmap -option ctrl:nocaps &
 

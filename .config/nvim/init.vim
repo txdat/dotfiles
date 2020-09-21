@@ -5,7 +5,7 @@
 "*****************************************************************************
 let vimplug_exists=expand('~/.config/nvim/autoload/plug.vim')
 
-let g:vim_bootstrap_langs = "c,go,html,javascript,python"
+let g:vim_bootstrap_langs = "c,go,rust,python"
 let g:vim_bootstrap_editor = "nvim"				" nvim or vim
 
 if !filereadable(vimplug_exists)
@@ -65,7 +65,7 @@ Plug 'SirVer/ultisnips'
 Plug 'honza/vim-snippets'
 
 "" Color
-Plug 'arcticicestudio/nord-vim'
+Plug 'dracula/vim'
 
 "*****************************************************************************
 "" Custom bundles
@@ -79,14 +79,14 @@ Plug 'prabirshrestha/vim-lsp'
 Plug 'natebosch/vim-lsc'
 Plug 'autozimu/LanguageClient-neovim'
 
-
 " go
-"" Go Lang Bundle
 Plug 'fatih/vim-go', {'do': ':GoInstallBinaries'}
 
+" rust
+Plug 'racer-rust/vim-racer'
+Plug 'rust-lang/rust.vim'
 
 " python
-"" Python Bundle
 Plug 'davidhalter/jedi-vim'
 Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 
@@ -157,7 +157,7 @@ set ruler
 set number
 
 let no_buffers_menu=1
-silent! colorscheme nord
+silent! colorscheme dracula
 
 set mousemodel=popup
 set t_Co=256
@@ -434,7 +434,6 @@ nnoremap <Leader>o :.Gbrowse<CR>
 autocmd FileType c setlocal tabstop=4 shiftwidth=4 expandtab
 autocmd FileType cpp setlocal tabstop=4 shiftwidth=4 expandtab
 
-
 " go
 " vim-go
 " run :GoBuild or :GoTestCompile based on the go file
@@ -501,6 +500,12 @@ augroup END
 " ale
 :call extend(g:ale_linters, {
     \"go": ['golint', 'go vet'], })
+
+" rust
+au FileType rust nmap gd <Plug>(rust-def)
+au FileType rust nmap gs <Plug>(rust-def-split)
+au FileType rust nmap gx <Plug>(rust-def-vertical)
+au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
 " python
 " vim-python
