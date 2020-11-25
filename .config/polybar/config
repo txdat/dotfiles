@@ -41,7 +41,7 @@ include-file = ~/.config/polybar/bars.ini
 ; If unspecified, the application will pick the first one it finds.
 ; $ polybar -m | cut -d ':' -f 1
 ; $ xrandr -q | grep " connected" | cut -d ' ' -f1
-monitor = "DP-1"
+monitor = ${env:MONITOR:}
 
 ; Use the specified monitor as a fallback if the main one is not found.
 monitor-fallback =
@@ -164,8 +164,8 @@ font-2 = "xos4 Terminus:size=12;2"
 
 modules-left = bspwm
 modules-center = date
-modules-right = alsa_i alsa separator network_i separator powermenu_i powermenu
-;modules-right = cpu_i cpu separator memory_i memory separator alsa_i alsa separator backlight_i backlight separator battery_i battery separator network_i network separator powermenu_i powermenu
+;modules-right = alsa_i alsa separator network_i separator powermenu_i powermenu
+modules-right = alsa_i alsa separator backlight_i backlight separator battery_i battery separator network_i network separator powermenu_i powermenu
 
 ; The separator will be inserted between the output of each module
 separator =
