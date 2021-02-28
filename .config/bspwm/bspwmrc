@@ -11,17 +11,17 @@ amixer -q sset Master 0 &
 
 ibus-daemon -drx &
 
-feh --bg-fill ~/.config/wall.jpg &
+feh --bg-fill ~/.config/wall.png &
 
 setxkbmap -option ctrl:nocaps &
 
-bspc monitor -d alpha beta gamma delta
+bspc monitor -d ichi ni san shi go roku
 
-bspc config focused_border_color "#F0F5F9"
-bspc config normal_border_color	 "#1E2022"
+bspc config focused_border_color "#a89984"
+bspc config normal_border_color	 "#282828"
 
 bspc config border_width         2
-bspc config window_gap           3
+bspc config window_gap           2
 
 bspc config split_ratio          0.5
 bspc config borderless_monocle   true
