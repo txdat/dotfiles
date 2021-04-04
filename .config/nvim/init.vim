@@ -74,6 +74,8 @@ Plug 'morhetz/gruvbox'
 "" Custom bundles
 "*****************************************************************************
 
+Plug 'neovim/nvim-lspconfig'
+
 " c
 Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']}
 Plug 'ludwig/split-manpage.vim'
@@ -99,7 +101,6 @@ Plug 'raimon49/requirements.txt.vim', {'for': 'requirements'}
 
 "*****************************************************************************
 "*****************************************************************************
-
 "" Include user's extra bundle
 if filereadable(expand("~/.config/nvim/local_bundles.vim"))
   source ~/.config/nvim/local_bundles.vim
@@ -598,3 +599,8 @@ endif
 " https://ianding.io/2019/07/29/configure-coc-nvim-for-c-c++-development/
 set shortmess+=c
 
+" lsp
+lua << EOF
+  require'lspconfig'.ccls.setup{}
+  require'lspconfig'.pyright.setup{}
+EOF
