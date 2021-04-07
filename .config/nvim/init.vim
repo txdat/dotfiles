@@ -603,4 +603,5 @@ set shortmess+=c
 lua << EOF
   require'lspconfig'.ccls.setup{}
   require'lspconfig'.pyright.setup{}
+  require'lspconfig'.rls.setup{}
 EOF
