@@ -75,6 +75,7 @@ Plug 'morhetz/gruvbox'
 "*****************************************************************************
 
 Plug 'neovim/nvim-lspconfig'
+Plug 'voldikss/vim-floaterm'
 
 " c
 Plug 'vim-scripts/c.vim', {'for': ['c', 'cpp']}
