@@ -5,13 +5,15 @@ sxhkd &
 #polybar main &
 sh ~/.config/polybar/launch.sh &
 
+#picom &
+
 dunst &
 
 amixer -q sset Master 0 &
 
 ibus-daemon -drx &
 
-feh --bg-fill ~/.config/wall.png &
+feh --bg-fill ~/.config/wall.jpg &
 
 setxkbmap -option ctrl:nocaps &
 
