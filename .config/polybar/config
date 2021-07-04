@@ -64,15 +64,15 @@ fixed-center = true
 ; Dimension defined as pixel value (e.g. 35) or percentage (e.g. 50%),
 ; the percentage can optionally be extended with a pixel offset like so:
 ; 50%:-10, this will result in a width or height of 50% minus 10 pixels
-width = 100%
+width = 99.6%
 height = 22
 
 ; Offset defined as pixel value (e.g. 35) or percentage (e.g. 50%)
 ; the percentage can optionally be extended with a pixel offset like so:
 ; 50%:-10, this will result in an offset in the x or y direction 
 ; of 50% minus 10 pixels
-offset-x = 0
-offset-y = 0
+offset-x = 4
+offset-y = 4
 
 ; Background ARGB color (e.g. #f00, #ff992a, #ddff1023)
 background = ${color.bg}
@@ -165,7 +165,7 @@ font-2 = "xos4 Terminus:size=12;2"
 modules-left = bspwm
 modules-center = date
 ;modules-right = alsa_i alsa separator network_i separator powermenu_i powermenu
-modules-right = alsa_i alsa separator backlight_i backlight separator battery_i battery separator network_i network separator powermenu_i powermenu
+modules-right = keyboard_i keyboard separator alsa_i alsa separator backlight_i backlight separator battery_i battery separator network_i network separator powermenu_i powermenu
 
 ; The separator will be inserted between the output of each module
 separator =
