@@ -110,13 +110,13 @@ overline-color = ${color.ac}
 ; the border is placed withing this area. So you effectively only have the
 ; following horizontal space on the bar:
 ;   width - border-right-size - border-left-size
-border-size = 3
+border-size = 2
 border-color = ${color.bg}
 
 ; Number of spaces to add at the beginning/end of the bar
 ; Individual side values can be defined using:
 ;   padding-{left,right}
-padding = 1
+padding = 0
 
 ; Number of spaces to add before/after each module
 ; Individual side values can be defined using:
