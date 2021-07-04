@@ -1,0 +1,19 @@
+# configuration file for betterlockscreen
+
+insidecolor=00000000
+ringcolor=ebdbb2ff
+keyhlcolor=cc241dff
+bshlcolor=cc241dff
+separatorcolor=00000000
+insidevercolor=00000000
+insidewrongcolor=cc241dff
+ringvercolor=ebdbb2ff
+ringwrongcolor=ebdbb2ff
+verifcolor=ebdbb2ff
+timecolor=ebdbb2ff
+datecolor=ebdbb2ff
+loginbox=28282866
+font="Cascadia Code"
+locktext='%a, %B %d %Y'
+lock_timeout=5
+time_format=' %I:%M %p'

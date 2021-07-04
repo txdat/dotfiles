@@ -33,6 +33,10 @@ XF86MonBrightnessDown
 XF86MonBrightnessUp
 	xbacklight -inc 5
 
+# lock screen
+super + l
+	betterlockscreen -l dim
+
 # quit/restart bspwm
 super + alt + {q,r}
 	bspc {quit,wm -r}
