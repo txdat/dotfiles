@@ -16,4 +16,4 @@ loginbox=28282866
 font="Cascadia Code"
 locktext='%a, %B %d %Y'
 lock_timeout=5
-time_format=' %I:%M %p'
+time_format='%I:%M %p'
