@@ -108,8 +108,8 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-export GTK_IM_MODULE=xim
+export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=xim
+export QT_IM_MODULE=ibus
 
 export PATH=$HOME/.cargo/bin:$PATH
