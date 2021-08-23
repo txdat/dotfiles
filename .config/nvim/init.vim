@@ -32,6 +32,8 @@ Plug 'preservim/nerdcommenter'
 
 Plug 'kdheepak/lazygit.nvim'
 
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
@@ -55,8 +57,18 @@ let g:airline#extensions#tabline#enabled=1
 let g:airline#extensions#tagbar#enabled=1
 let g:airline#extensions#virtualenv#enabled=1
 
+"treesitter
+lua <<EOF
+require'nvim-treesitter.configs'.setup {
+	highlight = { enable = true },
+	incremental_selection = { enable = true },
+	indent = { enable = true }
+}
+EOF
+
 "lsp
 lua << EOF
 require'lspconfig'.ccls.setup{}
 require'lspconfig'.pyright.setup{}
+require'lspconfig'.rls.setup{}
 EOF
