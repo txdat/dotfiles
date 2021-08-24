@@ -27,8 +27,7 @@ Plug 'vim-airline/vim-airline-themes'
 
 Plug 'sheerun/vim-polyglot'
 
-Plug 'preservim/nerdtree'
-Plug 'preservim/nerdcommenter'
+Plug 'ms-jpq/chadtree', {'branch': 'chad', 'do': 'python3 -m chadtree deps'}
 
 Plug 'kdheepak/lazygit.nvim'
 
@@ -37,9 +36,13 @@ Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
 Plug 'jiangmiao/auto-pairs'
 
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
+Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 
 Plug 'neovim/nvim-lspconfig'
 
@@ -65,6 +68,9 @@ require'nvim-treesitter.configs'.setup {
 	indent = { enable = true }
 }
 EOF
+
+"coq
+let g:coq_settings = { 'auto_start': v:true }
 
 "lsp
 lua << EOF
