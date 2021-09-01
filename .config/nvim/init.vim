@@ -20,7 +20,8 @@ endif
 
 call plug#begin(expand('~/.config/nvim/plugged'))
 
-Plug 'arcticicestudio/nord-vim'
+"Plug 'arcticicestudio/nord-vim'
+Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
@@ -41,6 +42,8 @@ Plug 'nvim-telescope/telescope.nvim'
 
 Plug 'jiangmiao/auto-pairs'
 
+Plug 'preservim/nerdcommenter'
+
 Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 
@@ -48,8 +51,12 @@ Plug 'neovim/nvim-lspconfig'
 
 call plug#end()
 
-"nord
-silent! colorscheme nord
+"tokyonight
+let g:tokyonight_style="night"
+let g:tokyonight_italic_functions=1
+let g:tokyonight_sidebars=[ "qf", "vista_kind", "terminal", "packer" ]
+
+silent! colorscheme tokyonight
 
 "airline
 let g:airline_theme='powerlineish'
