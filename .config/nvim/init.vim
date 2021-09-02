@@ -81,7 +81,11 @@ let g:coq_settings = { 'auto_start': v:true }
 
 "lsp
 lua << EOF
-require'lspconfig'.ccls.setup{}
-require'lspconfig'.pyright.setup{}
-require'lspconfig'.rls.setup{}
+local lsp = require "lspconfig"
+local coq = require "coq"
+
+local servers = { 'ccls', 'pyright', 'rls' }
+for _, server in ipairs(servers) do
+	lsp[server].setup(coq.lsp_ensure_capabilities())
+end
 EOF
