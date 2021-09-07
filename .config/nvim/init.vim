@@ -23,8 +23,9 @@ call plug#begin(expand('~/.config/nvim/plugged'))
 "Plug 'arcticicestudio/nord-vim'
 Plug 'folke/tokyonight.nvim', { 'branch': 'main' }
 
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
+"Plug 'vim-airline/vim-airline'
+"Plug 'vim-airline/vim-airline-themes'
+Plug 'hoob3rt/lualine.nvim'
 
 Plug 'sheerun/vim-polyglot'
 
@@ -48,6 +49,7 @@ Plug 'ms-jpq/coq_nvim', {'branch': 'coq'}
 Plug 'ms-jpq/coq.artifacts', {'branch': 'artifacts'}
 
 Plug 'neovim/nvim-lspconfig'
+Plug 'glepnir/lspsaga.nvim'
 
 call plug#end()
 
@@ -59,13 +61,20 @@ let g:tokyonight_sidebars=[ "qf", "vista_kind", "terminal", "packer" ]
 silent! colorscheme tokyonight
 
 "airline
-let g:airline_theme='powerlineish'
-let g:airline_skip_empty_sections=1
-let g:airline#extensions#branch#enabled=1
-let g:airline#extensions#ale#enabled=1
-let g:airline#extensions#tabline#enabled=1
-let g:airline#extensions#tagbar#enabled=1
-let g:airline#extensions#virtualenv#enabled=1
+"let g:airline_theme='powerlineish'
+"let g:airline_skip_empty_sections=1
+"let g:airline#extensions#branch#enabled=1
+"let g:airline#extensions#ale#enabled=1
+"let g:airline#extensions#tabline#enabled=1
+"let g:airline#extensions#tagbar#enabled=1
+"let g:airline#extensions#virtualenv#enabled=1
+
+"lualine
+lua <<EOF
+require('lualine').setup {
+	options = { theme = 'auto' }
+}
+EOF
 
 "treesitter
 lua <<EOF
@@ -83,9 +92,12 @@ let g:coq_settings = { 'auto_start': v:true }
 lua << EOF
 local lsp = require "lspconfig"
 local coq = require "coq"
+local saga = require "lspsaga"
 
-local servers = { 'ccls', 'pyright', 'rls' }
+local servers = { 'ccls', 'pyright', 'rls', 'gopls' }
 for _, server in ipairs(servers) do
 	lsp[server].setup(coq.lsp_ensure_capabilities())
 end
+
+saga.init_lsp_saga()
 EOF
