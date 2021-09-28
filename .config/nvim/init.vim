@@ -86,7 +86,7 @@ require'nvim-treesitter.configs'.setup {
 EOF
 
 "coq
-let g:coq_settings = { 'auto_start': v:true }
+let g:coq_settings = { 'auto_start': v:true, 'display.icons.spacing': 2 }
 
 "lsp
 lua << EOF
