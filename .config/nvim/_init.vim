@@ -94,8 +94,8 @@ local lsp = require "lspconfig"
 local coq = require "coq"
 local saga = require "lspsaga"
 
-local servers = { 'ccls', 'pyright', 'rls', 'gopls', 'hls' }
-for _, server in ipairs(servers) do
+local servers = { 'ccls', 'pyright', 'gopls', 'rls', 'hls' }
+for _, server in pairs(servers) do
 	lsp[server].setup(coq.lsp_ensure_capabilities())
 end
 
