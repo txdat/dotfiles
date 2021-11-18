@@ -11,7 +11,9 @@ local opt = vim.opt  -- global/buffer/windows-scoped options
 -- lualine
 require ('lualine').setup {
 	options = {
-		theme = 'tokyonight'
+		theme = 'tokyonight',
+		section_separators = '',
+		component_separators = ''
 	}
 }
 
