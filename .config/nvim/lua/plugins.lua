@@ -26,11 +26,11 @@ return packer.startup(function()
 	-- gui
 	use 'folke/tokyonight.nvim'  -- colorscheme
 	
-	use {  -- status bar
-		'hoob3rt/lualine.nvim',
+	use {  -- tab bar
+		'kdheepak/tabline.nvim',
 		requires = { 
-			'kyazdani42/nvim-web-devicons', 
-			opt = true 
+			{ 'nvim-lualine/lualine.nvim' },  -- status bar
+			{ 'kyazdani42/nvim-web-devicons' }
 		}
 	}
 	
