@@ -16,11 +16,11 @@
 [global/wm]
 ; Adjust the _NET_WM_STRUT_PARTIAL top value
 ; Used for top aligned bars
-margin-bottom = 0
+margin-bottom = 2
 
 ; Adjust the _NET_WM_STRUT_PARTIAL bottom value
 ; Used for bottom aligned bars
-margin-top = 0
+margin-top = 2
 
 ;; _-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_
 
@@ -137,9 +137,8 @@ module-margin-right = 0
 ;;font-2 = "xos4 Terminus:size=12;2"
 
 font-0 = "CascadiaCode:size=12;2"
-font-1 = "icomoon\-feather:size=12;2"
-;font-1 = "icomoon-feather:size=12;2"
-font-2 = "xos4 Terminus:size=12;2"
+font-1 = "Noto Sans CJK JP:size=12;2"
+font-2 = "icomoon\-feather:size=12;2"
 
 ; Modules are added to one of the available blocks
 ;   modules-left = cpu ram
@@ -165,7 +164,7 @@ font-2 = "xos4 Terminus:size=12;2"
 modules-left = bspwm
 modules-center = date
 ;modules-right = alsa_i alsa separator network_i separator powermenu_i powermenu
-modules-right = keyboard_i keyboard separator alsa_i alsa separator backlight_i backlight separator battery_i battery separator network_i network separator powermenu_i powermenu
+modules-right = pulseaudio_i pulseaudio separator backlight_i backlight separator battery_i battery separator network_i network separator powermenu_i powermenu separator
 
 ; The separator will be inserted between the output of each module
 separator =
@@ -196,14 +195,14 @@ locale =
 ;   center
 ;   right
 ;   none
-tray-position = none
+tray-position = right
 
 ; If true, the bar will not shift its
 ; contents when the tray changes
 tray-detached = false
 
 ; Tray icon max size
-tray-maxsize = 16
+tray-maxsize = 22
 
 ; DEPRECATED! Since 3.3.0 the tray always uses pseudo-transparency
 ; Enable pseudo transparency

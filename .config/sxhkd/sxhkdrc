@@ -7,7 +7,7 @@ super + Return
 	alacritty
 
 # program launcher
-ctrl + @space
+super + @space
 	rofi -show run
 
 # make sxhkd reload its configuration files:
@@ -18,24 +18,22 @@ super + Escape
 # bspwm hotkeys
 #
 
+# functional keys
+
 XF86AudioLowerVolume
-	amixer -q sset Master 5%-
+    pactl set-sink-volume 0 -5%
 
 XF86AudioRaiseVolume
-	amixer -q sset Master 5%+
+    pactl set-sink-volume 0 +5%
 
 XF86AudioMute
-	amixer -q sset Master toggle
+    pactl set-sink-mute 0 toggle
 
 XF86MonBrightnessDown
-	xbacklight -dec 5
+    xbacklight -dec 5
 
 XF86MonBrightnessUp
-	xbacklight -inc 5
-
-# lock screen
-super + l
-	betterlockscreen -l dim
+    xbacklight -inc 5
 
 # quit/restart bspwm
 super + alt + {q,r}
@@ -53,9 +51,9 @@ super + m
 super + y
 	bspc node newest.marked.local -n newest.!automatic.local
 
-# swap the current node and the biggest node
+# swap the current node and the biggest window
 super + g
-	bspc node -s biggest
+	bspc node -s biggest.window
 
 #
 # state/flags
@@ -81,9 +79,9 @@ super + {_,shift + }{h,j,k,l}
 super + {p,b,comma,period}
 	bspc node -f @{parent,brother,first,second}
 
-# focus the next/previous node in the current desktop
+# focus the next/previous window in the current desktop
 super + {_,shift + }c
-	bspc node -f {next,prev}.local
+	bspc node -f {next,prev}.local.!hidden.window
 
 # focus the next/previous desktop in the current monitor
 super + bracket{left,right}
