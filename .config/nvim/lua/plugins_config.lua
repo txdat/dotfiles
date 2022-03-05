@@ -9,31 +9,42 @@ local opt = vim.opt  -- global/buffer/windows-scoped options
 ------------------------------------
 
 -- tabline
-require ('tabline').setup {
-	enable = true,
-	options = {
-		section_separators = { '', '' },
-		component_separators = { '', '' },
-		max_bufferline_percent = 66,
-		show_tabs_always = false,
-		show_devicons = true,
-		show_bufnr = false,
-		show_filename_only = false
-	}
-}
+--require ('tabline').setup {
+--	enable = true,
+--	options = {
+--		section_separators = { '', '' },
+--		component_separators = { '', '' },
+--		max_bufferline_percent = 66,
+--		show_tabs_always = false,
+--		show_devicons = true,
+--		show_bufnr = false,
+--		show_filename_only = false
+--	}
+--}
 
-cmd [[
-	set guioptions-=e
-	set sessionoptions+=tabpages,globals
-]]
+--cmd [[
+--	set guioptions-=e
+--	set sessionoptions+=tabpages,globals
+--]]
+
+-- barbar
+--g.bufferline = {
+--}
 
 -- lualine
 require ('lualine').setup {
 	options = {
-		theme = 'tokyonight',
+		theme = 'catppuccin',
 		section_separators = '',
 		component_separators = ''
 	}
+}
+
+-- modes
+opt.cursorline = true
+
+require ('modes').setup {
+    focus_only = true
 }
 
 -- indent
@@ -48,12 +59,15 @@ require ('indent_blankline').setup {
 }
 
 -- tokyonight
-g.tokyonight_style = 'night'
-g.tokyonight_italic_functions = true
-g.tokyonight_sidebars = { 'qf', 'vista_kind', 'terminal', 'packer' }
+--g.tokyonight_style = 'night'
+--g.tokyonight_italic_functions = true
+--g.tokyonight_sidebars = { 'qf', 'vista_kind', 'terminal', 'packer' }
+
+-- catppuccin
+require ('catppuccin').setup()
 
 -- set colorscheme
-cmd [[colorscheme tokyonight]]
+cmd [[colorscheme catppuccin]]
 
 -----------------------------------
 -- syntax
@@ -138,3 +152,10 @@ for _, server in pairs(servers) do
 end
 
 lspsaga.init_lsp_saga()
+
+-----------------------------------
+-- quickfix
+-----------------------------------
+
+-- bqf
+require ('bqf').setup()

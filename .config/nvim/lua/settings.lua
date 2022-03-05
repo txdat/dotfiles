@@ -72,13 +72,13 @@ opt.linebreak = true  -- wrap on word boundary
 -- remove whitespace on saving
 cmd [[au BufWritePre * :%s/\s\+$//e]]
 
--- highlight on yank
-exec ([[
-	augroup YankHighlight
-		autocmd!
-		autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}
-	augroup end
-]], false)
+-- highlight on yank (selected copy)
+--exec ([[
+--	augroup YankHighlight
+--		autocmd!
+--		autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}
+--	augroup end
+--]], false)
 
 -- cursor
 opt.guicursor = 'i:block'  -- using block cursor

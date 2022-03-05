@@ -24,17 +24,32 @@ return packer.startup(function()
 	use 'wbthomason/packer.nvim'
 
 	-- gui
-	use 'folke/tokyonight.nvim'  -- colorscheme
-	
-	use {  -- tab bar
-		'kdheepak/tabline.nvim',
-		requires = { 
-			{ 'nvim-lualine/lualine.nvim' },  -- status bar
-			{ 'kyazdani42/nvim-web-devicons' }
-		}
-	}
+	--use 'folke/tokyonight.nvim'  -- colorscheme
+    use 'catppuccin/nvim'
+
+	--use {  -- tab bar
+	--	'kdheepak/tabline.nvim',
+	--	requires = { 
+	--		{ 'nvim-lualine/lualine.nvim' },  -- status bar
+	--		{ 'kyazdani42/nvim-web-devicons' }
+	--	}
+	--}
+    
+    -- status bar
+    use {
+        'nvim-lualine/lualine.nvim',
+        requires = { 'kyazdani42/nvim-web-devicons' }
+    }
+
+    -- tabs bar
+    use {
+        'romgrk/barbar.nvim',
+        requires = { 'kyazdani42/nvim-web-devicons' }
+    }
 	
 	use 'lukas-reineke/indent-blankline.nvim'  -- indent
+
+    use 'mvllow/modes.nvim'  -- highlight modes
 
 	-- syntax
 	use { 
@@ -77,6 +92,17 @@ return packer.startup(function()
 		'neovim/nvim-lspconfig',
 		requires = { 'glepnir/lspsaga.nvim' } 
 	}
+
+    -- quickfix
+    use {
+        'kevinhwang91/nvim-bqf',
+        requires = {
+            { 'junegunn/fzf', run = function()
+                vim.fn['fzf#install']()
+            end
+            }
+        }
+    }
 
 	-- automatically set up configuration
 	-- end of this function (after all plugins)
