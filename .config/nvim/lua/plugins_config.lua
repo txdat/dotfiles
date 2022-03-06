@@ -89,6 +89,9 @@ require ('nvim-treesitter.configs').setup {
 -- commenting
 require ('kommentary.config').use_extended_mappings()
 
+-- auto close brackets
+require ('nvim-autopairs').setup()
+
 -----------------------------------
 -- file manager
 -- finder

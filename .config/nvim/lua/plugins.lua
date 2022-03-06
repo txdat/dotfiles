@@ -59,6 +59,8 @@ return packer.startup(function()
 	
 	use 'b3nj5m1n/kommentary'  -- commenting
 
+    use 'windwp/nvim-autopairs'  -- auto close brackets
+
 	-- svc
 	use 'kdheepak/lazygit.nvim'
 
