@@ -41,7 +41,6 @@ for _, plugin in pairs(disabled_built_ins) do
 end
 
 -- nvim intro
--- TODO: customize :))
 opt.shortmess:append 'sI'  -- disable
 
 -----------------------------------------
@@ -73,12 +72,12 @@ opt.linebreak = true  -- wrap on word boundary
 cmd [[au BufWritePre * :%s/\s\+$//e]]
 
 -- highlight on yank (selected copy)
---exec ([[
---	augroup YankHighlight
---		autocmd!
---		autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}
---	augroup end
---]], false)
+exec ([[
+	augroup YankHighlight
+		autocmd!
+		autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}
+	augroup end
+]], false)
 
 -- cursor
 opt.guicursor = 'i:block'  -- using block cursor
