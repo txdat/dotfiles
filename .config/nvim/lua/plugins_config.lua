@@ -44,7 +44,6 @@ require ('lualine').setup {
 opt.cursorline = true
 
 require ('modes').setup {
-    focus_only = true
 }
 
 -- indent
@@ -64,6 +63,8 @@ require ('indent_blankline').setup {
 --g.tokyonight_sidebars = { 'qf', 'vista_kind', 'terminal', 'packer' }
 
 -- catppuccin
+g.catppuccin_flavour = 'mocha'
+
 require ('catppuccin').setup()
 
 -- set colorscheme
