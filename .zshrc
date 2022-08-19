@@ -77,6 +77,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git tmux docker docker-compose kubectl helm zsh-syntax-highlighting zsh-autosuggestions)
 
+source $ZSH/catppuccin-zsh-syntax-highlighting.zsh
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -111,3 +112,19 @@ source $ZSH/oh-my-zsh.sh
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
+
+# >>> conda initialize >>>
+# !! Contents within this block are managed by 'conda init' !!
+__conda_setup="$('/home/txdat/.miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+if [ $? -eq 0 ]; then
+    eval "$__conda_setup"
+else
+    if [ -f "/home/txdat/.miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/txdat/.miniconda3/etc/profile.d/conda.sh"
+    else
+        export PATH="/home/txdat/.miniconda3/bin:$PATH"
+    fi
+fi
+unset __conda_setup
+# <<< conda initialize <<<
+
