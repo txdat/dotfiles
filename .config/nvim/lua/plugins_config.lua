@@ -162,3 +162,10 @@ lspsaga.init_lsp_saga()
 
 -- bqf
 require ('bqf').setup()
+
+-----------------------------------
+-- latex
+-----------------------------------
+
+-- vimtex
+g.vimtex_view_method = 'zathura'

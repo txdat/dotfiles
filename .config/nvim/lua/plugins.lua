@@ -106,6 +106,9 @@ return packer.startup(function()
         }
     }
 
+    -- latex
+    use 'lervag/vimtex'
+
 	-- automatically set up configuration
 	-- end of this function (after all plugins)
 	if packer_boostrap then
