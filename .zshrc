@@ -109,6 +109,8 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+export KUBECONFIG=/home/txdat/.kube/config
+
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
@@ -128,5 +130,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-alias Syyu="sudo pacman -Syyu && paru -Syyu"
+alias syyu="sudo pacman -Syyu && paru -Syyu"
 alias cpcb="xclip -sel c < "
+alias startk3s="sudo systemctl start containerd.service && sudo systemctl start k3s.service"
+alias stopk3s="sudo systemctl stop k3s.service && sudo systemctl stop containerd.service"
