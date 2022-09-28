@@ -1,0 +1,3 @@
+# ansible's requirements
+roles:
+  - name: geerlingguy.nfs  # nfs
