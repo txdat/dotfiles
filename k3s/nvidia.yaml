@@ -1,3 +1,5 @@
+# From https://gist.githubusercontent.com/brandond/33e49bf094712f926c95d683d515ac95/raw/nvidia.yaml
+
 apiVersion: node.k8s.io/v1
 kind: RuntimeClass
 metadata:
