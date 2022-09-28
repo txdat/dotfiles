@@ -1,4 +1,4 @@
--- plugin/package management
+-- nvim's plugins management
 
 local cmd = vim.cmd  -- execute vim's commands
 local fn = vim.fn  -- vim's functions

@@ -1,4 +1,4 @@
--- plugin/package configuration
+-- nvim's plugins' config
 
 local cmd = vim.cmd  -- execute vim's commands
 local g = vim.g  -- global variables

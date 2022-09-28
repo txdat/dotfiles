@@ -1,4 +1,4 @@
--- nvim's global configurations
+-- nvim's config
 
 -----------------------------------------
 -- neovim's aliases
@@ -47,7 +47,7 @@ opt.shortmess:append 'sI'  -- disable
 -- general
 -----------------------------------------
 
-g.mapleader = ','
+--g.mapleader = ','
 --opt.mouse = 'a'
 opt.clipboard = 'unnamedplus' -- system's clipboard
 --opt.swapfile = false
