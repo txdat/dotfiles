@@ -132,5 +132,3 @@ unset __conda_setup
 
 alias syyu="sudo pacman -Syyu && paru -Syyu"
 alias cpcb="xclip -sel c < "
-alias startk3s="sudo systemctl start containerd.service && sudo systemctl start k3s.service"
-alias stopk3s="sudo systemctl stop k3s.service && sudo systemctl stop containerd.service"
