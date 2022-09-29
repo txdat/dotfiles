@@ -134,9 +134,11 @@ alias syyu="sudo pacman -Syyu && paru -Syyu"
 alias cpcb="xclip -sel c < "
 alias start_k3s="sudo systemctl start containerd.service && \
     sudo systemctl start docker.service && \
+    sudo systemctl start docker.socket && \
     sudo systemctl start nfs-server.service && \
     sudo systemctl start k3s.service"
 alias stop_k3s="sudo systemctl stop containerd.service && \
     sudo systemctl stop docker.service && \
+    sudo systemctl stop docker.socket && \
     sudo systemctl stop nfs-server.service && \
     sudo systemctl stop k3s.service"
