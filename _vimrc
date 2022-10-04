@@ -7,3 +7,6 @@ syntax on
 "window config
 set guifont=Cascadia\ Mono:h12
 set backspace=2
+
+colorscheme pink-moon
+set background=dark
