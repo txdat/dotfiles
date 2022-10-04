@@ -109,12 +109,6 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-export KUBECONFIG=/home/dattr/.kube/config
-
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/home/dattr/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -129,6 +123,31 @@ else
 fi
 unset __conda_setup
 # <<< conda initialize <<<
+
+# Compile and run algo(c++)
+algo () {
+    dir=$(pwd)
+    if [ ! -f "$dir/bits/stdc++.h" ]
+    then
+        echo "missing file $dir/bits/stdc++.h for precompiling headers, run 'g++ -H $1'"
+        return 1
+    fi
+    if [ ! -f "$dir/bits/stdc++.h.gch" ]
+    then
+        echo -n "precompiling headers..."
+        # get all flags from algo/main.cpp
+        g++ -std=c++20 -Ofast -funroll-loops -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native "$dir/bits/stdc++.h"
+        echo " - done!"
+    fi
+    g++ -std=c++20 -DLOCAL -DDEBUG "$1" -o "${2:-a.out}" && ./"${2:-a.out}"
+    return 0
+}
+
+export GTK_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
+export QT_IM_MODULE=ibus
+
+export KUBECONFIG=/home/dattr/.kube/config
 
 alias syyu="sudo pacman -Syyu && paru -Syyu"
 alias cpcb="xclip -sel c < "

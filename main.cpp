@@ -4,7 +4,13 @@
 #pragma GCC optimize("Ofast,unroll-loops")
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt,tune=native")
 
+#ifdef LOCAL
+// precompiled headers
+// g++ -std=c++20 -Ofast -funroll-loops -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native bits/stdc++.h
+#include "bits/stdc++.h"
+#else
 #include <bits/stdc++.h>
+#endif
 
 using namespace std;
 
@@ -100,10 +106,11 @@ inline namespace FileIO {
 /*}}}*/
 void solve(int __test) {
 }
-/*{{{*/
 
+//#define N_TEST
 int main(int argc, const char **argv) {
-    setIO();
+    setIO(); // setIO("/tmp/a") for "/tmp/a.in" and "/tmp/a.out"
+/*{{{*/
 
     int n_test = 1;
 #ifdef N_TEST // g++ -DN_TEST ...
