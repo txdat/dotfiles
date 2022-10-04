@@ -9,7 +9,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/txdat/.oh-my-zsh"
+export ZSH="/home/dattr/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -109,7 +109,7 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-export KUBECONFIG=/home/txdat/.kube/config
+export KUBECONFIG=/home/dattr/.kube/config
 
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
@@ -117,14 +117,14 @@ export QT_IM_MODULE=ibus
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/txdat/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('/home/dattr/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/txdat/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/txdat/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "/home/dattr/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "/home/dattr/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/txdat/miniconda3/bin:$PATH"
+        export PATH="/home/dattr/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -132,13 +132,3 @@ unset __conda_setup
 
 alias syyu="sudo pacman -Syyu && paru -Syyu"
 alias cpcb="xclip -sel c < "
-alias start_k3s="sudo systemctl start containerd.service && \
-    sudo systemctl start docker.service && \
-    sudo systemctl start docker.socket && \
-    sudo systemctl start nfs-server.service && \
-    sudo systemctl start k3s.service"
-alias stop_k3s="sudo systemctl stop containerd.service && \
-    sudo systemctl stop docker.service && \
-    sudo systemctl stop docker.socket && \
-    sudo systemctl stop nfs-server.service && \
-    sudo systemctl stop k3s.service"
