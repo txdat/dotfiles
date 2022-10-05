@@ -16,10 +16,10 @@ vim.g.mapleader = ','
 ----------------------------------
 
 -- disable arrow keys
-map('', '<up>', '<nop>')
-map('', '<down>', '<nop>')
-map('', '<left>', '<nop>')
-map('', '<right>', '<nop>')
+--map('', '<up>', '<nop>')
+--map('', '<down>', '<nop>')
+--map('', '<left>', '<nop>')
+--map('', '<right>', '<nop>')
 
 -- clear search highlighting
 map('n', '<leader>c', ':nohl<CR>')
@@ -29,7 +29,8 @@ map('n', '<F2>', ':set invpaste paste?<CR>')
 
 -- terminal
 map('n', '<C-t>', ':Term<CR>', { noremap = true }) -- open
-map('t', '<Esc>', '<C-\\><C-n>')                   -- exit
+map('t', '<Esc>', '<C-\\><C-n>')                   -- escape to normal mode
+map('n', '<C-d>', ':bd!<CR>', { noremap = true })  -- exit
 
 -- change split orientation
 map('n', '<leader>tk', '<C-w>t<C-w>K') -- change vertical to horizontal

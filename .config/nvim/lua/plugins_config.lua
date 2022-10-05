@@ -149,6 +149,7 @@ local servers = {
 	'pyright',			-- python
 	'gopls',			-- go
 	'rls',				-- rust
+    'hls',              -- haskell
 }
 for _, server in pairs(servers) do
 	lspconfig[server].setup(coq.lsp_ensure_capabilities())
