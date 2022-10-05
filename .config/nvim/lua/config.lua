@@ -137,3 +137,11 @@ opt.termguicolors = true  -- enable 24bits colors
 
 opt.completeopt = 'menuone,noselect'  -- insert mode
 
+-----------------------------------------
+-- miscellaneous
+-----------------------------------------
+
+-- python interpreter
+local handler = io.popen("which python3")
+g.python3_host_prog = handler:read("*a")
+handler:close()

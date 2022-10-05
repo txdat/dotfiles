@@ -99,7 +99,7 @@ inline namespace FileIO {
     void setOut(str s) { freopen(s.c_str(), "w", stdout); }
     void setIO(str s = "") {
         cin.tie(0)->sync_with_stdio(0);
-        if (sz(s)) setIn(s+".in"), setOut(s+".out");
+        if (sz(s)) setIn(s+".inp"), setOut(s+".out");
     }
 };
 
@@ -109,7 +109,7 @@ void solve(int __test) {
 
 //#define N_TEST
 int main(int argc, const char **argv) {
-    setIO(); // setIO("/tmp/a") for "/tmp/a.in" and "/tmp/a.out"
+    setIO(); // setIO("/tmp/a") for "/tmp/a.inp" and "/tmp/a.out"
 /*{{{*/
 
     int n_test = 1;
