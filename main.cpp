@@ -4,7 +4,7 @@
 #pragma GCC optimize("Ofast,unroll-loops")
 #pragma GCC target("avx2,bmi,bmi2,lzcnt,popcnt,tune=native")
 
-#ifdef LOCAL
+#ifdef LOCAL // g++ -DLOCAL ...
 // precompiled headers
 // g++ -std=c++20 -Ofast -funroll-loops -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native bits/stdc++.h
 #include "bits/stdc++.h"
@@ -53,14 +53,14 @@ tcT> int iub(vec<T> &a, const T &b) { return int(ub(all(a),b)-bg(a)); }
 #define R0F(i,a) ROF(i,0,a)
 #define EACH(x,cont) for (auto &x : cont)
 
-tcT> using pq = priority_queue<T>;
-tcT> using pqg = priority_queue<T,vector<T>,greater<T>>;
+tcT> using pq = priority_queue<T>; // max-heap
+tcT> using pqg = priority_queue<T,vector<T>,greater<T>>; // min-heap
 
 constexpr int pct(int x) { return __builtin_popcount(x); }
 constexpr int clz(int x) { return __builtin_clz(x); }
 constexpr int ctz(int x) { return __builtin_ctz(x); }
-constexpr int msk(int x) { return (1<<x)-1; }
-constexpr int cbt(int x) { return x == 0 ? 0 : 32-clz(x); }
+constexpr int msk(int x) { return (1<<x)-1; } // generate x-bit mask
+constexpr int cbt(int x) { return x == 0 ? 0 : 32-clz(x); } // count number of bits used for x
 
 constexpr int MOD = 1e9 + 7; // 1'000'000'007
 constexpr int dx[4] = {-1, 0, 1, 0}, dy[4] = {0, 1, 0, -1}; // clockwise
@@ -81,9 +81,9 @@ decltype(auto) y_combinator(Func &&func) { return y_combinator_result<std::decay
 
 #define endl "\n" // https://usaco.guide/general/fast-io?lang=cpp
 
-// print tuple of A,B
+// print pair of A,B
 template <typename A, typename B> ostream& operator<<(ostream &os, const pair<A,B> &p) { return os << '(' << p.first << ", " << p.second << ')'; }
-// print array of T
+// print array/vector of T
 template <typename T_container, typename T = typename enable_if<!is_same<T_container, string>::value, typename T_container::value_type>::type> ostream& operator<<(ostream &os, const T_container &cont) { os << '{'; string sep; for (const T &x : cont) os << sep << x, sep = ", "; return os << '}'; }
 
 #ifdef DEBUG // g++ -DDEBUG ...
