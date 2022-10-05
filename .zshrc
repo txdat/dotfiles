@@ -9,7 +9,7 @@ fi
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
-export ZSH="/home/dattr/.oh-my-zsh"
+export ZSH="$HOME/.oh-my-zsh"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -111,14 +111,14 @@ source $ZSH/oh-my-zsh.sh
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/home/dattr/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "/home/dattr/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/home/dattr/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="/home/dattr/miniconda3/bin:$PATH"
+        export PATH="$HOME/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
@@ -129,12 +129,12 @@ algo () {
     dir=$(pwd)
     if [ ! -f "$dir/bits/stdc++.h" ]
     then
-        echo "missing file $dir/bits/stdc++.h for precompiling headers, run 'g++ -H $1'"
+        echo "missing file $dir/bits/stdc++.h for compiling headers, run 'g++ -H $1'"
         return 1
     fi
     if [ ! -f "$dir/bits/stdc++.h.gch" ]
     then
-        echo -n "precompiling headers..."
+        echo -n "compiling headers..."
         # get all flags from algo/main.cpp
         g++ -std=c++20 -Ofast -funroll-loops -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native "$dir/bits/stdc++.h"
         echo " - done!"
@@ -143,11 +143,14 @@ algo () {
     return 0
 }
 
+export PATH="$HOME/miniconda3/bin:$HOME/.cabal/bin:$HOME/.ghcup/bin:$HOME/.local/bin:$PATH"
+
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
 
-export KUBECONFIG=/home/dattr/.kube/config
+export KUBECONFIG=$HOME/.kube/config
 
+alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 alias syyu="sudo pacman -Syyu && paru -Syyu"
 alias cpcb="xclip -sel c < "
