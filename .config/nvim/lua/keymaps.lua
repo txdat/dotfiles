@@ -12,7 +12,7 @@ end
 vim.g.mapleader = ','
 
 ----------------------------------
--- nvim's system keymaps
+-- nvim's keymaps
 ----------------------------------
 
 -- disable arrow keys
@@ -26,11 +26,15 @@ map('n', '<leader>c', ':nohl<CR>')
 
 -- toggle auto-indenting for code paste
 map('n', '<F2>', ':set invpaste paste?<CR>')
+vim.opt.pastetoggle = '<F2>'
+
+-- fast saving
+map('n', '<leader>s', ':w<CR>')
+map('i', '<leader>s', '<C-c>:w<CR>')
 
 -- terminal
 map('n', '<C-t>', ':Term<CR>', { noremap = true }) -- open
-map('t', '<Esc>', '<C-\\><C-n>')                   -- escape to normal mode
-map('n', '<C-d>', ':bd!<CR>', { noremap = true })  -- exit
+map('t', '<Esc>', '<C-\\><C-n>')                   -- exit without closing buffer
 
 -- change split orientation
 map('n', '<leader>tk', '<C-w>t<C-w>K') -- change vertical to horizontal
@@ -43,15 +47,20 @@ map('n', '<C-k>', '<C-w>k')
 map('n', '<C-l>', '<C-w>l')
 
 -- switch buffers
-map('n', '<leader>[', ':bprevious<CR>')
-map('n', '<leader>]', ':bnext<CR>')
+map('n', '<C-[>', ':bprevious<CR>')
+map('n', '<C-]>', ':bnext<CR>')
 
 -- close current buffer
-map('n', '<leader>q', ':<C-U>bprevious <bar> bdelete #<CR>')
+map('n', '<C-d>', ':bd!<CR>')
+map('n', '<C-q>', ':<C-U>bprevious <bar> bdelete #<CR>')
+
+-- close all windows and exit neovim
+map('n', '<leader>q', ':qa!<CR>')
 
 ----------------------------------
--- nvim's plugins keymaps
+-- plugins keymaps
 ----------------------------------
 
 -- CHADtree
-map('n', '<leader>v', ':CHADopen<CR>')
+map('n', '<leader>v', ':CHADopen<CR>', { noremap = true })
+map('n', '<leader>l', 'call setqflist([])', { noremap = true })

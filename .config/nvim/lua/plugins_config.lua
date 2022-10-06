@@ -8,42 +8,27 @@ local opt = vim.opt  -- global/buffer/windows-scoped options
 -- gui
 ------------------------------------
 
--- tabline
---require ('tabline').setup {
---	enable = true,
---	options = {
---		section_separators = { '', '' },
---		component_separators = { '', '' },
---		max_bufferline_percent = 66,
---		show_tabs_always = false,
---		show_devicons = true,
---		show_bufnr = false,
---		show_filename_only = false
---	}
---}
+-- colorscheme
+g.catppuccin_flavour = 'mocha'
 
---cmd [[
---	set guioptions-=e
---	set sessionoptions+=tabpages,globals
---]]
+require ('catppuccin').setup {
+    term_colors = true,
+    styles = {
+        comments = {},
+        conditionals = {},
+        keywords = { 'bold' }
+    }
+}
 
--- barbar
---g.bufferline = {
---}
+cmd [[colorscheme catppuccin]]  -- set colorscheme
 
--- lualine
+-- status bar
 require ('lualine').setup {
 	options = {
 		theme = 'catppuccin',
 		section_separators = '',
 		component_separators = ''
 	}
-}
-
--- modes
-opt.cursorline = true
-
-require ('modes').setup {
 }
 
 -- indent
@@ -57,24 +42,12 @@ require ('indent_blankline').setup {
 	show_current_context_start = true
 }
 
--- tokyonight
---g.tokyonight_style = 'night'
---g.tokyonight_italic_functions = true
---g.tokyonight_sidebars = { 'qf', 'vista_kind', 'terminal', 'packer' }
+-- highlight
+opt.cursorline = true
 
--- catppuccin
-g.catppuccin_flavour = 'mocha'
+require ('modes').setup()
 
-require ('catppuccin').setup()
-
--- set colorscheme
-cmd [[colorscheme catppuccin]]
-
------------------------------------
 -- syntax
------------------------------------
-
--- treesitter
 require ('nvim-treesitter.configs').setup {
 	highlight = {
 		enable = true
@@ -161,16 +134,11 @@ end
 
 lspsaga.init_lsp_saga()
 
------------------------------------
 -- quickfix
------------------------------------
-
--- bqf
 require ('bqf').setup()
 
 -----------------------------------
 -- latex
 -----------------------------------
 
--- vimtex
 g.vimtex_view_method = 'zathura'

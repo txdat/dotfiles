@@ -1,4 +1,5 @@
--- nvim's init (https://github.com/brainfucksec/neovim-lua)
+-- nvim's configuration
+-- https://github.com/brainfucksec/neovim-lua
 
 require ('config')
 require ('plugins')

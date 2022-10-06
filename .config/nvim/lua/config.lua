@@ -4,53 +4,60 @@
 -- neovim's aliases
 -----------------------------------------
 
-local cmd = vim.cmd  -- execute vim's commands
-local exec = vim.api.nvim_exec  -- execute vimscript
-local fn = vim.fn  -- vim's functions
 local g = vim.g  -- global variables
-local opt = vim.opt -- global/buffer/windows-scoped options
+local opt = vim.opt  -- global/buffer/windows-scoped options
+local cmd = vim.cmd  -- execute vim's commands
+local augroup = vim.api.nvim_create_augroup  -- create/get autocommand group
+local autocmd = vim.api.nvim_create_autocmd  -- create autocommand
 
 -----------------------------------------
 -- startup
 -----------------------------------------
 
--- disable builtins
+-- disable built-in plugins
 local disabled_built_ins = {
-	"netrw",
-	"netrwPlugin",
-	"netrwSettings",
-	"netrwFileHandlers",
-	"gzip",
-	"zip",
-	"zipPlugin",
-	"tar",
-	"tarPlugin",
-	"getscript",
-	"getscriptPlugin",
-	"vimball",
-	"vimballPlugin",
-	"2html_plugin",
-	"logipat",
-	"rrhelper",
-	"spellfile_plugin",
-	"matchit"
+   "2html_plugin",
+   "getscript",
+   "getscriptPlugin",
+   "gzip",
+   "logipat",
+   "netrw",
+   "netrwPlugin",
+   "netrwSettings",
+   "netrwFileHandlers",
+   "matchit",
+   "tar",
+   "tarPlugin",
+   "rrhelper",
+   "spellfile_plugin",
+   "vimball",
+   "vimballPlugin",
+   "zip",
+   "zipPlugin",
+   "tutor",
+   "rplugin",
+   "synmenu",
+   "optwin",
+   "compiler",
+   "bugreport",
+   "ftplugin",
 }
 
 for _, plugin in pairs(disabled_built_ins) do
-	g['loaded_'..plugin] = 1
+	g['loaded_' .. plugin] = 1
 end
 
--- nvim intro
-opt.shortmess:append 'sI'  -- disable
+-- disable nvim intro
+opt.shortmess:append 'sI'
 
 -----------------------------------------
 -- general
 -----------------------------------------
 
---g.mapleader = ','
---opt.mouse = 'a'
+--opt.mouse = 'a'  -- enable mouse support
 opt.clipboard = 'unnamedplus' -- system's clipboard
---opt.swapfile = false
+opt.swapfile = false
+opt.completeopt = 'menuone,noinsert,noselect'  -- insert mode
 opt.encoding = 'utf-8'
 opt.fileencoding = 'utf-8'
 
@@ -58,7 +65,8 @@ opt.fileencoding = 'utf-8'
 -- neovim's ui
 -----------------------------------------
 
-opt.number = true
+opt.guicursor = 'i:block'  -- using block cursor
+opt.number = true  -- show line number
 opt.showmatch = true  -- highlight matching parenthesis
 opt.foldmethod = 'marker'  -- enable folding
 --opt.colorcolumn = '80'  -- line marker at column:80
@@ -67,40 +75,19 @@ opt.splitbelow = true  -- horizontal split to the bottom
 opt.ignorecase = true  -- ignore case sensitive when searching
 opt.smartcase = true  -- ignore lowercase for the whole pattern
 opt.linebreak = true  -- wrap on word boundary
-
--- remove whitespace on saving
-cmd [[au BufWritePre * :%s/\s\+$//e]]
-
--- highlight on yank (selected copy)
-exec ([[
-	augroup YankHighlight
-		autocmd!
-		autocmd TextYankPost * silent! lua vim.highlight.on_yank{higroup="IncSearch", timeout=700}
-	augroup end
-]], false)
-
--- cursor
-opt.guicursor = 'i:block'  -- using block cursor
+opt.termguicolors = true  -- enable 24bits colors
+opt.laststatus=3  -- set global statusline
 
 -----------------------------------------
 -- tabs, indent
 -----------------------------------------
 
 opt.expandtab = true  -- use spaces instead of tab
-opt.smarttab = true
-opt.smartindent = true
-opt.tabstop = 4  -- 1 tab = 4 spaces
-opt.softtabstop = 0
 opt.shiftwidth = 4  -- shifts 4 spaces when using tab
-
--- not auto commenting new lines
-cmd [[au BufEnter * set fo-=c fo-=r fo-=o]]
-
--- remove line marker for selected filetypes
---cmd [[autocmd FileType text,markdown,html,xhtml,javascript setlocal cc=0]]
-
--- specified spaces for selected filetypes
---cmd [[autocmd FileType xml,html,xhtml,css,scss,javascript,lua,yaml setlocal shiftwidth=2 tabstop=2]]
+opt.tabstop = 4  -- 1 tab = 4 spaces
+opt.smartindent = true
+opt.smarttab = true
+opt.softtabstop = 0
 
 -----------------------------------------
 -- cpu, memory
@@ -110,32 +97,55 @@ opt.hidden = true  -- enable background buffers
 opt.history = 100  -- n lines in history
 opt.lazyredraw = true  -- faster scrolling
 opt.synmaxcol = 240  -- max column for syntax highlight
+opt.updatetime = 700  -- ms to wait for trigger an event
 
 -----------------------------------------
--- terminal
+-- autocommand functions
 -----------------------------------------
 
--- open terminal pane on the right
-cmd [[command Term :botright vsplit term://$SHELL]]
+-- highlight on yank (selected copy)
+augroup('YankHighlight', { clear = true })
+autocmd('TextYankPost', {
+    group = 'YankHighlight',
+    callback = function()
+        vim.highlight.on_yank({ higroup = 'IncSearch', timeout = '1000' })
+    end
+})
 
--- visual tweaks
-cmd [[
-	autocmd TermOpen * setlocal listchars= nonumber norelativenumber nocursorline
-	autocmd TermOpen * startinsert
-	autocmd BufLeave term://* stopinsert
-]]
+-- remove whitespace on save
+autocmd('BufWritePre', {
+    pattern = '*',
+    command = ':%s/\\s\\+$//e'
+})
 
------------------------------------------
--- colorscheme
------------------------------------------
+-- don't auto commenting new lines
+autocmd('BufEnter', {
+    pattern = '*',
+    command = 'set fo-=c fo-=r fo-=o'
+})
 
-opt.termguicolors = true  -- enable 24bits colors
+-- terminal config ----------------------
 
------------------------------------------
--- autocompletion
------------------------------------------
+-- open terminal on the right tab
+autocmd('CmdlineEnter', {
+    command = 'command! Term :botright vsplit term://$SHELL'
+})
 
-opt.completeopt = 'menuone,noselect'  -- insert mode
+-- enter insert mode when switching to terminal
+autocmd('TermOpen', {
+    command = 'setlocal listchars= nonumber norelativenumber nocursorline'
+})
+
+autocmd('TermOpen', {
+    pattern = '*',
+    command = 'startinsert'
+})
+
+-- close terminal buffer on process exit
+autocmd('BufLeave', {
+    pattern = '*',
+    command = 'stopinsert'
+})
 
 -----------------------------------------
 -- miscellaneous
