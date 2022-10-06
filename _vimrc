@@ -4,7 +4,7 @@ set tabstop=4 softtabstop=0 shiftwidth=4 smarttab expandtab
 filetype plugin indent on
 syntax on
 
-"window config
+"(gvim) windows' config
 set guifont=Cascadia\ Mono:h12
 set backspace=2
 
