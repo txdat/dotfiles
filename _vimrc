@@ -4,9 +4,17 @@ set tabstop=4 softtabstop=0 shiftwidth=4 smarttab expandtab
 filetype plugin indent on
 syntax on
 
-"(gvim) windows' config
-set guifont=Cascadia\ Mono:h12
-set backspace=2
+if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
+  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
 
+syntax on
+set termguicolors
+
+"(gvim) windows' config
 colorscheme pink-moon
 set background=dark
+
+set guifont=Cascadia\ Mono:h12
+set backspace=2
