@@ -16,10 +16,10 @@ vim.g.mapleader = ','
 ----------------------------------
 
 -- disable arrow keys
---map('', '<up>', '<nop>')
---map('', '<down>', '<nop>')
---map('', '<left>', '<nop>')
---map('', '<right>', '<nop>')
+map('', '<up>', '<nop>')
+map('', '<down>', '<nop>')
+map('', '<left>', '<nop>')
+map('', '<right>', '<nop>')
 
 -- clear search highlighting
 map('n', '<leader>c', ':nohl<CR>')

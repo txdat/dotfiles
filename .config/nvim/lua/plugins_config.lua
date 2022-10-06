@@ -96,6 +96,7 @@ require ('nvim-autopairs').setup()
 -----------------------------------
 -- file manager
 -- finder
+-- svc
 -----------------------------------
 
 -- finder
@@ -123,6 +124,9 @@ require ('telescope').setup {
 }
 
 require ('telescope').load_extension('fzf')
+
+-- svc
+require ('gitsigns').setup()
 
 -----------------------------------
 -- autocompletion

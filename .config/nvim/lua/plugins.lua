@@ -64,6 +64,8 @@ return packer.startup(function()
 	-- svc
 	use 'kdheepak/lazygit.nvim'
 
+    use 'lewis6991/gitsigns.nvim'
+
 	-- file manager
 	use { 
 		'ms-jpq/chadtree', 
