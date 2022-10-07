@@ -153,5 +153,5 @@ autocmd('BufLeave', {
 
 -- python interpreter
 local handler = io.popen("which python3")
-g.python3_host_prog = handler:read("*a")
+g.python3_host_prog = handler:read("*a"):gsub("\n[^\n]*$", "")
 handler:close()
