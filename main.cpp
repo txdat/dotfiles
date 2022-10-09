@@ -26,8 +26,8 @@ using ld = long double;
 using pii = pair<int,int>;
 using pll = pair<ll,ll>;
 #define mp make_pair
-#define _1 first
-#define _2 second
+//#define _1 first
+//#define _2 second
 
 tcT> using vec = vector<T>;
 tcT, size_t SZ> using arr = array<T,SZ>;
@@ -62,11 +62,13 @@ constexpr int ctz(int x) { return __builtin_ctz(x); }
 constexpr int msk(int x) { return (1<<x)-1; } // generate x-bit mask
 constexpr int cbt(int x) { return x == 0 ? 0 : 32-clz(x); } // count number of bits used for x
 
-constexpr int MOD = 1e9 + 7; // 1'000'000'007
 constexpr int dx[4] = {-1, 0, 1, 0}, dy[4] = {0, 1, 0, -1}; // clockwise
 //constexpr int dx8[8] = {-1, -1, 0, 1, 1, 1, 0, -1}, dy8[8] = {0, 1, 1, 1, 0, -1, -1, -1}; // clockwise
 
-// y_combinator: https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0200r0.html
+constexpr int MOD = 1e9 + 7; // 1'000'000'007
+constexpr int mod(int a, int b) { return (a % b + b) % b; }
+
+// y_combinator (recursive lambda): https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2016/p0200r0.html
 template<typename Func>
 struct y_combinator_result {
     Func func;

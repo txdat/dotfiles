@@ -36,7 +36,8 @@ return packer.startup(function(use)
     ------------------------------------
 	
     -- colorscheme
-    use 'catppuccin/nvim'
+    --use 'catppuccin/nvim'
+    use 'rebelot/kanagawa.nvim'
 
     -- status bar
     use {

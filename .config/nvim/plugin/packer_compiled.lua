@@ -114,6 +114,11 @@ _G.packer_plugins = {
     path = "/home/dattr/.local/share/nvim/site/pack/packer/start/indent-blankline.nvim",
     url = "https://github.com/lukas-reineke/indent-blankline.nvim"
   },
+  ["kanagawa.nvim"] = {
+    loaded = true,
+    path = "/home/dattr/.local/share/nvim/site/pack/packer/start/kanagawa.nvim",
+    url = "https://github.com/rebelot/kanagawa.nvim"
+  },
   kommentary = {
     loaded = true,
     path = "/home/dattr/.local/share/nvim/site/pack/packer/start/kommentary",
@@ -138,11 +143,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/dattr/.local/share/nvim/site/pack/packer/start/modes.nvim",
     url = "https://github.com/mvllow/modes.nvim"
-  },
-  nvim = {
-    loaded = true,
-    path = "/home/dattr/.local/share/nvim/site/pack/packer/start/nvim",
-    url = "https://github.com/catppuccin/nvim"
   },
   ["nvim-autopairs"] = {
     loaded = true,
