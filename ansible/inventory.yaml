@@ -5,5 +5,5 @@ nfs_server:
       ansible_user: txdat
       ansible_host: 192.168.1.198
       ansible_port: 22
-      nfs_export: [ "/home/public/ *(rw,sync,no_root_squash)" ]
+      nfs_export: [ "/home/public *(rw,sync,no_root_squash,no_subtree_check)" ]
       ansible_python_interpreter: /usr/bin/python3

@@ -7,8 +7,12 @@ spec:
   chart: nfs-subdir-external-provisioner
   repo: https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner
   targetNamespace: default
-  set:
-    nfs.server: 192.168.1.198
-    nfs.path: "/home/public/"
-    storageClass.name: nfs
-    storageClass.reclaimPolicy: Retain
+  valuesContent: |-
+    nfs:
+      server: 192.168.1.198
+      path: /home/public
+      mountOptions:
+        - nfsvers=4
+    storageClass:
+      name: nfs
+      reclaimPolicy: Retain
