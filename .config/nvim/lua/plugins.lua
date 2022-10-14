@@ -32,7 +32,7 @@ return packer.startup(function(use)
 	use 'wbthomason/packer.nvim'  -- packer can manage itself
 
     ------------------------------------
-	-- gui
+	-- gui, navigation
     ------------------------------------
 	
     -- colorscheme
@@ -69,10 +69,14 @@ return packer.startup(function(use)
     -- auto close brackets
     use 'windwp/nvim-autopairs'
 
+    -- navigation
+    use {
+        'phaazon/hop.nvim',
+        branch = 'v2'
+    }
+
     ------------------------------------
-	-- file manager
-    -- finder
-    -- svc
+	-- file manager, finder, svc
     ------------------------------------
 	
 	-- file manager
@@ -126,9 +130,10 @@ return packer.startup(function(use)
     }
 
     ------------------------------------
-	-- latex
+	-- miscellaneous
     ------------------------------------
     
+    -- latex
     use 'lervag/vimtex'
 
 	-- automatically set up your configuration after cloning packer.nvim

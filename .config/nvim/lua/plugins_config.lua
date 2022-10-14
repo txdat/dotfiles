@@ -5,7 +5,7 @@ local g = vim.g  -- global variables
 local opt = vim.opt  -- global/buffer/windows-scoped options
 
 ------------------------------------
--- gui
+-- gui, navigation
 ------------------------------------
 
 -- colorscheme
@@ -87,10 +87,11 @@ require ('kommentary.config').use_extended_mappings()
 -- auto close brackets
 require ('nvim-autopairs').setup()
 
+-- navigation
+require ('hop').setup()
+
 -----------------------------------
--- file manager
--- finder
--- svc
+-- file manager, finder, svc
 -----------------------------------
 
 -- finder
@@ -159,7 +160,8 @@ lspsaga.init_lsp_saga()
 require ('bqf').setup()
 
 -----------------------------------
--- latex
+-- miscellaneous
 -----------------------------------
 
-g.vimtex_view_method = 'zathura'
+-- latex
+g.vimtex_view_method = 'sioyek'
