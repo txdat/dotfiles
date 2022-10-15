@@ -2,7 +2,7 @@
 nfs_server:
   hosts:
     nfs:
-      ansible_user: txdat
+      ansible_user: dattr
       ansible_host: 192.168.1.198
       ansible_port: 22
       nfs_export: [ "/home/public *(rw,sync,no_root_squash,no_subtree_check)" ]
