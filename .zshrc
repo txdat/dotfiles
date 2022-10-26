@@ -125,6 +125,7 @@ unset __conda_setup
 # <<< conda initialize <<<
 
 # Compile and run algo(c++)
+# run "algo main.cpp a.out"
 algo () {
     dir=$(pwd)
     if [ ! -f "$dir/bits/stdc++.h" ]
@@ -134,12 +135,11 @@ algo () {
     fi
     if [ ! -f "$dir/bits/stdc++.h.gch" ]
     then
-        echo -n "compiling headers..."
-        # get all flags from algo/main.cpp
-        g++ -std=c++20 -Ofast -funroll-loops -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native "$dir/bits/stdc++.h"
+        echo -n "compiling headers"
+        g++ -std=c++17 -Ofast -funroll-loops -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native "$dir/bits/stdc++.h"
         echo " - done!"
     fi
-    g++ -std=c++20 -DLOCAL -DDEBUG "$1" -o "${2:-a.out}" && ./"${2:-a.out}"
+    g++ -std=c++17 -DLOCAL -DDEBUG "$1" -o "${2:-a.out}" && ./"${2:-a.out}"
     return 0
 }
 

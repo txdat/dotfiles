@@ -6,7 +6,7 @@
 
 #ifdef LOCAL // g++ -DLOCAL ...
 // precompiled headers
-// g++ -std=c++20 -Ofast -funroll-loops -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native bits/stdc++.h
+// g++ -std=c++17 -Ofast -funroll-loops -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native bits/stdc++.h
 #include "bits/stdc++.h"
 #else
 #include <bits/stdc++.h>
@@ -53,8 +53,8 @@ tcT> int iub(vec<T> &a, const T &b) { return int(ub(all(a),b)-bg(a)); }
 #define R0F(i,a) ROF(i,0,a)
 #define EACH(x,cont) for (auto &x : cont)
 
-tcT> using pq = priority_queue<T>; // max-heap
-tcT> using pqg = priority_queue<T,vector<T>,greater<T>>; // min-heap
+tcT> using mxq = priority_queue<T>; // max-heap
+tcT> using mnq = priority_queue<T,vector<T>,greater<T>>; // min-heap
 
 constexpr int pct(int x) { return __builtin_popcount(x); }
 constexpr int clz(int x) { return __builtin_clz(x); }
