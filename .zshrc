@@ -143,7 +143,7 @@ algo () {
     return 0
 }
 
-export PATH="$HOME/miniconda3/bin:$HOME/.cabal/bin:$HOME/.ghcup/bin:$HOME/.local/bin:$PATH"
+export PATH="$HOME/miniconda3/bin:$HOME/.cargo/bin:$HOME/.cabal/bin:$HOME/.ghcup/bin:$HOME/.local/bin:$PATH"
 
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus

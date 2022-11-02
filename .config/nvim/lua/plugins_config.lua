@@ -147,8 +147,9 @@ local servers = {
 	'ccls',				-- c/c++
 	'pyright',			-- python
 	'gopls',			-- go
-	'rls',				-- rust
+	'rust_analyzer',	-- rust
     'hls',              -- haskell
+    'tsserver',         -- typescript
 }
 for _, server in pairs(servers) do
 	lspconfig[server].setup(coq.lsp_ensure_capabilities())
