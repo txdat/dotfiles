@@ -13,7 +13,6 @@ cp .vimrc ~
 cp .tmux.conf* ~
 cp -r .config/alacritty/ ~/.config/
 cp -r .config/nvim/ ~/.config/
-cp -r .config/zathura/ ~/.config/
 
 #copy config to root
 sudo cp .vimrc /root/
