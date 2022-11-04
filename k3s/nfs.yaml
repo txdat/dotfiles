@@ -10,7 +10,7 @@ spec:
   valuesContent: |-
     nfs:
       server: 192.168.1.198
-      path: /home/public
+      path: /hdd/.nfs
       mountOptions:
         - nfsvers=4
     storageClass:

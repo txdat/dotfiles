@@ -6,8 +6,10 @@ sudo cp nfs.yaml /var/lib/rancher/k3s/server/manifests
 
 export nfs in `/etc/exports` (no symlink)
 ```
-/home/public    192.168.1.198(rw,sync,no_root_squash,no_subtree_check)
+/hdd/.nfs    192.168.1.198(rw,sync,no_root_squash,no_subtree_check)
 ```
+
+run `sudo exportfs -arv` to export nfs
 
 - **nvidia-container-runtime** for k3s \[[link](https://github.com/k3s-io/k3s/issues/4391#issuecomment-1233314825)]
 
@@ -25,5 +27,7 @@ k apply -f nvidia.yaml
     nameserver 8.8.8.8
     nameserver fe80::1%enp0s31f6
     ```
+
+    lock editing `sudo chattr +i /etc/resolv.conf`
 
     -> `<service>:<port>` becomes `<service>.<namespace>.svc.cluster.local:<port>`

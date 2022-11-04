@@ -124,8 +124,19 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
+export PATH="$HOME/miniconda3/bin:$HOME/.cargo/bin:$HOME/.cabal/bin:$HOME/.ghcup/bin:$HOME/.local/bin:$PATH"
+
+export GTK_IM_MODULE=ibus
+export XMODIFIERS=@im=ibus
+export QT_IM_MODULE=ibus
+
+export KUBECONFIG=$HOME/.kube/config
+
+alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
+alias syyu="sudo pacman -Syyu && paru -Syyu"
+alias cpcb="xclip -sel c < "
+
 # Compile and run algo(c++)
-# run "algo main.cpp a.out"
 algo () {
     dir=$(pwd)
     if [ ! -f "$dir/bits/stdc++.h" ]
@@ -143,14 +154,21 @@ algo () {
     return 0
 }
 
-export PATH="$HOME/miniconda3/bin:$HOME/.cargo/bin:$HOME/.cabal/bin:$HOME/.ghcup/bin:$HOME/.local/bin:$PATH"
+# start/stop k3s cluster
+K3S_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
 
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
+start_k3s () {
+    for svc in "${K3S_SERVICES[@]}"
+    do
+        echo starting $svc
+        sudo systemctl start $svc
+    done
+}
 
-export KUBECONFIG=$HOME/.kube/config
-
-alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
-alias syyu="sudo pacman -Syyu && paru -Syyu"
-alias cpcb="xclip -sel c < "
+stop_k3s () {
+    for svc in "${K3S_SERVICES[@]}"
+    do
+        echo stopping $svc
+        sudo systemctl stop $svc
+    done
+}
