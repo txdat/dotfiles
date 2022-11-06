@@ -1,0 +1,12 @@
+{
+    "theme": "JupyterLab Dark",
+    "theme-scrollbars": true,
+    "overrides": {
+        "code-font-family": "Cascadia Mono",
+        "code-font-size": "14",
+        "content-font-family": "Cascadia Mono",
+        "content-font-size1": "14",
+        "ui-font-family": "Roboto",
+        "ui-font-size1": "14"
+    }
+}

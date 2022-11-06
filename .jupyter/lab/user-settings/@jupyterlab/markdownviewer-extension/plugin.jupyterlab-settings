@@ -1,0 +1,8 @@
+{
+    "fontFamily": "Cascadia Mono",
+    "fontSize": 14,
+    "lineHeight": 1,
+    "lineWidth": null,
+    "hideFrontMatter": true,
+    "renderTimeout": 1000
+}

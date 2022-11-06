@@ -1,0 +1,12 @@
+{
+    "fontFamily": "Cascadia Mono",
+    "fontSize": 14,
+    "lineHeight": 1,
+    "theme": "inherit",
+    "screenReaderMode": false,
+    "scrollback": 1000,
+    "shutdownOnClose": true,
+    "closeOnExit": true,
+    "pasteWithCtrlV": true,
+    "macOptionIsMeta": false
+}
