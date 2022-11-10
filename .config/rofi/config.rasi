@@ -1,6 +1,6 @@
 configuration {
 	modi:				"drun";
-	font:				"Cascadia Code 18";
+	font:				"Cascadia Code 10.5";
 	display-drun: 		"";
 	sidebar-mode: 		false;
 }
@@ -20,8 +20,8 @@ window {
 	transparency:                   "real";
     border:                         2px;
     border-color:                   @fg;
-    border-radius:                  7px;
-	width:			    	        40%;
+    border-radius:                  5px;
+	width:			    	        30%;
 	y-offset:                       10px;
 	padding: 			            10px;
 }
@@ -41,8 +41,8 @@ inputbar {
 	background-color:               @button;
 	text-color:                     @fg;
 	expand:                         false;
-	border-radius:                  6px;
-	padding:                        8px;
+	border-radius:                  5px;
+	padding:                        5px;
 }
 
 listview {
@@ -76,5 +76,5 @@ element-text {
 element selected {
 	background-color:               @fg;
 	text-color:                     @bg;
-	border-radius:                  6px;
+	border-radius:                  5px;
 }
