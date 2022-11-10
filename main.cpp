@@ -16,18 +16,17 @@ using namespace std;
 
 #define tcT template<typename T
 #define tcTT template<typename... T
-#define tcTUU tcT, typename... U
+#define tcTUU template<typename T, typename... U
 
 using str = string;
 using stv = string_view;
+using db = double;
 using ll = long long;
 using ld = long double;
 
 using pii = pair<int,int>;
 using pll = pair<ll,ll>;
 #define mp make_pair
-//#define _1 first
-//#define _2 second
 
 tcT> using vec = vector<T>;
 tcT, size_t SZ> using arr = array<T,SZ>;
@@ -51,7 +50,7 @@ tcT> int iub(vec<T> &a, const T &b) { return int(ub(all(a),b)-bg(a)); }
 #define F0R(i,a) FOR(i,0,a)
 #define ROF(i,a,b) for (int i = (b)-1; i >= (a); i--) // from b-1 to a
 #define R0F(i,a) ROF(i,0,a)
-#define EACH(x,cont) for (auto &x : cont)
+#define EACH(x,v) for (auto &x : v)
 
 tcT> using mxq = priority_queue<T>; // max-heap
 tcT> using mnq = priority_queue<T,vector<T>,greater<T>>; // min-heap
@@ -106,7 +105,7 @@ inline namespace FileIO {
 };
 
 /*}}}*/
-void solve(int __test) {
+void solve(int __tc) {
 }
 
 //#define N_TEST
@@ -118,8 +117,8 @@ int main(int argc, const char **argv) {
 #ifdef N_TEST // g++ -DN_TEST ...
     cin >> n_test;
 #endif
-    for (int __test = 1; __test <= n_test; __test++) {
-        solve(__test);
+    FOR(__tc, 1, n_test+1) {
+        solve(__tc);
     }
 
     return 0;

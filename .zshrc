@@ -132,13 +132,14 @@ export QT_IM_MODULE=ibus
 
 export KUBECONFIG=$HOME/.kube/config
 
-alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 alias syyu="sudo pacman -Syyu && paru -Syyu"
-alias cpcb="xclip -sel c < "
+alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
+alias cpcb="xclip -sel c < " # copy file to clipboard, e.g. 'cpcb main.cpp'
 
-# Compile and run algo(c++)
+# compile and run algo(c++)
 algo () {
     dir=$(pwd)
+    fname=${1%%.*}
     if [ ! -f "$dir/bits/stdc++.h" ]
     then
         echo "missing file $dir/bits/stdc++.h for compiling headers, run 'g++ -H $1'"
@@ -150,7 +151,7 @@ algo () {
         g++ -std=c++17 -Ofast -funroll-loops -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native "$dir/bits/stdc++.h"
         echo " - done!"
     fi
-    g++ -std=c++17 -DLOCAL -DDEBUG "$1" -o "${2:-a.out}" && ./"${2:-a.out}"
+    g++ -std=c++17 -DLOCAL -DDEBUG "$1" -o "$fname.out" && ./"$fname.out"
     return 0
 }
 
@@ -172,3 +173,7 @@ stop_k3s () {
         sudo systemctl stop $svc
     done
 }
+
+alias dstc="docker container stop $(docker container ls -aq)"
+alias drmc="docker container rm $(docker container ls -aq)"
+alias drmi="docker image prune -a"
