@@ -1,5 +1,3 @@
--- nvim's system/plugins' keymaps
-
 local function map(mode, lhs, rhs, opts)
     local options = { noremap = true, silent = true }
     if opts then
@@ -12,7 +10,7 @@ end
 vim.g.mapleader = ','
 
 ----------------------------------
--- nvim's keymaps
+-- keymaps
 ----------------------------------
 
 -- disable arrow keys
@@ -58,7 +56,7 @@ map('n', '<C-q>', ':<C-U>bprevious <bar> bdelete #<CR>')
 map('n', '<leader>q', ':qa!<CR>')
 
 ----------------------------------
--- plugins keymaps
+-- plugins' keymaps
 ----------------------------------
 
 -- CHADtree

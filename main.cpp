@@ -105,19 +105,23 @@ inline namespace FileIO {
 };
 
 /*}}}*/
+//#define NTESTS
+//#define IOFILE "/tmp/a"
 void solve(int __tc) {
 }
-
-//#define N_TEST
-int main(int argc, const char **argv) {
-    setIO(); // setIO("/tmp/a") for "/tmp/a.inp" and "/tmp/a.out"
 /*{{{*/
-
-    int n_test = 1;
-#ifdef N_TEST // g++ -DN_TEST ...
-    cin >> n_test;
+int main(int argc, const char **argv) {
+#ifdef IOFILE
+    setIO(IOFILE);
+#else
+    setIO();
 #endif
-    FOR(__tc, 1, n_test+1) {
+
+    int ntests = 1;
+#ifdef NTESTS
+    cin >> ntests;
+#endif
+    FOR(__tc, 1, ntests+1) {
         solve(__tc);
     }
 

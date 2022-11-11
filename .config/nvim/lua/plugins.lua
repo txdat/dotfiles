@@ -1,5 +1,3 @@
--- nvim's plugins
-
 local cmd = vim.cmd  -- execute vim's commands
 local fn = vim.fn  -- vim's functions
 
@@ -130,12 +128,13 @@ return packer.startup(function(use)
     }
 
     ------------------------------------
-	-- miscellaneous
+	-- prog. langs
     ------------------------------------
     
     -- latex
     use 'lervag/vimtex'
 
+    -- END OF PLUGINS --
 	-- automatically set up your configuration after cloning packer.nvim
     -- put this at the end after all plugins
     if packer_bootstrap then

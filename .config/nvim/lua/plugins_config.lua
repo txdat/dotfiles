@@ -1,5 +1,3 @@
--- nvim's plugins' config
-
 local cmd = vim.cmd  -- execute vim's commands
 local g = vim.g  -- global variables
 local opt = vim.opt  -- global/buffer/windows-scoped options
@@ -161,7 +159,7 @@ lspsaga.init_lsp_saga()
 require ('bqf').setup()
 
 -----------------------------------
--- miscellaneous
+-- prog. langs
 -----------------------------------
 
 -- latex
