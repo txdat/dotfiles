@@ -21,7 +21,10 @@ set bs=2  " backspace
 set bg=dark
 set shortmess=I  " disable vim intro
 set termguicolors
-set guicursor=i:block
+set guicursor=n-v-c:block-Cursor
+set guicursor+=i:block-iCursor
+set guicursor+=n-v-c:blinkon0
+set guicursor+=i:blinkon0
 set ruler
 set number
 set showmatch
@@ -35,6 +38,12 @@ set laststatus=3
 if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
   let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+endif
+
+" windows gvim
+if has('win32') && has('gui_running')
+    set guifont=Cascadia\ Mono:h12
+    colorscheme torte
 endif
 
 " ----------------------------------

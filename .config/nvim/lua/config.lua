@@ -4,10 +4,6 @@ local cmd = vim.cmd  -- execute vim's commands
 local augroup = vim.api.nvim_create_augroup  -- create/get autocommand group
 local autocmd = vim.api.nvim_create_autocmd  -- create autocommand
 
------------------------------------------
--- startup
------------------------------------------
-
 -- disable built-in plugins
 local disabled_built_ins = {
    "2html_plugin",
@@ -64,7 +60,11 @@ handler:close()
 
 opt.shortmess:append 'sI'  -- disable nvim intro
 opt.termguicolors = true  -- enable 24bits colors
-opt.guicursor = 'i:block'  -- using block cursor
+--opt.guicursor = 'i:block'  -- using block cursor
+opt.guicursor = 'n-v-c:block-Cursor'
+opt.guicursor:append 'i:block-iCursor'
+opt.guicursor:append 'n-v-c:blinkon0'
+opt.guicursor:append 'i:blinkon0'
 --opt.ruler = true  -- show cursor position
 opt.number = true  -- show line number
 opt.showmatch = true  -- highlight matching parenthesis

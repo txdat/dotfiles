@@ -134,8 +134,9 @@ return packer.startup(function(use)
     -- latex
     use 'lervag/vimtex'
 
-    -- END OF PLUGINS --
-	-- automatically set up your configuration after cloning packer.nvim
+    -- ---------END OF PLUGINS----------
+	
+    -- automatically set up your configuration after cloning packer.nvim
     -- put this at the end after all plugins
     if packer_bootstrap then
 		packer.sync()
