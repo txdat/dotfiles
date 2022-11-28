@@ -159,6 +159,9 @@ algo () {
 K3S_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
 
 start_k3s () {
+    # add kube's dns to resolv
+    sudo sed -i "1s/^/nameserver 10.43.0.10\n/" /etc/resolv.conf  # run 'kgs -n kube-system | grep dns'
+
     for svc in "${K3S_SERVICES[@]}"
     do
         echo starting $svc
@@ -167,6 +170,9 @@ start_k3s () {
 }
 
 stop_k3s () {
+    # remove kube's dns in resolv
+    sudo sed -i "1d" /etc/resolv.conf
+
     for svc in "${K3S_SERVICES[@]}"
     do
         echo stopping $svc

@@ -1,21 +1,33 @@
 - **nfs** for k3s
 
-```bash
-sudo cp nfs.yaml /var/lib/rancher/k3s/server/manifests
-```
+    ```bash
+    sudo cp nfs.yaml /var/lib/rancher/k3s/server/manifests
+    ```
 
-export nfs in `/etc/exports` (no symlink)
-```
-/hdd/.nfs    192.168.1.198(rw,sync,no_root_squash,no_subtree_check)
-```
+    export nfs in `/etc/exports` (no symlink)
 
-run `sudo exportfs -arv` to export nfs
+    ```
+    /hdd/.nfs    192.168.1.198(rw,sync,no_root_squash,no_subtree_check)
+    ```
+
+    run `sudo exportfs -arv` to export nfs
 
 - **nvidia-container-runtime** for k3s \[[link](https://github.com/k3s-io/k3s/issues/4391#issuecomment-1233314825)]
 
-```bash
-k apply -f nvidia.yaml
-```
+    ```bash
+    k apply -f nvidia.yaml
+    ```
+
+- set static ip for NetworkManager \[[link](https://nanxiao.me/en/configure-static-ip-address-on-arch-linux/)]
+
+    ```bash
+    sudo nmcli con show # grep <uuid>
+    sudo nmcli con modify <uuid> ipv4.addresses <ipv4>/<port> # grep from 'ip addr show'
+    sudo nmcli con modify <uuid> ipv4.gateway 192.168.1.1
+    sudo nmcli con modify <uuid> ipv4.dns "8.8.8.8"
+    sudo nmcli con modify <uuid> ipv4.method manual
+    sudo nmcli con up <uuid>
+    ```
 
 - access pods in cluster
 
@@ -28,6 +40,6 @@ k apply -f nvidia.yaml
     nameserver fe80::1%enp0s31f6
     ```
 
-    lock editing `sudo chattr +i /etc/resolv.conf`
+    lock editing `sudo chattr +i /etc/resolv.conf`, unlock `sudo chattr -i *`
 
-    -> `<service>:<port>` becomes `<service>.<namespace>.svc.cluster.local:<port>`
+    => `<service>:<port>` becomes `<service>.<namespace>.svc.cluster.local:<port>`
