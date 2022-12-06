@@ -11,16 +11,13 @@ cp .zshrc ~
 #copy config to home
 cp .vimrc ~
 cp .tmux.conf* ~
-cp -r .config/alacritty/ ~/.config/
-cp -r .config/nvim/ ~/.config/
+cp -r .config/* ~/.config/
 
 #copy config to root
 sudo cp .vimrc /root/
 
 #install fonts
-sudo cp -r fonts/roboto/ /usr/share/fonts/
-sudo cp -r fonts/cascadia/ /usr/share/fonts/
-sudo cp -r fonts/jetbrains/ /usr/share/fonts/
+sudo cp -r fonts/* /usr/share/fonts/
 sudo fc-cache -vfs
 
 #fix kde's emoji display
