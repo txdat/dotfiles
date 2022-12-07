@@ -1,6 +1,11 @@
-- **nvidia-container-runtime**
+- **firefox css**
 
-```bash
-sudo cp docker_daemon.json /etc/docker/daemon.json # docker
-sudo cp containerd_config.toml /etc/containerd/config.toml # containerd
-```
+    ```bash
+    cp firefox_css/userChrome.css .mozilla/firefox/*.default-release/chrome
+    ```
+
+- **jupyterlab**
+
+    ```bash
+    cp -r jupyterlab_settings/* .jupyter/lab/user-settings/@jupyterlab
+    ```

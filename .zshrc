@@ -77,7 +77,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git tmux docker docker-compose kubectl helm zsh-syntax-highlighting zsh-autosuggestions)
 
-source $ZSH/kanagawa-zsh-syntax-highlighting.zsh
+source $ZSH/zsh-syntax-highlighting.zsh
 source $ZSH/oh-my-zsh.sh
 
 # User configuration

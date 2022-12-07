@@ -1,4 +1,4 @@
-- **nfs** for k3s
+- **nfs**
 
     ```bash
     sudo cp nfs.yaml /var/lib/rancher/k3s/server/manifests
@@ -15,6 +15,8 @@
 - **nvidia-container-runtime** \[[link](https://github.com/k3s-io/k3s/issues/4391#issuecomment-1233314825)]
 
     ```bash
+    sudo cp docker_daemon.json /etc/docker/daemon.json # docker's runtime
+    sudo cp containerd_config.toml /etc/containerd/config.toml # containerd's runtime
     k apply -f nvidia.yaml
     ```
 
@@ -29,7 +31,7 @@
     sudo nmcli con up <uuid>
     ```
 
-- kube's services' ip addresses
+- access kube's services' ip addresses
 
     add **kube-dns ip** (`kgs -n kube-system | grep dns` = `10.43.0.10`) to `/etc/resolv.conf`
 

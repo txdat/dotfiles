@@ -7,19 +7,6 @@ local opt = vim.opt  -- global/buffer/windows-scoped options
 ------------------------------------
 
 -- colorscheme
---g.catppuccin_flavour = 'mocha'
---
---require ('catppuccin').setup {
---    term_colors = true,
---    styles = {
---        comments = {},
---        conditionals = {},
---        keywords = { 'bold' }
---    }
---}
---
---cmd [[colorscheme catppuccin]]  -- set colorscheme
-
 require ('kanagawa').setup {
     undercurl = true,           -- enable undercurls
     commentStyle = { italic = false },
