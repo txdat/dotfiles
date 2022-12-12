@@ -49,11 +49,6 @@ opt.completeopt = 'menuone,noinsert,noselect'  -- insert mode
 opt.encoding = 'utf-8'
 opt.fileencoding = 'utf-8'
 
--- python interpreter
-local handler = io.popen("which python3")
-g.python3_host_prog = handler:read("*a"):gsub("\n[^\n]*$", "")
-handler:close()
-
 -----------------------------------------
 -- gui
 -----------------------------------------
@@ -154,3 +149,8 @@ autocmd('BufLeave', {
     pattern = '*',
     command = 'stopinsert'
 })
+
+-- python interpreter
+local handler = io.popen("which python3")
+g.python3_host_prog = handler:read("*a"):gsub("\n[^\n]*$", "")
+handler:close()

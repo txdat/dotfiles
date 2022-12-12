@@ -53,6 +53,9 @@ opt.cursorline = true
 
 require ('modes').setup()
 
+-- trouble highlight
+require ('trouble').setup()
+
 -- syntax
 require ('nvim-treesitter.configs').setup {
 	highlight = {
@@ -74,6 +77,8 @@ require ('nvim-autopairs').setup()
 
 -- navigation
 require ('hop').setup()
+
+require ('symbols-outline').setup()
 
 -----------------------------------
 -- file manager, finder, svc
@@ -131,10 +136,11 @@ local lspsaga = require ('lspsaga')
 local servers = {
 	'ccls',				-- c/c++
 	'pyright',			-- python
-	'gopls',			-- go
-	'rust_analyzer',	-- rust
-    'hls',              -- haskell
-    'tsserver',         -- typescript
+	--'gopls',			-- go
+	--'rust_analyzer',	-- rust
+    --'hls',              -- haskell
+    --'tsserver',         -- typescript
+    --'r_language_server',-- R
 }
 for _, server in pairs(servers) do
 	lspconfig[server].setup(coq.lsp_ensure_capabilities())

@@ -54,6 +54,12 @@ return packer.startup(function(use)
     -- highlight
     use 'mvllow/modes.nvim'
 
+    -- trouble highlight
+    use {
+        'folke/trouble.nvim',
+        requires = { 'kyazdani42/nvim-web-devicons' }
+    }
+
 	-- syntax
 	use { 
 		'nvim-treesitter/nvim-treesitter', 
@@ -71,6 +77,8 @@ return packer.startup(function(use)
         'phaazon/hop.nvim',
         branch = 'v2'
     }
+
+    use 'simrat39/symbols-outline.nvim'
 
     ------------------------------------
 	-- file manager, finder, svc
