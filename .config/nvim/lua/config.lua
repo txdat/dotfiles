@@ -129,9 +129,9 @@ autocmd('BufEnter', {
 
 -- terminal config ----------------------
 
--- open terminal on the right tab
+-- open terminal on the below tab (or 'vsplit' for right tab)
 autocmd('CmdlineEnter', {
-    command = 'command! Term :botright vsplit term://$SHELL'
+    command = 'command! Term :botright split term://$SHELL'
 })
 
 -- enter insert mode when switching to terminal
@@ -150,7 +150,7 @@ autocmd('BufLeave', {
     command = 'stopinsert'
 })
 
--- python interpreter
+-- python interpreter -------------------
 local handler = io.popen("which python3")
 g.python3_host_prog = handler:read("*a"):gsub("\n[^\n]*$", "")
 handler:close()

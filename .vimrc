@@ -78,3 +78,10 @@ set history=100
 set lazyredraw
 set synmaxcol=240
 set updatetime=700
+
+" ----------------------------------
+" keymaps
+" ----------------------------------
+
+nnoremap <C-t> :term<CR>
+nnoremap <C-d> :bd!<CR>
