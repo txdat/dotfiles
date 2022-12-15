@@ -1,4 +1,4 @@
-- **nfs**
+- nfs
 
     ```bash
     sudo cp nfs.yaml /var/lib/rancher/k3s/server/manifests
@@ -12,7 +12,7 @@
 
     run `sudo exportfs -arv` to export nfs
 
-- **nvidia-container-runtime** \[[link](https://github.com/k3s-io/k3s/issues/4391#issuecomment-1233314825)]
+- nvidia-container-runtime \[[link](https://github.com/k3s-io/k3s/issues/4391#issuecomment-1233314825)]
 
     ```bash
     sudo cp docker_daemon.json /etc/docker/daemon.json # docker's runtime
@@ -20,7 +20,7 @@
     k apply -f nvidia.yaml
     ```
 
-- set static ip (NetworkManager) \[[link](https://nanxiao.me/en/configure-static-ip-address-on-arch-linux/)]
+- set static ip (for NetworkManager) \[[link](https://nanxiao.me/en/configure-static-ip-address-on-arch-linux/)]
 
     ```bash
     sudo nmcli con show # grep <uuid>
@@ -31,7 +31,7 @@
     sudo nmcli con up <uuid>
     ```
 
-- access kube's services' ip addresses
+- access kube's services' ip addresses (not recommended, run `start_k3s` and `stop_k3s` in zsh)
 
     add **kube-dns ip** (`kgs -n kube-system | grep dns` = `10.43.0.10`) to `/etc/resolv.conf`
 

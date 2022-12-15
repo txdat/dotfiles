@@ -1,7 +1,7 @@
 @theme "/dev/null"
 
 configuration {
-	modi:				            "drun";
+	modi:				            "drun,run";
 	font:				            "Cascadia Code 18";
 	display-drun: 		            "";
 	sidebar-mode: 		            true;
@@ -11,8 +11,9 @@ configuration {
 * {
 	bg:				                #16161d;
 	fg:				                #c8c093;
-    fg-dim:                         #363636;
+    fg-dim:                         #363646;
 	button:			                #363646;
+    border:                         #54546d;
 
 	background-color:	            @bg;
 	text-color:			            @fg;
@@ -20,7 +21,7 @@ configuration {
 
 window {
     border:                         2px;
-    border-color:                   @button;
+    border-color:                   @border;
     border-radius:                  5px;
 	width:			    	        30%;
 	y-offset:                       10px;

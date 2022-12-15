@@ -31,7 +31,7 @@
 }
 
 .tab-background:-moz-lwtheme-brighttext{
-  background-color: rgba( 54, 54, 70, 0.4) !important;
+  background-color: rgba( 54, 54, 70, 0.4) !important; /*#363646*/
 }
 
 .tabbrowser-tab:-moz-lwtheme-brighttext:hover > .tab-stack > .tab-background{
@@ -39,11 +39,11 @@
 }
 
 .tab-background{
-  background-color: rgba( 22, 22, 29, 0.9) !important;
+  background-color: rgba( 31, 31, 40, 0.9) !important; /*#1F1F28*/
 }
 
 .tabbrowser-tab:hover > .tab-stack > .tab-background{
-  background-color: rgba( 22, 22, 29, 0.4) !important;
+  background-color: rgba( 31, 31, 40, 0.4) !important;
 }
 
 
