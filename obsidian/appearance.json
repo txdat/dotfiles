@@ -1,0 +1,10 @@
+{
+  "interfaceFontFamily": "Roboto",
+  "textFontFamily": "Roboto",
+  "monospaceFontFamily": "Cascadia Mono",
+  "baseFontSize": 14,
+  "theme": "obsidian",
+  "cssTheme": "Kanagawa",
+  "accentColor": "",
+  "nativeMenus": true
+}

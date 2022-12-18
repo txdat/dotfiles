@@ -156,4 +156,4 @@ require ('bqf').setup()
 -----------------------------------
 
 -- latex
-g.vimtex_view_method = 'sioyek'
+g.vimtex_view_method = 'zathura'
