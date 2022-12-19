@@ -21,6 +21,8 @@ set bs=2  " backspace
 set bg=dark
 set shortmess=I  " disable vim intro
 set termguicolors
+set cursorline
+hi CursorLine cterm=NONE
 set guicursor=n-v-c:block-Cursor
 set guicursor+=i:block-iCursor
 set guicursor+=n-v-c:blinkon0
@@ -44,6 +46,7 @@ endif
 if has('win32') && has('gui_running')
     set guifont=Cascadia\ Mono:h12
     colorscheme torte
+    hi CursorLine cterm=NONE
 endif
 
 " ----------------------------------
