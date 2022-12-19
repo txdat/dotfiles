@@ -137,8 +137,8 @@ local servers = {
 	'ccls',				-- c/c++
 	'pyright',			-- python
 	--'gopls',			-- go
-	--'rust_analyzer',	-- rust
-    --'hls',              -- haskell
+	'rust_analyzer',	-- rust
+    'hls',              -- haskell
     --'tsserver',         -- typescript
     --'r_language_server',-- R
 }
