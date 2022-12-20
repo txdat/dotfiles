@@ -5,13 +5,13 @@
 }
 
 .titlebar-buttonbox-container{
-  margin-right: 4px !important;
+  margin-right: 1px !important;
 }
 
 #tabbrowser-tabs{
-  padding: 3px !important;
-  margin-left: 2px !important;
-  margin-right: 2px !important;
+  padding: 0px !important;
+  margin-left: 1px !important;
+  margin-right: 1px !important;
 }
 
 :root {
@@ -22,12 +22,12 @@
 .tab-close-button{
   height: 15px !important;
   width: 15px !important;
-  padding: 2px !important;
+  padding: 0px !important;
 }
 
 .tab-throbber-tabslist, .tab-throbber, .tab-icon-pending, .tab-icon-image, .tab-sharing-icon-overlay, .tab-icon-overlay {
-    height: 14px !important;
-    width: 14px !important;
+    height: 15px !important;
+    width: 15px !important;
 }
 
 .tab-background:-moz-lwtheme-brighttext{
@@ -76,6 +76,6 @@
 /* bookmarks size */
 
 .bookmark-item{
-  padding-top: 1px !important;
+  padding-top: 0px !important;
   padding-bottom: 1px !important;
 }
