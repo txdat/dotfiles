@@ -46,7 +46,7 @@ endif
 if has('win32') && has('gui_running')
     set guifont=Cascadia\ Mono:h12
     colorscheme torte
-    hi CursorLine cterm=NONE
+    "hi CursorLine cterm=NONE
 endif
 
 " ----------------------------------
@@ -86,5 +86,6 @@ set updatetime=700
 " keymaps
 " ----------------------------------
 
-nnoremap <C-t> :term<CR>
-nnoremap <C-d> :bd!<CR>
+nmap <C-t> :term<CR>
+nmap <C-d> :bd!<CR>
+nmap <C-q> :qa!<CR>

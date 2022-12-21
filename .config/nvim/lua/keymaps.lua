@@ -19,30 +19,8 @@ vim.g.mapleader = ','
 --map('', '<left>', '<nop>')
 --map('', '<right>', '<nop>')
 
--- clear search highlighting
-map('n', '<leader>c', ':nohl<CR>')
-
--- toggle auto-indenting for code paste
-map('n', '<F2>', ':set invpaste paste?<CR>')
-vim.opt.pastetoggle = '<F2>'
-
--- fast saving
-map('n', '<leader>s', ':w<CR>')
-map('i', '<leader>s', '<C-c>:w<CR>')
-
--- terminal
-map('n', '<C-t>', ':Term<CR>', { noremap = true }) -- open
-map('t', '<Esc>', '<C-\\><C-n>')                   -- exit without closing buffer
-
--- change split orientation
-map('n', '<leader>tk', '<C-w>t<C-w>K') -- change vertical to horizontal
-map('n', '<leader>th', '<C-w>t<C-w>H') -- change horizontal to vertical
-
--- move around splits
-map('n', '<C-h>', '<C-w>h')
-map('n', '<C-j>', '<C-w>j')
-map('n', '<C-k>', '<C-w>k')
-map('n', '<C-l>', '<C-w>l')
+map('n', '<C-t>', ':Term<CR>') -- open terminal
+map('t', '<Esc>', '<C-\\><C-n>') -- exit without closing
 
 -- switch buffers
 map('n', '<C-[>', ':bprevious<CR>')
@@ -50,15 +28,32 @@ map('n', '<C-]>', ':bnext<CR>')
 
 -- close current buffer
 map('n', '<C-d>', ':bd!<CR>')
-map('n', '<C-q>', ':<C-U>bprevious <bar> bdelete #<CR>')
+map('n', '<C-q>', ':<C-U>bprevious <bar> bdelete #<CR>') -- and move to previous buffer
+map('n', '<C-Q>', ':qa!<CR>') -- close all buffers and exit
 
--- close all windows and exit neovim
-map('n', '<leader>q', ':qa!<CR>')
+-- toggle auto-indenting for code paste
+map('n', '<F2>', ':set invpaste paste?<CR>')
+vim.opt.pastetoggle = '<F2>'
+
+-- foldenable
+map('n', '<F10>', 'zi') -- toggle
+
+-- clear search highlighting
+map('n', '<leader>c', ':nohl<CR>')
+
+-- quick save
+map('n', '<leader>s', ':w<CR>')
+map('i', '<leader>s', '<C-c>:w<CR>')
 
 ----------------------------------
 -- plugins' keymaps
 ----------------------------------
 
 -- CHADtree
-map('n', '<leader>v', ':CHADopen<CR>', { noremap = true })
-map('n', '<leader>l', 'call setqflist([])', { noremap = true })
+map('n', '<C-e>', ':CHADopen<CR>')
+map('n', '<leader>l', ':call setqflist([])<CR>')
+
+-- Telescope
+map('n', '<leader>f', ':Telescope find_files<CR>') -- find files by name
+map('n', '<leader>g', ':Telescope live_grep<CR>') -- find text in multiple files
+map('n', '<leader>b', ':Telescope buffers<CR>') -- find buffers
