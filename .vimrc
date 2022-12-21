@@ -86,6 +86,11 @@ set updatetime=700
 " keymaps
 " ----------------------------------
 
+let mapleader=','
+
 nmap <C-t> :term<CR>
 nmap <C-d> :bd!<CR>
 nmap <C-q> :qa!<CR>
+nmap <C-s> :w<CR>
+imap <C-s> <C-c>:w<CR>
+nmap <leader>h :nohl<CR>

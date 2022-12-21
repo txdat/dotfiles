@@ -39,11 +39,11 @@ vim.opt.pastetoggle = '<F2>'
 map('n', '<F10>', 'zi') -- toggle
 
 -- clear search highlighting
-map('n', '<leader>c', ':nohl<CR>')
+map('n', '<leader>h', ':nohl<CR>')
 
 -- quick save
-map('n', '<leader>s', ':w<CR>')
-map('i', '<leader>s', '<C-c>:w<CR>')
+map('n', '<C-s>', ':w<CR>')
+map('i', '<C-s>', '<C-c>:w<CR>')
 
 ----------------------------------
 -- plugins' keymaps
