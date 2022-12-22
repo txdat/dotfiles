@@ -2,6 +2,9 @@ local cmd = vim.cmd  -- execute vim's commands
 local g = vim.g  -- global variables
 local opt = vim.opt  -- global/buffer/windows-scoped options
 
+-- speed up loading modules
+require ('impatient')
+
 ------------------------------------
 -- gui, navigation
 ------------------------------------
@@ -11,7 +14,7 @@ require ('kanagawa').setup {
     undercurl = true,           -- enable undercurls
     commentStyle = { italic = false },
     functionStyle = {},
-    keywordStyle = { italic = false, bold = true },
+    keywordStyle = { italic = false },
     statementStyle = { bold = false },
     typeStyle = {},
     variablebuiltinStyle = { italic = false },
@@ -70,7 +73,7 @@ require ('nvim-treesitter.configs').setup {
 }
 
 -- commenting
-require ('kommentary.config').use_extended_mappings()
+require ('Comment').setup()
 
 -- auto close brackets
 require ('nvim-autopairs').setup()
@@ -136,7 +139,7 @@ local lspsaga = require ('lspsaga')
 local servers = {
 	'ccls',				-- c/c++
 	'pyright',			-- python
-	--'gopls',			-- go
+	'gopls',			-- go
 	'rust_analyzer',	-- rust
     'hls',              -- haskell
     --'tsserver',         -- typescript

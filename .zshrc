@@ -124,7 +124,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export PATH="$HOME/miniconda3/bin:$HOME/.cargo/bin:$HOME/.cabal/bin:$HOME/.ghcup/bin:$HOME/.local/bin:$PATH"
+export PATH="$HOME/miniconda3/bin:$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$HOME/.cabal/bin:$HOME/.ghcup/bin:$HOME/.local/bin:$PATH"
 
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
@@ -137,18 +137,17 @@ alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 alias cpcb="xclip -sel c < " # copy from file to clipboard, e.g. 'cpcb main.cpp'
 alias cpfi="xclip -sel c -o > " # copy from clipboard to file
 
-# compile and run algo(c++)
+# compile and run algo (c++20)
 algo () {
     dir=$(pwd)
-    fname=${1%%.*}
-    if [ ! -f "$dir/bits/stdc++.h" ]
-    then
-        echo "missing file $dir/bits/stdc++.h for compiling headers, run 'g++ -H $1'"
-        return 1
-    fi
+    fname=${1%%.*} # *.cpp/cc
     if [ ! -f "$dir/bits/stdc++.h.gch" ]
     then
-        echo -n "compiling headers c++20"
+        mkdir -p bits
+        sudo cp $(cut -d' ' -f2 <<<"$(g++ $1 -H 2>&1 | head -n 1)") "$dir/bits/stdc++.h"
+        sudo chmod 777 "$dir/bits/stdc++.h"
+
+        echo -n "compiling stdc++.h (c++20)"
         g++ -std=c++20 -Ofast -funroll-loops -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native "$dir/bits/stdc++.h"
         echo " - done!"
     fi

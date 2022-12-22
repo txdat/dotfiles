@@ -29,6 +29,9 @@ packer.init({
 return packer.startup(function(use)
 	use 'wbthomason/packer.nvim'  -- packer can manage itself
 
+    -- speed up loading modules
+    use 'lewis6991/impatient.nvim'
+
     ------------------------------------
 	-- gui, navigation
     ------------------------------------
@@ -39,13 +42,13 @@ return packer.startup(function(use)
     -- status bar
     use {
         'nvim-lualine/lualine.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons' }
+        requires = { 'nvim-tree/nvim-web-devicons' }
     }
 
     -- tabs bar
     use {
         'romgrk/barbar.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons' }
+        requires = { 'nvim-tree/nvim-web-devicons' }
     }
 
     -- indent
@@ -57,7 +60,7 @@ return packer.startup(function(use)
     -- trouble highlight
     use {
         'folke/trouble.nvim',
-        requires = { 'kyazdani42/nvim-web-devicons' }
+        requires = { 'nvim-tree/nvim-web-devicons' }
     }
 
 	-- syntax
@@ -67,7 +70,7 @@ return packer.startup(function(use)
 	}
 
     -- commenting
-	use 'b3nj5m1n/kommentary'
+    use 'numToStr/Comment.nvim'
 
     -- auto close brackets
     use 'windwp/nvim-autopairs'
