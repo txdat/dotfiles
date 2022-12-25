@@ -126,7 +126,6 @@ return packer.startup(function(use)
     -- quickfix
     use {
         'kevinhwang91/nvim-bqf',
-        ft = 'qf',
         requires = {
             { 'junegunn/fzf', run = function()
                 vim.fn['fzf#install']()
