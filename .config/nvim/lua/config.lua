@@ -41,6 +41,7 @@ end
 -- general
 -----------------------------------------
 
+opt.mouse = 'a' -- enable mouse support
 opt.clipboard = 'unnamed,unnamedplus' -- system's clipboard
 opt.textwidth = 0
 opt.timeoutlen = 100
@@ -54,6 +55,7 @@ opt.fileencoding = 'utf-8'
 -----------------------------------------
 
 opt.shortmess:append 'sI'  -- disable nvim intro
+opt.laststatus=3  -- set global statusline
 opt.termguicolors = true  -- enable 24bits colors
 --opt.guicursor = 'i:block'  -- using block cursor
 opt.guicursor = 'n-v-c:block-Cursor'
@@ -66,11 +68,9 @@ opt.showmatch = true  -- highlight matching parenthesis
 opt.foldmethod = 'marker'  -- enable folding
 opt.splitright = true  -- vertical split to the right
 opt.splitbelow = true  -- horizontal split to the bottom
-opt.linebreak = true  -- wrap on word boundary
-opt.laststatus=3  -- set global statusline
 
 -----------------------------------------
--- tabs, indent
+-- tabs, indent, ...
 -----------------------------------------
 
 opt.autoindent = true
@@ -82,6 +82,7 @@ opt.tabstop = 4  -- 1 tab = 4 spaces
 opt.softtabstop = 0
 opt.shiftwidth = 4  -- shifts 4 spaces when using tab
 opt.shiftround = true
+opt.linebreak = true  -- wrap on word boundary
 
 -----------------------------------------
 -- searching
@@ -100,7 +101,7 @@ opt.hidden = true  -- enable background buffers
 opt.history = 100  -- n lines in history
 opt.lazyredraw = true  -- faster scrolling
 opt.synmaxcol = 240  -- max column for syntax highlight
-opt.updatetime = 700  -- ms to wait for trigger an event
+opt.updatetime = 250  -- ms to wait for trigger an event
 
 -----------------------------------------
 -- autocommand functions

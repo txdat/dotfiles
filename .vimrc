@@ -20,6 +20,7 @@ set bs=2  " backspace
 
 set bg=dark
 set shortmess=I  " disable vim intro
+set laststatus=3
 set termguicolors
 set cursorline
 hi CursorLine cterm=none
@@ -35,8 +36,6 @@ set showmatch
 set foldmethod=marker
 set splitright
 set splitbelow
-set linebreak
-set laststatus=3
 
 " fix tmux colorscheme issue
 if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
@@ -51,7 +50,7 @@ if has('win32') && has('gui_running')
 endif
 
 " ----------------------------------
-" tabs, indent
+" tabs, indent, ...
 " ----------------------------------
 
 set autoindent
@@ -63,6 +62,7 @@ set tabstop=4
 set softtabstop=0
 set shiftwidth=4
 set shiftround
+set linebreak
 
 " ----------------------------------
 " searching
@@ -81,7 +81,7 @@ set hidden
 set history=100
 set lazyredraw
 set synmaxcol=240
-set updatetime=700
+set updatetime=250
 
 " ----------------------------------
 " keymaps

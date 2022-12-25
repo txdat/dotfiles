@@ -76,10 +76,7 @@ return packer.startup(function(use)
     use 'windwp/nvim-autopairs'
 
     -- navigation
-    use {
-        'phaazon/hop.nvim',
-        branch = 'v2'
-    }
+    use 'phaazon/hop.nvim'
 
     use 'simrat39/symbols-outline.nvim'
 
@@ -123,12 +120,13 @@ return packer.startup(function(use)
 
 	use {
 		'neovim/nvim-lspconfig',
-		requires = { 'glepnir/lspsaga.nvim' } 
+		requires = { 'glepnir/lspsaga.nvim', branch = 'main' } 
 	}
 
     -- quickfix
     use {
         'kevinhwang91/nvim-bqf',
+        ft = 'qf',
         requires = {
             { 'junegunn/fzf', run = function()
                 vim.fn['fzf#install']()
