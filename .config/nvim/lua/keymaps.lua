@@ -1,13 +1,17 @@
+local api = vim.api
+local g = vim.g
+local opt = vim.opt
+
 local function map(mode, lhs, rhs, opts)
     local options = { noremap = true, silent = true }
     if opts then
         options = vim.tbl_extend('force', options, opts)
     end
-    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+    api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
 -- set <leader> key
-vim.g.mapleader = ','
+g.mapleader = ','
 
 ----------------------------------
 -- keymaps
@@ -33,10 +37,7 @@ map('n', '<C-Q>', ':qa!<CR>') -- close all buffers and exit
 
 -- toggle auto-indenting for code paste
 map('n', '<F2>', ':set invpaste paste?<CR>')
-vim.opt.pastetoggle = '<F2>'
-
--- foldenable
-map('n', '<F10>', 'zi') -- toggle
+opt.pastetoggle = '<F2>'
 
 -- clear search highlighting
 map('n', '<leader>h', ':nohl<CR>')
@@ -54,6 +55,13 @@ map('n', '<C-e>', ':CHADopen<CR>')
 map('n', '<leader>l', ':call setqflist([])<CR>')
 
 -- Telescope
-map('n', '<leader>f', ':Telescope find_files<CR>') -- find files by name
-map('n', '<leader>g', ':Telescope live_grep<CR>') -- find text in multiple files
-map('n', '<leader>b', ':Telescope buffers<CR>') -- find buffers
+map('n', '<leader>ff', ':Telescope find_files<CR>') -- find files by name
+map('n', '<leader>fg', ':Telescope live_grep<CR>') -- find text in multiple files
+map('n', '<leader>fb', ':Telescope buffers<CR>') -- find buffers
+
+----------------------------------
+-- user commands' keymaps
+----------------------------------
+
+map('n', '<leader>zf', ':FzfLua grep<CR>') -- Grep For...
+map('n', '<leader>fr', ':FindAndReplace ')

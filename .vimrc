@@ -6,12 +6,15 @@ syntax on
 filetype plugin indent on
 
 set clipboard=unnamed,unnamedplus
-set textwidth=0
-set timeoutlen=100
+set timeoutlen=500  " key mappings timeout
 set noswapfile
+set nobackup
+set nowritebackup
 set completeopt=menuone,noinsert,noselect
 set encoding=utf-8
 set fileencoding=utf-8
+set mouse=a
+set noerrorbells
 set bs=2  " backspace
 
 " ----------------------------------
@@ -32,6 +35,7 @@ set guicursor+=n-v-c:blinkon0
 set guicursor+=i:blinkon0
 set ruler
 set number
+set relativenumber
 set showmatch
 set foldmethod=marker
 set splitright
@@ -45,7 +49,7 @@ endif
 
 " windows gvim
 if has('win32') && has('gui_running')
-    set guifont=Cascadia\ Mono:h12
+    set guifont=JetbrainsMono:h12
     colorscheme torte
 endif
 
@@ -63,6 +67,7 @@ set softtabstop=0
 set shiftwidth=4
 set shiftround
 set linebreak
+set textwidth=0
 
 " ----------------------------------
 " searching

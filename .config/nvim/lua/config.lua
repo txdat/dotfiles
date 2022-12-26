@@ -41,14 +41,16 @@ end
 -- general
 -----------------------------------------
 
-opt.mouse = 'a' -- enable mouse support
 opt.clipboard = 'unnamed,unnamedplus' -- system's clipboard
-opt.textwidth = 0
-opt.timeoutlen = 100
+opt.timeoutlen = 500  -- key mappings timeout
 opt.swapfile = false
+opt.backup = false
+opt.writebackup = false
 opt.completeopt = 'menuone,noinsert,noselect'  -- insert mode
 opt.encoding = 'utf-8'
 opt.fileencoding = 'utf-8'
+opt.mouse = 'a'  -- enable mouse support
+opt.errorbells = false
 
 -----------------------------------------
 -- gui
@@ -64,6 +66,7 @@ opt.guicursor:append 'n-v-c:blinkon0'
 opt.guicursor:append 'i:blinkon0'
 --opt.ruler = true  -- show cursor position
 opt.number = true  -- show line number
+opt.relativenumber = true  -- (-1,1) line number
 opt.showmatch = true  -- highlight matching parenthesis
 opt.foldmethod = 'marker'  -- enable folding
 opt.splitright = true  -- vertical split to the right
@@ -83,6 +86,7 @@ opt.softtabstop = 0
 opt.shiftwidth = 4  -- shifts 4 spaces when using tab
 opt.shiftround = true
 opt.linebreak = true  -- wrap on word boundary
+opt.textwidth = 0
 
 -----------------------------------------
 -- searching
@@ -152,6 +156,7 @@ autocmd('BufLeave', {
 })
 
 -- python interpreter -------------------
+-- virtual env should be activated before running neovim
 local handler = io.popen("which python3")
 g.python3_host_prog = handler:read("*a"):gsub("\n[^\n]*$", "")
 handler:close()

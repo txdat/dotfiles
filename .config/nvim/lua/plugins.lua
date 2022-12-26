@@ -78,7 +78,7 @@ return packer.startup(function(use)
     -- navigation
     use 'phaazon/hop.nvim'
 
-    use 'simrat39/symbols-outline.nvim'
+    --use 'simrat39/symbols-outline.nvim'
 
     ------------------------------------
 	-- file manager, finder, svc
@@ -100,8 +100,24 @@ return packer.startup(function(use)
 		}
 	}
 
+    use {
+        'ibhagwan/fzf-lua',
+        requires = { 'nvim-tree/nvim-web-devicons' }
+    }
+
+    -- quickfix
+    use {
+        'kevinhwang91/nvim-bqf',
+        requires = {
+            { 'junegunn/fzf', run = function()
+                vim.fn['fzf#install']()
+            end
+            }
+        }
+    }
+
     -- svc
-	use 'kdheepak/lazygit.nvim'
+	--use 'kdheepak/lazygit.nvim'
 
     use 'lewis6991/gitsigns.nvim'
 
@@ -123,23 +139,12 @@ return packer.startup(function(use)
 		requires = { 'glepnir/lspsaga.nvim', branch = 'main' } 
 	}
 
-    -- quickfix
-    use {
-        'kevinhwang91/nvim-bqf',
-        requires = {
-            { 'junegunn/fzf', run = function()
-                vim.fn['fzf#install']()
-            end
-            }
-        }
-    }
-
     ------------------------------------
 	-- prog. langs
     ------------------------------------
     
     -- latex
-    use 'lervag/vimtex'
+    --use 'lervag/vimtex'
 
     -- ---------END OF PLUGINS----------
 	

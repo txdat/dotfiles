@@ -81,7 +81,7 @@ require ('nvim-autopairs').setup()
 -- navigation
 require ('hop').setup()
 
-require ('symbols-outline').setup()
+--require ('symbols-outline').setup()
 
 -----------------------------------
 -- file manager, finder, svc
@@ -112,6 +112,22 @@ require ('telescope').setup {
 }
 
 require ('telescope').load_extension('fzf')
+
+require ('fzf-lua').setup {
+    keymap = {
+        fzf = {
+            ['alt-a'] = 'select-all+accept',
+            ['alt-d'] = 'deselect-all'
+        }
+    },
+    winopts = {
+        --split = 'belowright new',
+        preview = { default = 'bat_native' }
+    }
+}
+
+-- quickfix
+require ('bqf').setup()
 
 -- svc
 require ('gitsigns').setup()
@@ -151,12 +167,9 @@ end
 
 lspsaga.init_lsp_saga()
 
--- quickfix
-require ('bqf').setup()
-
 -----------------------------------
 -- prog. langs
 -----------------------------------
 
 -- latex
-g.vimtex_view_method = 'zathura'
+--g.vimtex_view_method = 'zathura'
