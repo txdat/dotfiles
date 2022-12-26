@@ -2,7 +2,7 @@
 
 configuration {
 	modi:				            "drun,run";
-	font:				            "Cascadia Code 18";
+	font:				            "JetbrainsMono 18";
 	display-drun: 		            "";
 	sidebar-mode: 		            true;
     show-icons:                     true;

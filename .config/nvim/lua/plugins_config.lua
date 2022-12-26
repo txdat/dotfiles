@@ -1,5 +1,4 @@
 local cmd = vim.cmd  -- execute vim's commands
-local g = vim.g  -- global variables
 local opt = vim.opt  -- global/buffer/windows-scoped options
 
 -- speed up loading modules
@@ -89,13 +88,6 @@ require ('hop').setup()
 
 -- finder
 require ('telescope').setup {
-	defaults = {
-		layout_config = {
-			vertical = {
-				width = 0.5
-			}
-		}
-	},
 	pickers = {
 		find_files = {
 			theme = 'dropdown'
@@ -116,12 +108,11 @@ require ('telescope').load_extension('fzf')
 require ('fzf-lua').setup {
     keymap = {
         fzf = {
-            ['alt-a'] = 'select-all+accept',
-            ['alt-d'] = 'deselect-all'
+            ['alt-a'] = 'select-all+accept',  -- select all and push to quickfix
+            ['alt-d'] = 'deselect-all'  -- deselect all, clear quickfix
         }
     },
     winopts = {
-        --split = 'belowright new',
         preview = { default = 'bat_native' }
     }
 }
@@ -137,7 +128,7 @@ require ('gitsigns').setup()
 -----------------------------------
 
 -- coq
-g.coq_settings = {
+vim.g.coq_settings = {
 	auto_start = 'shut-up',  -- before require ('coq')
 	display = { 
 		icons = {
@@ -172,4 +163,4 @@ lspsaga.init_lsp_saga()
 -----------------------------------
 
 -- latex
---g.vimtex_view_method = 'zathura'
+--vim.g.vimtex_view_method = 'zathura'

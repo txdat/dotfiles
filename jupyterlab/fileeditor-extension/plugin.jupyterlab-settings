@@ -3,7 +3,7 @@
         "autoClosingBrackets": true,
         "codeFolding": true,
         "cursorBlinkRate": 530,
-        "fontFamily": "Cascadia Mono",
+        "fontFamily": "JetbrainsMono",
         "fontSize": 14,
         "insertSpaces": true,
         "lineHeight": 1,

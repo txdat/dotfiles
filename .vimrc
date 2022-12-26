@@ -94,9 +94,15 @@ set updatetime=250
 
 let mapleader=','
 
-nmap <C-t> :term<CR>
-nmap <C-d> :bd!<CR>
-nmap <C-q> :qa!<CR>
-nmap <C-s> :w<CR>
-imap <C-s> <C-c>:w<CR>
-nmap <leader>h :nohl<CR>
+nnoremap <C-t> :term<CR>
+nnoremap <Esc> <C-\\><C-n>
+nnoremap <C-[> :bprevious<CR>
+nnoremap <C-]> :bnext<CR>
+nnoremap <C-d> :bd!<CR>
+nnoremap <C-q> :<C-U>bprevious <bar> bdelete #<CR>
+nnoremap <C-Q> :qa!<CR>
+nnoremap <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
+nnoremap <leader>h :nohl<CR>
+nnoremap <C-s> :w<CR>
+inoremap <C-s> <C-c>:w<CR>

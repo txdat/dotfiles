@@ -1,17 +1,13 @@
-local api = vim.api
-local g = vim.g
-local opt = vim.opt
-
 local function map(mode, lhs, rhs, opts)
     local options = { noremap = true, silent = true }
     if opts then
         options = vim.tbl_extend('force', options, opts)
     end
-    api.nvim_set_keymap(mode, lhs, rhs, options)
+    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
 end
 
 -- set <leader> key
-g.mapleader = ','
+vim.g.mapleader = ','
 
 ----------------------------------
 -- keymaps
@@ -37,7 +33,7 @@ map('n', '<C-Q>', ':qa!<CR>') -- close all buffers and exit
 
 -- toggle auto-indenting for code paste
 map('n', '<F2>', ':set invpaste paste?<CR>')
-opt.pastetoggle = '<F2>'
+vim.opt.pastetoggle = '<F2>'
 
 -- clear search highlighting
 map('n', '<leader>h', ':nohl<CR>')
@@ -63,5 +59,5 @@ map('n', '<leader>fb', ':Telescope buffers<CR>') -- find buffers
 -- user commands' keymaps
 ----------------------------------
 
-map('n', '<leader>zf', ':FzfLua grep<CR>') -- Grep For...
+map('n', '<leader>fz', ':FzfLua grep<CR>') -- Grep For...
 map('n', '<leader>fr', ':FindAndReplace ')

@@ -1,6 +1,4 @@
-local g = vim.g  -- global variables
 local opt = vim.opt  -- global/buffer/windows-scoped options
-local cmd = vim.cmd  -- execute vim's commands
 local augroup = vim.api.nvim_create_augroup  -- create/get autocommand group
 local autocmd = vim.api.nvim_create_autocmd  -- create autocommand
 
@@ -34,7 +32,7 @@ local disabled_built_ins = {
 }
 
 for _, plugin in pairs(disabled_built_ins) do
-	g['loaded_' .. plugin] = 1
+	vim.g['loaded_' .. plugin] = 1
 end
 
 -----------------------------------------
@@ -134,7 +132,7 @@ autocmd('BufEnter', {
 
 -- terminal config ----------------------
 
--- open terminal on the below tab (or 'vsplit' for right tab)
+-- open terminal
 autocmd('CmdlineEnter', {
     command = 'command! Term :botright split term://$SHELL'
 })
@@ -158,5 +156,5 @@ autocmd('BufLeave', {
 -- python interpreter -------------------
 -- virtual env should be activated before running neovim
 local handler = io.popen("which python3")
-g.python3_host_prog = handler:read("*a"):gsub("\n[^\n]*$", "")
+vim.g.python3_host_prog = handler:read("*a"):gsub("\n[^\n]*$", "")
 handler:close()

@@ -2,9 +2,9 @@
     "theme": "JupyterLab Dark",
     "theme-scrollbars": true,
     "overrides": {
-        "code-font-family": "Cascadia Mono",
+        "code-font-family": "JetbrainsMono",
         "code-font-size": "14",
-        "content-font-family": "Cascadia Mono",
+        "content-font-family": "JetbrainsMono",
         "content-font-size1": "14",
         "ui-font-family": "Roboto",
         "ui-font-size1": "14"

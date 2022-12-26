@@ -12,26 +12,26 @@
 
     run `sudo exportfs -arv` to export nfs
 
-- nvidia-container-runtime \[[link](https://github.com/k3s-io/k3s/issues/4391#issuecomment-1233314825)]
+- nvidia-container-runtime \[[link](https://github.com/k3s-io/k3s/issues/4391#issuecomment-1233314825)] (create `/etc/docker` or `/etc/containerd` if not found)
 
     ```bash
     sudo cp docker_daemon.json /etc/docker/daemon.json # docker's runtime
     sudo cp containerd_config.toml /etc/containerd/config.toml # containerd's runtime
-    k apply -f nvidia.yaml
+    kubectl apply -f nvidia.yaml
     ```
 
-- set static ip (for NetworkManager) \[[link](https://nanxiao.me/en/configure-static-ip-address-on-arch-linux/)]
+- set static ip (NetworkManager) \[[link](https://nanxiao.me/en/configure-static-ip-address-on-arch-linux/)]
 
     ```bash
     sudo nmcli con show # grep <uuid>
-    sudo nmcli con modify <uuid> ipv4.addresses <ipv4>/<port> # grep from 'ip addr show'
+    sudo nmcli con modify <uuid> ipv4.addresses <ipv4>/<port> # grep from `ip addr show`: 192.168.1.198/24
     sudo nmcli con modify <uuid> ipv4.gateway 192.168.1.1
     sudo nmcli con modify <uuid> ipv4.dns "8.8.8.8"
     sudo nmcli con modify <uuid> ipv4.method manual
     sudo nmcli con up <uuid>
     ```
 
-- access kube's services' ip addresses (not recommended, run `start_k3s` and `stop_k3s` in zsh)
+- access kube's services' ip addresses (not recommended (slow down internet), run `start_k3s` and `stop_k3s` in zsh)
 
     add **kube-dns ip** (`kgs -n kube-system | grep dns` = `10.43.0.10`) to `/etc/resolv.conf`
 
@@ -42,6 +42,6 @@
     nameserver fe80::1%enp0s31f6
     ```
 
-    lock editing `sudo chattr +i /etc/resolv.conf`, unlock `sudo chattr -i *`
+    lock editing `sudo chattr +i /etc/resolv.conf`, unlock `sudo chattr -i /etc/resolv.conf`
 
     => `<service>:<port>` becomes `<service>.<namespace>.svc.cluster.local:<port>`
