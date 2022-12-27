@@ -110,20 +110,20 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="$HOME/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< conda initialize <<<
+## >>> conda initialize >>>
+## !! Contents within this block are managed by 'conda init' !!
+#__conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+#if [ $? -eq 0 ]; then
+#    eval "$__conda_setup"
+#else
+#    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+#        . "$HOME/miniconda3/etc/profile.d/conda.sh"
+#    else
+#        export PATH="$HOME/miniconda3/bin:$PATH"
+#    fi
+#fi
+#unset __conda_setup
+## <<< conda initialize <<<
 
 export PATH="$HOME/miniconda3/bin:$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$HOME/.cabal/bin:$HOME/.ghcup/bin:$HOME/.local/bin:$PATH"
 
@@ -135,7 +135,7 @@ export KUBECONFIG=$HOME/.kube/config
 
 alias syyu="sudo pacman -Syyu && paru -Syyu"
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
-alias cpcb="xclip -sel c < " # copy from file to clipboard, e.g. 'cpcb main.cpp'
+alias cpcb="xclip -sel c < " # copy from file to clipboard
 alias cpfi="xclip -sel c -o > " # copy from clipboard to file
 
 # compile and run algo (c++20)
@@ -156,25 +156,25 @@ algo () {
     return 0
 }
 
-# start/stop k3s cluster
-K3S_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
+# start/stop kube cluster
+KUBE_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
 
-start_k3s () {
+start_kube () {
     # add kube's dns to resolv
-    sudo sed -i "1s/^/nameserver 10.43.0.10\n/" /etc/resolv.conf  # run 'kgs -n kube-system | grep dns'
+    sudo sed -i "1s/^/nameserver 10.43.0.10 # kube\n/" /etc/resolv.conf  # run 'kgs -n kube-system | grep dns'
 
-    for svc in "${K3S_SERVICES[@]}"
+    for svc in "${KUBE_SERVICES[@]}"
     do
         echo starting $svc
         sudo systemctl start $svc
     done
 }
 
-stop_k3s () {
+stop_kube () {
     # remove kube's dns in resolv
-    sudo sed -i "1d" /etc/resolv.conf
+    sudo sed -i "/kube$/d" /etc/resolv.conf
 
-    for svc in "${K3S_SERVICES[@]}"
+    for svc in "${KUBE_SERVICES[@]}"
     do
         echo stopping $svc
         sudo systemctl stop $svc
