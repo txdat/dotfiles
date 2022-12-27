@@ -49,7 +49,7 @@ endif
 
 " windows gvim
 if has('win32') && has('gui_running')
-    set guifont=JetbrainsMono:h12
+    set guifont=Jetbrains\ Mono:h10
     colorscheme torte
 endif
 
