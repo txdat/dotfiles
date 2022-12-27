@@ -2,7 +2,7 @@
 
 configuration {
 	modi:				            "drun,run";
-	font:				            "JetbrainsMono 18";
+	font:				            "Jetbrains Mono 18";
 	display-drun: 		            "";
 	sidebar-mode: 		            true;
     show-icons:                     true;

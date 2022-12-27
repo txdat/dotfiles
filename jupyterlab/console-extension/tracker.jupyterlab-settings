@@ -4,7 +4,7 @@
     "promptCellConfig": {
         "autoClosingBrackets": true,
         "cursorBlinkRate": 530,
-        "fontFamily": "JetbrainsMono",
+        "fontFamily": "Jetbrains Mono",
         "fontSize": 14,
         "lineHeight": 1,
         "lineNumbers": true,
