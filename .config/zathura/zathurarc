@@ -1,0 +1,50 @@
+#open files in maximized window
+set window-height 3000
+set window-width 3000
+
+set font "jetbrains mono 12"
+
+# copy selection to system clipboard
+set selection-clipboard clipboard
+
+#stop at page boundries
+set scroll-page-aware "true"
+set smooth-scroll "true"
+set scroll-full-overlap 0.01
+set scroll-step 100
+
+#setup dark theme
+set default-bg "#1F1F28"
+set default-fg "#DCD7BA"
+
+set statusbar-bg "#16161D"
+set statusbar-fg "#C8C093"
+
+set inputbar-bg "#363646"
+set inputbar-fg "#C8C093"
+
+set notification-error-bg "#43242B"
+set notification-error-fg "#C8C093"
+
+set notification-warning-bg "#43242B"
+set notification-warning-fg "#C8C093"
+
+set highlight-color "#49443C"
+set highlight-active-color "#DCA561"
+
+set completion-highlight-bg "#2B3328"
+set completion-highlight-fg "#C8C093"
+
+set completion-bg "#1F1F28"
+set completion-fg "#DCD7BA"
+
+set notification-bg "#2B3328"
+set notification-fg "#C8C093"
+
+set recolor "true"
+set recolor-lightcolor "#1F1F28"
+set recolor-darkcolor "#DCD7BA"
+set recolor-reverse-video "true"
+set recolor-keephue "true"
+
+set render-loading "false"
