@@ -7,7 +7,7 @@ local function map(mode, lhs, rhs, opts)
 end
 
 -- set <leader> key
-vim.g.mapleader = ','
+vim.g.mapleader = '/'
 
 ----------------------------------
 -- keymaps

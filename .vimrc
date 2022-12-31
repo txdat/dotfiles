@@ -92,7 +92,7 @@ set updatetime=250
 " keymaps
 " ----------------------------------
 
-let mapleader=','
+let mapleader='/'
 
 nnoremap <C-t> :term<CR>
 nnoremap <Esc> <C-\\><C-n>
