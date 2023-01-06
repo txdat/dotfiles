@@ -25,6 +25,7 @@ set bg=dark
 set shortmess=I  " disable vim intro
 set laststatus=3
 set termguicolors
+"set list
 set cursorline
 hi CursorLine cterm=none
 hi LineNR cterm=none guifg=grey

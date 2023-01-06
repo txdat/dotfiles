@@ -40,20 +40,18 @@ require ('lualine').setup {
 }
 
 -- indent
-opt.list = true
 --opt.listchars:append('space:⋅')
 --opt.listchars:append('eol:↴')
 
 require ('indent_blankline').setup {
 	space_char_blankline = ' ',
 	show_current_context = true,
-	show_current_context_start = true
+	show_current_context_start = true,
+    show_end_of_line = true
 }
 
 -- highlight
-opt.cursorline = true
-
-require ('modes').setup()
+--require ('modes').setup()
 
 -- trouble highlight
 require ('trouble').setup()
@@ -86,8 +84,17 @@ require ('hop').setup()
 -- file manager, finder, svc
 -----------------------------------
 
+-- nvim-tree
+require ('nvim-tree').setup {
+    view = {
+        adaptive_size = true
+    }
+}
+
 -- finder
-require ('telescope').setup {
+local telescope = require ('telescope')
+
+telescope.setup {
 	pickers = {
 		find_files = {
 			theme = 'dropdown'
@@ -98,12 +105,12 @@ require ('telescope').setup {
 			fuzzy = true,
 			override_generic_sorter = true,
 			override_file_sorter = true,
-			case_mode = "smart_case"
+			case_mode = 'smart_case'
 		}
 	}
 }
 
-require ('telescope').load_extension('fzf')
+telescope.load_extension('fzf')
 
 require ('fzf-lua').setup {
     keymap = {
@@ -127,36 +134,93 @@ require ('gitsigns').setup()
 -- autocompletion
 -----------------------------------
 
+-- lsp
+-- https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
+local lspconfig = require ('lspconfig')
+
 -- coq
-vim.g.coq_settings = {
-	auto_start = 'shut-up',  -- before require ('coq')
-	display = { 
-		icons = {
-			spacing = 2
-		}
-	}
+--vim.g.coq_settings = {
+--	auto_start = 'shut-up',  -- before require ('coq')
+--	display = { 
+--		icons = {
+--			spacing = 2
+--		}
+--	}
+--}
+--
+--local coq = require ('coq')
+--local coq_3p = require ('coq_3p')
+
+-- nvim-cmp
+local capabilities = require ('cmp_nvim_lsp').default_capabilities()
+local cmp = require ('cmp')
+local luasnip = require ('luasnip')
+
+cmp.setup {
+  snippet = {
+    expand = function(args)
+      luasnip.lsp_expand(args.body)
+    end,
+  },
+  window = {
+    --completion = cmp.config.window.bordered(),
+    --documentation = cmp.config.window.bordered(),
+  },
+  mapping = cmp.mapping.preset.insert({
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<CR>'] = cmp.mapping.confirm {
+      behavior = cmp.ConfirmBehavior.Replace,
+      select = true,
+    },
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+  }),
+  sources = {
+    { name = 'nvim_lsp' },
+    { name = 'buffer' },
+    { name = 'path' },
+    { name = 'luasnip' },
+  },
 }
 
-local coq = require ('coq')
-local coq_3p = require ('coq_3p')
-local lspconfig = require ('lspconfig')
-local lspsaga = require ('lspsaga')
-
--- lsp*
 local servers = {
-	'ccls',				-- c/c++
-	'pyright',			-- python
-	'gopls',			-- go
-	'rust_analyzer',	-- rust
-    'hls',              -- haskell
-    --'tsserver',         -- typescript
-    --'r_language_server',-- R
+	--'ccls',				-- c/c++
+    'clangd',               -- c/c++
+	'rust_analyzer',	    -- rust
+	--'gopls',			    -- go
+    --'hls',                -- haskell
+    'pyright',			    -- python
+    --'r_language_server',  -- R
+    --'eslint',             -- javascript/typescript
+    --'tsserver',           -- typescript
 }
 for _, server in pairs(servers) do
-	lspconfig[server].setup(coq.lsp_ensure_capabilities())
+	--lspconfig[server].setup(coq.lsp_ensure_capabilities())
+    
+    lspconfig[server].setup {
+        capabilities = capabilities
+    }
 end
 
-lspsaga.init_lsp_saga()
+require ('lspsaga').init_lsp_saga()
 
 -----------------------------------
 -- prog. langs

@@ -55,7 +55,7 @@ return packer.startup(function(use)
 	use 'lukas-reineke/indent-blankline.nvim'
 
     -- highlight
-    use 'mvllow/modes.nvim'
+    --use 'mvllow/modes.nvim'
 
     -- trouble highlight
     use {
@@ -85,11 +85,15 @@ return packer.startup(function(use)
     ------------------------------------
 	
 	-- file manager
-	use { 
-		'ms-jpq/chadtree', 
-		branch = 'chad', 
-		run = 'python3 -m chadtree deps' 
-	}
+	--use { 
+	--	'ms-jpq/chadtree', 
+	--	branch = 'chad', 
+	--	run = 'python3 -m chadtree deps' 
+	--}
+    use {
+        'nvim-tree/nvim-tree.lua',
+        requires = { 'nvim-tree/nvim-web-devicons' }
+    }
 
 	-- finder
 	use { 
@@ -107,37 +111,42 @@ return packer.startup(function(use)
 
     -- quickfix
     use {
-        'kevinhwang91/nvim-bqf',
-        requires = {
-            { 'junegunn/fzf', run = function()
-                vim.fn['fzf#install']()
-            end
-            }
-        }
+        'junegunn/fzf',
+        run = function()
+            vim.fn['fzf#install']()
+        end
     }
+    use 'kevinhwang91/nvim-bqf'
 
     -- svc
-	--use 'kdheepak/lazygit.nvim'
-
     use 'lewis6991/gitsigns.nvim'
 
     ------------------------------------
 	-- autocompletion
     ------------------------------------
 	
-    use { 
-		'ms-jpq/coq_nvim', 
-		branch = 'coq',
-		requires = {
-			{ 'ms-jpq/coq.artifacts', branch = 'artifacts' },
-			{ 'ms-jpq/coq.thirdparty', branch = '3p' }
-		}
-	}
+    --use { 
+	--	'ms-jpq/coq_nvim', 
+	--	branch = 'coq',
+	--	requires = {
+	--		{ 'ms-jpq/coq.artifacts', branch = 'artifacts' },
+	--		{ 'ms-jpq/coq.thirdparty', branch = '3p' }
+	--	}
+	--}
+    
+    use {
+        'hrsh7th/nvim-cmp',
+        requires = {
+            'hrsh7th/cmp-nvim-lsp',
+            'hrsh7th/cmp-buffer',
+            'hrsh7th/cmp-path',
+            'saadparwaiz1/cmp_luasnip',
+            'L3MON4D3/LuaSnip'
+        }
+    }
 
-	use {
-		'neovim/nvim-lspconfig',
-		requires = { 'glepnir/lspsaga.nvim', branch = 'main' } 
-	}
+	use 'neovim/nvim-lspconfig'
+    use { 'glepnir/lspsaga.nvim', branch = 'main' }
 
     ------------------------------------
 	-- prog. langs

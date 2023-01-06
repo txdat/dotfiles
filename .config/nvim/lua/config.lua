@@ -64,6 +64,8 @@ opt.guicursor:append 'n-v-c:blinkon0'
 opt.guicursor:append 'i:blinkon0'
 --opt.ruler = true  -- show cursor position
 opt.number = true  -- show line number
+opt.list = true
+opt.cursorline = true
 opt.relativenumber = true  -- (-1,1) line number
 opt.showmatch = true  -- highlight matching parenthesis
 opt.foldmethod = 'marker'  -- enable folding

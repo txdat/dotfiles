@@ -42,13 +42,18 @@ map('n', '<leader>h', ':nohl<CR>')
 map('n', '<C-s>', ':w<CR>')
 map('i', '<C-s>', '<C-c>:w<CR>')
 
+-- clear quickfix list
+map('n', '<leader>l', ':call setqflist([])<CR>')
+
 ----------------------------------
 -- plugins' keymaps
 ----------------------------------
 
 -- CHADtree
-map('n', '<C-e>', ':CHADopen<CR>')
-map('n', '<leader>l', ':call setqflist([])<CR>')
+--map('n', '<C-e>', ':CHADopen<CR>')
+
+-- NvimTree
+map('n', '<C-e>', ':NvimTreeToggle<CR>')
 
 -- Telescope
 map('n', '<leader>ff', ':Telescope find_files<CR>') -- find files by name
