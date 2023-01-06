@@ -131,12 +131,11 @@ require ('bqf').setup()
 require ('gitsigns').setup()
 
 -----------------------------------
--- autocompletion
+-- autocompletion, debugging
 -----------------------------------
 
--- lsp
+-- autocompletion
 -- https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
-local lspconfig = require ('lspconfig')
 
 -- coq
 --vim.g.coq_settings = {
@@ -152,79 +151,150 @@ local lspconfig = require ('lspconfig')
 --local coq_3p = require ('coq_3p')
 
 -- nvim-cmp
-local capabilities = require ('cmp_nvim_lsp').default_capabilities()
-local cmp = require ('cmp')
-local luasnip = require ('luasnip')
+--local cmp = require ('cmp')
+--local luasnip = require ('luasnip')
+--
+--cmp.setup {
+--    snippet = {
+--        expand = function(args)
+--        luasnip.lsp_expand(args.body)
+--        end,
+--    },
+--    window = {
+--        --completion = cmp.config.window.bordered(),
+--        --documentation = cmp.config.window.bordered(),
+--    },
+--    mapping = cmp.mapping.preset.insert({
+--        ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+--        ['<C-f>'] = cmp.mapping.scroll_docs(4),
+--        ['<C-Space>'] = cmp.mapping.complete(),
+--        ['<CR>'] = cmp.mapping.confirm {
+--        behavior = cmp.ConfirmBehavior.Replace,
+--        select = true,
+--        },
+--        ['<Tab>'] = cmp.mapping(function(fallback)
+--        if cmp.visible() then
+--            cmp.select_next_item()
+--        elseif luasnip.expand_or_jumpable() then
+--            luasnip.expand_or_jump()
+--        else
+--            fallback()
+--        end
+--        end, { 'i', 's' }),
+--        ['<S-Tab>'] = cmp.mapping(function(fallback)
+--        if cmp.visible() then
+--            cmp.select_prev_item()
+--        elseif luasnip.jumpable(-1) then
+--            luasnip.jump(-1)
+--        else
+--            fallback()
+--        end
+--        end, { 'i', 's' }),
+--    }),
+--    sources = {
+--        { name = 'nvim_lsp', keyword_length = 3 },
+--        { name = 'buffer', keyword_length = 3 },
+--        { name = 'path' },
+--        { name = 'luasnip', keyword_length = 3 },
+--    },
+--}
+--
+--local lsp_capabilities = require ('cmp_nvim_lsp').default_capabilities()
 
-cmp.setup {
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
-  window = {
-    --completion = cmp.config.window.bordered(),
-    --documentation = cmp.config.window.bordered(),
-  },
-  mapping = cmp.mapping.preset.insert({
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<CR>'] = cmp.mapping.confirm {
-      behavior = cmp.ConfirmBehavior.Replace,
-      select = true,
-    },
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-  }),
-  sources = {
-    { name = 'nvim_lsp' },
-    { name = 'buffer' },
-    { name = 'path' },
-    { name = 'luasnip' },
-  },
-}
+-- lsp
+--local lspconfig = require ('lspconfig')
 
-local servers = {
-	--'ccls',				-- c/c++
-    'clangd',               -- c/c++
-	'rust_analyzer',	    -- rust
-	--'gopls',			    -- go
-    --'hls',                -- haskell
-    'pyright',			    -- python
-    --'r_language_server',  -- R
-    --'eslint',             -- javascript/typescript
-    --'tsserver',           -- typescript
-}
-for _, server in pairs(servers) do
-	--lspconfig[server].setup(coq.lsp_ensure_capabilities())
-    
-    lspconfig[server].setup {
-        capabilities = capabilities
+-- global servers
+--local servers = {
+--    'clangd',               -- c/c++
+--    'pyright',			    -- python
+--	'rust_analyzer',	    -- rust
+--	--'gopls',			    -- go
+--    --'hls',                -- haskell
+--    --'r_language_server',  -- R
+--    --'eslint',             -- javascript/typescript
+--    --'tsserver',           -- typescript
+--}
+--
+--for _, server in pairs(servers) do
+--	--lspconfig[server].setup(coq.lsp_ensure_capabilities())
+--    
+--    lspconfig[server].setup {
+--        capabilities = lsp_capabilities
+--    }
+--end
+
+-- lsp-zero
+require ('mason').setup()
+require ('mason-lspconfig').setup()
+
+opt.signcolumn = 'yes'
+
+local lsp = require ('lsp-zero')
+
+lsp.preset('recommended')
+
+lsp.set_preferences({
+    suggest_lsp_servers = false,
+    sign_icons = {
+        error = '',
+        warn = '',
+        hint = '',
+        info = '',
     }
-end
+})
 
+lsp.setup_nvim_cmp({
+    documentation = {
+        border = 'none',
+    },
+    sources = {
+        { name = 'nvim_lsp', keyword_length = 3 },
+        { name = 'buffer', keyword_length = 3 },
+        { name = 'path' },
+        { name = 'luasnip', keyword_length = 3 },
+    }    
+})
+
+--for _, server in pairs(servers) do
+--    lsp.configure(server, {
+--        force_setup = true, -- global server
+--    })
+--end
+
+lsp.ensure_installed({
+    'clangd',
+    'pyright',
+    'rust_analyzer',
+})
+
+lsp.setup()
+
+require ('luasnip.loaders.from_snipmate').lazy_load()
+
+-- lspsaga
 require ('lspsaga').init_lsp_saga()
+
+-- null-ls
+local null_ls = require ('null-ls')
+
+null_ls.setup({
+    sources = {
+        null_ls.builtins.diagnostics.clang_check, -- c/c++
+        null_ls.builtins.formatting.clang_format,
+        null_ls.builtins.diagnostics.ruff, -- python
+        null_ls.builtins.formatting.black,
+        null_ls.builtins.formatting.rustfmt, -- rust
+    },
+})
+
+-- debugging
 
 -----------------------------------
 -- prog. langs
 -----------------------------------
 
 -- latex
---vim.g.vimtex_view_method = 'zathura'
+vim.g.vimtex_view_method = 'zathura'
+vim.g.vimtex_view_general_viewer = 'zathura'
+vim.g.vimtex_quickfix_mode = 0

@@ -29,39 +29,31 @@ packer.init({
 return packer.startup(function(use)
 	use 'wbthomason/packer.nvim'  -- packer can manage itself
 
+    use 'nvim-tree/nvim-web-devicons'
+    use 'nvim-lua/plenary.nvim'
+
     -- speed up loading modules
     use 'lewis6991/impatient.nvim'
 
     ------------------------------------
 	-- gui, navigation
     ------------------------------------
-	
+
     -- colorscheme
     use 'rebelot/kanagawa.nvim'
 
     -- status bar
-    use {
-        'nvim-lualine/lualine.nvim',
-        requires = { 'nvim-tree/nvim-web-devicons' }
-    }
+    use 'nvim-lualine/lualine.nvim'
 
     -- tabs bar
-    use {
-        'romgrk/barbar.nvim',
-        requires = { 'nvim-tree/nvim-web-devicons' }
-    }
+    use 'romgrk/barbar.nvim'
 
     -- indent
 	use 'lukas-reineke/indent-blankline.nvim'
 
     -- highlight
     --use 'mvllow/modes.nvim'
-
-    -- trouble highlight
-    use {
-        'folke/trouble.nvim',
-        requires = { 'nvim-tree/nvim-web-devicons' }
-    }
+    use 'folke/trouble.nvim'
 
 	-- syntax
 	use { 
@@ -77,37 +69,29 @@ return packer.startup(function(use)
 
     -- navigation
     use 'phaazon/hop.nvim'
-
     --use 'simrat39/symbols-outline.nvim'
 
     ------------------------------------
 	-- file manager, finder, svc
     ------------------------------------
-	
+
 	-- file manager
 	--use { 
 	--	'ms-jpq/chadtree', 
 	--	branch = 'chad', 
 	--	run = 'python3 -m chadtree deps' 
 	--}
-    use {
-        'nvim-tree/nvim-tree.lua',
-        requires = { 'nvim-tree/nvim-web-devicons' }
-    }
+    use 'nvim-tree/nvim-tree.lua'
 
 	-- finder
 	use { 
 		'nvim-telescope/telescope.nvim', 
 		requires = { 
-			'nvim-lua/plenary.nvim',
 			{ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' }
 		}
 	}
 
-    use {
-        'ibhagwan/fzf-lua',
-        requires = { 'nvim-tree/nvim-web-devicons' }
-    }
+    use 'ibhagwan/fzf-lua'
 
     -- quickfix
     use {
@@ -122,9 +106,13 @@ return packer.startup(function(use)
     use 'lewis6991/gitsigns.nvim'
 
     ------------------------------------
-	-- autocompletion
+	-- autocompletion, debugging
     ------------------------------------
-	
+
+    -- autocompletion
+    use 'neovim/nvim-lspconfig'
+    use { 'glepnir/lspsaga.nvim', branch = 'main' }
+    
     --use { 
 	--	'ms-jpq/coq_nvim', 
 	--	branch = 'coq',
@@ -135,8 +123,11 @@ return packer.startup(function(use)
 	--}
     
     use {
-        'hrsh7th/nvim-cmp',
+        'VonHeikemen/lsp-zero.nvim',
         requires = {
+            'williamboman/mason.nvim',
+            'williamboman/mason-lspconfig.nvim',
+            'hrsh7th/nvim-cmp',
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-buffer',
             'hrsh7th/cmp-path',
@@ -145,8 +136,10 @@ return packer.startup(function(use)
         }
     }
 
-	use 'neovim/nvim-lspconfig'
-    use { 'glepnir/lspsaga.nvim', branch = 'main' }
+    use 'jose-elias-alvarez/null-ls.nvim'
+
+    -- debugging
+    use 'mfussenegger/nvim-dap'
 
     ------------------------------------
 	-- prog. langs
