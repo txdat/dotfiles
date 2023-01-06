@@ -6,7 +6,7 @@
         "code-font-size": "14",
         "content-font-family": "Jetbrains Mono",
         "content-font-size1": "14",
-        "ui-font-family": "Roboto",
+        "ui-font-family": "Jetbrains Mono",
         "ui-font-size1": "14"
     }
 }

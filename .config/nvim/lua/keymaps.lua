@@ -49,20 +49,22 @@ map('n', '<leader>l', ':call setqflist([])<CR>')
 -- plugins' keymaps
 ----------------------------------
 
--- CHADtree
+-- chadtree
 --map('n', '<C-e>', ':CHADopen<CR>')
 
--- NvimTree
+-- nvim-tree
 map('n', '<C-e>', ':NvimTreeToggle<CR>')
 
--- Telescope
+-- trouble
+map('n', '<leader>t', ':TroubleToggle<CR>')
+
+-- telescope
 map('n', '<leader>ff', ':Telescope find_files<CR>') -- find files by name
 map('n', '<leader>fg', ':Telescope live_grep<CR>') -- find text in multiple files
 map('n', '<leader>fb', ':Telescope buffers<CR>') -- find buffers
+map('n', '<leader>fz', ':FzfLua grep<CR>') -- Grep For...
 
 ----------------------------------
 -- user commands' keymaps
 ----------------------------------
 
-map('n', '<leader>fz', ':FzfLua grep<CR>') -- Grep For...
-map('n', '<leader>fr', ':FindAndReplace ')
