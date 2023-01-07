@@ -11,7 +11,7 @@ typeset -gA ZSH_HIGHLIGHT_STYLES
 ### Markup
 ## Classes
 ## Comments
-ZSH_HIGHLIGHT_STYLES[comment]='fg=#54546d'
+ZSH_HIGHLIGHT_STYLES[comment]='fg=#727169'
 ## Constants
 ## Entitites
 ## Functions/methods
@@ -41,13 +41,13 @@ ZSH_HIGHLIGHT_STYLES[back-dollar-quoted-argument]='fg=#d27e99'
 ## Serializable / Configuration Languages
 ## Storage
 ## Strings
-ZSH_HIGHLIGHT_STYLES[command-substitution-quoted]='fg=#c0a36e'
-ZSH_HIGHLIGHT_STYLES[command-substitution-delimiter-quoted]='fg=#c0a36e'
-ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#c0a36e'
+ZSH_HIGHLIGHT_STYLES[command-substitution-quoted]='fg=#e6c384'
+ZSH_HIGHLIGHT_STYLES[command-substitution-delimiter-quoted]='fg=#e6c384'
+ZSH_HIGHLIGHT_STYLES[single-quoted-argument]='fg=#e6c384'
 ZSH_HIGHLIGHT_STYLES[single-quoted-argument-unclosed]='fg=#c34043'
-ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#c0a36e'
+ZSH_HIGHLIGHT_STYLES[double-quoted-argument]='fg=#e6c384'
 ZSH_HIGHLIGHT_STYLES[double-quoted-argument-unclosed]='fg=#c34043'
-ZSH_HIGHLIGHT_STYLES[rc-quote]='fg=#c0a36e'
+ZSH_HIGHLIGHT_STYLES[rc-quote]='fg=#e6c384'
 ## Variables
 ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument]='fg=#dcd7ba'
 ZSH_HIGHLIGHT_STYLES[dollar-quoted-argument-unclosed]='fg=#c34043'

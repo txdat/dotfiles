@@ -1,0 +1,6 @@
+--require ('plugins.lsp.coq')
+--require ('plugins.lsp.cmp')
+require ('plugins.lsp.mason_lspconfig')
+require ('plugins.lsp.lsp_zero')
+require ('plugins.lsp.lspsaga')
+require ('plugins.lsp.null_ls')

@@ -1,3 +1,36 @@
+" disable built-in plugins
+let built_in_plugins = [
+    \'2html_plugin',
+    \'getscript',
+    \'getscriptPlugin',
+    \'gzip',
+    \'logipat',
+    \'netrw',
+    \'netrwPlugin',
+    \'netrwSettings',
+    \'netrwFileHandlers',
+    \'matchit',
+    \'tar',
+    \'tarPlugin',
+    \'rrhelper',
+    \'spellfile_plugin',
+    \'vimball',
+    \'vimballPlugin',
+    \'zip',
+    \'zipPlugin',
+    \'tutor',
+    \'rplugin',
+    \'synmenu',
+    \'optwin',
+    \'compiler',
+    \'bugreport',
+    \'ftplugin',
+    \]
+
+for plugin in built_in_plugins
+    exe 'let g:loaded_' . plugin . '=1'
+endfor
+
 " ----------------------------------
 " general
 " ----------------------------------
@@ -5,17 +38,17 @@
 syntax on
 filetype plugin indent on
 
-set clipboard=unnamed,unnamedplus
+set clipboard=unnamed,unnamedplus  " system's clipboard
 set timeoutlen=500  " key mappings timeout
 set noswapfile
 set nobackup
 set nowritebackup
-set completeopt=menuone,noinsert,noselect
+set completeopt=menuone,noinsert,noselect  " insert mode
 set encoding=utf-8
 set fileencoding=utf-8
-set mouse=a
+set mouse=a  " enable mouse support
 set noerrorbells
-set bs=2  " backspace
+set bs=2  " fix backspace
 
 " ----------------------------------
 " gui
@@ -23,24 +56,24 @@ set bs=2  " backspace
 
 set bg=dark
 set shortmess=I  " disable vim intro
-set laststatus=3
-set termguicolors
-"set list
+set laststatus=3  " set global statusline
+set termguicolors  " enable 24bits colors
+set guicursor=n-v-c:block-Cursor  " using block cursor
+set guicursor+=i:block-iCursor
+set guicursor+=n-v-c:blinkon0
+set guicursor+=i:blinkon0
+set ruler  " show cursor position
+"set list  " show eol, ...
 set cursorline
 hi CursorLine cterm=none
 hi LineNR cterm=none guifg=grey
 hi CursorLineNR cterm=bold
-set guicursor=n-v-c:block-Cursor
-set guicursor+=i:block-iCursor
-set guicursor+=n-v-c:blinkon0
-set guicursor+=i:blinkon0
-set ruler
-set number
-set relativenumber
-set showmatch
-set foldmethod=marker
-set splitright
-set splitbelow
+set number  " show line number
+set relativenumber  " (-1,+1) line number
+set showmatch  " highlight matching parenthesis
+set foldmethod=marker  " enable folding
+set splitright  " vertical split to the right
+set splitbelow  " horizontal split to the bottom
 
 " fix tmux colorscheme issue
 if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
@@ -48,10 +81,10 @@ if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
   let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
-" windows gvim
+" windows gvim colorscheme
 if has('win32') && has('gui_running')
     set guifont=Jetbrains\ Mono:h10
-    colorscheme torte
+    "colorscheme torte
 endif
 
 " ----------------------------------
@@ -62,38 +95,77 @@ set autoindent
 set cindent
 set smartindent
 set smarttab
-set expandtab
-set tabstop=4
+set expandtab  " use spaces instead of tab
+set tabstop=4  " 1 tab = 4 spaces
 set softtabstop=0
-set shiftwidth=4
+set shiftwidth=4  " shifts 4 spaces when using tab
 set shiftround
-set linebreak
+set linebreak  " wrap on word boundary
 set textwidth=0
 
 " ----------------------------------
 " searching
 " ----------------------------------
 
-set hlsearch
-set incsearch
-set ignorecase
-set smartcase
+set hlsearch  " highlight search result
+set incsearch  " show first match when start typing
+set ignorecase  " ignore case sensitive when searching
+set smartcase  " ignore lowercase for the whole pattern
 
 " ----------------------------------
 " cpu, memory
 " ----------------------------------
 
-set hidden
-set history=100
-set lazyredraw
-set synmaxcol=240
-set updatetime=250
+set hidden  " enable background buffers
+set history=100  " n lines in history
+set lazyredraw  " faster scrolling
+set synmaxcol=240  " maximum column for syntax highligh
+set updatetime=250  " milli-seconds to wait for trigger an event (keymap)
+
+" ----------------------------------
+" autocommand functions
+" ----------------------------------
+
+" highlight on yank (selected copy)
+augroup YankHighlight
+  autocmd!
+  autocmd TextYankPost * if v:event.operator == 'y' | call s:FlashYankedText() | endif
+augroup END
+
+function! s:FlashYankedText()
+  let match = matchadd('IncSearch', ".\\%>'\\[\\_.*\\%<']..")
+  let win = win_getid()
+  call timer_start(500, {-> s:matchdelete(match, win)})
+endfunction
+
+function s:matchdelete(match, win)
+  silent! call matchdelete(a:match, a:win)
+endfunction
+
+" remove whitespace on save
+autocmd BufWritePre * :%s/\\s\\+$//e
+
+" don't auto commenting new lines
+autocmd BufEnter * set fo-=c fo-=r fo-=o
+
+" terminal config ----------------------
+
+" open terminal
+autocmd CmdlineEnter term :botright split term://$SHELL
+
+" enter insert mode when switching to terminal
+autocmd BufWinEnter if &buftype == 'terminal' | setlocal listchars= nonumber norelativenumber nocursorline | endif
+
+autocmd BufWinEnter * if &buftype == 'terminal' | startinsert | endif
+
+" close terminal buffer on process exit
+autocmd BufLeave * stopinsert
 
 " ----------------------------------
 " keymaps
 " ----------------------------------
 
-let mapleader='/'
+let mapleader='/'  " set <leader>
 
 nnoremap <C-t> :term<CR>
 nnoremap <Esc> <C-\\><C-n>

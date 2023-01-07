@@ -3,7 +3,7 @@ local function map(mode, lhs, rhs, opts)
     if opts then
         options = vim.tbl_extend('force', options, opts)
     end
-    vim.api.nvim_set_keymap(mode, lhs, rhs, options)
+    vim.keymap.set(mode, lhs, rhs, options)
 end
 
 -- set <leader> key
@@ -56,15 +56,14 @@ map('n', '<leader>l', ':call setqflist([])<CR>')
 map('n', '<C-e>', ':NvimTreeToggle<CR>')
 
 -- trouble
-map('n', '<leader>t', ':TroubleToggle<CR>')
+map('n', '<leader>tr', ':TroubleToggle<CR>')
 
 -- telescope
 map('n', '<leader>ff', ':Telescope find_files<CR>') -- find files by name
 map('n', '<leader>fg', ':Telescope live_grep<CR>') -- find text in multiple files
 map('n', '<leader>fb', ':Telescope buffers<CR>') -- find buffers
+
+-- fzf-lua
 map('n', '<leader>fz', ':FzfLua grep<CR>') -- Grep For...
 
-----------------------------------
--- user commands' keymaps
-----------------------------------
-
+-- dap

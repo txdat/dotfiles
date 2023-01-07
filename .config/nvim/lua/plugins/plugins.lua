@@ -1,5 +1,5 @@
-local cmd = vim.cmd  -- execute vim's commands
-local fn = vim.fn  -- vim's functions
+local cmd = vim.cmd
+local fn = vim.fn
 
 -- automatically install packer
 local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
@@ -16,7 +16,6 @@ cmd [[
   augroup end
 ]]
 
--- init plugins/packages
 local packer = require ('packer')
 
 packer.init({ 
@@ -52,14 +51,11 @@ return packer.startup(function(use)
 	use 'lukas-reineke/indent-blankline.nvim'
 
     -- highlight
-    --use 'mvllow/modes.nvim'
+    use 'mvllow/modes.nvim'
     use 'folke/trouble.nvim'
 
 	-- syntax
-	use { 
-		'nvim-treesitter/nvim-treesitter', 
-		run = ':TSUpdate' 
-	}
+	use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
 
     -- commenting
     use 'numToStr/Comment.nvim'
@@ -69,7 +65,7 @@ return packer.startup(function(use)
 
     -- navigation
     use 'phaazon/hop.nvim'
-    --use 'simrat39/symbols-outline.nvim'
+    use 'simrat39/symbols-outline.nvim'
 
     ------------------------------------
 	-- file manager, finder, svc
@@ -97,7 +93,7 @@ return packer.startup(function(use)
     use {
         'junegunn/fzf',
         run = function()
-            vim.fn['fzf#install']()
+            fn['fzf#install']()
         end
     }
     use 'kevinhwang91/nvim-bqf'
@@ -122,11 +118,12 @@ return packer.startup(function(use)
 	--	}
 	--}
     
+    use 'williamboman/mason.nvim'
+    use 'williamboman/mason-lspconfig.nvim'
+
     use {
         'VonHeikemen/lsp-zero.nvim',
         requires = {
-            'williamboman/mason.nvim',
-            'williamboman/mason-lspconfig.nvim',
             'hrsh7th/nvim-cmp',
             'hrsh7th/cmp-nvim-lsp',
             'hrsh7th/cmp-buffer',
@@ -139,14 +136,20 @@ return packer.startup(function(use)
     use 'jose-elias-alvarez/null-ls.nvim'
 
     -- debugging
-    use 'mfussenegger/nvim-dap'
+    use {
+        'rcarriga/nvim-dap-ui',
+        requires = {
+            'mfussenegger/nvim-dap',
+            'theHamsta/nvim-dap-virtual-text'
+        }
+    }
 
     ------------------------------------
 	-- prog. langs
     ------------------------------------
     
     -- latex
-    --use 'lervag/vimtex'
+    use 'lervag/vimtex'
 
     -- ---------END OF PLUGINS----------
 	

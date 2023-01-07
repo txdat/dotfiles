@@ -169,6 +169,11 @@ _G.packer_plugins = {
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/mason.nvim",
     url = "https://github.com/williamboman/mason.nvim"
   },
+  ["modes.nvim"] = {
+    loaded = true,
+    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/modes.nvim",
+    url = "https://github.com/mvllow/modes.nvim"
+  },
   ["null-ls.nvim"] = {
     loaded = true,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/null-ls.nvim",
@@ -193,6 +198,16 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/nvim-dap",
     url = "https://github.com/mfussenegger/nvim-dap"
+  },
+  ["nvim-dap-ui"] = {
+    loaded = true,
+    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/nvim-dap-ui",
+    url = "https://github.com/rcarriga/nvim-dap-ui"
+  },
+  ["nvim-dap-virtual-text"] = {
+    loaded = true,
+    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/nvim-dap-virtual-text",
+    url = "https://github.com/theHamsta/nvim-dap-virtual-text"
   },
   ["nvim-lspconfig"] = {
     loaded = true,
@@ -224,6 +239,11 @@ _G.packer_plugins = {
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
+  ["symbols-outline.nvim"] = {
+    loaded = true,
+    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/symbols-outline.nvim",
+    url = "https://github.com/simrat39/symbols-outline.nvim"
+  },
   ["telescope-fzf-native.nvim"] = {
     loaded = true,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim",
@@ -238,6 +258,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/trouble.nvim",
     url = "https://github.com/folke/trouble.nvim"
+  },
+  vimtex = {
+    loaded = true,
+    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/vimtex",
+    url = "https://github.com/lervag/vimtex"
   }
 }
 
