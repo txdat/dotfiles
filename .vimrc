@@ -49,12 +49,13 @@ set fileencoding=utf-8
 set mouse=a  " enable mouse support
 set noerrorbells
 set bs=2  " fix backspace
+let mapleader='/'  " set <leader>
 
 " ----------------------------------
 " gui
 " ----------------------------------
 
-set bg=dark
+set background=dark
 set shortmess=I  " disable vim intro
 set laststatus=3  " set global statusline
 set termguicolors  " enable 24bits colors
@@ -77,14 +78,13 @@ set splitbelow  " horizontal split to the bottom
 
 " fix tmux colorscheme issue
 if !has('gui_running') && &term =~ '^\%(screen\|tmux\)'
-  let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-  let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
-" windows gvim colorscheme
-if has('win32') && has('gui_running')
+if has('gui_running')
     set guifont=Jetbrains\ Mono:h10
-    "colorscheme torte
+    colorscheme torte
 endif
 
 " ----------------------------------
@@ -127,20 +127,20 @@ set updatetime=250  " milli-seconds to wait for trigger an event (keymap)
 " ----------------------------------
 
 " highlight on yank (selected copy)
-augroup YankHighlight
-  autocmd!
-  autocmd TextYankPost * if v:event.operator == 'y' | call s:FlashYankedText() | endif
-augroup END
+function s:matchdelete(match, win)
+    silent! call matchdelete(a:match, a:win)
+endfunction
 
 function! s:FlashYankedText()
-  let match = matchadd('IncSearch', ".\\%>'\\[\\_.*\\%<']..")
-  let win = win_getid()
-  call timer_start(500, {-> s:matchdelete(match, win)})
+    let match = matchadd('Visual', ".\\%>'\\[\\_.*\\%<']..")
+    let win = win_getid()
+    call timer_start(500, {-> s:matchdelete(match, win)})
 endfunction
 
-function s:matchdelete(match, win)
-  silent! call matchdelete(a:match, a:win)
-endfunction
+augroup YankHighlight
+    autocmd!
+    autocmd TextYankPost * if v:event.operator == 'y' | call s:FlashYankedText() | endif
+augroup END
 
 " remove whitespace on save
 autocmd BufWritePre * :%s/\\s\\+$//e
@@ -165,17 +165,23 @@ autocmd BufLeave * stopinsert
 " keymaps
 " ----------------------------------
 
-let mapleader='/'  " set <leader>
-
 nnoremap <C-t> :term<CR>
 nnoremap <Esc> <C-\\><C-n>
+
 nnoremap <C-[> :bprevious<CR>
 nnoremap <C-]> :bnext<CR>
+
 nnoremap <C-d> :bd!<CR>
 nnoremap <C-q> :<C-U>bprevious <bar> bdelete #<CR>
 nnoremap <C-Q> :qa!<CR>
+
 nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
-nnoremap <leader>h :nohl<CR>
+
+nnoremap <leader>nh :nohl<CR>
+
 nnoremap <C-s> :w<CR>
 inoremap <C-s> <C-c>:w<CR>
+
+nnoremap <leader>ql :call setqflist([])<CR>
+

@@ -114,11 +114,6 @@ _G.packer_plugins = {
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/fzf",
     url = "https://github.com/junegunn/fzf"
   },
-  ["fzf-lua"] = {
-    loaded = true,
-    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/fzf-lua",
-    url = "https://github.com/ibhagwan/fzf-lua"
-  },
   ["gitsigns.nvim"] = {
     loaded = true,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
@@ -144,11 +139,6 @@ _G.packer_plugins = {
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/kanagawa.nvim",
     url = "https://github.com/rebelot/kanagawa.nvim"
   },
-  ["lsp-zero.nvim"] = {
-    loaded = true,
-    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/lsp-zero.nvim",
-    url = "https://github.com/VonHeikemen/lsp-zero.nvim"
-  },
   ["lspsaga.nvim"] = {
     loaded = true,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/lspsaga.nvim",
@@ -158,21 +148,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/lualine.nvim",
     url = "https://github.com/nvim-lualine/lualine.nvim"
-  },
-  ["mason-lspconfig.nvim"] = {
-    loaded = true,
-    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/mason-lspconfig.nvim",
-    url = "https://github.com/williamboman/mason-lspconfig.nvim"
-  },
-  ["mason.nvim"] = {
-    loaded = true,
-    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/mason.nvim",
-    url = "https://github.com/williamboman/mason.nvim"
-  },
-  ["modes.nvim"] = {
-    loaded = true,
-    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/modes.nvim",
-    url = "https://github.com/mvllow/modes.nvim"
   },
   ["null-ls.nvim"] = {
     loaded = true,
@@ -239,25 +214,20 @@ _G.packer_plugins = {
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
   },
-  ["symbols-outline.nvim"] = {
-    loaded = true,
-    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/symbols-outline.nvim",
-    url = "https://github.com/simrat39/symbols-outline.nvim"
-  },
   ["telescope-fzf-native.nvim"] = {
     loaded = true,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim",
     url = "https://github.com/nvim-telescope/telescope-fzf-native.nvim"
   },
+  ["telescope-ui-select.nvim"] = {
+    loaded = true,
+    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/telescope-ui-select.nvim",
+    url = "https://github.com/nvim-telescope/telescope-ui-select.nvim"
+  },
   ["telescope.nvim"] = {
     loaded = true,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/telescope.nvim",
     url = "https://github.com/nvim-telescope/telescope.nvim"
-  },
-  ["trouble.nvim"] = {
-    loaded = true,
-    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/trouble.nvim",
-    url = "https://github.com/folke/trouble.nvim"
   },
   vimtex = {
     loaded = true,

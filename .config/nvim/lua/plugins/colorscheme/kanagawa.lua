@@ -17,6 +17,6 @@ require ('kanagawa').setup {
     theme = "default"           -- Load "default" theme or the experimental "light" theme
 }
 
-vim.g.colorscheme = 'kanagawa'
-
 vim.cmd [[colorscheme kanagawa]]
+
+vim.g.colorscheme = 'kanagawa'

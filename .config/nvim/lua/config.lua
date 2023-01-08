@@ -51,11 +51,13 @@ opt.encoding = 'utf-8'
 opt.fileencoding = 'utf-8'
 opt.mouse = 'a'  -- enable mouse support
 opt.errorbells = false
+vim.g.mapleader = '/'
 
 -----------------------------------------
 -- gui
 -----------------------------------------
 
+opt.background = dark
 opt.shortmess:append 'sI'  -- disable nvim intro
 opt.laststatus=3  -- set global statusline
 opt.termguicolors = true  -- enable 24bits colors

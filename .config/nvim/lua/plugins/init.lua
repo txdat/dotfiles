@@ -1,22 +1,17 @@
-require ('plugins.plugins')  -- packer
-
-require ('impatient')  -- speedup loading
-require ('plugins.colorscheme')
+require ('plugins.impatient')
+require ('plugins.packer')
+require ('plugins.colorscheme.kanagawa')
 require ('plugins.lualine')
+require ('plugins.bufferline')  -- barbar
 require ('plugins.indent_blankline')
-require ('plugins.modes')
-require ('plugins.trouble')
 require ('plugins.nvim_treesitter')
 require ('plugins.comment')
 require ('plugins.nvim_autopairs')
 require ('plugins.hop')
-require ('plugins.symbols_outline')
 require ('plugins.nvim_tree')
 require ('plugins.telescope')
-require ('plugins.fzf_lua')
 require ('plugins.bqf')
 require ('plugins.gitsigns')
 require ('plugins.vimtex')
-require ('plugins.mason')
 require ('plugins.lsp')
 require ('plugins.dap')
