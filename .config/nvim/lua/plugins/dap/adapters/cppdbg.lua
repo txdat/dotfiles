@@ -4,7 +4,7 @@ local dap = require ('dap')
 local cpptools_dir = require ('util').exec('find "' .. os.getenv('HOME') .. '/.vscode/extensions' .. '" -maxdepth 1 -name *cpptools*')
 
 dap.adapters.cppdbg = {
-    name = 'cppdbg',
+    id = 'cppdbg',
     type = 'executable',
     command = cpptools_dir .. '/debugAdapters/bin/OpenDebugAD7',
 }

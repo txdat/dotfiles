@@ -142,6 +142,8 @@ alias cpfi="xclip -sel c -o > " # copy from clipboard to file
 algo () {
     dir=$(pwd)
     fname=${1%%.*} # *.cpp/cc
+    
+    # precompile headers
     if [ ! -f "$dir/bits/stdc++.h.gch" ]
     then
         mkdir -p bits
@@ -152,8 +154,12 @@ algo () {
         g++ -std=c++20 -Ofast -funroll-loops -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native "$dir/bits/stdc++.h"
         echo " - done!"
     fi
-    g++ -std=c++20 -DLOCAL -DDEBUG "$1" -o "$fname.out" && ./"$fname.out"
-    return 0
+
+    # compile and run
+    #g++ -std=c++20 -DLOCAL "$1" -o "$fname.out" && ./"$fname.out"
+
+    # debug mode
+    g++ -std=c++20 -DDEBUG -g "$1" -o "$fname.out" && ./"$fname.out"
 }
 
 # start/stop kube cluster
