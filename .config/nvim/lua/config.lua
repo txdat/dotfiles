@@ -115,9 +115,7 @@ opt.updatetime = 250  -- milli-seconds to wait for trigger an event (keymap)
 -----------------------------------------
 
 -- python
-local handler = io.popen("which python3")
-vim.g.python3_host_prog = handler:read("*a"):gsub("\n[^\n]*$", "")
-handler:close()
+vim.g.python3_host_prog = require ('util').exec('which python3')
 
 -----------------------------------------
 -- autocommand functions

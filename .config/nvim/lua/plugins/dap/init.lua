@@ -1,18 +1,14 @@
-local dap = require ('dap')
-local dapui = require ('dapui')
+require ('plugins.dap.nvim_dap_ui')
+require ('plugins.dap.nvim_dap_virtual_text')
+require ('plugins.dap.keymaps')
 
-dapui.setup()
+-- adapters
+-- select 1 of 2 for cpp
+require ('plugins.dap.adapters.cppdbg')
+-- require ('plugins.dap.adapters.lldb')
 
-dap.listeners.after.event_initialized['dapui_config'] = function()
-    dapui.open()
-end
-dap.listeners.before.event_terminated['dapui_config'] = function()
-    dapui.close()
-end
-dap.listeners.before.event_exited['dapui_config'] = function()
-    dapui.close()
-end
+require ('plugins.dap.adapters.python')
 
--- TODO: config daps for prog. langs
-
-require ('nvim-dap-virtual-text').setup()
+-- config
+require ('plugins.dap.config.cpp')  -- config for c/c++/rust
+require ('plugins.dap.config.python')

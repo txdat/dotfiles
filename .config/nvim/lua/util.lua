@@ -8,4 +8,11 @@ function M.keymap(mode, lhs, rhs, opts)
     vim.keymap.set(mode, lhs, rhs, options)
 end
 
+function M.exec(cmd)
+    local handler = io.popen(cmd)
+    local res = handler:read("*a"):gsub("\n[^\n]*$", "")
+    handler:close()
+    return res
+end
+
 return M
