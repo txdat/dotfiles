@@ -1,5 +1,12 @@
 local M = {}
 
+M.sources = {
+    { name = 'nvim_lsp', keyword_length = 3 },
+    { name = 'buffer', keyword_length = 3 },
+    { name = 'path' },
+    { name = 'luasnip', keyword_length = 3 },
+}
+
 M.on_attach = function(_, bufnr)
     local keymap = require ('util').keymap
 

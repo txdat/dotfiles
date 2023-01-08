@@ -2,7 +2,7 @@ require ('plugins.impatient')
 require ('plugins.packer')
 require ('plugins.colorscheme.kanagawa')
 require ('plugins.lualine')
-require ('plugins.bufferline')  -- barbar
+require ('plugins.barbar')
 require ('plugins.indent_blankline')
 require ('plugins.nvim_treesitter')
 require ('plugins.comment')

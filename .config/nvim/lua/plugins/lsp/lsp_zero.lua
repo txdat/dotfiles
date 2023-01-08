@@ -20,23 +20,20 @@ lsp.set_preferences({
     }
 })
 
+local cmp_common = require ('plugins.lsp.cmp_common')
+
 lsp.setup_nvim_cmp({
     documentation = {
         border = 'none',
     },
-    sources = {
-        { name = 'nvim_lsp' },
-        { name = 'buffer' },
-        { name = 'path' },
-        { name = 'luasnip' },
-    }    
+    sources = cmp_common.sources,    
 })
+
+lsp.extend_lspconfig()
 
 local lsp_servers = require ('plugins.lsp.lsp_servers')
 
 -- lsp.ensure_installed(lsp_servers)  -- install with mason
-
-local cmp_common = require ('plugins.lsp.cmp_common')
 
 for _, server in pairs(lsp_servers) do
     lsp.configure(server, {
@@ -48,7 +45,7 @@ end
 
 lsp.setup()
 
-require ('luasnip.loaders.from_snipmate').lazy_load()
+require ('luasnip.loaders.from_vscode').lazy_load()
 
 -- autopairs
 local cmp_autopairs = require ('nvim-autopairs.completion.cmp')

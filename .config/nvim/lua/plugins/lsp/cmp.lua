@@ -5,6 +5,8 @@ local cmp = require ('cmp')
 local luasnip = require ('luasnip')
 local lspconfig = require ('lspconfig')
 
+local cmp_common = require ('plugins.lsp.cmp_common')
+
 cmp.setup {
     snippet = {
         expand = function(args)
@@ -42,15 +44,8 @@ cmp.setup {
             end
         end, { 'i', 's' }),
     }),
-    sources = {
-        { name = 'nvim_lsp' },
-        { name = 'buffer' },
-        { name = 'path' },
-        { name = 'luasnip' },
-    },
+    sources = cmp_common.sources,
 }
-
-local cmp_common = require ('plugins.lsp.cmp_common')
 
 local lsp_servers = require ('plugins.lsp.lsp_servers')
 
@@ -61,7 +56,7 @@ for _, server in pairs(lsp_servers) do
     }
 end
 
-require ('luasnip.loaders.from_snipmate').lazy_load()
+require ('luasnip.loaders.from_vscode').lazy_load()
 
 -- autopairs
 local cmp_autopairs = require ('nvim-autopairs.completion.cmp')
