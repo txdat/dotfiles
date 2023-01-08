@@ -69,6 +69,7 @@ set cursorline
 hi CursorLine cterm=none
 hi LineNR cterm=none guifg=grey
 hi CursorLineNR cterm=bold
+hi! link Folded Normal
 set number  " show line number
 set relativenumber  " (-1,+1) line number
 set showmatch  " highlight matching parenthesis
