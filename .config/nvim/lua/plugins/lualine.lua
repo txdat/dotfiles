@@ -114,12 +114,13 @@ require ('lualine').setup {
 				symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
 			},
 		 },
-        lualine_c = {
-            {
-                diagnostics_message,
-                colors = { error = '#e82424', warn = '#ff9e3b', info = '#6a9589', hint = '#658594' },
-            },
-        },
+        --lualine_c = {
+        --    {
+        --        diagnostics_message,
+        --        colors = { error = '#e82424', warn = '#ff9e3b', info = '#6a9589', hint = '#658594' },
+        --    },
+        --},
+        lualine_c = {},
 		lualine_x = { 'fileformat', 'encoding' },
 		lualine_y = { 'branch', 'diff' },
 		lualine_z = { 'location', 'progress' },

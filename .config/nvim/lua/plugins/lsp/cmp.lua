@@ -47,7 +47,7 @@ cmp.setup {
     sources = cmp_common.sources,
 }
 
-local lsp_servers = require ('plugins.lsp.lsp_servers')
+local lsp_servers = require ('plugins.lsp.lsp_servers').servers
 
 for _, server in pairs(lsp_servers) do
     lspconfig[server].setup {

@@ -33,9 +33,9 @@ lsp.extend_lspconfig()
 
 local lsp_servers = require ('plugins.lsp.lsp_servers')
 
--- lsp.ensure_installed(lsp_servers)  -- install with mason
+lsp.ensure_installed(lsp_servers.ensure_installed)  -- install with mason
 
-for _, server in pairs(lsp_servers) do
+for _, server in pairs(lsp_servers.servers) do
     lsp.configure(server, {
         force_setup = true, -- global server
         on_attach = cmp_common.on_attach,

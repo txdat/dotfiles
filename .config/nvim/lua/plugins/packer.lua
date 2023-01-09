@@ -23,7 +23,7 @@ packer.init({
     display = {
         compact = true,
         open_fn = function()
-            return require ('packer.util').float({ border = 'single' })
+            return require ('packer.util').float({ border = 'none' })
         end,
     },
     git = { 
@@ -128,12 +128,8 @@ return packer.startup(function(use)
     -- autocompletion
     use 'neovim/nvim-lspconfig'
 
-    -- use {
-    --     'williamboman/mason-lspconfig.nvim',
-    --     requires = {
-    --         'williamboman/mason.nvim',
-    --     }
-    -- }
+    use 'williamboman/mason.nvim'
+    -- use 'williamboman/mason-lspconfig.nvim'
    
     -- use {
     --    'VonHeikemen/lsp-zero.nvim',

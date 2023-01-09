@@ -10,7 +10,7 @@ vim.g.coq_settings = {
 local lspconfig = require ('lspconfig')
 local coq = require ('coq')
 
-local lsp_servers = require ('plugins.lsp.lsp_servers')
+local lsp_servers = require ('plugins.lsp.lsp_servers').servers
 
 for _, server in pairs(lsp_servers) do
     lspconfig[server].setup(coq.lsp_ensure_capabilities())
