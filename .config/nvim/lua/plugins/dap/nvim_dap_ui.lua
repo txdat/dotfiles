@@ -22,20 +22,20 @@ dapui.setup({
                 'stacks',
                 'watches',
             },
-            size = 0.33,
+            size = 0.25,
             position = 'left',
         },
         {
             elements = {
-                { id = 'repl', size = 0.45 },
-                { id = 'console', size = 0.55 },
+                { id = 'repl', size = 0.5 },
+                { id = 'console', size = 0.5 },
             },
-            size = 0.27,
+            size = 0.3,
             position = 'bottom',
         },
     },
     controls = {
-        enabled = false,
+        enabled = true,
     },
     render = {
         max_value_lines = 3,
@@ -56,6 +56,13 @@ vim.fn.sign_define('DapBreakpointCondition', { text = '', texthl = 'Diagnosti
 vim.fn.sign_define('DapLogPoint', { text = '', texthl = 'DiagnosticSignError', linehl = '', numhl = '' })
 vim.fn.sign_define('DapStopped', { text = '', texthl = 'DiagnosticSignError', linehl = '', numhl = '' })
 vim.fn.sign_define('DapBreakpointRejected', { text = '', texthl = 'DiagnosticSignError', linehl = '', numhl = '' })
+
+vim.api.nvim_create_autocmd('FileType', {
+    pattern = 'dap-repl',
+    callback = function()
+        require ('dap.ext.autocompl').attach()
+    end,
+})
 
 dap.listeners.after.event_initialized['dapui_config'] = function()
     dapui.open()

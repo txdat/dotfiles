@@ -2,14 +2,17 @@ local dap = require ('dap')
 
 dap.configurations.cpp = {
     {
-        name = 'C/C++/Rust debug and run',
+        name = 'C++ debug and run',
         type = vim.g.cpp_dap_type,
         request = 'launch',
         program = function()
             return vim.fn.input('Path to executable: ', vim.fn.getcwd() .. '/', 'file')
         end,
+        stdio = { nil, nil, nil },
         cwd = '${workspaceFolder}',
         stopOnEntry = false,
+        -- 'lldb' requires this
+        -- https://github.com/mfussenegger/nvim-dap/issues/210
         -- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:
         --
         --    echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope

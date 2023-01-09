@@ -138,7 +138,7 @@ alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 alias cpcb="xclip -sel c < " # copy from file to clipboard
 alias cpfi="xclip -sel c -o > " # copy from clipboard to file
 
-# compile and run algo (c++20)
+# compile algo (c++20)
 algo () {
     dir=$(pwd)
     fname=${1%%.*} # *.cpp/cc
@@ -151,15 +151,13 @@ algo () {
         sudo chmod 777 "$dir/bits/stdc++.h"
 
         echo -n "compiling stdc++.h (c++20)"
-        g++ -std=c++20 -Ofast -funroll-loops -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native "$dir/bits/stdc++.h"
+        g++ -std=c++20 -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native "$dir/bits/stdc++.h"
         echo " - done!"
     fi
 
-    # compile and run
-    #g++ -std=c++20 -DLOCAL "$1" -o "$fname.out" && ./"$fname.out"
-
-    # debug mode
-    g++ -std=c++20 -DDEBUG -g "$1" -o "$fname.out" && ./"$fname.out"
+    # compile
+    g++ -std=c++20 -DDEBUG -g "$1" -o "$fname.out"
+    echo "run ./$fname.out"
 }
 
 # start/stop kube cluster
