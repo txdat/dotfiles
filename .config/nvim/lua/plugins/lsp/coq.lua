@@ -7,8 +7,8 @@ vim.g.coq_settings = {
 	}
 }
 
-local lspconfig = require ('lspconfig')
 local coq = require ('coq')
+local lspconfig = require ('lspconfig')
 
 local lsp_servers = require ('plugins.lsp.lsp_servers').servers
 

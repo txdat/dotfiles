@@ -2,8 +2,8 @@ local dap = require ('dap')
 local dapui = require ('dapui')
 
 function dap_terminate()
-    dap.terminate()
     dap.repl.close()
+    dap.terminate()
     dapui.close()  -- force close dapui
 end
 

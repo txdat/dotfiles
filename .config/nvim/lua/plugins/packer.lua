@@ -168,13 +168,6 @@ return packer.startup(function(use)
     -- diagnostics
     use { 'glepnir/lspsaga.nvim', branch = 'main' }
 
-    -- use {
-    --     'folke/trouble.nvim',
-    --     requires = {
-    --         'nvim-tree/nvim-web-devicons',
-    --     }
-    -- }
-
     -- linting/formatting
     use 'jose-elias-alvarez/null-ls.nvim'
 

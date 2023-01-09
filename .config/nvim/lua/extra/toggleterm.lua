@@ -9,7 +9,7 @@ local terminal_buffer = nil
 local terminal_job_id = nil
 
 local function terminal_window_size()
-    return tonumber(api.nvim_exec('echo &lines', true)) / 4
+    return tonumber(api.nvim_exec('echo &lines', true)) / 2
 end
 
 local function TerminalOpen()

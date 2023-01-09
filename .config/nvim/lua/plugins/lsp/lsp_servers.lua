@@ -1,8 +1,12 @@
 local M = {}
 
-M.ensure_installed = {}
+-- mason only
+M.ensure_installed = {
+    'lua-language-server',  -- sumneko_lua
+}
 
 M.servers = {
+    'sumneko_lua',          -- lua
     'clangd',               -- c/c++
     'pyright',              -- python
     'rust_analyzer',        -- rust
@@ -11,7 +15,6 @@ M.servers = {
     'eslint',               -- javascript/typescript
     'tsserver',             -- typescript
     'texlab',               -- latex
-    'sumneko_lua',          -- lua
 }
 
 return M

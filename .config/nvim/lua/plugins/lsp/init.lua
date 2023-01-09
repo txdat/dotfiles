@@ -1,5 +1,7 @@
--- select 1 of 4
+require ('plugins.lsp.mason')
 require ('plugins.lsp.mason_lspconfig')
+
+-- select 1 of 3
 -- require ('plugins.lsp.lsp_zero')  -- disable lspsaga
 require ('plugins.lsp.cmp')
 -- require ('plugins.lsp.coq')

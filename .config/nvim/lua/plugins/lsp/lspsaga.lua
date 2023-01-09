@@ -24,6 +24,6 @@ keymap('n', 'K', ':Lspsaga hover_doc<CR>')
 
 -- Float terminal
 -- keymap('n', '<A-f>', ':Lspsaga open_floaterm<CR>')
-keymap('n', '<A-f>', ':Lspsaga open_floaterm lazygit<CR>')
+keymap('n', '<A-g>', ':Lspsaga open_floaterm lazygit<CR>')
 -- close floaterm
-keymap('t', '<A-f>', [[<C-\><C-n>:Lspsaga close_floaterm<CR>]])
+keymap('t', '<A-g>', [[<C-\><C-n>:Lspsaga close_floaterm<CR>]])
