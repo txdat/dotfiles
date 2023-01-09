@@ -1,4 +1,4 @@
 require ('config')
 require ('plugins')
-require ('user_commands')
+require ('extra')
 require ('keymaps')

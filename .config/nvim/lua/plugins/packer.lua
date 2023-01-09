@@ -9,16 +9,16 @@ if fn.empty(fn.glob(install_path)) > 0 then
 end
 
 -- autocommand that reloads neovim whenever you save the init.lua file
-cmd [[
-  augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost init.lua source <afile> | PackerSync
-  augroup end
-]]
+--cmd [[
+--  augroup packer_user_config
+--    autocmd!
+--    autocmd BufWritePost init.lua source <afile> | PackerSync
+--  augroup end
+--]]
 
 local packer = require ('packer')
 
-packer.init({ 
+packer.init({
 	auto_reload_compiled = true,
     display = {
         compact = true,
@@ -26,9 +26,9 @@ packer.init({
             return require ('packer.util').float({ border = 'none' })
         end,
     },
-    git = { 
+    git = {
 		clone_timeout = 300 -- seconds
-	} 
+	}
 })
 
 return packer.startup(function(use)
@@ -80,10 +80,10 @@ return packer.startup(function(use)
     ------------------------------------
 
 	-- file manager
-	--use { 
-	--	'ms-jpq/chadtree', 
-	--	branch = 'chad', 
-	--	run = 'python3 -m chadtree deps' 
+	--use {
+	--	'ms-jpq/chadtree',
+	--	branch = 'chad',
+	--	run = 'python3 -m chadtree deps'
 	--}
     use {
         'nvim-tree/nvim-tree.lua',
@@ -93,8 +93,8 @@ return packer.startup(function(use)
     }
 
 	-- finder
-	use { 
-		'nvim-telescope/telescope.nvim', 
+	use {
+		'nvim-telescope/telescope.nvim',
 		requires = {
             'nvim-lua/plenary.nvim',
             'nvim-telescope/telescope-ui-select.nvim',
@@ -130,7 +130,7 @@ return packer.startup(function(use)
 
     use 'williamboman/mason.nvim'
     use 'williamboman/mason-lspconfig.nvim'
-   
+
     -- use {
     --    'VonHeikemen/lsp-zero.nvim',
     --    requires = {
@@ -155,9 +155,9 @@ return packer.startup(function(use)
             'L3MON4D3/LuaSnip',
         }
     }
-    
-    -- use { 
-	-- 	'ms-jpq/coq_nvim', 
+
+    -- use {
+	-- 	'ms-jpq/coq_nvim',
 	-- 	branch = 'coq',
 	-- 	requires = {
 	-- 		{ 'ms-jpq/coq.artifacts', branch = 'artifacts' },
@@ -167,7 +167,7 @@ return packer.startup(function(use)
 
     -- diagnostics
     use { 'glepnir/lspsaga.nvim', branch = 'main' }
-    
+
     -- use {
     --     'folke/trouble.nvim',
     --     requires = {
@@ -190,12 +190,12 @@ return packer.startup(function(use)
     ------------------------------------
 	-- prog. langs
     ------------------------------------
-    
+
     -- latex
     use 'lervag/vimtex'
 
     -- ---------END OF PLUGINS----------
-	
+
     -- automatically set up your configuration after cloning packer.nvim
     -- put this at the end after all plugins
     if packer_bootstrap then

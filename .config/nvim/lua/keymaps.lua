@@ -1,6 +1,6 @@
 local keymap = require ('util').keymap
 
-keymap('n', '<C-t>', ':Term<CR>')  -- open terminal
+--keymap('n', '<C-t>', ':Term<CR>')  -- open terminal
 keymap('t', '<Esc>', '<C-\\><C-n>')  -- exit without closing
 
 -- switch buffers

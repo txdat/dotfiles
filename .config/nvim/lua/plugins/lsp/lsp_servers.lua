@@ -11,6 +11,7 @@ M.servers = {
     'eslint',               -- javascript/typescript
     'tsserver',             -- typescript
     'texlab',               -- latex
+    'sumneko_lua',          -- lua
 }
 
 return M
