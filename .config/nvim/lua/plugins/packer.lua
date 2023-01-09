@@ -106,7 +106,7 @@ return packer.startup(function(use)
     --     'ibhagwan/fzf-lua',
     --     requires = {
     --         'nvim-tree/nvim-web-devicons',
-    --         { 'junegunn/fzf', run = './install --bin' },
+    --         { 'junegunn/fzf', run = './install --bin', opt = true },
     --     }
     -- }
 
@@ -114,7 +114,7 @@ return packer.startup(function(use)
     use {
         'kevinhwang91/nvim-bqf',
         requires = {
-            { 'junegunn/fzf', run = './install --bin' },
+            { 'junegunn/fzf', run = './install --bin', opt = true },
         }
     }
 
@@ -128,8 +128,12 @@ return packer.startup(function(use)
     -- autocompletion
     use 'neovim/nvim-lspconfig'
 
-    use 'williamboman/mason.nvim'
-    use 'williamboman/mason-lspconfig.nvim'
+    use {
+        'williamboman/mason.nvim',
+        requires = {
+            'williamboman/mason-lspconfig.nvim',
+        },
+    }
 
     -- use {
     --    'VonHeikemen/lsp-zero.nvim',
@@ -177,7 +181,7 @@ return packer.startup(function(use)
         requires = {
             'rcarriga/nvim-dap-ui',
             'theHamsta/nvim-dap-virtual-text',
-        }
+        },
     }
 
     ------------------------------------
@@ -185,7 +189,11 @@ return packer.startup(function(use)
     ------------------------------------
 
     -- latex
-    use 'lervag/vimtex'
+    use {
+        'lervag/vimtex',
+        opt = true,
+        ft = { 'tex' },  -- triggered when open *.tex file
+    }
 
     -- ---------END OF PLUGINS----------
 
