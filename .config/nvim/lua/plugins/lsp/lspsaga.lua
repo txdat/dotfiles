@@ -20,7 +20,7 @@ keymap('n', ']e', function()
     lsp_diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
 end)
 
-keymap('n', '<A-k>', ':Lspsaga hover_doc<CR>')
+keymap('n', 'K', ':Lspsaga hover_doc<CR>')
 
 -- Float terminal
 -- keymap('n', '<A-f>', ':Lspsaga open_floaterm<CR>')
