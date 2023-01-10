@@ -173,7 +173,7 @@ nnoremap <C-[> :bprevious<CR>
 nnoremap <C-]> :bnext<CR>
 
 nnoremap <C-d> :bd!<CR>
-nnoremap <C-q> :<C-U>bprevious <bar> bdelete #<CR>
+nnoremap <C-D> :<C-U>bprevious <bar> bdelete #<CR>
 nnoremap <C-Q> :qa!<CR>
 
 nnoremap <F2> :set invpaste paste?<CR>
@@ -184,5 +184,7 @@ nnoremap <leader>nh :nohl<CR>
 nnoremap <C-s> :w<CR>
 inoremap <C-s> <C-c>:w<CR>
 
-nnoremap <leader>ql :call setqflist([])<CR>
+nnoremap <leader>co :copen<CR>
+nnoremap <leader>cw :cclose<CR>
+nnoremap <leader>cc :call setqflist([])<CR>
 

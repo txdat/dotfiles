@@ -8,7 +8,7 @@ require ('nvim-tree').setup {
         indent_width = 2,
         indent_markers = {
             enable = true,
-            inline_arrows = false,
+            inline_arrows = true,
             icons = {
                 corner = "└",
                 edge = "│",

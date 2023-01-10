@@ -2,7 +2,7 @@ local M = {}
 
 -- mason only
 M.ensure_installed = {
-    'lua-language-server',  -- sumneko_lua
+    'sumneko_lua',          -- lua
 }
 
 M.servers = {
