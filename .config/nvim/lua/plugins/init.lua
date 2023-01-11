@@ -1,6 +1,6 @@
 local _ = pcall(require, 'plugins.impatient')
 local _ = pcall(require, 'plugins.packer')
-local _ = pcall(require, 'plugins.colorscheme.kanagawa')
+local _ = pcall(require, 'plugins.colorscheme.spaceduck')
 local _ = pcall(require, 'plugins.lualine')
 local _ = pcall(require, 'plugins.bufferline')
 local _ = pcall(require, 'plugins.indent_blankline')

@@ -14,36 +14,36 @@ set scroll-full-overlap 0.01
 set scroll-step 100
 
 #setup dark theme
-set default-bg "#1F1F28"
-set default-fg "#DCD7BA"
+set default-bg "#0f111b"
+set default-fg "#ecf0c1"
 
-set statusbar-bg "#16161D"
-set statusbar-fg "#C8C093"
+set statusbar-bg "#1b1c36"
+set statusbar-fg "#ecf0c1"
 
-set inputbar-bg "#363646"
-set inputbar-fg "#C8C093"
+set inputbar-bg "#0f111b"
+set inputbar-fg "#ecf0c1"
 
-set notification-error-bg "#43242B"
-set notification-error-fg "#C8C093"
+set highlight-color "#e39400"
+set highlight-active-color "#f2ce00"
 
-set notification-warning-bg "#43242B"
-set notification-warning-fg "#C8C093"
+set completion-highlight-bg "#1b1c36"
+set completion-highlight-fg "#ecf0c1"
 
-set highlight-color "#49443C"
-set highlight-active-color "#DCA561"
+set completion-bg "#0f111b"
+set completion-fg "#ecf0c1"
 
-set completion-highlight-bg "#2B3328"
-set completion-highlight-fg "#C8C093"
+set notification-error-bg "#1b1c36"
+set notification-error-fg "#e33400"
 
-set completion-bg "#1F1F28"
-set completion-fg "#DCD7BA"
+set notification-warning-bg "#1b1c36"
+set notification-warning-fg "#e39400"
 
-set notification-bg "#2B3328"
-set notification-fg "#C8C093"
+set notification-bg "#1b1c36"
+set notification-fg "#5ccc96"
 
 set recolor "true"
-set recolor-lightcolor "#1F1F28"
-set recolor-darkcolor "#DCD7BA"
+set recolor-lightcolor "#0f111b"
+set recolor-darkcolor "#ecf0c1"
 set recolor-reverse-video "true"
 set recolor-keephue "true"
 

@@ -9,11 +9,11 @@ configuration {
 }
 
 * {
-	bg:				                #16161d;
-	fg:				                #c8c093;
-    fg-dim:                         #363646;
-	button:			                #363646;
-    border:                         #54546d;
+	bg:				                #0f111b;
+	fg:				                #ecf0c1;
+    fg-dim:                         #1b1c36;
+	button:			                #1b1c36;
+    border:                         #16172d;
 
 	background-color:	            @bg;
 	text-color:			            @fg;

@@ -110,6 +110,8 @@ source $ZSH/oh-my-zsh.sh
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+export TERM="xterm-256color"
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -127,40 +129,39 @@ unset __conda_setup
 
 export PATH="$HOME/miniconda3/bin:$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$HOME/.cabal/bin:$HOME/.ghcup/bin:$HOME/.local/bin:$PATH"
 
+# ibus
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
 
-export KUBECONFIG=$HOME/.kube/config
-
-alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
+#alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 alias cpcb="xclip -sel c < " # copy from file to clipboard
 alias cpfi="xclip -sel c -o > " # copy from clipboard to file
 
-# compile algo (c++20)
-algo () {
-    dir=$(pwd)
-    fname=${1%%.*} # *.cpp/cc
-    
-    # precompile headers
-    if [ ! -f "$dir/bits/stdc++.h.gch" ]
-    then
-        mkdir -p bits
-        sudo cp $(cut -d' ' -f2 <<<"$(g++ $1 -H 2>&1 | head -n 1)") "$dir/bits/stdc++.h"
-        sudo chmod 777 "$dir/bits/stdc++.h"
+syyu () {
+    echo "-----------------------------"
+    echo "|          pacman           |"
+    echo "-----------------------------"
 
-        echo -n "compiling stdc++.h (c++20)"
-        g++ -std=c++20 -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native "$dir/bits/stdc++.h"
-        echo " - done!"
-    fi
+    sudo pacman -Syyu
 
-    # compile
-    g++ -std=c++20 -DDEBUG -g "$1" -o "$fname.out"
-    echo "run ./$fname.out"
+    echo "-----------------------------"
+    echo "|            aur            |"
+    echo "-----------------------------"
+
+    paru -Syyu
+
+    echo "-----------------------------"
+    echo "|          flatpak          |"
+    echo "-----------------------------"
+
+    flatpak update
 }
 
-# start/stop kube cluster
+# kubernetes (k3s)
+export KUBECONFIG=$HOME/.kube/config
+
 KUBE_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
 
 start_kube () {
@@ -183,4 +184,26 @@ stop_kube () {
         echo stopping $svc
         sudo systemctl stop $svc
     done
+}
+
+# custom commands
+algocpl () {
+    dir=$(pwd)
+    fname=${1%%.*} # *.cpp/cc
+    
+    # precompile headers
+    if [ ! -f "$dir/bits/stdc++.h.gch" ]
+    then
+        mkdir -p bits
+        sudo cp $(cut -d' ' -f2 <<<"$(g++ $1 -H 2>&1 | head -n 1)") "$dir/bits/stdc++.h"
+        sudo chmod 777 "$dir/bits/stdc++.h"
+
+        echo -n "compiling stdc++.h (c++20)"
+        g++ -std=c++20 -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native "$dir/bits/stdc++.h"
+        echo " - done!"
+    fi
+
+    # compile
+    g++ -std=c++20 -DDEBUG -g "$1" -o "$fname.out"
+    echo "run ./$fname.out"
 }

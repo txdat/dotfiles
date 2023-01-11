@@ -42,7 +42,8 @@ return packer.startup(function(use)
     ------------------------------------
 
     -- colorscheme
-    use 'rebelot/kanagawa.nvim'
+    --use 'rebelot/kanagawa.nvim'
+    use { 'pineapplegiant/spaceduck', branch = 'main' }
 
     -- status bar
     use {
