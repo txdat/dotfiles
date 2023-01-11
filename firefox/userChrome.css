@@ -1,5 +1,5 @@
 :root {
-    --n-bg: #282a36;
+    --n-bg: #0f111b;
     --n-icon-color: #e0fbfc;
     --n-nav-toolbar-padding: 1px;
     --n-sidebar-bg: var(--n-bg);
@@ -39,7 +39,7 @@
     --tab-border-radius: 0px !important;
     --arrowpanel-border-radius: 0px !important;
     --arrowpanel-padding-inline: 1px !important;
-    --arrowpanel-background: #282a36 !important;
+    --arrowpanel-background: #0f111b !important;
     --arrowpanel-color: #fafafa !important;
     --arrowpanel-hover-background-color: #333 !important;
     --arrowpanel-disabled-hover-background-color: #333 !important;
@@ -47,7 +47,7 @@
     --arrowpanel-border-color: #44475a !important;
     --arrowpanel-icon-opacity: 1.0 !important;
     /* now the history sidebar color */
-    --lwt-sidebar-background-color: #282a36 !important;
+    --lwt-sidebar-background-color: #0f111b !important;
 }
 
 .tab-text {
@@ -58,7 +58,7 @@
 }
 
 #tabbrowser-tabs {
-    --tab-line-color: #282a36 !important;
+    --tab-line-color: #0f111b !important;
     height: var(--n-tab-height) !important;
 }
 
@@ -108,11 +108,11 @@ toolbaritem {
 }
 
 .urlbarView-row[type="bookmark"]>span {
-    color: green !important;
+    color: #5ccc96 !important;
 }
 
 .urlbarView-row[type="switchtab"]>span {
-    color: orange !important;
+    color: #e39400 !important;
 }
 
 #urlbar {
@@ -129,5 +129,5 @@ toolbaritem {
 }
 
 #sidebar-box {
-    --sidebar-background-color: #282a36 !important;
+    --sidebar-background-color: #0f111b !important;
 }

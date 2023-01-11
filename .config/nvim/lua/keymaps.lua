@@ -9,7 +9,7 @@ keymap('n', '<C-]>', ':bnext<CR>')
 
 -- close current buffer
 keymap('n', '<C-d>', ':bd!<CR>')
-keymap('n', '<C-D>', ':<C-U>bprevious <bar> bdelete #<CR>')  -- and move to previous buffer
+--keymap('n', '<C-D>', ':<C-U>bprevious <bar> bdelete #<CR>')  -- and move to previous buffer
 keymap('n', '<C-Q>', ':qa!<CR>')  -- close all buffers and exit
 
 -- toggle auto-indenting for code paste

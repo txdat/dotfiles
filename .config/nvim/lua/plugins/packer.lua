@@ -8,13 +8,13 @@ if fn.empty(fn.glob(install_path)) > 0 then
     vim.o.runtimepath = fn.stdpath('data') .. '/site/pack/*/start/*,' .. vim.o.runtimepath
 end
 
--- autocommand that reloads neovim whenever you save the init.lua file
---cmd [[
---  augroup packer_user_config
---    autocmd!
---    autocmd BufWritePost init.lua source <afile> | PackerSync
---  augroup end
---]]
+-- autocommand that reloads neovim whenever you save the packer.lua file
+cmd [[
+  augroup packer_user_config
+    autocmd!
+    autocmd BufWritePost packer.lua source <afile> | PackerSync
+  augroup end
+]]
 
 local packer = require ('packer')
 

@@ -15,13 +15,13 @@ url(about:home) {
 @-moz-document url(about:newtab),
 url(about:home) {
     .tile {
-        background-color: #282a36 !important;
+        background-color: #0f111b !important;
     }
     .personalize-button {
         display: none !important;
     }
     /* .personalize-button{
-      background-color: #282a36 !important;
+      background-color: #0f111b !important;
     }
     .personalize-button:hover{
       background-color: #9c89b8 !important;
