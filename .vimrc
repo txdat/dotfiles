@@ -55,7 +55,7 @@ let mapleader='/'  " set <leader>
 " gui
 " ----------------------------------
 
-set background=dark
+set background="dark"
 set shortmess=I  " disable vim intro
 set laststatus=3  " set global statusline
 set guicursor=n-v-c:block-Cursor  " using block cursor

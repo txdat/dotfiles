@@ -57,7 +57,7 @@ vim.g.mapleader = '/'
 -- gui
 -----------------------------------------
 
-opt.background = dark
+opt.background = "dark"
 opt.shortmess:append 'sI'  -- disable nvim intro
 opt.laststatus=3  -- set global statusline
 opt.termguicolors = true  -- enable 24bits colors

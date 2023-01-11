@@ -210,6 +210,11 @@ _G.packer_plugins = {
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/nvim-web-devicons",
     url = "https://github.com/nvim-tree/nvim-web-devicons"
   },
+  ["oxocarbon.nvim"] = {
+    loaded = true,
+    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/oxocarbon.nvim",
+    url = "https://github.com/nyoom-engineering/oxocarbon.nvim"
+  },
   ["packer.nvim"] = {
     loaded = true,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/packer.nvim",
@@ -219,11 +224,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/plenary.nvim",
     url = "https://github.com/nvim-lua/plenary.nvim"
-  },
-  spaceduck = {
-    loaded = true,
-    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/spaceduck",
-    url = "https://github.com/pineapplegiant/spaceduck"
   },
   ["telescope-fzf-native.nvim"] = {
     loaded = true,
