@@ -4,7 +4,8 @@ local fn = vim.fn
 -- automatically install packer
 local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
 if fn.empty(fn.glob(install_path)) > 0 then
-    packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim', install_path })
+    packer_bootstrap = fn.system({ 'git', 'clone', '--depth', '1', 'https://github.com/wbthomason/packer.nvim',
+        install_path })
     vim.o.runtimepath = fn.stdpath('data') .. '/site/pack/*/start/*,' .. vim.o.runtimepath
 end
 
@@ -16,29 +17,32 @@ cmd [[
   augroup end
 ]]
 
-local packer = require ('packer')
+local packer = require('packer')
 
 packer.init({
-	auto_reload_compiled = true,
+    auto_reload_compiled = true,
     display = {
         compact = true,
         open_fn = function()
-            return require ('packer.util').float({ border = 'none' })
+            return require('packer.util').float({ border = 'none' })
         end,
+        keybindings = {
+            quit = '<ESC>',
+        },
     },
     git = {
-		clone_timeout = 300 -- seconds
-	}
+        clone_timeout = 300 -- seconds
+    }
 })
 
 return packer.startup(function(use)
-	use 'wbthomason/packer.nvim'  -- packer can manage itself
+    use 'wbthomason/packer.nvim' -- packer can manage itself
 
     -- speed up loading modules
     use 'lewis6991/impatient.nvim'
 
     ------------------------------------
-	-- gui, navigation
+    -- gui, navigation
     ------------------------------------
 
     -- colorscheme
@@ -63,10 +67,10 @@ return packer.startup(function(use)
     }
 
     -- indent
-	use 'lukas-reineke/indent-blankline.nvim'
+    use 'lukas-reineke/indent-blankline.nvim'
 
-	-- syntax
-	use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
+    -- syntax
+    use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
 
     -- commenting
     use 'numToStr/Comment.nvim'
@@ -78,15 +82,15 @@ return packer.startup(function(use)
     use 'phaazon/hop.nvim'
 
     ------------------------------------
-	-- file manager, finder, svc
+    -- file manager, finder, svc
     ------------------------------------
 
-	-- file manager
-	--use {
-	--	'ms-jpq/chadtree',
-	--	branch = 'chad',
-	--	run = 'python3 -m chadtree deps'
-	--}
+    -- file manager
+    --use {
+    --	'ms-jpq/chadtree',
+    --	branch = 'chad',
+    --	run = 'python3 -m chadtree deps'
+    --}
     use {
         'nvim-tree/nvim-tree.lua',
         requires = {
@@ -94,15 +98,15 @@ return packer.startup(function(use)
         }
     }
 
-	-- finder
-	use {
-		'nvim-telescope/telescope.nvim',
-		requires = {
+    -- finder
+    use {
+        'nvim-telescope/telescope.nvim',
+        requires = {
             'nvim-lua/plenary.nvim',
             'nvim-telescope/telescope-ui-select.nvim',
-			{ 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
-		}
-	}
+            { 'nvim-telescope/telescope-fzf-native.nvim', run = 'make' },
+        }
+    }
 
     -- use {
     --     'ibhagwan/fzf-lua',
@@ -124,16 +128,16 @@ return packer.startup(function(use)
     use 'lewis6991/gitsigns.nvim'
 
     ------------------------------------
-	-- autocompletion, debugging
+    -- autocompletion, debugging
     ------------------------------------
 
     -- autocompletion
     use 'neovim/nvim-lspconfig'
 
     use {
-        'williamboman/mason.nvim',
+        'williamboman/mason-lspconfig.nvim',
         requires = {
-            'williamboman/mason-lspconfig.nvim',
+            'williamboman/mason.nvim',
         },
     }
 
@@ -162,14 +166,14 @@ return packer.startup(function(use)
         }
     }
 
-    -- use {
-	-- 	'ms-jpq/coq_nvim',
-	-- 	branch = 'coq',
-	-- 	requires = {
-	-- 		{ 'ms-jpq/coq.artifacts', branch = 'artifacts' },
-	-- 		{ 'ms-jpq/coq.thirdparty', branch = '3p' }
-	-- 	}
-	-- }
+    --use {
+    --	'ms-jpq/coq_nvim',
+    --	branch = 'coq',
+    --	requires = {
+    --		{ 'ms-jpq/coq.artifacts', branch = 'artifacts' },
+    --		{ 'ms-jpq/coq.thirdparty', branch = '3p' }
+    --	}
+    --}
 
     -- diagnostics
     use { 'glepnir/lspsaga.nvim', branch = 'main' }
@@ -180,21 +184,30 @@ return packer.startup(function(use)
     -- debugging
     use {
         'mfussenegger/nvim-dap',
+        opt = true,
         requires = {
-            'rcarriga/nvim-dap-ui',
-            'theHamsta/nvim-dap-virtual-text',
+            { 'rcarriga/nvim-dap-ui', opt = true },
+            { 'theHamsta/nvim-dap-virtual-text', opt = true },
         },
+        keys = { { 'n', '<F5>' }, { 'n', '<F9>' } }, -- triggered when start debugging
+        wants = { 'nvim-dap-ui', 'nvim-dap-virtual-text' },
+        config = function()
+            require('plugins.dap')
+        end,
     }
 
     ------------------------------------
-	-- prog. langs
+    -- prog. langs
     ------------------------------------
 
     -- latex
     use {
         'lervag/vimtex',
         opt = true,
-        ft = { 'tex' },  -- triggered when open *.tex file
+        ft = { 'tex' }, -- triggered when open *.tex file
+        config = function()
+            require('plugins.vimtex')
+        end
     }
 
     -- ---------END OF PLUGINS----------
@@ -202,6 +215,6 @@ return packer.startup(function(use)
     -- automatically set up your configuration after cloning packer.nvim
     -- put this at the end after all plugins
     if packer_bootstrap then
-		packer.sync()
-	end
+        packer.sync()
+    end
 end)
