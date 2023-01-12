@@ -1,5 +1,5 @@
-local dap = require ('dap')
-local dapui = require ('dapui')
+local dap = require('dap')
+local dapui = require('dapui')
 
 -- dap.set_log_level('DEBUG')
 
@@ -60,7 +60,7 @@ vim.fn.sign_define('DapBreakpointRejected', { text = '', texthl = 'Diagnostic
 vim.api.nvim_create_autocmd('FileType', {
     pattern = 'dap-repl',
     callback = function()
-        require ('dap.ext.autocompl').attach()
+        require('dap.ext.autocompl').attach()
     end,
 })
 

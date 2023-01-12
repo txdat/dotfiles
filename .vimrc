@@ -49,7 +49,7 @@ set fileencoding=utf-8
 set mouse=a  " enable mouse support
 set noerrorbells
 set bs=2  " fix backspace
-let mapleader='/'  " set <leader>
+let mapleader='\\'  " set <leader>
 
 " ----------------------------------
 " gui
@@ -173,13 +173,13 @@ nnoremap <C-[> :bprevious<CR>
 nnoremap <C-]> :bnext<CR>
 
 nnoremap <C-d> :bd!<CR>
-"nnoremap <C-D> :<C-U>bprevious <bar> bdelete #<CR>
-nnoremap <C-Q> :qa!<CR>
+nnoremap <C-S-D> :<C-U>bprevious <bar> bdelete #<CR>
+nnoremap <C-q> :qa!<CR>
 
 nnoremap <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
 
-nnoremap <leader>nh :nohl<CR>
+nnoremap <leader>h :nohl<CR>
 
 nnoremap <C-s> :w<CR>
 inoremap <C-s> <C-c>:w<CR>

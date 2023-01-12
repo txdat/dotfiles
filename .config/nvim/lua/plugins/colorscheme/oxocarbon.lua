@@ -1,3 +1,3 @@
 vim.cmd [[colorscheme oxocarbon]]
 
-vim.g.colorscheme = 'auto'
+vim.g.colors_name = 'oxocarbon'

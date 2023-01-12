@@ -12,9 +12,9 @@ function _G.qftf(info)
     -- vim.cmd(('noa lcd %s'):format(fn.fnameescape(root)))
     --
     if info.quickfix == 1 then
-        items = fn.getqflist({id = info.id, items = 0}).items
+        items = fn.getqflist({ id = info.id, items = 0 }).items
     else
-        items = fn.getloclist(info.winid, {id = info.id, items = 0}).items
+        items = fn.getloclist(info.winid, { id = info.id, items = 0 }).items
     end
     local limit = 31
     local fnameFmt1, fnameFmt2 = '%-' .. limit .. 's', '…%.' .. (limit - 1) .. 's'
@@ -53,12 +53,12 @@ end
 vim.o.qftf = '{info -> v:lua._G.qftf(info)}'
 
 -- Adapt fzf's delimiter in nvim-bqf
-require ('bqf').setup({
+require('bqf').setup({
     auto_enable = true,
     auto_resize_height = true,
     filter = {
         fzf = {
-            extra_opts = {'--bind', 'ctrl-o:toggle-all', '--delimiter', '│'}
+            extra_opts = { '--bind', 'ctrl-o:toggle-all', '--delimiter', '│' }
         }
     }
 })

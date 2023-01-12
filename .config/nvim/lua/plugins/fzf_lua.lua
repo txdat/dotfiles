@@ -1,8 +1,8 @@
-require ('fzf-lua').setup {
+require('fzf-lua').setup {
     keymap = {
         fzf = {
-            ['alt-a'] = 'select-all+accept',  -- select all and push to quickfix
-            ['alt-d'] = 'deselect-all'  -- deselect all, clear quickfix
+            ['alt-a'] = 'select-all+accept', -- select all and push to quickfix
+            ['alt-d'] = 'deselect-all' -- deselect all, clear quickfix
         }
     },
     winopts = {

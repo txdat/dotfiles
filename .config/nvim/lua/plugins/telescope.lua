@@ -1,6 +1,6 @@
-local telescope = require ('telescope')
-local actions = require ('telescope.actions')
-local action_state = require ('telescope.actions.state')
+local telescope = require('telescope')
+local actions = require('telescope.actions')
+local action_state = require('telescope.actions.state')
 
 local custom_actions = {}
 
@@ -55,11 +55,11 @@ telescope.setup {
             preview = { '─', '│', '─', '│', '┌', '┐', '┘', '└' },
         },
         set_env = { ['COLORTERM'] = 'truecolor' }, -- default = nil,
-        file_previewer = require ('telescope.previewers').vim_buffer_cat.new,
-        grep_previewer = require ('telescope.previewers').vim_buffer_vimgrep.new,
-        qflist_previewer = require ('telescope.previewers').vim_buffer_qflist.new,
+        file_previewer = require('telescope.previewers').vim_buffer_cat.new,
+        grep_previewer = require('telescope.previewers').vim_buffer_vimgrep.new,
+        qflist_previewer = require('telescope.previewers').vim_buffer_qflist.new,
         -- Developer configurations: Not meant for general override
-        buffer_previewer_maker = require ('telescope.previewers').buffer_previewer_maker,
+        buffer_previewer_maker = require('telescope.previewers').buffer_previewer_maker,
         mappings = {
             i = {
                 ['<esc>'] = actions.close,
@@ -79,13 +79,13 @@ telescope.setup {
 
                 ['<Tab>'] = actions.toggle_selection + actions.move_selection_worse,
                 ['<S-Tab>'] = actions.toggle_selection + actions.move_selection_better,
-               
+
                 ['<A-s>'] = custom_actions.fzf_multi_select,
             },
 
             n = {
                 ['<esc>'] = actions.close,
-                
+
                 ['j'] = actions.move_selection_next,
                 ['k'] = actions.move_selection_previous,
                 ['<Down>'] = actions.move_selection_next,
@@ -103,19 +103,19 @@ telescope.setup {
 
                 ['<Tab>'] = actions.toggle_selection + actions.move_selection_worse,
                 ['<S-Tab>'] = actions.toggle_selection + actions.move_selection_better,
-                
+
                 ['<A-s>'] = custom_actions.fzf_multi_select,
             },
         },
     },
     pickers = {
-		find_files = {
-			theme = 'dropdown'
-		}
-	},
-	extentions = {
+        find_files = {
+            theme = 'dropdown'
+        }
+    },
+    extentions = {
         ['ui-select'] = {
-            require ('telescope.themes').get_dropdown {
+            require('telescope.themes').get_dropdown {
                 -- even more opts
                 width = 1.0,
                 previewer = false,
@@ -128,19 +128,19 @@ telescope.setup {
                 },
             }
         },
-		fzf = {
-			fuzzy = true,
-			override_generic_sorter = true,
-			override_file_sorter = true,
-			case_mode = 'smart_case'
-		}
-	}
+        fzf = {
+            fuzzy = true,
+            override_generic_sorter = true,
+            override_file_sorter = true,
+            case_mode = 'smart_case'
+        }
+    }
 }
 
 telescope.load_extension('ui-select')
 telescope.load_extension('fzf')
 
-local keymap = require ('util').keymap
+local keymap = require('util').keymap
 
 keymap('n', '<leader>ff', ':Telescope find_files<CR>')
 keymap('n', '<leader>fg', ':Telescope live_grep<CR>')

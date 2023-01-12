@@ -1,23 +1,23 @@
-require ('nvim-treesitter.configs').setup {
-	ensure_installed = { 'c', 'cpp', 'python', 'rust' },
-	sync_install = false,
-	auto_install = false,
-	ignore_install = {},
-	autopairs = {
- 	   enable = true,
-  	},
-	context_commentstring = {
-		enable = true,
-		enable_autocmd = false,
-	},
-	highlight = {
-		enable = true,
-		additional_vim_regex_highlighting = false,
-	},
-	incremental_selection = {
-		enable = true
-	},
-	indent = {
-		enable = true,
-	}
+require('nvim-treesitter.configs').setup {
+    ensure_installed = { 'c', 'cpp', 'cmake', 'rust', 'python' },
+    sync_install = false,
+    auto_install = false,
+    ignore_install = {},
+    autopairs = {
+        enable = true,
+    },
+    context_commentstring = {
+        enable = true,
+        enable_autocmd = false,
+    },
+    highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = false,
+    },
+    incremental_selection = {
+        enable = true
+    },
+    indent = {
+        enable = true,
+    }
 }

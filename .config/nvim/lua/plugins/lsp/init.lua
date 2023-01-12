@@ -1,20 +1,20 @@
-require ('plugins.lsp.mason')
-require ('plugins.lsp.mason_lspconfig')
+require('plugins.lsp.mason')
+require('plugins.lsp.mason_lspconfig')
 
 -- select 1 of 3
 -- require ('plugins.lsp.lsp_zero')  -- disable lspsaga
-require ('plugins.lsp.cmp')
+require('plugins.lsp.cmp')
 -- require ('plugins.lsp.coq')
 
-require ('plugins.lsp.lspsaga')
-require ('plugins.lsp.null_ls')
+require('plugins.lsp.lspsaga')
+require('plugins.lsp.null_ls')
 
--- diagnostic signs
+-- custom diagnostic signs
 local signs = {
     Error = ' ',
-    Warning = ' ',
+    Warn = ' ',
     Hint = ' ',
-    Information = ' '
+    Info = ' '
 }
 
 for type, icon in pairs(signs) do

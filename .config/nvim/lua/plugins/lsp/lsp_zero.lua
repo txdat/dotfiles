@@ -1,6 +1,6 @@
 vim.opt.signcolumn = 'yes'
 
-local lsp = require ('lsp-zero')
+local lsp = require('lsp-zero')
 
 lsp.preset('recommended')
 
@@ -20,20 +20,20 @@ lsp.set_preferences({
     }
 })
 
-local cmp_common = require ('plugins.lsp.cmp_common')
+local cmp_common = require('plugins.lsp.cmp_common')
 
 lsp.setup_nvim_cmp({
     documentation = {
         border = 'none',
     },
-    sources = cmp_common.sources,    
+    sources = cmp_common.sources,
 })
 
 lsp.extend_lspconfig()
 
-local lsp_servers = require ('plugins.lsp.lsp_servers')
+local lsp_servers = require('plugins.lsp.lsp_servers')
 
-lsp.ensure_installed(lsp_servers.ensure_installed)  -- install with mason
+lsp.ensure_installed(lsp_servers.ensure_installed) -- install with mason
 
 for _, server in pairs(lsp_servers.servers) do
     lsp.configure(server, {
@@ -45,10 +45,10 @@ end
 
 lsp.setup()
 
-require ('luasnip.loaders.from_vscode').lazy_load()
+require('luasnip.loaders.from_vscode').lazy_load()
 
 -- autopairs
-local cmp_autopairs = require ('nvim-autopairs.completion.cmp')
+local cmp_autopairs = require('nvim-autopairs.completion.cmp')
 cmp.event:on(
     'confirm_done',
     cmp_autopairs.on_confirm_done()

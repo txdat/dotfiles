@@ -61,6 +61,6 @@ local function TerminalExec(cmd)
     api.nvim_command('wincmd p')
 end
 
-local keymap = require ('util').keymap
+local keymap = require('util').keymap
 
 keymap({ 'n', 't' }, '<C-t>', TerminalToggle)

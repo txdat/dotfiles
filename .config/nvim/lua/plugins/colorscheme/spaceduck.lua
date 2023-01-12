@@ -1,3 +1,3 @@
 vim.cmd [[colorscheme spaceduck]]
 
-vim.g.colorscheme = 'spaceduck'
+vim.g.colors_name = 'spaceduck'

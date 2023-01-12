@@ -1,6 +1,6 @@
-require ('hop').setup()
+require('hop').setup()
 
-local keymap = require ('util').keymap
+local keymap = require('util').keymap
 
 keymap('n', 's', ':HopChar1CurrentLineAC<CR>')
 keymap('n', 'S', ':HopChar1CurrentLineBC<CR>')
