@@ -14,7 +14,6 @@ if exists("syntax_on")
 endif
 let g:colors_name="spaceduck"
 
-
 let Italic = ""
 if exists('g:spaceduck_italic')
   let Italic = "italic"
