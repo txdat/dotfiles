@@ -81,6 +81,9 @@ return packer.startup(function(use)
     -- navigation
     use 'phaazon/hop.nvim'
 
+    -- key bindings
+    -- use 'folke/which-key.nvim'
+
     ------------------------------------
     -- file manager, finder, svc
     ------------------------------------

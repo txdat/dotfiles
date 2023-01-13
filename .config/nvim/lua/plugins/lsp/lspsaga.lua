@@ -96,9 +96,9 @@ require('lspsaga').setup({
         incoming = '⬕',
         outgoing = '⬔',
         colors = {
-            normal_bg = '#161616',
-            title_bg = '#54546d',
-            red = '#c34043',
+            normal_bg = '#0f111b', -- spaceduck
+            title_bg = '#7a5ccc',
+            red = '#c34043', -- kanagawa
             magenta = '#d27e99',
             orange = '#ffa066',
             yellow = '#dca561',
@@ -107,7 +107,7 @@ require('lspsaga').setup({
             blue = '#7e9cd8',
             purple = '#957fb8',
             white = '#ecf0c1',
-            black = '#161616',
+            black = '#161616', -- oxocarbon
         },
         kind = {},
     },
@@ -127,18 +127,16 @@ keymap({ 'n', 'v' }, '<leader>ca', ':Lspsaga code_action<CR>')
 keymap('n', 'K', ':Lspsaga hover_doc<CR>')
 
 -- diagnostic
-local lsp_diagnostic = require('lspsaga.diagnostic')
-
 keymap('n', '<leader>dl', ':Lspsaga show_line_diagnostics<CR>')
 keymap('n', '<leader>dc', ':Lspsaga show_cursor_diagnostics<CR>')
 keymap('n', '<leader>db', ':Lspsaga show_buf_diagnostics<CR>')
 keymap('n', 'd[', ':Lspsaga diagnostic_jump_prev<CR>')
 keymap('n', 'd]', ':Lspsaga diagnostic_jump_next<CR>')
 keymap('n', 'e[', function()
-    lsp_diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
+    require('lspsaga.diagnostic').goto_prev({ severity = vim.diagnostic.severity.ERROR })
 end)
 keymap('n', 'e]', function()
-    lsp_diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
+    require('lspsaga.diagnostic').goto_next({ severity = vim.diagnostic.severity.ERROR })
 end)
 
 -- callhierarchy

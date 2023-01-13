@@ -42,6 +42,7 @@ end
 -----------------------------------------
 
 opt.clipboard = 'unnamed,unnamedplus' -- system's clipboard
+opt.timeout = true
 opt.timeoutlen = 500 -- key mappings timeout
 opt.swapfile = false
 opt.backup = false

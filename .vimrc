@@ -39,6 +39,7 @@ syntax on
 filetype plugin indent on
 
 set clipboard=unnamed,unnamedplus " system's clipboard
+set timeout
 set timeoutlen=500 " key mappings timeout
 set noswapfile
 set nobackup
