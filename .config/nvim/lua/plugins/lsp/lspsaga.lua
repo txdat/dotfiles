@@ -86,7 +86,7 @@ require('lspsaga').setup({
     },
     ui = {
         theme = 'round',
-        border = 'solid',
+        border = 'single',
         winblend = 0,
         expand = '',
         collaspe = '',
@@ -123,7 +123,7 @@ keymap('n', '<leader>pd', ':Lspsaga peek_definition<CR>')
 keymap('n', '<leader>jd', ':Lspsaga goto_definition<CR>')
 keymap('n', '<leader>so', ':Lspsaga outline<CR>')
 keymap('n', '<leader>rn', ':Lspsaga rename<CR>')
-keymap({ 'n', 'v' }, '<leader>ca', ':Lspsaga code_action<CR>')
+keymap('n', '<leader>ca', ':Lspsaga code_action<CR>')
 keymap('n', 'K', ':Lspsaga hover_doc<CR>')
 
 -- diagnostic
@@ -144,4 +144,4 @@ keymap('n', '<leader>ic', ':Lspsaga incoming_calls<CR>')
 keymap('n', '<leader>oc', ':Lspsaga outgoing_calls<CR>')
 
 -- float terminal
-keymap({ 'n', 't' }, '<A-t>', ':Lspsaga term_toggle<CR>')
+keymap('n', '<A-t>', ':Lspsaga term_toggle<CR>')
