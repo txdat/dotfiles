@@ -1,5 +1,9 @@
 local keymap = require('util').keymap
 
+-- remap recoding
+keymap('n', '<leader>q', 'q')
+keymap('n', 'q', '<nop>')
+
 --keymap('n', '<C-t>', ':Term<CR>')  -- open terminal
 keymap('t', '<Esc>', '<C-\\><C-n>') -- exit without closing
 

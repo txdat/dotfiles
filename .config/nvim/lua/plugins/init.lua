@@ -1,17 +1,23 @@
-pcall(require, 'plugins.impatient')
-pcall(require, 'plugins.packer')
-pcall(require, 'plugins.colorscheme.kanagawa')
-pcall(require, 'plugins.lualine')
-pcall(require, 'plugins.bufferline')
-pcall(require, 'plugins.indent_blankline')
-pcall(require, 'plugins.nvim_treesitter')
-pcall(require, 'plugins.comment')
-pcall(require, 'plugins.nvim_autopairs')
-pcall(require, 'plugins.hop')
-pcall(require, 'plugins.nvim_tree')
-pcall(require, 'plugins.telescope')
-pcall(require, 'plugins.bqf')
-pcall(require, 'plugins.gitsigns')
---pcall(require, 'plugins.vimtex')
-pcall(require, 'plugins.lsp')
---pcall(require, 'plugins.dap')
+local plugins_cfg = {
+    'impatient',
+    'packer',
+    'colorscheme.kanagawa',
+    'lualine',
+    'bufferline',
+    'indent_blankline',
+    'nvim_treesitter',
+    'comment',
+    'nvim_autopairs',
+    'hop',
+    'nvim_tree',
+    'telescope',
+    'bqf',
+    'gitsigns',
+    -- 'vimtex',
+    'lsp',
+    -- 'dap',
+}
+
+for _, cfg in pairs(plugins_cfg) do
+    pcall(require, 'plugins.' .. cfg)
+end

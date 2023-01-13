@@ -167,6 +167,9 @@ autocmd BufLeave * stopinsert
 " keymaps
 " ----------------------------------
 
+nnoremap <leader>q q
+nnoremap q <nop>
+
 nnoremap <C-t> :term<CR>
 nnoremap <Esc> <C-\\><C-n>
 
