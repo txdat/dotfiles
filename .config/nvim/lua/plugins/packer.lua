@@ -24,7 +24,7 @@ packer.init({
     display = {
         compact = true,
         open_fn = function()
-            return require('packer.util').float({ border = 'none' })
+            return require('packer.util').float({ border = 'single' })
         end,
         keybindings = {
             quit = '<ESC>',

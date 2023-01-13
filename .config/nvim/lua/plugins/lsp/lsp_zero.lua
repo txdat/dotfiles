@@ -24,7 +24,7 @@ local cmp_common = require('plugins.lsp.cmp_common')
 
 lsp.setup_nvim_cmp({
     documentation = {
-        border = 'none',
+        border = 'single',
     },
     sources = cmp_common.sources,
 })

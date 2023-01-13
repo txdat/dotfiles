@@ -13,7 +13,8 @@ function custom_actions.fzf_multi_select(prompt_bufnr)
         actions.send_selected_to_qflist(prompt_bufnr)
         actions.open_qflist()
     else
-        actions.file_edit(prompt_bufnr)
+        -- actions.file_edit(prompt_bufnr)
+        actions.select_default(prompt_bufnr)
     end
 end
 
@@ -62,14 +63,14 @@ telescope.setup {
         buffer_previewer_maker = require('telescope.previewers').buffer_previewer_maker,
         mappings = {
             i = {
-                ['<esc>'] = actions.close,
+                ['<ESC>'] = actions.close,
 
                 ['<C-j>'] = actions.move_selection_next,
                 ['<C-k>'] = actions.move_selection_previous,
                 ['<Down>'] = actions.move_selection_next,
                 ['<Up>'] = actions.move_selection_previous,
 
-                ['<CR>'] = actions.select_default,
+                -- ['<CR>'] = actions.select_default,
                 ['<C-x>'] = actions.select_horizontal,
                 ['<C-v>'] = actions.select_vertical,
                 ['<C-t>'] = actions.select_tab,
@@ -80,11 +81,12 @@ telescope.setup {
                 ['<Tab>'] = actions.toggle_selection + actions.move_selection_worse,
                 ['<S-Tab>'] = actions.toggle_selection + actions.move_selection_better,
 
-                ['<A-s>'] = custom_actions.fzf_multi_select,
+                ['<A-s>'] = actions.toggle_all, -- toggle select/drop all
+                ['<CR>'] = custom_actions.fzf_multi_select,
             },
 
             n = {
-                ['<esc>'] = actions.close,
+                ['<ESC>'] = actions.close,
 
                 ['j'] = actions.move_selection_next,
                 ['k'] = actions.move_selection_previous,
@@ -93,7 +95,7 @@ telescope.setup {
                 ['gg'] = actions.move_to_top,
                 ['G'] = actions.move_to_bottom,
 
-                ['<CR>'] = actions.select_default,
+                -- ['<CR>'] = actions.select_default,
                 ['<C-x>'] = actions.select_horizontal,
                 ['<C-v>'] = actions.select_vertical,
                 ['<C-t>'] = actions.select_tab,
@@ -104,14 +106,15 @@ telescope.setup {
                 ['<Tab>'] = actions.toggle_selection + actions.move_selection_worse,
                 ['<S-Tab>'] = actions.toggle_selection + actions.move_selection_better,
 
-                ['<A-s>'] = custom_actions.fzf_multi_select,
+                ['<A-s>'] = actions.toggle_all, -- toggle select/drop all
+                ['<CR>'] = custom_actions.fzf_multi_select,
             },
         },
     },
     pickers = {
-        find_files = {
-            theme = 'dropdown'
-        }
+        -- find_files = {
+        --     theme = 'dropdown'
+        -- }
     },
     extentions = {
         ['ui-select'] = {
