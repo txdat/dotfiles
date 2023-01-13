@@ -27,3 +27,9 @@ keymap('i', '<C-s>', '<C-c>:w<CR>')
 keymap('n', '<leader>co', ':copen<CR>')
 keymap('n', '<leader>cw', ':cclose<CR>')
 keymap('n', '<leader>cc', ':call setqflist([])<CR>') -- clear list
+
+-- move visual block up/down
+keymap('x', 'J', ":move '>+1<CR>gv-gv")
+keymap('x', 'K', ":move '<-2<CR>gv-gv")
+keymap('x', '<A-j>', ":move '>+1<CR>gv-gv")
+keymap('x', '<A-k>', ":move '<-2<CR>gv-gv")

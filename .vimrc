@@ -189,6 +189,11 @@ nnoremap <leader>co :copen<CR>
 nnoremap <leader>cw :cclose<CR>
 nnoremap <leader>cc :call setqflist([])<CR>
 
+xnoremap J :move '>+1<CR>gv-gv
+xnoremap K :move '<-2<CR>gv-gv
+xnoremap <A-j> :move '>+1<CR>gv-gv
+xnoremap <A-k> :move '<-2<CR>gv-gv
+
 " ----------------------------------
 " colorscheme
 " ----------------------------------
