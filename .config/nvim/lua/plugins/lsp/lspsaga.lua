@@ -1,121 +1,149 @@
--- winbar
-local function get_file_name(include_path)
-    local file_name = require('lspsaga.symbolwinbar').get_file_name()
-    if vim.fn.bufname '%' == '' then return '' end
-    if include_path == false then return file_name end
-    -- Else if include path: ./lsp/saga.lua -> lsp > saga.lua
-    local sep = vim.loop.os_uname().sysname == 'Windows' and '\\' or '/'
-    local path_list = vim.split(string.gsub(vim.fn.expand '%:~:.:h', '%%', ''), sep)
-    local file_path = ''
-    for _, cur in ipairs(path_list) do
-        file_path = (cur == '.' or cur == '~') and '' or
-            file_path .. cur .. ' ' .. '%#LspSagaWinbarSep#>%*' .. ' %*'
-    end
-    return file_path .. file_name
-end
-
-local function config_winbar_or_statusline()
-    local exclude = {
-        ['terminal'] = true,
-        ['toggleterm'] = true,
-        ['prompt'] = true,
-        ['NvimTree'] = true,
-        ['help'] = true,
-    } -- Ignore float windows and exclude filetype
-    if vim.api.nvim_win_get_config(0).zindex or exclude[vim.bo.filetype] then
-        vim.wo.winbar = ''
-    else
-        local ok, lspsaga = pcall(require, 'lspsaga.symbolwinbar')
-        local sym
-        if ok then sym = lspsaga.get_symbol_node() end
-        local win_val = ''
-        win_val = get_file_name(true) -- set to true to include path
-        if sym ~= nil then win_val = win_val .. sym end
-        vim.wo.winbar = win_val
-        -- if work in statusline
-        --vim.wo.stl = win_val
-    end
-end
-
-local events = { 'BufEnter', 'BufWinEnter', 'CursorMoved' }
-
-vim.api.nvim_create_autocmd(events, {
-    pattern = '*',
-    callback = function() config_winbar_or_statusline() end,
-})
-
-vim.api.nvim_create_autocmd('User', {
-    pattern = 'LspsagaUpdateSymbol',
-    callback = function() config_winbar_or_statusline() end,
-})
-
-require('lspsaga').init_lsp_saga({
-    move_in_saga = { prev = '<C-j>', next = '<C-k>' },
-    finder_action_keys = {
+require('lspsaga').setup({
+    preview = {
+        lines_above = 0,
+        lines_below = 10,
+    },
+    scroll_preview = {
+        scroll_down = '<C-j>',
+        scroll_up = '<C-k>',
+    },
+    request_timeout = 2000,
+    finder = {
+        edit = 'e',
+        vsplit = 'v',
+        split = 's',
+        tabe = 't',
         quit = '<ESC>',
     },
-    code_action_keys = {
+    definition = {
+        edit = 'e',
+        vsplit = 'v',
+        split = 's',
+        tabe = 't',
         quit = '<ESC>',
     },
-    definition_action_keys = {
-        quit = '<ESC>',
+    code_action = {
+        num_shortcut = true,
+        keys = {
+            exec = '<CR>',
+            quit = '<ESC>',
+        },
     },
-    rename_action_quit = '<ESC>',
-    symbol_in_winbar = {
-        in_custom = true,
+    lightbulb = {
         enable = true,
-        click_support = function(node, clicks, button, modifiers)
-            -- To see all available details: vim.pretty_print(node)
-            local st = node.range.start
-            local en = node.range['end']
-            if button == "l" then
-                if clicks == 2 then
-                    -- double left click to do nothing
-                else -- jump to node's starting line+char
-                    vim.fn.cursor(st.line + 1, st.character + 1)
-                end
-            elseif button == "r" then
-                if modifiers == "s" then
-                    print "lspsaga" -- shift right click to print "lspsaga"
-                end -- jump to node's ending line+char
-                vim.fn.cursor(en.line + 1, en.character + 1)
-            elseif button == "m" then
-                -- middle click to visual select node
-                vim.fn.cursor(st.line + 1, st.character + 1)
-                vim.cmd "normal v"
-                vim.fn.cursor(en.line + 1, en.character + 1)
-            end
-        end
+        enable_in_insert = true,
+        sign = true,
+        sign_priority = 40,
+        virtual_text = true,
     },
-    show_outline = {
-        win_width = 60,
-    }
+    diagnostic = {
+        twice_into = false,
+        show_code_action = true,
+        show_source = true,
+        keys = {
+            exec_action = '<CR>',
+            quit = '<ESC>',
+        },
+    },
+    rename = {
+        exec = '<CR>',
+        quit = '<ESC>',
+        in_select = true,
+    },
+    outline = {
+        win_position = 'right',
+        win_with = '',
+        win_width = 50,
+        show_detail = true,
+        auto_preview = true,
+        auto_refresh = true,
+        auto_close = true,
+        custom_sort = nil,
+        keys = {
+            jump = 'o',
+            expand_collaspe = '<CR>',
+            quit = '<ESC>',
+        },
+    },
+    callhierarchy = {
+        show_detail = false,
+        keys = {
+            edit = 'e',
+            vsplit = 'v',
+            split = 's',
+            tabe = 't',
+            jump = 'o',
+            expand_collaspe = '<CR>',
+            quit = '<ESC>',
+        },
+    },
+    symbol_in_winbar = {
+        enable = true,
+        separator = ' ',
+        hide_keyword = true,
+        show_file = true,
+        folder_level = 2,
+    },
+    ui = {
+        theme = 'round',
+        border = 'solid',
+        winblend = 0,
+        expand = '',
+        collaspe = '',
+        preview = '',
+        code_action = '💡',
+        diagnostic = '🐞',
+        incoming = '⬕',
+        outgoing = '⬔',
+        colors = {
+            normal_bg = '#161616',
+            title_bg = '#54546d',
+            red = '#c34043',
+            magenta = '#d27e99',
+            orange = '#ffa066',
+            yellow = '#dca561',
+            green = '#76946a',
+            cyan = '#6a9589',
+            blue = '#7e9cd8',
+            purple = '#957fb8',
+            white = '#ecf0c1',
+            black = '#161616',
+        },
+        kind = {},
+    },
 })
+
+vim.wo.winbar = require('lspsaga.symbolwinbar'):get_winbar()
+--vim.wo.stl = require('lspsaga.symbolwinbar'):get_winbar()
 
 local keymap = require('util').keymap
 
 keymap('n', '<leader>lf', ':Lspsaga lsp_finder<CR>')
 keymap('n', '<leader>pd', ':Lspsaga peek_definition<CR>')
+keymap('n', '<leader>jd', ':Lspsaga goto_definition<CR>')
 keymap('n', '<leader>so', ':Lspsaga outline<CR>')
 keymap('n', '<leader>rn', ':Lspsaga rename<CR>')
-keymap('n', '<leader>ca', ':Lspsaga code_action<CR>')
+keymap({ 'n', 'v' }, '<leader>ca', ':Lspsaga code_action<CR>')
 keymap('n', 'K', ':Lspsaga hover_doc<CR>')
 
 -- diagnostic
 local lsp_diagnostic = require('lspsaga.diagnostic')
 
-keymap('n', '<leader>ld', ':Lspsaga show_line_diagnostics<CR>')
-keymap('n', '<leader>cd', ':Lspsaga show_cursor_diagnostics<CR>')
-keymap('n', '[d', ':Lspsaga diagnostic_jump_prev<CR>')
-keymap('n', ']d', ':Lspsaga diagnostic_jump_next<CR>')
-keymap('n', '[e', function()
+keymap('n', '<leader>dl', ':Lspsaga show_line_diagnostics<CR>')
+keymap('n', '<leader>dc', ':Lspsaga show_cursor_diagnostics<CR>')
+keymap('n', '<leader>db', ':Lspsaga show_buf_diagnostics<CR>')
+keymap('n', 'd[', ':Lspsaga diagnostic_jump_prev<CR>')
+keymap('n', 'd]', ':Lspsaga diagnostic_jump_next<CR>')
+keymap('n', 'e[', function()
     lsp_diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR })
 end)
-keymap('n', ']e', function()
+keymap('n', 'e]', function()
     lsp_diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR })
 end)
 
+-- callhierarchy
+keymap('n', '<leader>ic', ':Lspsaga incoming_calls<CR>')
+keymap('n', '<leader>oc', ':Lspsaga outgoing_calls<CR>')
+
 -- float terminal
-keymap('n', '<A-t>', ':Lspsaga open_floaterm<CR>')
-keymap('n', '<A-g>', ':Lspsaga open_floaterm lazygit<CR>') -- no .git will falling back to term
-keymap('t', '<A-t>', [[<C-\><C-n>:Lspsaga close_floaterm<CR>]]) -- close
+keymap({ 'n', 't' }, '<A-t>', ':Lspsaga term_toggle<CR>')

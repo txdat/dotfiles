@@ -6,7 +6,7 @@ require('plugins.lsp.mason_lspconfig')
 require('plugins.lsp.cmp')
 -- require ('plugins.lsp.coq')
 
-require('plugins.lsp.lspsaga')
+--require('plugins.lsp.lspsaga')
 require('plugins.lsp.null_ls')
 
 -- custom diagnostic signs

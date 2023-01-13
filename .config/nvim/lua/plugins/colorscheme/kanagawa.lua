@@ -1,5 +1,5 @@
 local custom_colors = {
-    sumiink0 = '#161616', -- oxocarbon background
+    sumiInk0 = '#161616', -- oxocarbon background
     sumiInk1 = '#0f111b', -- spaceduck background
     fujiWhite = '#ecf0c1', -- spaceduck foreground
     oldWhite = '#ecf0c1',
