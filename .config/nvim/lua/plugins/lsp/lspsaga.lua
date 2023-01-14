@@ -43,6 +43,7 @@ require('lspsaga').setup({
         keys = {
             exec_action = '<CR>',
             quit = '<ESC>',
+            go_action = 'g',
         },
     },
     rename = {
@@ -79,7 +80,7 @@ require('lspsaga').setup({
     },
     symbol_in_winbar = {
         enable = true,
-        separator = ' ',
+        separator = '',
         hide_keyword = true,
         show_file = true,
         folder_level = 2,
