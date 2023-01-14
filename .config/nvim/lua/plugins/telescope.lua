@@ -1,15 +1,15 @@
 local telescope = require("telescope")
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
+local action_layout = require("telescope.actions.layout")
 
 local custom_actions = {}
 
 -- https://github.com/nvim-telescope/telescope.nvim/issues/416#issuecomment-841273053
 function custom_actions.fzf_multi_select(prompt_bufnr)
     local picker = action_state.get_current_picker(prompt_bufnr)
-    local n = table.getn(picker:get_multi_selection())
 
-    if n > 1 then
+    if #picker:get_multi_selection() > 1 then
         actions.send_selected_to_qflist(prompt_bufnr)
         actions.open_qflist()
     else
@@ -20,6 +20,9 @@ end
 
 telescope.setup {
     defaults = {
+        preview = {
+            hide_on_startup = true,
+        },
         vimgrep_arguments = {
             "rg",
             "--color=never",
@@ -63,6 +66,8 @@ telescope.setup {
         buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
         mappings = {
             i = {
+                ["<C-p>"] = action_layout.toggle_preview,
+
                 ["<ESC>"] = actions.close,
 
                 ["<C-j>"] = actions.move_selection_next,
@@ -86,6 +91,8 @@ telescope.setup {
             },
 
             n = {
+                ["<C-p>"] = action_layout.toggle_preview,
+
                 ["<ESC>"] = actions.close,
 
                 ["j"] = actions.move_selection_next,

@@ -1,4 +1,4 @@
-function nvim_keymap(mode, lhs, rhs, opts)
+local function nvim_keymap(mode, lhs, rhs, opts)
     local options = { noremap = true, silent = true }
     if opts then
         options = vim.tbl_extend("force", options, opts)

@@ -1,17 +1,17 @@
 local dap = require("dap")
 local dapui = require("dapui")
 
-function dap_terminate()
+local function dap_terminate()
     dap.repl.close()
     dap.terminate()
     dapui.close() -- force close dapui
 end
 
-function dap_set_breakpoint_cond()
+local function dap_set_breakpoint_cond()
     dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
 end
 
-function dap_set_breakpoint_logp()
+local function dap_set_breakpoint_logp()
     dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
 end
 

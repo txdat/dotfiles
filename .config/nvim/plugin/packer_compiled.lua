@@ -181,7 +181,7 @@ _G.packer_plugins = {
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
   ["nvim-dap"] = {
-    after = { "nvim-dap-ui", "nvim-dap-virtual-text" },
+    after = { "nvim-dap-virtual-text", "nvim-dap-ui" },
     config = { "\27LJ\2\n+\0\0\3\0\2\0\0046\0\0\0'\2\1\0B\0\2\1K\0\1\0\16plugins.dap\frequire\0" },
     keys = { { "n", "<F5>" }, { "n", "<F9>" } },
     loaded = false,
