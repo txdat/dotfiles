@@ -1,4 +1,4 @@
-require('nvim-tree').setup {
+require("nvim-tree").setup {
     open_on_setup = false,
     ignore_buffer_on_setup = false,
     respect_buf_cwd = true,
@@ -30,6 +30,6 @@ require('nvim-tree').setup {
     },
 }
 
-local keymap = require('util').keymap
+local keymap = require("util").keymap
 
-keymap('n', '<C-e>', ':NvimTreeToggle<CR>')
+keymap("n", "<C-e>", ":NvimTreeToggle<CR>")

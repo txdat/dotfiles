@@ -1,4 +1,4 @@
-local null_ls = require('null-ls')
+local null_ls = require("null-ls")
 local fmt = null_ls.builtins.formatting
 
 local augroup = vim.api.nvim_create_augroup("LspFormatting", {})
@@ -20,14 +20,14 @@ null_ls.setup({
     sources = {
         fmt.black, -- python
         fmt.rustfmt.with({ -- rust
-            extra_args = { '--edition=2021' }
+            extra_args = { "--edition=2021" }
         }),
         fmt.prettier, -- js,ts,...
     },
 })
 
-local keymap = require('util').keymap
+local keymap = require("util").keymap
 
-keymap('n', '<leader>bf', function()
+keymap("n", "<leader>bf", function()
     vim.lsp.buf.format { async = true }
 end)

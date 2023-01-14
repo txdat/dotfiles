@@ -1,12 +1,12 @@
 local custom_colors = {
-    -- sumiInk0 = '#161616', -- oxocarbon background
-    sumiInk0 = '#0f111b', -- spaceduck background
-    sumiInk1 = '#0f111b',
-    fujiWhite = '#ecf0c1', -- spaceduck foreground
-    oldWhite = '#ecf0c1',
+    -- sumiInk0 = "#161616", -- oxocarbon background
+    sumiInk0 = "#0f111b", -- spaceduck background
+    sumiInk1 = "#0f111b",
+    fujiWhite = "#ecf0c1", -- spaceduck foreground
+    oldWhite = "#ecf0c1",
 }
 
-require('kanagawa').setup {
+require("kanagawa").setup {
     undercurl = true, -- enable undercurls
     commentStyle = { italic = false },
     functionStyle = {},
@@ -25,6 +25,6 @@ require('kanagawa').setup {
     theme = "default" -- Load "default" theme or the experimental "light" theme
 }
 
-vim.cmd('colorscheme kanagawa')
+vim.cmd("colorscheme kanagawa")
 
-vim.g.colors_name = 'kanagawa'
+vim.g.colors_name = "kanagawa"

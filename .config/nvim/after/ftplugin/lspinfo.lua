@@ -1,1 +1,1 @@
-vim.api.nvim_win_set_config(0, { border = 'single' })
+vim.api.nvim_win_set_config(0, { border = "single" })

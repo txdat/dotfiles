@@ -1,9 +1,9 @@
-local dap = require('dap')
+local dap = require("dap")
 
 dap.adapters.lldb = {
-    name = 'lldb',
-    type = 'executable',
-    command = require('util').exec('which lldb-vscode'),
+    name = "lldb",
+    type = "executable",
+    command = require("util").exec("which lldb-vscode"),
 }
 
-vim.g.cpp_dap_type = 'lldb'
+vim.g.cpp_dap_type = "lldb"

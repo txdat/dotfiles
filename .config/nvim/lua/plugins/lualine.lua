@@ -1,58 +1,58 @@
--- lsp's messages
+-- lsp"s messages
 -- https://github.com/nvim-lualine/lualine.nvim/discussions/911
 
-local utils = require('lualine.utils.utils')
-local highlight = require('lualine.highlight')
+local utils = require("lualine.utils.utils")
+local highlight = require("lualine.highlight")
 
-local diagnostics_message = require('lualine.component'):extend()
+local diagnostics_message = require("lualine.component"):extend()
 
 diagnostics_message.default = {
     colors = {
         error = utils.extract_color_from_hllist(
-            { 'fg', 'sp' },
-            { 'DiagnosticError', 'LspDiagnosticsDefaultError', 'DiffDelete' },
-            '#e32636'
+            { "fg", "sp" },
+            { "DiagnosticError", "LspDiagnosticsDefaultError", "DiffDelete" },
+            "#e32636"
         ),
         warning = utils.extract_color_from_hllist(
-            { 'fg', 'sp' },
-            { 'DiagnosticWarn', 'LspDiagnosticsDefaultWarning', 'DiffText' },
-            '#ffa500'
+            { "fg", "sp" },
+            { "DiagnosticWarn", "LspDiagnosticsDefaultWarning", "DiffText" },
+            "#ffa500"
         ),
         info = utils.extract_color_from_hllist(
-            { 'fg', 'sp' },
-            { 'DiagnosticInfo', 'LspDiagnosticsDefaultInformation', 'DiffChange' },
-            '#ffffff'
+            { "fg", "sp" },
+            { "DiagnosticInfo", "LspDiagnosticsDefaultInformation", "DiffChange" },
+            "#ffffff"
         ),
         hint = utils.extract_color_from_hllist(
-            { 'fg', 'sp' },
-            { 'DiagnosticHint', 'LspDiagnosticsDefaultHint', 'DiffAdd' },
-            '#273faf'
+            { "fg", "sp" },
+            { "DiagnosticHint", "LspDiagnosticsDefaultHint", "DiffAdd" },
+            "#273faf"
         ),
     },
 }
 
 function diagnostics_message:init(options)
     diagnostics_message.super:init(options)
-    self.options.colors = vim.tbl_extend('force', diagnostics_message.default.colors, self.options.colors or {})
-    self.highlights = { error = '', warn = '', info = '', hint = '' }
+    self.options.colors = vim.tbl_extend("force", diagnostics_message.default.colors, self.options.colors or {})
+    self.highlights = { error = "", warn = "", info = "", hint = "" }
     self.highlights.error = highlight.create_component_highlight_group(
         { fg = self.options.colors.error },
-        'diagnostics_message_error',
+        "diagnostics_message_error",
         self.options
     )
     self.highlights.warn = highlight.create_component_highlight_group(
         { fg = self.options.colors.warn },
-        'diagnostics_message_warn',
+        "diagnostics_message_warn",
         self.options
     )
     self.highlights.info = highlight.create_component_highlight_group(
         { fg = self.options.colors.info },
-        'diagnostics_message_info',
+        "diagnostics_message_info",
         self.options
     )
     self.highlights.hint = highlight.create_component_highlight_group(
         { fg = self.options.colors.hint },
-        'diagnostics_message_hint',
+        "diagnostics_message_hint",
         self.options
     )
 end
@@ -67,7 +67,7 @@ function diagnostics_message:update_status(is_focused)
                 top = d
             end
         end
-        local icons = { ' ', ' ', ' ', ' ' }
+        local icons = { " ", " ", " ", " " }
         local hl = {
             self.highlights.error,
             self.highlights.warn,
@@ -76,54 +76,54 @@ function diagnostics_message:update_status(is_focused)
         }
         local message = top.message
         if #message > 80 then
-            message = string.sub(top.message, 1, 80) .. ' [...]'
+            message = string.sub(top.message, 1, 80) .. " [...]"
         end
         return highlight.component_format_highlight(hl[top.severity])
             .. icons[top.severity]
-            .. ' '
+            .. " "
             .. utils.stl_escape(message)
     else
-        return ''
+        return ""
     end
 end
 
 -- dap
 local dap_components = {
-    'dapui_watches',
-    'dapui_breakpoints',
-    'dapui_scopes',
-    'dapui_console',
-    'dapui_stacks',
-    'dap-repl',
+    "dapui_watches",
+    "dapui_breakpoints",
+    "dapui_scopes",
+    "dapui_console",
+    "dapui_stacks",
+    "dap-repl",
 }
 
-require('lualine').setup {
+require("lualine").setup {
     options = {
-        theme = vim.g.colors_name, -- auto falling back to 'auto'
-        section_separators = '',
-        component_separators = '',
+        theme = vim.g.colors_name, -- auto falling back to "auto"
+        section_separators = "",
+        component_separators = "",
         globalstatus = true,
         disabled_filetypes = dap_components,
         ignore_focus = dap_components,
     },
     sections = {
-        lualine_a = { 'mode' },
+        lualine_a = { "mode" },
         lualine_b = {
             {
-                'diagnostics',
-                symbols = { error = ' ', warn = ' ', info = ' ', hint = ' ' },
+                "diagnostics",
+                symbols = { error = " ", warn = " ", info = " ", hint = " " },
             },
         },
         --lualine_c = {
         --    {
         --        diagnostics_message,
-        --        colors = { error = '#e82424', warn = '#ff9e3b', info = '#6a9589', hint = '#658594' },
+        --        colors = { error = "#e82424", warn = "#ff9e3b", info = "#6a9589", hint = "#658594" },
         --    },
         --},
         lualine_c = {},
-        lualine_x = { 'fileformat', 'encoding' },
-        lualine_y = { 'branch', 'diff' },
-        lualine_z = { 'location', 'progress' },
+        lualine_x = { "fileformat", "encoding" },
+        lualine_y = { "branch", "diff" },
+        lualine_z = { "location", "progress" },
     },
     inactive_sections = {
         lualine_a = {},

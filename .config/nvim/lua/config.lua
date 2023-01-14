@@ -6,73 +6,73 @@ local autocmd = vim.api.nvim_create_autocmd
 
 -- disable built-in plugins
 local built_in_plugins = {
-    '2html_plugin',
-    'getscript',
-    'getscriptPlugin',
-    'gzip',
-    'logipat',
-    'netrw',
-    'netrwPlugin',
-    'netrwSettings',
-    'netrwFileHandlers',
-    'matchit',
-    'tar',
-    'tarPlugin',
-    'rrhelper',
-    'spellfile_plugin',
-    'vimball',
-    'vimballPlugin',
-    'zip',
-    'zipPlugin',
-    'tutor',
-    'rplugin',
-    'synmenu',
-    'optwin',
-    'compiler',
-    'bugreport',
-    'ftplugin',
+    "2html_plugin",
+    "getscript",
+    "getscriptPlugin",
+    "gzip",
+    "logipat",
+    "netrw",
+    "netrwPlugin",
+    "netrwSettings",
+    "netrwFileHandlers",
+    "matchit",
+    "tar",
+    "tarPlugin",
+    "rrhelper",
+    "spellfile_plugin",
+    "vimball",
+    "vimballPlugin",
+    "zip",
+    "zipPlugin",
+    "tutor",
+    "rplugin",
+    "synmenu",
+    "optwin",
+    "compiler",
+    "bugreport",
+    "ftplugin",
 }
 
 for _, plugin in pairs(built_in_plugins) do
-    vim.g['loaded_' .. plugin] = 1
+    vim.g["loaded_" .. plugin] = 1
 end
 
 -----------------------------------------
 -- general
 -----------------------------------------
 
-opt.clipboard = 'unnamed,unnamedplus' -- system's clipboard
+opt.clipboard = "unnamed,unnamedplus" -- system"s clipboard
 opt.timeout = true
 opt.timeoutlen = 500 -- key mappings timeout
 opt.swapfile = false
 opt.backup = false
 opt.writebackup = false
-opt.completeopt = 'menu,menuone,noinsert,noselect' -- insert mode
-opt.encoding = 'utf-8'
-opt.fileencoding = 'utf-8'
-opt.mouse = 'a' -- enable mouse support
+opt.completeopt = "menu,menuone,noinsert,noselect" -- insert mode
+opt.encoding = "utf-8"
+opt.fileencoding = "utf-8"
+opt.mouse = "a" -- enable mouse support
 opt.errorbells = false
-vim.g.mapleader = '\\'
+vim.g.mapleader = "\\"
 
 -----------------------------------------
 -- gui
 -----------------------------------------
 
 opt.background = "dark"
-opt.shortmess:append 'sI' -- disable nvim intro
+opt.shortmess:append "sI" -- disable nvim intro
 opt.laststatus = 3 -- set global statusline
 opt.termguicolors = true -- enable 24bits colors
-opt.guicursor = 'n-v-c:block-Cursor' -- using block cursor
-opt.guicursor:append 'i:block-iCursor'
-opt.guicursor:append 'n-v-c:blinkon0'
-opt.guicursor:append 'i:blinkon0'
+opt.guicursor = "n-v-c:block-Cursor" -- using block cursor
+opt.guicursor:append "i:block-iCursor"
+opt.guicursor:append "n-v-c:blinkon0"
+opt.guicursor:append "i:blinkon0"
 --opt.ruler = true  -- show cursor position
 opt.list = true -- show eol, ...
 opt.cursorline = true
 opt.number = true -- show line number
 opt.relativenumber = true -- (-1,+1) line number
 opt.showmatch = true -- highlight matching parenthesis
-opt.foldmethod = 'marker' -- enable folding
+opt.foldmethod = "marker" -- enable folding
 opt.splitright = true -- vertical split to the right
 opt.splitbelow = true -- horizontal split to the bottom
 
@@ -116,52 +116,52 @@ opt.updatetime = 250 -- milli-seconds to wait for trigger an event (keymap)
 -----------------------------------------
 
 -- python
-vim.g.python3_host_prog = require('util').exec('which python3')
+vim.g.python3_host_prog = require("util").exec("which python3")
 
 -----------------------------------------
 -- autocommand functions
 -----------------------------------------
 
 -- highlight on yank (selected copy)
-augroup('YankHighlight', { clear = true })
-autocmd('TextYankPost', {
-    group = 'YankHighlight',
+augroup("YankHighlight", { clear = true })
+autocmd("TextYankPost", {
+    group = "YankHighlight",
     callback = function()
-        vim.highlight.on_yank({ higroup = 'IncSearch', timeout = '1000' })
+        vim.highlight.on_yank({ higroup = "IncSearch", timeout = "1000" })
     end
 })
 
 -- remove whitespace on save
-autocmd('BufWritePre', {
-    pattern = '*',
-    command = ':%s/\\s\\+$//e'
+autocmd("BufWritePre", {
+    pattern = "*",
+    command = ":%s/\\s\\+$//e"
 })
 
--- don't auto commenting new lines
-autocmd('BufEnter', {
-    pattern = '*',
-    command = 'set fo-=c fo-=r fo-=o'
+-- don"t auto commenting new lines
+autocmd("BufEnter", {
+    pattern = "*",
+    command = "set fo-=c fo-=r fo-=o"
 })
 
 -- terminal config ----------------------
 
 -- open terminal
-autocmd('CmdlineEnter', {
-    command = 'command! Term :botright split term://$SHELL'
+autocmd("CmdlineEnter", {
+    command = "command! Term :botright split term://$SHELL"
 })
 
 -- enter insert mode when switching to terminal
-autocmd('TermOpen', {
-    command = 'setlocal listchars= nonumber norelativenumber nocursorline'
+autocmd("TermOpen", {
+    command = "setlocal listchars= nonumber norelativenumber nocursorline"
 })
 
-autocmd('TermOpen', {
-    pattern = '*',
-    command = 'startinsert'
+autocmd("TermOpen", {
+    pattern = "*",
+    command = "startinsert"
 })
 
 -- close terminal buffer on process exit
-autocmd('BufLeave', {
-    pattern = '*',
-    command = 'stopinsert'
+autocmd("BufLeave", {
+    pattern = "*",
+    command = "stopinsert"
 })

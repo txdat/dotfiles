@@ -1,3 +1,3 @@
-local impatient = require('impatient')
+local impatient = require("impatient")
 
 --impatient.enable_profile()
