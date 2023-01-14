@@ -9,7 +9,7 @@ spec:
   targetNamespace: default
   valuesContent: |-
     nfs:
-      server: 192.168.1.198
+      server: {{ip_addr}}
       path: {{export_dir}}
       mountOptions:
         - nfsvers=4
