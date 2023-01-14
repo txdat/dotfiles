@@ -1,8 +1,0 @@
-# ansible's playbook
-- hosts: nfs
-  become: yes # as root
-  roles:
-    - role: geerlingguy.nfs
-      nfs_exports: [ "/hdd/.nfs *(rw,sync,no_root_squash,no_subtree_check)" ]
-  tags:
-    - "nfs"

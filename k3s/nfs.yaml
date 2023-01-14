@@ -10,7 +10,7 @@ spec:
   valuesContent: |-
     nfs:
       server: 192.168.1.198
-      path: /hdd/.nfs
+      path: {{export_dir}}
       mountOptions:
         - nfsvers=4
     storageClass:
