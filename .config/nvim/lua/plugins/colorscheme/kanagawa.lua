@@ -26,5 +26,3 @@ require("kanagawa").setup {
 }
 
 vim.cmd("colorscheme kanagawa")
-
-vim.g.colors_name = "kanagawa"

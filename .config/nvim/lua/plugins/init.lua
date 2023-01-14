@@ -1,7 +1,7 @@
 local plugins_cfg = {
     "impatient",
     "packer",
-    "colorscheme.kanagawa",
+    "colorscheme",
     "lualine",
     "bufferline",
     "indent_blankline",
