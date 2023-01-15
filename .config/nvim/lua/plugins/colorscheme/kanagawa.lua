@@ -1,3 +1,13 @@
+vim.opt.fillchars:append({
+    horiz = "━",
+    horizup = "┻",
+    horizdown = "┳",
+    vert = "┃",
+    vertleft = "┨",
+    vertright = "┣",
+    verthoriz = "╋",
+})
+
 local custom_colors = {
     -- sumiInk0 = "#161616", -- oxocarbon background
     sumiInk0 = "#0f111b", -- spaceduck background

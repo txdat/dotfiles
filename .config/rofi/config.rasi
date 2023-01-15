@@ -14,10 +14,10 @@ configuration{
     font:                       "Jetbrains Mono 18";
     location:                   0;
     terminal:                   "alacritty";
-    disable-history:            false;
+    disable-history:            true;
     hide-scrollbar:             true;
     show-icons:                 true;
-    show-match:                 false;
+    show-match:                 true;
     sidebar-mode:               true;
     window-format:              "[{w}]\t\t{t:0}";
     drun-display-format:        "{icon} {name}";
@@ -119,7 +119,6 @@ mode-switcher {
 }
 
 button {
-    padding:                    10px;
     background-color:           @bg-col;
     text-color:                 @fg-dim-col;
     horizontal-align:           0.5;

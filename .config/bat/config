@@ -1,16 +1,5 @@
 # run "bat cache --build" before using bat
-
-# Set the theme to "Enki-Tokyo-Night"
 --theme="Enki-Tokyo-Night"
-
-# Show line numbers, Git modifications and file header (but no grid)
 --style="grid,numbers,changes,header"
-
-# Use italic text on the terminal (not supported on all terminals)
---italic-text=always
-
-# Use C++ syntax (instead of C) for .h header files
 --map-syntax h:cpp
-
-# Use "gitignore" highlighting for ".ignore" files
 --map-syntax .ignore:.gitignore
