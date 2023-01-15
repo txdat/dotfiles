@@ -113,7 +113,8 @@ require("lspsaga").setup({
             blue = "#7e9cd8",
             purple = "#957fb8",
             white = "#ecf0c1",
-            black = "#161616", -- oxocarbon
+            black = "#0f111b",
+            -- black = "#161616", -- oxocarbon
         },
         kind = {},
     },

@@ -78,7 +78,22 @@ M.servers = {
             },
         },
     },
-    pyright = {},
+    pyright = {
+        settings = {
+            pyright = {
+                autoImportCompletion = true,
+            },
+            python = {
+                analysis = {
+                    autoSearchPaths = true,
+                    useLibraryCodeForTypes = true,
+                    diagnosticMode = "workspace",
+                    typeCheckingMode = "off"
+                }
+            }
+        },
+        single_file_support = true,
+    },
     texlab = {},
 }
 
