@@ -33,7 +33,7 @@ local built_in_plugins = {
     "ftplugin",
 }
 
-for _, plugin in pairs(built_in_plugins) do
+for _, plugin in ipairs(built_in_plugins) do
     vim.g["loaded_" .. plugin] = 1
 end
 
@@ -58,6 +58,7 @@ vim.g.mapleader = "\\"
 -- gui
 -----------------------------------------
 
+vim.g.colors_name = "kanagawa"
 opt.background = "dark"
 opt.shortmess:append "sI" -- disable nvim intro
 opt.laststatus = 3 -- set global statusline
@@ -142,8 +143,6 @@ autocmd("BufEnter", {
     pattern = "*",
     command = "set fo-=c fo-=r fo-=o"
 })
-
--- terminal config ----------------------
 
 -- open terminal
 autocmd("CmdlineEnter", {

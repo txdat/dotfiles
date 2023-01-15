@@ -47,9 +47,12 @@ require("lspsaga").setup({
         },
     },
     rename = {
+        mark = "<Tab>",
+        confirm = "<CR>",
         exec = "<CR>",
         quit = "<ESC>",
         in_select = true,
+        whole_project = true,
     },
     outline = {
         win_position = "right",
@@ -84,6 +87,8 @@ require("lspsaga").setup({
         hide_keyword = true,
         show_file = true,
         folder_level = 2,
+        respect_root = false,
+        color_mode = true,
     },
     ui = {
         theme = "round",
@@ -94,8 +99,8 @@ require("lspsaga").setup({
         preview = "",
         code_action = "💡",
         diagnostic = "🐞",
-        incoming = "⬕",
-        outgoing = "⬔",
+        incoming = "",
+        outgoing = "",
         colors = {
             normal_bg = "#0f111b", -- spaceduck
             title_bg = "#7a5ccc",
@@ -121,7 +126,7 @@ local keymap = require("util").keymap
 
 keymap("n", "<leader>lf", ":Lspsaga lsp_finder<CR>")
 keymap("n", "<leader>pd", ":Lspsaga peek_definition<CR>")
-keymap("n", "<leader>jd", ":Lspsaga goto_definition<CR>")
+keymap("n", "<leader>od", ":Lspsaga goto_definition<CR>")
 keymap("n", "<leader>so", ":Lspsaga outline<CR>")
 keymap("n", "<leader>rn", ":Lspsaga rename<CR>")
 keymap("n", "<leader>ca", ":Lspsaga code_action<CR>")

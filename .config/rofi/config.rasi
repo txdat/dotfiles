@@ -81,7 +81,7 @@ entry {
     padding:                    5px;
     margin:                     20px 0px 0px 10px;
     background-color:           @bg-col;
-    text-color:                 @fg-col;
+    text-color:                 @fg-dim-col;
 }
 
 listview {

@@ -67,7 +67,7 @@ function diagnostics_message:update_status(is_focused)
                 top = d
             end
         end
-        local icons = { " ", " ", " ", " " }
+        local icons = { " ", " ", " ", " " }
         local hl = {
             self.highlights.error,
             self.highlights.warn,
@@ -111,7 +111,7 @@ require("lualine").setup {
         lualine_b = {
             {
                 "diagnostics",
-                symbols = { error = " ", warn = " ", info = " ", hint = " " },
+                symbols = { error = " ", warn = " ", info = " ", hint = " " },
             },
         },
         --lualine_c = {

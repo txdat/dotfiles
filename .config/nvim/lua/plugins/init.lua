@@ -18,6 +18,6 @@ local plugins_cfg = {
     -- "dap",
 }
 
-for _, cfg in pairs(plugins_cfg) do
+for _, cfg in ipairs(plugins_cfg) do
     pcall(require, "plugins." .. cfg)
 end

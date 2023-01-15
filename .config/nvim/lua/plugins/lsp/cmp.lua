@@ -8,11 +8,7 @@ local lspconfig = require("lspconfig")
 local cmp_common = require("plugins.lsp.cmp_common")
 
 cmp.setup {
-    snippet = {
-        expand = function(args)
-            luasnip.lsp_expand(args.body)
-        end,
-    },
+    preselect = cmp.PreselectMode.Item,
     window = {
         -- completion = cmp.config.window.bordered(),
         -- documentation = cmp.config.window.bordered(),
@@ -24,6 +20,9 @@ cmp.setup {
             border = "single",
             winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
         },
+    },
+    formatting = {
+        fields = { "abbr", "kind", "menu" },
     },
     mapping = cmp.mapping.preset.insert({
         ["<C-d>"] = cmp.mapping.scroll_docs(-4),
@@ -52,17 +51,33 @@ cmp.setup {
             end
         end, { "i", "s" }),
     }),
+    snippet = {
+        expand = function(args)
+            luasnip.lsp_expand(args.body)
+        end,
+    },
     sources = cmp_common.sources,
 }
 
 local lsp_servers = require("plugins.lsp.lsp_servers").servers
 
-for _, server in pairs(lsp_servers) do
-    lspconfig[server].setup {
+for server, cfg in pairs(lsp_servers) do
+    local config = {
         on_attach = cmp_common.on_attach,
-        capabilities = cmp_common.capabilities,
+        capabilities = cmp_common.capabilities
     }
+    for k, v in pairs(cfg) do
+        config[k] = v
+    end
+
+    lspconfig[server].setup(config)
 end
+
+-- snippet
+luasnip.config.set_config({
+    history = false,
+    updateevents = "TextChanged,TextChangedI",
+})
 
 require("luasnip.loaders.from_vscode").lazy_load()
 

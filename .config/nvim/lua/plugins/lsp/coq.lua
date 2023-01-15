@@ -12,6 +12,7 @@ local lspconfig = require("lspconfig")
 
 local lsp_servers = require("plugins.lsp.lsp_servers").servers
 
-for _, server in pairs(lsp_servers) do
+for server, _ in pairs(lsp_servers) do
+    -- ignore custom lsp config
     lspconfig[server].setup(coq.lsp_ensure_capabilities())
 end

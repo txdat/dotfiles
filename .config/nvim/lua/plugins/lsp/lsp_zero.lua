@@ -1,6 +1,7 @@
 vim.opt.signcolumn = "yes"
 
 local lsp = require("lsp-zero")
+local cmp = require("cmp")
 
 lsp.preset("recommended")
 
@@ -13,10 +14,10 @@ lsp.set_preferences({
     manage_nvim_cmp = true,
     call_servers = "global",
     sign_icons = {
-        error = "",
-        warn = "",
-        hint = "",
-        info = "",
+        error = " ",
+        warn = " ",
+        info = " ",
+        hint = " ",
     }
 })
 
@@ -35,15 +36,26 @@ local lsp_servers = require("plugins.lsp.lsp_servers")
 
 lsp.ensure_installed(lsp_servers.ensure_installed) -- install with mason
 
-for _, server in pairs(lsp_servers.servers) do
-    lsp.configure(server, {
+for server, cfg in pairs(lsp_servers.servers) do
+    local config = {
         force_setup = true, -- global server
         on_attach = cmp_common.on_attach,
         capabilities = cmp_common.capabilities,
-    })
+    }
+    for k, v in pairs(cfg) do
+        config[k] = v
+    end
+
+    lsp.configure(server, config)
 end
 
 lsp.setup()
+
+-- snippet
+require("luasnip").config.set_config({
+    history = false,
+    updateevents = "TextChanged,TextChangedI",
+})
 
 require("luasnip.loaders.from_vscode").lazy_load()
 
