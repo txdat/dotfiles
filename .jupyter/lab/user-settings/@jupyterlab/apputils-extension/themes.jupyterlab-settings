@@ -2,11 +2,11 @@
     "theme": "JupyterLab Dark",
     "theme-scrollbars": true,
     "overrides": {
-        "code-font-family": "Jetbrains Mono",
+        "code-font-family": "JetbrainsMono Nerd Font",
         "code-font-size": "14",
-        "content-font-family": "Jetbrains Mono",
+        "content-font-family": "JetbrainsMono Nerd Font",
         "content-font-size1": "14",
-        "ui-font-family": "Jetbrains Mono",
+        "ui-font-family": "JetbrainsMono Nerd Font",
         "ui-font-size1": "14"
     }
 }

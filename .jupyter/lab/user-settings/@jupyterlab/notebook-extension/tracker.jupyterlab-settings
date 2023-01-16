@@ -2,7 +2,7 @@
     "codeCellConfig": {
         "autoClosingBrackets": true,
         "cursorBlinkRate": 530,
-        "fontFamily": "Jetbrains Mono",
+        "fontFamily": "JetbrainsMono Nerd Font",
         "fontSize": 14,
         "lineHeight": 1,
         "lineNumbers": true,
@@ -22,7 +22,7 @@
     "markdownCellConfig": {
         "autoClosingBrackets": true,
         "cursorBlinkRate": 530,
-        "fontFamily": "Jetbrains Mono",
+        "fontFamily": "JetbrainsMono Nerd Font",
         "fontSize": 14,
         "lineHeight": 1,
         "lineNumbers": true,
@@ -40,7 +40,7 @@
     "rawCellConfig": {
         "autoClosingBrackets": true,
         "cursorBlinkRate": 530,
-        "fontFamily": "Jetbrains Mono",
+        "fontFamily": "JetbrainsMono Nerd Font",
         "fontSize": 14,
         "lineHeight": 1,
         "lineNumbers": true,

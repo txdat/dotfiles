@@ -11,7 +11,7 @@
 
 configuration{
     modi:                       "drun,run,window";
-    font:                       "Jetbrains Mono 18";
+    font:                       "JetbrainsMono Nerd Font 18";
     location:                   0;
     terminal:                   "alacritty";
     disable-history:            true;
