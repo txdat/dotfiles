@@ -169,3 +169,4 @@ local keymap = require("util").keymap
 keymap("n", "<leader>ff", ":Telescope find_files<CR>")
 keymap("n", "<leader>fg", ":Telescope live_grep<CR>")
 keymap("n", "<leader>fb", ":Telescope buffers<CR>")
+keymap("n", "<leader>fs", ":Telescope lsp_document_symbols<CR>")

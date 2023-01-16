@@ -168,7 +168,7 @@ return packer.startup(function(use)
             "nvim-bqf",
         },
         opt = true,
-        keys = { { "n", "<leader>ff" }, { "n", "<leader>fg" } },
+        keys = { { "n", "<leader>ff" }, { "n", "<leader>fg" }, { "n", "<leader>fb" } },
         config = function()
             pcall(require, "plugins.telescope")
         end
