@@ -108,6 +108,7 @@ return packer.startup(function(use)
             "nvim-lua/plenary.nvim",
             "nvim-telescope/telescope-ui-select.nvim",
             { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
+            "nvim-telescope/telescope-fzy-native.nvim",
         }
     }
 

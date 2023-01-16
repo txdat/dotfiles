@@ -1,7 +1,6 @@
 local plugins_cfg = {
     "impatient",
     "packer",
-    "colorscheme",
     "lualine",
     "bufferline",
     "indent_blankline",
@@ -13,9 +12,9 @@ local plugins_cfg = {
     "telescope",
     "bqf",
     "gitsigns",
-    -- "vimtex",
     "lsp",
     -- "dap",
+    -- "vimtex",
 }
 
 for _, cfg in ipairs(plugins_cfg) do

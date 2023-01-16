@@ -244,6 +244,11 @@ _G.packer_plugins = {
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/telescope-fzf-native.nvim",
     url = "https://github.com/nvim-telescope/telescope-fzf-native.nvim"
   },
+  ["telescope-fzy-native.nvim"] = {
+    loaded = true,
+    path = "/home/txdat/.local/share/nvim/site/pack/packer/start/telescope-fzy-native.nvim",
+    url = "https://github.com/nvim-telescope/telescope-fzy-native.nvim"
+  },
   ["telescope-ui-select.nvim"] = {
     loaded = true,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/telescope-ui-select.nvim",
@@ -267,8 +272,8 @@ _G.packer_plugins = {
 time([[Defining packer_plugins]], false)
 -- Keymap lazy-loads
 time([[Defining lazy-load keymaps]], true)
-vim.cmd [[nnoremap <silent> <F9> <cmd>lua require("packer.load")({'nvim-dap'}, { keys = "<lt>F9>", prefix = "" }, _G.packer_plugins)<cr>]]
 vim.cmd [[nnoremap <silent> <F5> <cmd>lua require("packer.load")({'nvim-dap'}, { keys = "<lt>F5>", prefix = "" }, _G.packer_plugins)<cr>]]
+vim.cmd [[nnoremap <silent> <F9> <cmd>lua require("packer.load")({'nvim-dap'}, { keys = "<lt>F9>", prefix = "" }, _G.packer_plugins)<cr>]]
 time([[Defining lazy-load keymaps]], false)
 
 vim.cmd [[augroup packer_load_aucmds]]

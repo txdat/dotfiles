@@ -3,10 +3,10 @@
 * {
     bg-col:                     #0f111b;
     border-col:                 #16172d;
-    selected-col:               #223249;
+    selected-col:               #2d4f67;
     fg-col:                     #ecf0c1;
     fg-dim-col:                 #727169;
-    button-col:                 #938aa9;
+    button-col:                 #7e9cd8;
 }
 
 configuration{
@@ -21,9 +21,9 @@ configuration{
     sidebar-mode:               true;
     window-format:              "[{w}]\t\t{t:0}";
     drun-display-format:        "{icon} {name}";
-    display-run:                " ﰌ Run ﰌ ";
-    display-drun:               "  App  ";
-    display-window:             "  Tsk  ";
+    display-drun:               "   Apps ";
+    display-run:                "   Run ";
+    display-window:             " 﩯 Window ";
     kb-mode-previous:           "Control+Shift+Tab";
     kb-mode-next:               "Control+Tab";
     kb-row-left:                "Control+Alt+h";
@@ -76,12 +76,11 @@ textbox-prompt-colon {
 }
 
 entry {
-    placeholder:                "Search";
     expand:                     true;
     padding:                    5px;
     margin:                     20px 0px 0px 10px;
     background-color:           @bg-col;
-    text-color:                 @fg-dim-col;
+    text-color:                 @fg-col;
 }
 
 listview {
@@ -127,5 +126,5 @@ button {
 
 button selected {
     background-color:           @bg-col;
-    text-color:                 @button-col;
+    text-color:                 @fg-col;
 }

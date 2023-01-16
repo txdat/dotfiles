@@ -119,13 +119,17 @@ telescope.setup {
         },
     },
     pickers = {
-        -- find_files = {
-        --     theme = "dropdown"
-        -- },
+        find_files = {
+            theme = "ivy",
+        },
         live_grep = {
             additional_args = function(opts)
                 return { "--hidden" }
-            end
+            end,
+            theme = "ivy",
+        },
+        buffers = {
+            theme = "ivy",
         },
     },
     extentions = {
@@ -147,13 +151,18 @@ telescope.setup {
             fuzzy = true,
             override_generic_sorter = true,
             override_file_sorter = true,
-            case_mode = "smart_case"
-        }
+            case_mode = "smart_case",
+        },
+        fzy_native = {
+            override_generic_sorter = true,
+            override_file_sorter = true,
+        },
     }
 }
 
 telescope.load_extension("ui-select")
-telescope.load_extension("fzf")
+-- telescope.load_extension("fzf")
+telescope.load_extension("fzy_native")
 
 local keymap = require("util").keymap
 
