@@ -5,10 +5,22 @@ local cmp = require("cmp")
 local luasnip = require("luasnip")
 local lspconfig = require("lspconfig")
 
+-- disable window's scroll
+local cmp_window = require("cmp.utils.window")
+
+cmp_window.info_ = cmp_window.info
+cmp_window.info = function(self)
+    local info = self:info_()
+    info.scrollable = false
+    return info
+end
+
 local cmp_common = require("plugins.lsp.cmp_common")
 
 cmp.setup {
-    preselect = cmp.PreselectMode.Item,
+    completion = {
+        completeopt = "menu,menuone,preview",
+    },
     window = {
         -- completion = cmp.config.window.bordered(),
         -- documentation = cmp.config.window.bordered(),

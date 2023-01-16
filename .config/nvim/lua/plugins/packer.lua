@@ -195,7 +195,7 @@ return packer.startup(function(use)
         keys = { { "n", "<F5>" }, { "n", "<F9>" } }, -- triggered when start debugging
         wants = { "nvim-dap-ui", "nvim-dap-virtual-text" },
         config = function()
-            require("plugins.dap")
+            pcall(require, "plugins.dap")
         end,
     }
 
@@ -209,7 +209,7 @@ return packer.startup(function(use)
         opt = true,
         ft = { "tex" }, -- triggered when open *.tex file
         config = function()
-            require("plugins.vimtex")
+            pcall(require, "plugins.vimtex")
         end
     }
 

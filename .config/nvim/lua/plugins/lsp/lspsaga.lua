@@ -37,9 +37,9 @@ require("lspsaga").setup({
         virtual_text = true,
     },
     diagnostic = {
-        twice_into = false,
         show_code_action = true,
         show_source = true,
+        jump_num_shortcut = true,
         keys = {
             exec_action = "<CR>",
             quit = "<ESC>",
@@ -83,7 +83,7 @@ require("lspsaga").setup({
     },
     symbol_in_winbar = {
         enable = true,
-        separator = "",
+        separator = " ",
         hide_keyword = true,
         show_file = true,
         folder_level = 2,

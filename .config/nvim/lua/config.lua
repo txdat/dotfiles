@@ -76,6 +76,7 @@ opt.showmatch = true -- highlight matching parenthesis
 opt.foldmethod = "marker" -- enable folding
 opt.splitright = true -- vertical split to the right
 opt.splitbelow = true -- horizontal split to the bottom
+opt.signcolumn = "yes"
 
 -----------------------------------------
 -- tabs, indent, ...
@@ -164,3 +165,15 @@ autocmd("BufLeave", {
     pattern = "*",
     command = "stopinsert"
 })
+
+-----------------------------------------
+-- plugins
+-----------------------------------------
+
+pcall(require, "plugins")
+
+-----------------------------------------
+-- keymaps
+-----------------------------------------
+
+pcall(require, "keymaps")

@@ -1,13 +1,13 @@
-require("plugins.lsp.mason")
-require("plugins.lsp.mason_lspconfig")
+pcall(require, "plugins.lsp.mason")
+pcall(require, "plugins.lsp.mason_lspconfig")
 
 -- select 1 of 3
--- require ("plugins.lsp.lsp_zero")  -- disable lspsaga
-require("plugins.lsp.cmp")
--- require ("plugins.lsp.coq")
+-- pcall(require, "plugins.lsp.lsp_zero")  -- disable lspsaga
+pcall(require, "plugins.lsp.cmp")
+-- pcall(require, "plugins.lsp.coq")
 
-require("plugins.lsp.lspsaga")
-require("plugins.lsp.null_ls")
+pcall(require, "plugins.lsp.lspsaga")
+pcall(require, "plugins.lsp.null_ls")
 
 -- custom diagnostic signs
 local signs = {
