@@ -47,8 +47,8 @@ return packer.startup(function(use)
 
     -- colorscheme
     use "rebelot/kanagawa.nvim"
-    --use { "pineapplegiant/spaceduck", branch = "main" }
-    --use "nyoom-engineering/oxocarbon.nvim"
+    -- use { "pineapplegiant/spaceduck", branch = "main" }
+    -- use "nyoom-engineering/oxocarbon.nvim"
 
     -- status bar
     use {
@@ -67,19 +67,55 @@ return packer.startup(function(use)
     }
 
     -- indent
-    use "lukas-reineke/indent-blankline.nvim"
+    use {
+        "lukas-reineke/indent-blankline.nvim",
+        opt = true,
+        event = "BufRead",
+        config = function()
+            pcall(require, "plugins.indent_blankline")
+        end
+    }
 
     -- syntax
-    use { "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" }
+    use {
+        "nvim-treesitter/nvim-treesitter",
+        run = ":TSUpdate",
+        opt = true,
+        event = "BufRead",
+        config = function()
+            pcall(require, "plugins.nvim_treesitter")
+        end
+    }
 
     -- commenting
-    use "numToStr/Comment.nvim"
+    use {
+        "numToStr/Comment.nvim",
+        opt = true,
+        event = "InsertEnter",
+        config = function()
+            pcall(require, "plugins.comment")
+        end
+    }
 
     -- auto close brackets
-    use "windwp/nvim-autopairs"
+    use {
+        "windwp/nvim-autopairs",
+        opt = true,
+        event = "InsertEnter",
+        config = function()
+            pcall(require, "plugins.nvim_autopairs")
+        end
+    }
 
     -- navigation
-    use "phaazon/hop.nvim"
+    use {
+        "phaazon/hop.nvim",
+        opt = true,
+        event = "BufRead",
+        config = function()
+            pcall(require, "plugins.hop")
+        end
+    }
 
     -- key bindings
     -- use "folke/which-key.nvim"
@@ -89,112 +125,154 @@ return packer.startup(function(use)
     ------------------------------------
 
     -- file manager
-    --use {
-    --	"ms-jpq/chadtree",
-    --	branch = "chad",
-    --	run = "python3 -m chadtree deps"
-    --}
+    -- use {
+    --     "ms-jpq/chadtree",
+    --     branch = "chad",
+    --     run = "python3 -m chadtree deps",
+    --     opt = true,
+    --     keys = { { "n", "<C-e>" } },
+    --     config = function()
+    --         pcall(require, "plugins.chadtree")
+    --     end
+    -- }
+
     use {
         "nvim-tree/nvim-tree.lua",
         requires = {
             "nvim-tree/nvim-web-devicons",
-        }
+        },
+        wants = {
+            "nvim-web-devicons",
+        },
+        opt = true,
+        keys = { { "n", "<C-e>" } },
+        config = function()
+            pcall(require, "plugins.nvim_tree")
+        end
     }
 
     -- finder
     use {
         "nvim-telescope/telescope.nvim",
         requires = {
-            "nvim-lua/plenary.nvim",
-            "nvim-telescope/telescope-ui-select.nvim",
-            { "nvim-telescope/telescope-fzf-native.nvim", run = "make" },
-            "nvim-telescope/telescope-fzy-native.nvim",
-        }
+            { "nvim-lua/plenary.nvim", opt = true },
+            { "nvim-telescope/telescope-ui-select.nvim", opt = true },
+            -- { "nvim-telescope/telescope-fzf-native.nvim", run = "make", opt = true },
+            { "nvim-telescope/telescope-fzy-native.nvim", opt = true },
+        },
+        wants = {
+            "plenary.nvim",
+            "telescope-ui-select.nvim",
+            -- "telescope-fzf-native.nvim",
+            "telescope-fzy-native.nvim",
+            "nvim-bqf",
+        },
+        opt = true,
+        keys = { { "n", "<leader>ff" }, { "n", "<leader>fg" } },
+        config = function()
+            pcall(require, "plugins.telescope")
+        end
     }
 
     -- use {
     --     "ibhagwan/fzf-lua",
     --     requires = {
     --         "nvim-tree/nvim-web-devicons",
-    --         { "junegunn/fzf", run = "./install --bin", opt = true },
-    --     }
+    --         -- { "junegunn/fzf", run = "./install --bin", opt = true },
+    --     },
+    --     wants = {
+    --         "nvim-web-devicons",
+    --         "nvim-bqf",
+    --     },
+    --     opt = true,
+    --     config = function()
+    --         pcall(require, "plugins.fzf_lua")
+    --     end
     -- }
 
     -- quickfix
     use {
         "kevinhwang91/nvim-bqf",
         requires = {
-            { "junegunn/fzf", run = "./install --bin", opt = true },
-        }
+            -- { "junegunn/fzf", run = "./install --bin", opt = true },
+        },
+        wants = {
+        },
+        opt = true,
+        config = function()
+            pcall(require, "plugins.bqf")
+        end
     }
 
     -- svc
-    use "lewis6991/gitsigns.nvim"
+    use {
+        "lewis6991/gitsigns.nvim",
+        opt = true,
+        event = "BufRead",
+        config = function()
+            pcall(require, "plugins.gitsigns")
+        end
+    }
 
     ------------------------------------
     -- autocompletion, debugging
     ------------------------------------
 
-    -- autocompletion
-    use "neovim/nvim-lspconfig"
-
+    -- autocompletion, diagnostics, formatting
     use {
-        "williamboman/mason-lspconfig.nvim",
+        "neovim/nvim-lspconfig",
         requires = {
-            "williamboman/mason.nvim",
+            { "williamboman/mason.nvim", opt = true },
+            { "williamboman/mason-lspconfig.nvim", opt = true },
+            -- { "VonHeikemen/lsp-zero.nvim", opt = true },
+            { "hrsh7th/nvim-cmp", opt = true },
+            { "hrsh7th/cmp-nvim-lsp", opt = true },
+            { "hrsh7th/cmp-buffer", opt = true },
+            { "hrsh7th/cmp-path", opt = true },
+            { "saadparwaiz1/cmp_luasnip", opt = true },
+            { "L3MON4D3/LuaSnip", opt = true },
+            -- { "ms-jpq/coq_nvim", branch = "coq", opt = true },
+            -- { "ms-jpq/coq.artifacts", branch = "artifacts", opt = true },
+            -- { "ms-jpq/coq.thirdparty", branch = "3p", opt = true },
+            { "glepnir/lspsaga.nvim", branch = "main", opt = true },
+            { "jose-elias-alvarez/null-ls.nvim", opt = true },
         },
+        wants = {
+            "mason.nvim",
+            "mason-lspconfig.nvim",
+            -- "lsp-zero.nvim",
+            "nvim-cmp",
+            "cmp-nvim-lsp",
+            "cmp-buffer",
+            "cmp-path",
+            "cmp_luasnip",
+            "LuaSnip",
+            -- "coq_nvim",
+            -- "coq.artifacts",
+            -- "coq.thirdparty",
+            "lspsaga.nvim",
+            "null-ls.nvim",
+        },
+        opt = true,
+        event = "InsertEnter",
+        config = function()
+            pcall(require, "plugins.lsp")
+        end,
     }
-
-    -- use {
-    --    "VonHeikemen/lsp-zero.nvim",
-    --    requires = {
-    --        "williamboman/mason.nvim",
-    --        "williamboman/mason-lspconfig.nvim",
-    --        "hrsh7th/nvim-cmp",
-    --        "hrsh7th/cmp-nvim-lsp",
-    --        "hrsh7th/cmp-buffer",
-    --        "hrsh7th/cmp-path",
-    --        "saadparwaiz1/cmp_luasnip",
-    --        "L3MON4D3/LuaSnip",
-    --    }
-    -- }
-
-    use {
-        "hrsh7th/nvim-cmp",
-        requires = {
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            "saadparwaiz1/cmp_luasnip",
-            "L3MON4D3/LuaSnip",
-        }
-    }
-
-    --use {
-    --	"ms-jpq/coq_nvim",
-    --	branch = "coq",
-    --	requires = {
-    --		{ "ms-jpq/coq.artifacts", branch = "artifacts" },
-    --		{ "ms-jpq/coq.thirdparty", branch = "3p" }
-    --	}
-    --}
-
-    -- diagnostics
-    use { "glepnir/lspsaga.nvim", branch = "main" }
-
-    -- linting/formatting
-    use "jose-elias-alvarez/null-ls.nvim"
 
     -- debugging
     use {
         "mfussenegger/nvim-dap",
-        opt = true,
         requires = {
             { "rcarriga/nvim-dap-ui", opt = true },
             { "theHamsta/nvim-dap-virtual-text", opt = true },
         },
+        wants = {
+            "nvim-dap-ui",
+            "nvim-dap-virtual-text",
+        },
+        opt = true,
         keys = { { "n", "<F5>" }, { "n", "<F9>" } }, -- triggered when start debugging
-        wants = { "nvim-dap-ui", "nvim-dap-virtual-text" },
         config = function()
             pcall(require, "plugins.dap")
         end,
