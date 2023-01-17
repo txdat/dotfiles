@@ -135,6 +135,7 @@ export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
 
 #alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
+#alias dnfu="sudo dnf update && flatpak update"
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 alias cpcb="xclip -sel c < " # copy from file to clipboard
 alias cpfi="xclip -sel c -o > " # copy from clipboard to file
@@ -151,6 +152,20 @@ syyu () {
     echo "-----------------------------"
 
     paru -Syyu
+
+    echo "-----------------------------"
+    echo "|          flatpak          |"
+    echo "-----------------------------"
+
+    flatpak update
+}
+
+dnfu () {
+    echo "-----------------------------"
+    echo "|            dnf            |"
+    echo "-----------------------------"
+
+    sudo dnf update
 
     echo "-----------------------------"
     echo "|          flatpak          |"

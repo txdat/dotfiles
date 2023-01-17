@@ -7,7 +7,7 @@
   export nfs in `/etc/exports` (no symlink)
 
   ```
-  /path/to/export/dir 192.168.1.198(rw,sync,no_root_squash,no_subtree_check)
+  /path/to/export/dir <ip_addr>(rw,sync,no_root_squash,no_subtree_check)
   ```
 
   run `sudo exportfs -arv` to export nfs
@@ -15,14 +15,18 @@
   Or just run
 
   ```bash
-  ./nfs.sh /path/to/export/dir
+  sudo ./nfs.sh /path/to/export/dir <ip_addr:192.168.1.198>
   ```
+
+  `sudo ./nfs.sh /home/.kube/nfs 192.168.1.198`
 
 - nvidia-container-runtime \[[link](https://github.com/k3s-io/k3s/issues/4391#issuecomment-1233314825)] (create `/etc/docker` or `/etc/containerd` if not found)
 
   ```bash
-  sudo mkdir -p /etc/docker && cp -r docker/* /etc/docker
-  sudo mkdir -p /etc/containerd && cp -r containerd/* /etc/containerd
+  sudo mkdir -p /etc/docker && sudo cp -r docker/* /etc/docker
+  sudo mkdir -p /etc/containerd && sudo cp -r containerd/* /etc/containerd
+  
+  # copy `/etc/rancher/k3s/k3s.yaml` to `~/.kube/config` and chmod/chown
   kubectl apply -f nvidia.yaml
   ```
 
@@ -30,7 +34,7 @@
 
   ```bash
   sudo nmcli con show # grep <uuid>
-  sudo nmcli con modify <uuid> ipv4.addresses 192.168.1.198/24
+  sudo nmcli con modify <uuid> ipv4.addresses <ip_addr:192.168.1.198>/<port:24>
   sudo nmcli con modify <uuid> ipv4.gateway 192.168.1.1
   sudo nmcli con modify <uuid> ipv4.dns "8.8.8.8"
   sudo nmcli con modify <uuid> ipv4.method manual
