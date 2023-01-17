@@ -121,9 +121,15 @@ require("lualine").setup {
         --    },
         --},
         lualine_c = {},
-        lualine_x = { "fileformat", "encoding" },
-        lualine_y = { "branch", "diff" },
-        lualine_z = { "location", "progress" },
+        lualine_x = { "location", "progress" },
+        lualine_y = {
+            "branch",
+            {
+                "diff",
+                symbols = { added = " ", modified = " ", removed = " " },
+            },
+        },
+        lualine_z = { "fileformat", "encoding" },
     },
     inactive_sections = {
         lualine_a = {},

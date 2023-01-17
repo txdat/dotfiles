@@ -1,8 +1,6 @@
 -- vim/neovim config
 
 local opt = vim.opt
-local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
 
 -- disable built-in plugins
 local built_in_plugins = {
@@ -67,7 +65,7 @@ opt.guicursor = "n-v-c:block-Cursor" -- using block cursor
 opt.guicursor:append "i:block-iCursor"
 opt.guicursor:append "n-v-c:blinkon0"
 opt.guicursor:append "i:blinkon0"
---opt.ruler = true  -- show cursor position
+-- opt.ruler = true  -- show cursor position
 opt.list = true -- show eol, ...
 opt.cursorline = true
 opt.number = true -- show line number
@@ -77,6 +75,9 @@ opt.foldmethod = "marker" -- enable folding
 opt.splitright = true -- vertical split to the right
 opt.splitbelow = true -- horizontal split to the bottom
 opt.signcolumn = "yes"
+opt.fillchars = [[eob: ,fold: ,foldopen:-,foldsep:│,foldclose:+]]
+opt.foldcolumn = "1"
+-- opt.statuscolumn = "%=%s%=%l %C%#IndentBlankLineChar#│ "
 
 -----------------------------------------
 -- tabs, indent, ...
@@ -123,6 +124,9 @@ vim.g.python3_host_prog = require("util").exec("which python3")
 -----------------------------------------
 -- autocommand functions
 -----------------------------------------
+
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
 
 -- highlight on yank (selected copy)
 augroup("YankHighlight", { clear = true })
