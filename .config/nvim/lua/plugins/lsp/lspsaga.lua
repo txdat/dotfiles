@@ -92,6 +92,7 @@ require("lspsaga").setup({
     },
     ui = {
         theme = "round",
+        title = true,
         border = "single",
         winblend = 0,
         expand = "",
