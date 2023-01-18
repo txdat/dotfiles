@@ -112,6 +112,12 @@ source $ZSH/oh-my-zsh.sh
 
 export TERM="xterm-256color"
 
+alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
+alias dnfu="sudo dnf update && flatpak update"
+alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
+alias cpcb="xclip -sel c < " # copy from file to clipboard
+alias cpfi="xclip -sel c -o > " # copy from clipboard to file
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -134,54 +140,14 @@ export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
 
-#alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
-#alias dnfu="sudo dnf update && flatpak update"
-alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
-alias cpcb="xclip -sel c < " # copy from file to clipboard
-alias cpfi="xclip -sel c -o > " # copy from clipboard to file
-
-syyu () {
-    echo "-----------------------------"
-    echo "|          pacman           |"
-    echo "-----------------------------"
-
-    sudo pacman -Syyu
-
-    echo "-----------------------------"
-    echo "|            aur            |"
-    echo "-----------------------------"
-
-    paru -Syyu
-
-    echo "-----------------------------"
-    echo "|          flatpak          |"
-    echo "-----------------------------"
-
-    flatpak update
-}
-
-dnfu () {
-    echo "-----------------------------"
-    echo "|            dnf            |"
-    echo "-----------------------------"
-
-    sudo dnf update
-
-    echo "-----------------------------"
-    echo "|          flatpak          |"
-    echo "-----------------------------"
-
-    flatpak update
-}
-
 # kubernetes (k3s)
 export KUBECONFIG=$HOME/.kube/config
 
 KUBE_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
 
 start_kube () {
-    # add kube's dns to resolv
-    sudo sed -i "1s/^/nameserver 10.43.0.10 # kube\n/" /etc/resolv.conf  # run 'kgs -n kube-system | grep dns'
+    # add kube-system's dns to resolv
+    sudo sed -i "1s/^/nameserver ${1:-10.43.0.10} # kube\n/" /etc/resolv.conf  # run 'kubectl get svc -n kube-system | grep dns'
 
     for svc in "${KUBE_SERVICES[@]}"
     do
@@ -191,7 +157,7 @@ start_kube () {
 }
 
 stop_kube () {
-    # remove kube's dns in resolv
+    # remove kube-system's dns in resolv
     sudo sed -i "/kube$/d" /etc/resolv.conf
 
     for svc in "${KUBE_SERVICES[@]}"
@@ -201,7 +167,7 @@ stop_kube () {
     done
 }
 
-# custom commands
+# compile 'algo'
 algocpl () {
     dir=$(pwd)
     fname=${1%%.*} # *.cpp/cc
