@@ -107,11 +107,16 @@ require("lualine").setup {
         ignore_focus = dap_components,
     },
     sections = {
-        lualine_a = { "mode" },
+        lualine_a = {
+            { "fileformat", symbols = { unix = "" } },
+            "mode",
+        },
         lualine_b = {
             {
                 "diagnostics",
+                sources = { "nvim_diagnostic", "nvim_lsp" },
                 symbols = { error = " ", warn = " ", info = " ", hint = " " },
+                update_in_insert = true,
             },
         },
         --lualine_c = {
@@ -121,15 +126,15 @@ require("lualine").setup {
         --    },
         --},
         lualine_c = {},
-        lualine_x = { "location", "progress", "encoding", "fileformat" },
-        lualine_y = {
+        lualine_x = {
             "branch",
             {
                 "diff",
                 symbols = { added = " ", modified = " ", removed = " " },
             },
         },
-        lualine_z = {},
+        lualine_y = { "location", "progress" },
+        lualine_z = { "buffers" },
     },
     inactive_sections = {
         lualine_a = {},
