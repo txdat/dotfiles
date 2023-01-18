@@ -19,13 +19,6 @@ then
     qemu-img create -f raw ${QEMU_IMG} ${2:-50}G
 fi
 
-if ! systemctl is-active --quiet libvirtd.service;
-then
-    # start libvirtd and samba
-    sudo systemctl start libvirtd.service
-    sudo systemctl start smb.service
-fi
-
 # start virtual machine (default all cpu cores and 6GB memory)
 qemu-system-x86_64 --enable-kvm -drive driver=raw,file=${QEMU_IMG},if=virtio -m ${4:-6144} \
     -net nic,model=virtio -net user -cdrom ${WIN_IMG} \
