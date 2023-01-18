@@ -57,7 +57,6 @@ let mapleader='\' " set <leader>
 " ----------------------------------
 
 set background="dark"
-"colorscheme spaceduck
 set shortmess=I " disable vim intro
 set laststatus=3 " set global statusline
 set guicursor=n-v-c:block-Cursor " using block cursor
@@ -68,8 +67,8 @@ set ruler " show cursor position
 "set list " show eol, ...
 set cursorline
 hi CursorLine cterm=none
-hi LineNR cterm=none guifg=grey
-hi CursorLineNR cterm=none guifg=orange
+hi LineNR cterm=none guifg=dimgray
+hi CursorLineNR cterm=bold guifg=orange
 hi! link Folded Normal
 set number " show line number
 set relativenumber " (-1,+1) line number
@@ -315,8 +314,8 @@ call s:h("NonText", s:hex.color0, s:hex.color17, s:bit.color0, s:bit.color11, "n
 
 " reset highlight
 hi CursorLine cterm=none
-hi LineNR cterm=none guifg=grey
-hi CursorLineNR cterm=none guifg=orange
+hi LineNR cterm=none guifg=dimgray
+hi CursorLineNR cterm=bold guifg=orange
 
 " ==========> Syntax highlights
 call s:h("Comment", "", s:hex.color18, "", s:bit.color12, "none")
