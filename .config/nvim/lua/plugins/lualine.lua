@@ -133,8 +133,8 @@ require("lualine").setup {
                 symbols = { added = " ", modified = " ", removed = " " },
             },
         },
-        lualine_y = { "location", "progress" },
-        lualine_z = { "buffers" },
+        lualine_y = { "buffers" },
+        lualine_z = { "location", "progress" },
     },
     inactive_sections = {
         lualine_a = {},

@@ -133,6 +133,7 @@ keymap("n", "<leader>so", ":Lspsaga outline<CR>")
 keymap("n", "<leader>rn", ":Lspsaga rename<CR>")
 keymap("n", "<leader>ca", ":Lspsaga code_action<CR>")
 keymap("n", "K", ":Lspsaga hover_doc<CR>")
+keymap("n", "<A-k>", ":Lspsaga hover_doc ++keep<CR>")
 
 -- diagnostic
 keymap("n", "<leader>dl", ":Lspsaga show_line_diagnostics<CR>")
