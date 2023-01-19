@@ -149,6 +149,12 @@ autocmd("BufEnter", {
     command = "set fo-=c fo-=r fo-=o"
 })
 
+-- make vertical split by default when opening files
+autocmd("WinNew", {
+    pattern = "*",
+    command = "wincmd L",
+})
+
 -- open terminal
 autocmd("CmdlineEnter", {
     command = "command! Term :botright split term://$SHELL"
