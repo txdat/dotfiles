@@ -1,133 +1,137 @@
 :root {
-    --n-bg: #0f111b;
-    --n-icon-color: #e0fbfc;
-    --n-nav-toolbar-padding: 1px;
-    --n-sidebar-bg: var(--n-bg);
-    --n-sidebar-color: #e0fbfc;
-    --n-tab-border-radius: 0px;
-    --n-tab-color: #fefefa;
-    --n-tab-font-family: "JetbrainsMono Nerd Font";
-    --n-tab-font-size: 10pt;
-    --n-tab-font-weight: 300;
-    --n-tab-height: 20px;
-    --n-tab-pinned-bg: #70c1b3;
-    --n-tab-selected-bg: #ee6c4d;
-    --n-tab-soundplaying-bg: #9c89b8;
-    --n-urlbar-color: #98c1d9;
-    --n-urlbar-focused-color: #e0fbfc;
-    --n-urlbar-font-family: "JetbrainsMono Nerd Font";
-    --n-urlbar-font-size: 10pt;
-    --n-urlbar-font-weight: 300;
-    --n-urlbar-results-color: #e0fbfc;
-    --n-urlbar-results-font-family: "JetbrainsMono Nerd Font";
-    --n-urlbar-results-font-size: 10pt;
-    --n-urlbar-results-font-weight: 300;
-    --n-urlbar-results-url-color: #98c1d9;
-    /*   --n-tab-selected-bg: linear-gradient(90deg, rgba(232,74,95,1) 0%, rgba(255,132,124,1) 50%, rgba(254,206,168,1) 100%); */
-    /*   --n-urlbar-font-weight: 300; */
-    /* Overriden Firefox variables*/
-    --autocomplete-popup-background: var(--n-bg) !important;
-    --default-arrowpanel-background: var(--n-bg) !important;
-    --default-arrowpanel-color: #fefefa !important;
-    --lwt-toolbarbutton-icon-fill: var(--n-icon-color) !important;
-    --panel-disabled-color: #f9f9fa80;
-    --toolbar-bgcolor: var(--n-bg) !important;
-    --urlbar-separator-color: transparent !important;
-    --bookmark-block-padding: 1px 2px !important;
-    --arrowpanel-menuitem-padding: 1px 1px !important;
-    --tab-block-margin: 0px !important;
-    --tab-border-radius: 0px !important;
-    --arrowpanel-border-radius: 0px !important;
-    --arrowpanel-padding-inline: 1px !important;
-    --arrowpanel-background: #0f111b !important;
-    --arrowpanel-color: #fafafa !important;
-    --arrowpanel-hover-background-color: #333 !important;
-    --arrowpanel-disabled-hover-background-color: #333 !important;
-    --arrowpaenl-disabled-color: #6272a4 !important;
-    --arrowpanel-border-color: #44475a !important;
-    --arrowpanel-icon-opacity: 1.0 !important;
-    /* now the history sidebar color */
-    --lwt-sidebar-background-color: #0f111b !important;
+  --n-bg: #161616;
+  --n-icon-color: #e0fbfc;
+  --n-nav-toolbar-padding: 1px;
+  --n-sidebar-bg: var(--n-bg);
+  --n-sidebar-color: #e0fbfc;
+  --n-tab-border-radius: 0px;
+  --n-tab-color: #fefefa;
+  --n-tab-font-family: "JetbrainsMono Nerd Font";
+  --n-tab-font-size: 10pt;
+  --n-tab-font-weight: 300;
+  --n-tab-height: 20px;
+  --n-tab-pinned-bg: #70c1b3;
+  --n-tab-selected-bg: #ee6c4d;
+  --n-tab-soundplaying-bg: #9c89b8;
+  --n-urlbar-color: #98c1d9;
+  --n-urlbar-focused-color: #e0fbfc;
+  --n-urlbar-font-family: "JetbrainsMono Nerd Font";
+  --n-urlbar-font-size: 10pt;
+  --n-urlbar-font-weight: 300;
+  --n-urlbar-results-color: #e0fbfc;
+  --n-urlbar-results-font-family: "JetbrainsMono Nerd Font";
+  --n-urlbar-results-font-size: 10pt;
+  --n-urlbar-results-font-weight: 300;
+  --n-urlbar-results-url-color: #98c1d9;
+  /* --n-tab-selected-bg: linear-gradient(
+    90deg,
+    rgba(232, 74, 95, 1) 0%,
+    rgba(255, 132, 124, 1) 50%,
+    rgba(254, 206, 168, 1) 100%
+  ); */
+  /* --n-urlbar-font-weight: 300; */
+  /* Overriden Firefox variables*/
+  --autocomplete-popup-background: var(--n-bg) !important;
+  --default-arrowpanel-background: var(--n-bg) !important;
+  --default-arrowpanel-color: #fefefa !important;
+  --lwt-toolbarbutton-icon-fill: var(--n-icon-color) !important;
+  --panel-disabled-color: #f9f9fa80;
+  --toolbar-bgcolor: var(--n-bg) !important;
+  --urlbar-separator-color: transparent !important;
+  --bookmark-block-padding: 1px 2px !important;
+  --arrowpanel-menuitem-padding: 1px 1px !important;
+  --tab-block-margin: 0px !important;
+  --tab-border-radius: 0px !important;
+  --arrowpanel-border-radius: 0px !important;
+  --arrowpanel-padding-inline: 1px !important;
+  --arrowpanel-background: #161616 !important;
+  --arrowpanel-color: #fafafa !important;
+  --arrowpanel-hover-background-color: #333 !important;
+  --arrowpanel-disabled-hover-background-color: #333 !important;
+  --arrowpaenl-disabled-color: #6272a4 !important;
+  --arrowpanel-border-color: #44475a !important;
+  --arrowpanel-icon-opacity: 1 !important;
+  /* now the history sidebar color */
+  --lwt-sidebar-background-color: #161616 !important;
 }
 
 .tab-text {
-    font-family: var(--n-tab-font-family);
-    font-weight: var(--n-tab-font-weight);
-    font-size: var(--n-tab-font-size) !important;
-    color: var(--n-tab-color);
+  font-family: var(--n-tab-font-family);
+  font-weight: var(--n-tab-font-weight);
+  font-size: var(--n-tab-font-size) !important;
+  color: var(--n-tab-color);
 }
 
 #tabbrowser-tabs {
-    --tab-line-color: #0f111b !important;
-    height: var(--n-tab-height) !important;
+  --tab-line-color: #161616 !important;
+  height: var(--n-tab-height) !important;
 }
 
 #urlbar-results {
-    font-family: var(--n-urlbar-results-font-family);
-    font-weight: var(--n-urlbar-results-font-weight);
-    font-size: var(--n-urlbar-results-font-size) !important;
-    /* color: var(--n-urlbar-results-color) !important; */
+  font-family: var(--n-urlbar-results-font-family);
+  font-weight: var(--n-urlbar-results-font-weight);
+  font-size: var(--n-urlbar-results-font-size) !important;
+  /* color: var(--n-urlbar-results-color) !important; */
 }
 
 .urlbarView-url,
 .search-panel-one-offs-container {
-    /* color: var(--n-urlbar-results-url-color) !important; */
-    font-family: var(--n-urlbar-font-family);
-    font-weight: var(--n-urlbar-results-font-weight);
-    font-size: var(--n-urlbar-font-size) !important;
+  /* color: var(--n-urlbar-results-url-color) !important; */
+  font-family: var(--n-urlbar-font-family);
+  font-weight: var(--n-urlbar-results-font-weight);
+  font-size: var(--n-urlbar-font-size) !important;
 }
 
 #urlbar-input {
-    font-size: var(--n-urlbar-font-size) !important;
-    /* color: var(--n-urlbar-color) !important; */
-    font-family: var(--n-urlbar-font-family) !important;
-    font-weight: var(--n-urlbar-font-weight)!important;
-    text-align: center !important;
+  font-size: var(--n-urlbar-font-size) !important;
+  /* color: var(--n-urlbar-color) !important; */
+  font-family: var(--n-urlbar-font-family) !important;
+  font-weight: var(--n-urlbar-font-weight) !important;
+  text-align: center !important;
 }
 
 toolbar {
-    background-image: none !important;
+  background-image: none !important;
 }
 
 #urlbar-background {
-    opacity: 1.0 !important;
+  opacity: 1 !important;
 }
 
 #navigator-toolbox,
 toolbaritem {
-    border: none !important;
+  border: none !important;
 }
 
 #urlbar-background {
-    background-color: var(--n-bg) !important;
-    border: none !important;
+  background-color: var(--n-bg) !important;
+  border: none !important;
 }
 
 .toolbar-items {
-    background-color: var(--n-bg) !important;
+  background-color: var(--n-bg) !important;
 }
 
-.urlbarView-row[type="bookmark"]>span {
-    color: #5ccc96 !important;
+.urlbarView-row[type="bookmark"] > span {
+  color: #5ccc96 !important;
 }
 
-.urlbarView-row[type="switchtab"]>span {
-    color: #e39400 !important;
+.urlbarView-row[type="switchtab"] > span {
+  color: #e39400 !important;
 }
 
 #urlbar {
-    max-width: 80% !important;
-    margin: 0 10% !important;
-    /* 	position: unset!important; */
+  max-width: 80% !important;
+  margin: 0 10% !important;
+  /* 	position: unset!important; */
 }
-
 
 /* This positions the tabs under the navaigator container */
 
 #titlebar {
-    -moz-box-ordinal-group: 3 !important;
+  -moz-box-ordinal-group: 3 !important;
 }
 
 #sidebar-box {
-    --sidebar-background-color: #0f111b !important;
+  --sidebar-background-color: #161616 !important;
 }
