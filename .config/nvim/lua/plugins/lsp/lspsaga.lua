@@ -21,6 +21,7 @@ require("lspsaga").setup({
         split = "s",
         tabe = "t",
         quit = "<ESC>",
+        close = "<ESC>",
     },
     code_action = {
         num_shortcut = true,
@@ -52,7 +53,6 @@ require("lspsaga").setup({
         exec = "<CR>",
         quit = "<ESC>",
         in_select = true,
-        whole_project = true,
     },
     outline = {
         win_position = "right",
@@ -100,8 +100,8 @@ require("lspsaga").setup({
         preview = "",
         code_action = "💡",
         diagnostic = "🐞",
-        incoming = "",
-        outgoing = "",
+        incoming = "",
+        outgoing = "",
         colors = {
             normal_bg = "#0f111b", -- spaceduck
             title_bg = "#7a5ccc",
@@ -130,10 +130,11 @@ keymap("n", "<leader>lf", ":Lspsaga lsp_finder<CR>")
 keymap("n", "<leader>pd", ":Lspsaga peek_definition<CR>")
 keymap("n", "<leader>od", ":Lspsaga goto_definition<CR>")
 keymap("n", "<leader>so", ":Lspsaga outline<CR>")
-keymap("n", "<leader>rn", ":Lspsaga rename<CR>")
 keymap("n", "<leader>ca", ":Lspsaga code_action<CR>")
+keymap("n", "<leader>rn", ":Lspsaga rename<CR>")
+keymap("n", "<leader>rnp", ":Lspsaga rename ++project<CR>")
 keymap("n", "K", ":Lspsaga hover_doc<CR>")
-keymap("n", "<A-k>", ":Lspsaga hover_doc ++keep<CR>")
+keymap("n", "Kk", ":Lspsaga hover_doc ++keep<CR>")
 
 -- diagnostic
 keymap("n", "<leader>dl", ":Lspsaga show_line_diagnostics<CR>")

@@ -6,7 +6,7 @@ require("nvim-tree").setup {
     },
     update_focused_file = {
         enable = true,
-        update_cwd = true,
+        update_root = true,
     },
     git = {
         enable = true,
@@ -17,6 +17,7 @@ require("nvim-tree").setup {
     view = {
         cursorline = true,
         hide_root_folder = true,
+        side = "left",
         width = 30,
     },
     renderer = {
@@ -29,9 +30,19 @@ require("nvim-tree").setup {
             enable = true,
         },
     },
+    diagnostics = {
+        enable = true,
+        show_on_dirs = true,
+        show_on_open_dirs = true,
+        severity = {
+            min = vim.diagnostic.severity.WARN,
+            max = vim.diagnostic.severity.ERROR,
+        },
+        icons = { error = " ", warning = " ", info = " ", hint = " " },
+    },
     filters = {
         dotfiles = false,
-        exclude = { ".git", "node_modules", "__pycache__" }
+        custom = { "^.git$", "^.dvc$", "^__pycache__$", "^node_modules$" },
     }
 }
 
