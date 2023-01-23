@@ -16,9 +16,45 @@ require("nvim-tree").setup {
     },
     view = {
         cursorline = true,
-        hide_root_folder = true,
+        hide_root_folder = false,
         side = "left",
         width = 30,
+        signcolumn = "yes",
+        mappings = {
+            custom_only = true,
+            list = {
+                { key = "<ESC>", action = "close" },
+                { key = { "<CR>", "<2-LeftMouse>" }, action = "edit" },
+                { key = "<F5>", action = "refresh" },
+                { key = "a", action = "create" },
+                { key = "d", action = "trash" }, -- move file/folder to trash
+                { key = "D", action = "remove" }, -- delete permanently
+                { key = "r", action = "rename" },
+                { key = "x", action = "cut" },
+                { key = "c", action = "copy" },
+                { key = "p", action = "paste" },
+                { key = "y", action = "copy_name" },
+                { key = "Y", action = "copy_absolute_path" },
+                { key = "W", action = "collapse_all" },
+                { key = "E", action = "expand_all" },
+                { key = "K", action = "toggle_file_info" },
+            },
+        },
+    },
+    actions = {
+        change_dir = {
+            enable = true,
+            restrict_above_cwd = true,
+        },
+        file_popup = {
+            open_win_config = {
+                col = 1,
+                row = 1,
+                relative = "cursor",
+                border = "single",
+                style = "minimal",
+            },
+        },
     },
     renderer = {
         group_empty = true,
@@ -38,7 +74,7 @@ require("nvim-tree").setup {
             min = vim.diagnostic.severity.WARN,
             max = vim.diagnostic.severity.ERROR,
         },
-        icons = { error = " ", warning = " ", info = " ", hint = " " },
+        icons = { error = "", warning = "", info = "", hint = "" },
     },
     filters = {
         dotfiles = false,

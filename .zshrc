@@ -134,7 +134,7 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export PATH="$HOME/miniconda3/bin:$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$HOME/.cabal/bin:$HOME/.ghcup/bin:$HOME/.local/bin:$PATH"
+export PATH="$HOME/miniconda3/bin:$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$HOME/.deno/bin:$HOME/.cabal/bin:$HOME/.ghcup/bin:$HOME/.local/bin:$PATH"
 
 # ibus
 export GTK_IM_MODULE=ibus

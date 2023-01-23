@@ -282,11 +282,24 @@ return packer.startup(function(use)
     -- prog. langs
     ------------------------------------
 
+    -- markdown
+    use {
+        "iamcco/markdown-preview.nvim",
+        run = function()
+            vim.fn["mkdp#util#install"]()
+        end,
+        opt = true,
+        ft = { "md" }, -- triggered when opening *.md file
+        config = function()
+            pcall(require, "plugins.markdown_preview")
+        end
+    }
+
     -- latex
     use {
         "lervag/vimtex",
         opt = true,
-        ft = { "tex" }, -- triggered when open *.tex file
+        ft = { "tex" }, -- triggered when opening *.tex file
         config = function()
             pcall(require, "plugins.vimtex")
         end

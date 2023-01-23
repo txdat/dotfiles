@@ -16,7 +16,7 @@ function M.keymap(mode, lhs, rhs, opts)
     end
 
     if type(rhs) == "function" then
-        wk.register({ [lhs] = { function() rhs end } }, options)
+        wk.register({ [lhs] = { function() rhs() end } }, options)
     else
         wk.register({ [lhs] = { rhs } }, options)
     end

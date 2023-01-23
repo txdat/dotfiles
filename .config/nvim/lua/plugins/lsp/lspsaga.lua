@@ -128,7 +128,7 @@ local keymap = require("util").keymap
 
 keymap("n", "<leader>lf", ":Lspsaga lsp_finder<CR>")
 keymap("n", "<leader>pd", ":Lspsaga peek_definition<CR>")
-keymap("n", "<leader>od", ":Lspsaga goto_definition<CR>")
+keymap("n", "<leader>gd", ":Lspsaga goto_definition<CR>")
 keymap("n", "<leader>so", ":Lspsaga outline<CR>")
 keymap("n", "<leader>ca", ":Lspsaga code_action<CR>")
 keymap("n", "<leader>rn", ":Lspsaga rename<CR>")
@@ -143,10 +143,10 @@ keymap("n", "<leader>db", ":Lspsaga show_buf_diagnostics<CR>")
 keymap("n", "d[", ":Lspsaga diagnostic_jump_prev<CR>")
 keymap("n", "d]", ":Lspsaga diagnostic_jump_next<CR>")
 keymap("n", "e[", function()
-    require("lspsaga.diagnostic").goto_prev({ severity = vim.diagnostic.severity.ERROR })
+    require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
 end)
 keymap("n", "e]", function()
-    require("lspsaga.diagnostic").goto_next({ severity = vim.diagnostic.severity.ERROR })
+    require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
 end)
 
 -- callhierarchy

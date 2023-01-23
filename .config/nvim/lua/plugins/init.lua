@@ -12,6 +12,7 @@ local plugins_cfg = {
     -- "telescope",
     -- "bqf",
     -- "gitsigns",
+    -- "markdown_preview",
     -- "vimtex",
     -- "lsp",
     -- "dap",
