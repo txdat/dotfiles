@@ -289,7 +289,7 @@ return packer.startup(function(use)
             vim.fn["mkdp#util#install"]()
         end,
         opt = true,
-        ft = { "md" }, -- triggered when opening *.md file
+        ft = { "markdown" }, -- triggered when opening *.md file
         config = function()
             pcall(require, "plugins.markdown_preview")
         end

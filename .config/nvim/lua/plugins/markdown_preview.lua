@@ -1,3 +1,9 @@
+vim.cmd([[
+function OpenMarkdownPreview (url)
+  execute "silent ! firefox --new-window " . a:url
+endfunction
+]])
+
 vim.g.mkdp_auto_start = 0
 vim.g.mkdp_auto_close = 1
 vim.g.mkdp_refresh_slow = 0
@@ -6,7 +12,7 @@ vim.g.mkdp_open_to_the_world = 0
 vim.g.mkdp_open_ip = ""
 vim.g.mkdp_browser = ""
 vim.g.mkdp_echo_preview_url = 0
-vim.g.mkdp_browserfunc = ""
+vim.g.mkdp_browserfunc = "OpenMarkdownPreview"
 vim.g.mkdp_preview_options = {
     mkit = {},
     katex = {},
