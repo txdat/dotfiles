@@ -221,7 +221,7 @@ let g:colors_name = 'kanagawa'
 " ==========> Highlight function
 function! s:h(face, guibg, guifg, ctermbg, ctermfg, gui)
   let l:cmd="highlight " . a:face
-  
+
   if a:guibg != ""
     let l:cmd = l:cmd . " guibg=" . a:guibg
   endif
@@ -295,7 +295,7 @@ let s:bit.color5="238"
 let s:bit.color7="240"
 let s:bit.color12="242"
 
-" ==========> General highlights 
+" ==========> General highlights
 call s:h("Normal", s:hex.color0, s:hex.color1, s:bit.color0, s:bit.color1, "none")
 call s:h("Cursor", s:hex.color2, s:hex.color2, s:bit.color2, s:bit.color2, "none")
 call s:h("Visual", s:hex.color3, "", s:bit.color3, "", "none")
@@ -313,11 +313,6 @@ call s:h("PmenuSel", s:hex.color4, s:hex.color16, s:bit.color4, s:bit.color10, "
 call s:h("EndOfBuffer", s:hex.color0, s:hex.color17, s:bit.color0, s:bit.color11, "none")
 call s:h("NonText", s:hex.color0, s:hex.color17, s:bit.color0, s:bit.color11, "none")
 
-" reset highlight
-hi CursorLine cterm=none
-hi LineNR cterm=none guifg=dimgray
-hi CursorLineNR cterm=bold guifg=orange
-
 " ==========> Syntax highlights
 call s:h("Comment", "", s:hex.color18, "", s:bit.color12, "none")
 call s:h("Constant", "", s:hex.color19, "", s:bit.color13, "none")
@@ -333,3 +328,8 @@ highlight link cSpecial Special
 
 " Generated using https://github.com/nice/themeforge
 " Feel free to remove the above URL and this line.
+
+" fix highlight
+hi CursorLine cterm=none
+hi LineNR cterm=none guifg=dimgray
+hi CursorLineNR cterm=bold guifg=orange
