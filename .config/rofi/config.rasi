@@ -44,7 +44,6 @@ window {
     y-offset:                   5px;
     padding:                    5px;
     border:                     5px;
-    border-radius:              15px;
     border-color:               @border-col;
     background-color:           @bg-col;
 }
@@ -69,7 +68,6 @@ prompt {
     margin:                     20px 0px 0px 20px;
     background-color:           @button-col;
     text-color:                 @fg-col;
-    border-radius:              15px;
 }
 
 textbox-prompt-colon {
@@ -113,7 +111,6 @@ element-text {
 element selected {
     background-color:           @selected-col;
     text-color:                 @fg-col;
-    border-radius:              15px;
 }
 
 mode-switcher {
