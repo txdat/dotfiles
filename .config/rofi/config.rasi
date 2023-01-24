@@ -6,7 +6,7 @@
     selected-col:               #2d4f67;
     fg-col:                     #ecf0c1;
     fg-dim-col:                 #727169;
-    button-col:                 #223249;
+    button-col:                 #658594;
 }
 
 configuration{
@@ -44,6 +44,7 @@ window {
     y-offset:                   5px;
     padding:                    5px;
     border:                     5px;
+    border-radius:              15px;
     border-color:               @border-col;
     background-color:           @bg-col;
 }
@@ -68,6 +69,7 @@ prompt {
     margin:                     20px 0px 0px 20px;
     background-color:           @button-col;
     text-color:                 @fg-col;
+    border-radius:              15px;
 }
 
 textbox-prompt-colon {
@@ -93,7 +95,7 @@ listview {
 }
 
 element {
-    padding:                    5px;
+    padding:                    10px;
     background-color:           @bg-col;
     text-color:                 @fg-dim-col;
 }
@@ -111,6 +113,7 @@ element-text {
 element selected {
     background-color:           @selected-col;
     text-color:                 @fg-col;
+    border-radius:              15px;
 }
 
 mode-switcher {
