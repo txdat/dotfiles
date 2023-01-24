@@ -2,11 +2,11 @@
 
 * {
     bg-col:                     #0f111b;
-    border-col:                 #16172d;
+    border-col:                 #54546d;
     selected-col:               #2d4f67;
     fg-col:                     #ecf0c1;
     fg-dim-col:                 #727169;
-    button-col:                 #7e9cd8;
+    button-col:                 #223249;
 }
 
 configuration{
