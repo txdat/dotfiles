@@ -150,10 +150,10 @@ autocmd("BufEnter", {
 })
 
 -- make vertical split by default when opening files
-autocmd("WinNew", {
-    pattern = "*",
-    command = "wincmd L",
-})
+--autocmd("WinNew", {
+--    pattern = "*",
+--    command = "wincmd L",
+--})
 
 -- open terminal
 autocmd("CmdlineEnter", {

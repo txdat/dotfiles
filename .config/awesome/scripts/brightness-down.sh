@@ -2,17 +2,18 @@
 
 # Variables
 TARGET=""
-DIR="/sys/class/backlight/nvidia_wmi_ec_backlight"
+DIR="/sys/class/backlight/amdgpu_bl1"
 
 if [[ -d $DIR ]]; then
-	TARGET="/sys/class/backlight/nvidia_wmi_ec_backlight"
+	TARGET="/sys/class/backlight/amdgpu_bl1"
 	MAX=$(cat ${TARGET}/max_brightness)
 	CURRENT=$(cat ${TARGET}/actual_brightness)
 else
-	TARGET="/sys/class/backlight/nvidia_wmi_ec_backlight"
+	TARGET="/sys/class/backlight/amdgpu_bl0"
 	MAX=$(cat ${TARGET}/max_brightness)
 	CURRENT=$(cat ${TARGET}/actual_brightness)
 fi
+
 
 if [[ $CURRENT -gt 0 ]]; then
 	((CURRENT=CURRENT-10))

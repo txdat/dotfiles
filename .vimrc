@@ -150,7 +150,7 @@ autocmd BufWritePre * :%s/\\s\\+$//e
 autocmd BufEnter * set fo-=c fo-=r fo-=o
 
 " make vertical split by default when opening files
-autocmd WinNew * wincmd L
+"autocmd WinNew * wincmd L
 
 " open terminal
 autocmd CmdlineEnter term :botright split term://$SHELL

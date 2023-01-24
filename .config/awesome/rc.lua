@@ -311,10 +311,10 @@ container_storage_widget = {
                 bottom = 2,
                 widget = wibox.container.margin
             },
-            shape  = gears.shape.rounded_bar,
-            fg     = "#ecf0c1",
-            bg     = "#223249",
-            widget = wibox.container.background,
+            shape        = gears.shape.rounded_bar,
+            fg           = "#ecf0c1",
+            bg           = "#223249",
+            widget       = wibox.container.background,
             forced_width = 200,
         },
 
@@ -372,10 +372,10 @@ container_mem_widget = {
                 bottom = 2,
                 widget = wibox.container.margin
             },
-            shape  = gears.shape.rounded_bar,
-            fg     = "#ecf0c1",
-            bg     = "#223249",
-            widget = wibox.container.background,
+            shape        = gears.shape.rounded_bar,
+            fg           = "#ecf0c1",
+            bg           = "#223249",
+            widget       = wibox.container.background,
             forced_width = 200,
         },
         left   = 5,
@@ -433,10 +433,10 @@ container_cpu_widget = {
                 bottom = 2,
                 widget = wibox.container.margin
             },
-            shape  = gears.shape.rounded_bar,
-            fg     = "#ecf0c1",
-            bg     = "#223249",
-            widget = wibox.container.background,
+            shape        = gears.shape.rounded_bar,
+            fg           = "#ecf0c1",
+            bg           = "#223249",
+            widget       = wibox.container.background,
             forced_width = 200,
         },
         left   = 5,
@@ -870,17 +870,14 @@ globalkeys = gears.table.join(
         function()
             awful.spawn("scrot -q 100 -d 1 " .. os.getenv("HOME") .. "/Pictures/screenshots_%Y-%m-%d_$wx$h.png")
             naughty.notify {
-                --title = "Screenshot",
-                fg = "#ecf0c1",
+                -- title = "Screenshot",
                 text = " Screenshot taken",
                 font = "JetbrainsMono Nerd Font 10",
-                -- margin = 15,
-                -- opacity = 1.0,
                 replaces_id = 1,
                 -- border_width = 2,
                 -- border_color = "#54546d",
-                width = 300,
-                height = 50,
+                -- width = 300,
+                -- height = 50,
                 -- shape = function(cr, width, heigt)
                 --     gears.shape.rounded_rect(cr, width, heigt, 5)
                 -- end
@@ -961,17 +958,17 @@ globalkeys = gears.table.join(
             -- local brightness = scripts_dir .. "brightness-bar.sh"
             -- awful.spawn.easy_async(brightness, function(stdout)
             --     naughty.notify {
-            --         --title = "Brightness",
+            --         -- title = "Brightness",
             --         text = " " .. stdout,
             --         font = "JetbrainsMono Nerd Font 10",
             --         replaces_id = 1,
-            --         border_width = 2,
-            --         border_color = "#54546d",
-            --         width = 150,
-            --         height = 25,
-            --         shape = function(cr, width, heigt)
-            --             gears.shape.rounded_rect(cr, width, heigt, 5)
-            --         end
+            --         -- border_width = 2,
+            --         -- border_color = "#54546d",
+            --         -- width = 150,
+            --         -- height = 25,
+            --         -- shape = function(cr, width, heigt)
+            --         --     gears.shape.rounded_rect(cr, width, heigt, 5)
+            --         -- end
             --     }
             -- end)
         end,
@@ -985,17 +982,17 @@ globalkeys = gears.table.join(
             -- local brightness = scripts_dir .. "brightness-bar.sh"
             -- awful.spawn.easy_async(brightness, function(stdout)
             --     naughty.notify {
-            --         --title = "Brightness",
+            --         -- title = "Brightness",
             --         text = " " .. stdout,
             --         font = "JetbrainsMono Nerd Font 10",
             --         replaces_id = 1,
-            --         border_width = 2,
-            --         border_color = "#54546d",
-            --         width = 150,
-            --         height = 25,
-            --         shape = function(cr, width, heigt)
-            --             gears.shape.rounded_rect(cr, width, heigt, 5)
-            --         end
+            --         -- border_width = 2,
+            --         -- border_color = "#54546d",
+            --         -- width = 150,
+            --         -- height = 25,
+            --         -- shape = function(cr, width, heigt)
+            --         --     gears.shape.rounded_rect(cr, width, heigt, 5)
+            --         -- end
             --     }
             -- end)
         end,
@@ -1009,17 +1006,17 @@ globalkeys = gears.table.join(
             -- local volume = scripts_dir .. "volume-bar.sh"
             -- awful.spawn.easy_async(volume, function(stdout)
             --     naughty.notify {
-            --         --title = "Volume",
+            --         -- title = "Volume",
             --         text = " " .. stdout,
             --         font = "JetbrainsMono Nerd Font 10",
             --         replaces_id = 1,
-            --         border_width = 2,
-            --         border_color = "#54546d",
-            --         width = 150,
-            --         height = 25,
-            --         shape = function(cr, width, heigt)
-            --             gears.shape.rounded_rect(cr, width, heigt, 5)
-            --         end
+            --         -- border_width = 2,
+            --         -- border_color = "#54546d",
+            --         -- width = 150,
+            --         -- height = 25,
+            --         -- shape = function(cr, width, heigt)
+            --         --     gears.shape.rounded_rect(cr, width, heigt, 5)
+            --         -- end
             --     }
             -- end)
         end,
@@ -1033,17 +1030,17 @@ globalkeys = gears.table.join(
             -- local volume = scripts_dir .. "volume-bar.sh"
             -- awful.spawn.easy_async(volume, function(stdout)
             --     naughty.notify {
-            --         --title = "Volume",
+            --         -- title = "Volume",
             --         text = " " .. stdout,
             --         font = "JetbrainsMono Nerd Font 10",
             --         replaces_id = 1,
-            --         border_width = 2,
-            --         border_color = "#54546d",
-            --         width = 150,
-            --         height = 25,
-            --         shape = function(cr, width, heigt)
-            --             gears.shape.rounded_rect(cr, width, heigt, 5)
-            --         end
+            --         -- border_width = 2,
+            --         -- border_color = "#54546d",
+            --         -- width = 150,
+            --         -- height = 25,
+            --         -- shape = function(cr, width, heigt)
+            --         --     gears.shape.rounded_rect(cr, width, heigt, 5)
+            --         -- end
             --     }
             -- end)
         end,
