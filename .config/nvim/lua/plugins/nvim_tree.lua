@@ -60,7 +60,7 @@ require("nvim-tree").setup {
         group_empty = true,
         highlight_git = true,
         highlight_modified = "all",
-        root_folder_modifier = table.concat({ ":t:gs?$?/", string.rep(" ", 1000), "?:gs?^??" }),
+        root_folder_modifier = table.concat({ ":t:gs?$?", string.rep(" ", 1000), "?:gs?^??" }),
         indent_width = 2,
         indent_markers = {
             enable = true,

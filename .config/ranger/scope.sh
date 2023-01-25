@@ -302,7 +302,7 @@ handle_mime() {
                 local pygmentize_format='terminal'
                 local highlight_format='ansi'
             fi
-            env COLORTERM=16bit bat --color=always \
+            env COLORTERM=xterm-256color bat --color=always \
                 -- "${FILE_PATH}" && exit 5
             env HIGHLIGHT_OPTIONS="${HIGHLIGHT_OPTIONS}" highlight \
                 --out-format="${highlight_format}" \
