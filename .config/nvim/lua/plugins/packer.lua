@@ -55,7 +55,10 @@ return packer.startup(function(use)
         "nvim-lualine/lualine.nvim",
         requires = {
             "nvim-tree/nvim-web-devicons",
-        }
+        },
+        config = function()
+            pcall(require, "plugins.lualine")
+        end,
     }
 
     -- tabs bar
@@ -63,7 +66,10 @@ return packer.startup(function(use)
         "romgrk/barbar.nvim",
         requires = {
             "nvim-tree/nvim-web-devicons",
-        }
+        },
+        config = function()
+            pcall(require, "plugins.bufferline")
+        end,
     }
 
     -- indent

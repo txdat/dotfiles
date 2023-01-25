@@ -1,3 +1,6 @@
+-- impatient
+pcall(require, "plugins.impatient")
+
 -- vim/neovim config
 
 local opt = vim.opt
@@ -180,7 +183,7 @@ autocmd("BufLeave", {
 -- plugins
 -----------------------------------------
 
-pcall(require, "plugins")
+pcall(require, "plugins.packer")
 
 -----------------------------------------
 -- keymaps

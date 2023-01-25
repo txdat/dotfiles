@@ -37,7 +37,7 @@ gui:
     skipNoStagedFilesWarning: false
     showListFooter: true
     showFileTree: true
-    showRandomTip: true
+    showRandomTip: false
     showCommandLog: true
     showBottomLine: true
     showIcons: true
