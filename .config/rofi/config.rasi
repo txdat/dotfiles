@@ -6,7 +6,6 @@
     selected-col:               #2d4f67;
     fg-col:                     #ecf0c1;
     fg-dim-col:                 #727169;
-    button-col:                 #658594;
 }
 
 configuration{
@@ -66,7 +65,7 @@ prompt {
     enabled:                    true;
     padding:                    5px;
     margin:                     20px 0px 0px 20px;
-    background-color:           @button-col;
+    background-color:           @bg-col;
     text-color:                 @fg-col;
 }
 
