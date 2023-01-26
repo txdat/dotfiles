@@ -11,19 +11,19 @@ Switch to Next Keyboard Layout=Meta+Alt+K
 [StandardShortcuts]
 AboutApp=
 AboutKDE=
-Activate Next Tab=Ctrl+]; Ctrl+PgDown
+Activate Next Tab=Ctrl+PgDown; Ctrl+]
 Activate Previous Tab=Ctrl+PgUp; Ctrl+[
 ActualSize=Ctrl+0
 AddBookmark=Ctrl+B
-Back=Back; Alt+Left
+Back=Alt+Left; Back
 BackwardWord=Ctrl+Left
 Begin=Ctrl+Home
 BeginningOfLine=Home
 Clear=
-Close=Ctrl+W; Ctrl+Esc
+Close=Ctrl+Esc; Ctrl+W
 ConfigureNotifications=
 ConfigureToolbars=
-Copy=Ctrl+Ins; Ctrl+C
+Copy=Ctrl+C; Ctrl+Ins
 CreateFolder=F10
 Cut=Ctrl+X; Shift+Del
 DeleteFile=Shift+Del
@@ -49,7 +49,7 @@ Goto=
 GotoLine=Ctrl+G
 GotoPage=
 Help=F1
-Home=Home Page; Alt+Home
+Home=Alt+Home; Home Page
 KeyBindings=Ctrl+Alt+,
 Mail=
 MoveToTrash=Del
@@ -131,6 +131,11 @@ toggle_three_column_layout=
 toggle_tile_layout=
 toggle_window_floating=Meta+Shift+F
 
+[brave-browser.desktop][Global Shortcuts]
+_launch=Meta+B
+new-private-window=
+new-window=
+
 [code.desktop][Global Shortcuts]
 _launch=
 new-empty-window=Meta+C
@@ -157,12 +162,12 @@ decrease_microphone_volume=Microphone Volume Down
 decrease_volume=Volume Down
 increase_microphone_volume=Microphone Volume Up
 increase_volume=Volume Up
-mic_mute=Meta+Volume Mute; Microphone Mute
+mic_mute=Microphone Mute; Meta+Volume Mute
 mute=Volume Mute
 
 [ksmserver][Global Shortcuts]
 Halt Without Confirmation=
-Lock Session=Meta+L; Screensaver
+Lock Session=Screensaver; Meta+L
 Log Out=Ctrl+Alt+Del
 Log Out Without Confirmation=
 Reboot Without Confirmation=
@@ -171,7 +176,7 @@ Reboot Without Confirmation=
 Activate Window Demanding Attention=Meta+Ctrl+A
 Decrease Opacity=
 Expose=Ctrl+F9
-ExposeAll=Ctrl+F10; Launch (C)
+ExposeAll=Launch (C); Ctrl+F10
 ExposeClass=Ctrl+F7
 ExposeClassCurrentDesktop=
 Increase Opacity=
@@ -312,7 +317,7 @@ Window to Screen 5=
 Window to Screen 6=
 Window to Screen 7=
 view_actual_size=Meta+0
-view_zoom_in=Meta+=; Meta++
+view_zoom_in=Meta++; Meta+=
 view_zoom_out=Meta+-
 
 [mediacontrol][Global Shortcuts]
@@ -336,7 +341,7 @@ _launch=Meta+K
 
 [org.kde.krunner.desktop][Global Shortcuts]
 RunClipboard=Alt+Shift+F2
-_launch=Alt+Space; Search; Alt+F2
+_launch=Search; Alt+F2
 
 [org.kde.plasma.emojier.desktop][Global Shortcuts]
 _launch=
@@ -392,6 +397,9 @@ stop current activity=Meta+S
 switch to next activity=
 switch to previous activity=
 toggle do not disturb=
+
+[rofi.desktop][Global Shortcuts]
+_launch=Alt+Space
 
 [systemsettings.desktop][Global Shortcuts]
 _launch=Tools
