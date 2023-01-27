@@ -18,7 +18,7 @@
   sudo ./nfs.sh /path/to/export/dir <ip_addr:192.168.1.198>
   ```
 
-  `sudo ./nfs.sh /home/.kube/nfs 192.168.1.198`
+  `sudo ./nfs.sh /hdd/.kube/nfs 192.168.1.198`
 
 - nvidia-container-runtime \[[link](https://github.com/k3s-io/k3s/issues/4391#issuecomment-1233314825)] (create `/etc/docker` or `/etc/containerd` if not found)
 
