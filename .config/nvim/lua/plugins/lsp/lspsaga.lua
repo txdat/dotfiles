@@ -38,7 +38,7 @@ require("lspsaga").setup({
         virtual_text = true,
     },
     diagnostic = {
-        show_code_action = true,
+        show_code_action = false,
         show_source = true,
         jump_num_shortcut = true,
         keys = {

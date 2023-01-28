@@ -158,7 +158,7 @@ autocmd CmdlineEnter term :botright split term://$SHELL
 " enter insert mode when switching to terminal
 autocmd BufWinEnter if &buftype == 'terminal' | setlocal listchars= nonumber norelativenumber nocursorline | endif
 
-autocmd BufWinEnter * if &buftype == 'terminal' | startinsert | endif
+"autocmd BufWinEnter * if &buftype == 'terminal' | startinsert | endif
 
 " close terminal buffer on process exit
 autocmd BufLeave * stopinsert

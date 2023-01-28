@@ -3,7 +3,7 @@ local dap = require("dap")
 dap.configurations.cpp = {
     {
         name = "C++ debug and run",
-        type = vim.g.cpp_dap_type,
+        type = vim.g.dap_cpp_adapter,
         request = "launch",
         program = function()
             return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")

@@ -10,4 +10,4 @@ dap.adapters.cppdbg = {
     command = cpptools_dir .. "/debugAdapters/bin/OpenDebugAD7",
 }
 
-vim.g.cpp_dap_type = "cppdbg"
+vim.g.dap_cpp_adapter = "cppdbg"

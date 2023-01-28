@@ -168,10 +168,10 @@ autocmd("TermOpen", {
     command = "setlocal listchars= nonumber norelativenumber nocursorline"
 })
 
-autocmd("TermOpen", {
-    pattern = "*",
-    command = "startinsert"
-})
+-- autocmd("TermOpen", {
+--     pattern = "*",
+--     command = "startinsert"
+-- })
 
 -- close terminal buffer on process exit
 autocmd("BufLeave", {

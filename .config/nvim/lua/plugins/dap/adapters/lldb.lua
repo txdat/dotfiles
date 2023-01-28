@@ -6,4 +6,4 @@ dap.adapters.lldb = {
     command = require("util").exec("which lldb-vscode"),
 }
 
-vim.g.cpp_dap_type = "lldb"
+vim.g.dap_cpp_adapter = "lldb"

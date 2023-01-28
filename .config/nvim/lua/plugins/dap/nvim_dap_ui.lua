@@ -1,8 +1,6 @@
 local dap = require("dap")
 local dapui = require("dapui")
 
--- dap.set_log_level("DEBUG")
-
 dapui.setup({
     icons = { expanded = "", collapsed = "", current_frame = "" },
     mappings = {
@@ -27,10 +25,10 @@ dapui.setup({
         },
         {
             elements = {
-                { id = "repl", size = 0.5 },
-                { id = "console", size = 0.5 },
+                "repl",
+                "console",
             },
-            size = 0.3,
+            size = 0.4,
             position = "bottom",
         },
     },
@@ -39,29 +37,17 @@ dapui.setup({
     },
     render = {
         max_value_lines = 3,
+        max_type_length = nil,
     },
     floating = {
-        max_width = 0.9,
-        max_height = 0.5,
-        border = vim.g.border_chars,
+        max_height = nil,
+        max_width = nil,
+        border = "single",
         mappings = {
-            close = { "q", "<Esc>" },
+            close = { "<Esc>" },
         },
     },
     windows = { indent = 1 },
-})
-
-vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "DiagnosticSignError", linehl = "", numhl = "" })
-vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "DiagnosticSignError", linehl = "", numhl = "" })
-vim.fn.sign_define("DapLogPoint", { text = "", texthl = "DiagnosticSignError", linehl = "", numhl = "" })
-vim.fn.sign_define("DapStopped", { text = "", texthl = "DiagnosticSignError", linehl = "", numhl = "" })
-vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "DiagnosticSignError", linehl = "", numhl = "" })
-
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "dap-repl",
-    callback = function()
-        require("dap.ext.autocompl").attach()
-    end,
 })
 
 dap.listeners.after.event_initialized["dapui_config"] = function()
@@ -69,7 +55,9 @@ dap.listeners.after.event_initialized["dapui_config"] = function()
 end
 dap.listeners.before.event_terminated["dapui_config"] = function()
     dapui.close()
+    dap.repl.close()
 end
 dap.listeners.before.event_exited["dapui_config"] = function()
     dapui.close()
+    dap.repl.close()
 end
