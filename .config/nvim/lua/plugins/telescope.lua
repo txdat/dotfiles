@@ -6,7 +6,7 @@ local action_layout = require("telescope.actions.layout")
 local custom_actions = {}
 
 -- https://github.com/nvim-telescope/telescope.nvim/issues/416#issuecomment-841273053
-function custom_actions.fzf_multi_select(prompt_bufnr)
+function custom_actions.multi_select(prompt_bufnr)
     local picker = action_state.get_current_picker(prompt_bufnr)
 
     if #picker:get_multi_selection() > 1 then
@@ -86,8 +86,8 @@ telescope.setup {
                 ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
                 ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
 
-                ["<A-s>"] = actions.toggle_all, -- toggle select/drop all
-                ["<CR>"] = custom_actions.fzf_multi_select,
+                ["<C-s>"] = actions.toggle_all, -- toggle select/drop all
+                ["<CR>"] = custom_actions.multi_select,
             },
 
             n = {
@@ -113,8 +113,8 @@ telescope.setup {
                 ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
                 ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
 
-                ["<A-s>"] = actions.toggle_all, -- toggle select/drop all
-                ["<CR>"] = custom_actions.fzf_multi_select,
+                ["<C-s>"] = actions.toggle_all, -- toggle select/drop all
+                ["<CR>"] = custom_actions.multi_select,
             },
         },
     },

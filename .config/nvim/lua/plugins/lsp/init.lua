@@ -8,6 +8,7 @@ pcall(require, "plugins.lsp.cmp")
 
 pcall(require, "plugins.lsp.lspsaga")
 pcall(require, "plugins.lsp.null_ls")
+pcall(require, "plugins.lsp.lsp_signature")
 
 -- custom diagnostic signs
 local signs = {

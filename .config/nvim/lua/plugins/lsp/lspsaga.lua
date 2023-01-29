@@ -38,9 +38,11 @@ require("lspsaga").setup({
         virtual_text = true,
     },
     diagnostic = {
-        show_code_action = false,
+        show_code_action = true,
         show_source = true,
         jump_num_shortcut = true,
+        custom_msg = "Diagnostic",
+        custom_fix = "Action",
         keys = {
             exec_action = "<CR>",
             quit = "<ESC>",
@@ -83,40 +85,30 @@ require("lspsaga").setup({
     },
     symbol_in_winbar = {
         enable = true,
-        separator = "  ",
+        separator = " ",
         hide_keyword = true,
         show_file = true,
         folder_level = 2,
         respect_root = false,
         color_mode = true,
     },
+    beacon = {
+        enable = false,
+        frequency = 7,
+    },
     ui = {
         theme = "round",
         title = true,
         border = "single",
         winblend = 0,
-        expand = "",
-        collaspe = "",
-        preview = "",
-        code_action = "💡",
-        diagnostic = "🐞",
-        incoming = "",
-        outgoing = "",
-        colors = {
-            normal_bg = "#0f111b", -- spaceduck
-            title_bg = "#7a5ccc",
-            red = "#c34043", -- kanagawa
-            magenta = "#d27e99",
-            orange = "#ffa066",
-            yellow = "#dca561",
-            green = "#76946a",
-            cyan = "#6a9589",
-            blue = "#7e9cd8",
-            purple = "#957fb8",
-            white = "#ecf0c1",
-            black = "#0f111b",
-            -- black = "#161616", -- oxocarbon
-        },
+        expand = " ",
+        collaspe = " ",
+        preview = " ",
+        code_action = "💡 ",
+        diagnostic = "🐞 ",
+        incoming = " ",
+        outgoing = " ",
+        hover = " ",
         kind = {},
     },
 })
@@ -154,4 +146,4 @@ keymap("n", "<leader>ic", ":Lspsaga incoming_calls<CR>")
 keymap("n", "<leader>oc", ":Lspsaga outgoing_calls<CR>")
 
 -- float terminal
-keymap({ "n", "t" }, "<A-t>", "<cmd>Lspsaga term_toggle<CR>")
+-- keymap({ "n", "t" }, "<A-t>", "<cmd>Lspsaga term_toggle<CR>")

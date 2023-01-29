@@ -174,7 +174,12 @@ return packer.startup(function(use)
             "nvim-bqf",
         },
         opt = true,
-        keys = { { "n", "<leader>ff" }, { "n", "<leader>fg" }, { "n", "<leader>fb" } },
+        keys = {
+            { "n", "<leader>ff" },
+            { "n", "<leader>fg" },
+            { "n", "<leader>fb" },
+            { "n", "<leader>fs" },
+        },
         config = function()
             pcall(require, "plugins.telescope")
         end
@@ -240,8 +245,16 @@ return packer.startup(function(use)
             -- { "ms-jpq/coq_nvim", branch = "coq", opt = true },
             -- { "ms-jpq/coq.artifacts", branch = "artifacts", opt = true },
             -- { "ms-jpq/coq.thirdparty", branch = "3p", opt = true },
-            { "glepnir/lspsaga.nvim", branch = "main", opt = true },
+            {
+                "glepnir/lspsaga.nvim",
+                branch = "main",
+                requires = {
+                    "nvim-tree/nvim-web-devicons",
+                },
+                opt = true,
+            },
             { "jose-elias-alvarez/null-ls.nvim", opt = true },
+            { "ray-x/lsp_signature.nvim", opt = true },
         },
         wants = {
             "mason.nvim",
@@ -258,6 +271,7 @@ return packer.startup(function(use)
             -- "coq.thirdparty",
             "lspsaga.nvim",
             "null-ls.nvim",
+            "lsp_signature.nvim",
         },
         opt = true,
         event = "InsertEnter",
