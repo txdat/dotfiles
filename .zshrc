@@ -114,10 +114,10 @@ source $ZSH/oh-my-zsh.sh
 export TERM="xterm-256color"
 
 alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
-alias dnfu="sudo dnf update && flatpak update"
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 alias cpcb="xclip -sel c < " # copy from file to clipboard
 alias cpfi="xclip -sel c -o > " # copy from clipboard to file
+alias lz="lazygit"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
