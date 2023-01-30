@@ -149,16 +149,11 @@ autocmd BufWritePre * :%s/\\s\\+$//e
 " don't auto commenting new lines
 autocmd BufEnter * set fo-=c fo-=r fo-=o
 
-" make vertical split by default when opening files
-"autocmd WinNew * wincmd L
-
 " open terminal
 autocmd CmdlineEnter term :botright split term://$SHELL
 
 " enter insert mode when switching to terminal
 autocmd BufWinEnter if &buftype == 'terminal' | setlocal listchars= nonumber norelativenumber nocursorline | endif
-
-"autocmd BufWinEnter * if &buftype == 'terminal' | startinsert | endif
 
 " close terminal buffer on process exit
 autocmd BufLeave * stopinsert
