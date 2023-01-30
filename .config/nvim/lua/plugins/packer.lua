@@ -150,8 +150,8 @@ return packer.startup(function(use)
         wants = {
             "nvim-web-devicons",
         },
-        -- opt = true,
-        -- keys = { { "n", "<C-e>" } },
+        opt = true,
+        keys = { { "n", "<C-e>" } },
         config = function()
             pcall(require, "plugins.nvim_tree")
         end
