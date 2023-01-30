@@ -1,6 +1,6 @@
 vim.cmd([[
 function OpenMarkdownPreview (url)
-  shell_cmdute "silent ! firefox --new-window " . a:url
+  execute "silent ! firefox --new-window " . a:url
 endfunction
 ]])
 

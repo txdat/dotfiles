@@ -1,4 +1,5 @@
 local telescope = require("telescope")
+local previewers = require("telescope.previewers")
 local actions = require("telescope.actions")
 local action_state = require("telescope.actions.state")
 local action_layout = require("telescope.actions.layout")
@@ -33,6 +34,7 @@ telescope.setup {
             "--column",
             "--smart-case",
         },
+        file_ignore_patterns = { ".git" },
         prompt_prefix = " ",
         selection_caret = " ",
         path_display = { "truncate" },
@@ -60,11 +62,11 @@ telescope.setup {
             preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
         },
         set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
-        file_previewer = require("telescope.previewers").vim_buffer_cat.new,
-        grep_previewer = require("telescope.previewers").vim_buffer_vimgrep.new,
-        qflist_previewer = require("telescope.previewers").vim_buffer_qflist.new,
+        file_previewer = previewers.vim_buffer_cat.new,
+        grep_previewer = previewers.vim_buffer_vimgrep.new,
+        qflist_previewer = previewers.vim_buffer_qflist.new,
         -- Developer configurations: Not meant for general override
-        buffer_previewer_maker = require("telescope.previewers").buffer_previewer_maker,
+        buffer_previewer_maker = previewers.buffer_previewer_maker,
         mappings = {
             i = {
                 ["<C-p>"] = action_layout.toggle_preview,
