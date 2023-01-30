@@ -32,7 +32,7 @@ require("lspsaga").setup({
     },
     lightbulb = {
         enable = true,
-        enable_in_insert = true,
+        enable_in_insert = false,
         sign = true,
         sign_priority = 40,
         virtual_text = true,
@@ -94,7 +94,6 @@ require("lspsaga").setup({
     },
     beacon = {
         enable = false,
-        frequency = 7,
     },
     ui = {
         theme = "round",
@@ -134,10 +133,10 @@ keymap("n", "<leader>dc", ":Lspsaga show_cursor_diagnostics<CR>")
 keymap("n", "<leader>db", ":Lspsaga show_buf_diagnostics<CR>")
 keymap("n", "d[", ":Lspsaga diagnostic_jump_prev<CR>")
 keymap("n", "d]", ":Lspsaga diagnostic_jump_next<CR>")
-keymap("n", "e[", function()
+keymap("n", "D[", function()
     require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
 end)
-keymap("n", "e]", function()
+keymap("n", "D]", function()
     require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
 end)
 

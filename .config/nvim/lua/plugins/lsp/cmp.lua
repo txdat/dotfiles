@@ -19,7 +19,10 @@ local cmp_common = require("plugins.lsp.cmp_common")
 
 cmp.setup {
     completion = {
-        completeopt = "menu,menuone,preview",
+        completeopt = "menu,menuone,noinsert,noselect",
+    },
+    experimental = {
+        ghost_text = true, -- placeholder
     },
     window = {
         -- completion = cmp.config.window.bordered(),
@@ -37,8 +40,8 @@ cmp.setup {
         fields = { "abbr", "kind", "menu" },
     },
     mapping = cmp.mapping.preset.insert({
-        ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-        ["<C-f>"] = cmp.mapping.scroll_docs(4),
+        ["<C-k>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-j>"] = cmp.mapping.scroll_docs(4),
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<CR>"] = cmp.mapping.confirm {
             behavior = cmp.ConfirmBehavior.Replace,
@@ -76,7 +79,8 @@ local lsp_servers = require("plugins.lsp.lsp_servers").servers
 for server, cfg in pairs(lsp_servers) do
     local config = {
         on_attach = cmp_common.on_attach,
-        capabilities = cmp_common.capabilities
+        capabilities = cmp_common.capabilities,
+        handlers = cmp_common.handlers,
     }
     for k, v in pairs(cfg) do
         config[k] = v

@@ -1,11 +1,10 @@
--- local M = {
---     ui = {
---         icons = {
---             package_installed = "✓",
---             package_pending = "➜",
---             package_uninstalled = "✗",
---         },
---     },
--- }
-
-require("mason").setup()
+require("mason").setup({
+    ui = {
+        border = "single",
+        icons = {
+            package_installed = "✓",
+            package_pending = "➜",
+            package_uninstalled = "✗",
+        },
+    },
+})

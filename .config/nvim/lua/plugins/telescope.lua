@@ -86,7 +86,7 @@ telescope.setup {
                 ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
                 ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
 
-                ["<C-s>"] = actions.toggle_all, -- toggle select/drop all
+                ["<C-a>"] = actions.toggle_all, -- toggle select/drop all
                 ["<CR>"] = custom_actions.multi_select,
             },
 
@@ -113,7 +113,7 @@ telescope.setup {
                 ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
                 ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
 
-                ["<C-s>"] = actions.toggle_all, -- toggle select/drop all
+                ["<C-a>"] = actions.toggle_all, -- toggle select/drop all
                 ["<CR>"] = custom_actions.multi_select,
             },
         },

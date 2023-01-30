@@ -50,7 +50,7 @@ return packer.startup(function(use)
     -- use { "pineapplegiant/spaceduck", branch = "main" }
     -- use "nyoom-engineering/oxocarbon.nvim"
 
-    -- status bar
+    -- statusline
     use {
         "nvim-lualine/lualine.nvim",
         requires = {
@@ -61,7 +61,7 @@ return packer.startup(function(use)
         end,
     }
 
-    -- tabs bar
+    -- bufferline
     use {
         "romgrk/barbar.nvim",
         requires = {
@@ -150,8 +150,8 @@ return packer.startup(function(use)
         wants = {
             "nvim-web-devicons",
         },
-        opt = true,
-        keys = { { "n", "<C-e>" } },
+        -- opt = true,
+        -- keys = { { "n", "<C-e>" } },
         config = function()
             pcall(require, "plugins.nvim_tree")
         end
@@ -245,16 +245,9 @@ return packer.startup(function(use)
             -- { "ms-jpq/coq_nvim", branch = "coq", opt = true },
             -- { "ms-jpq/coq.artifacts", branch = "artifacts", opt = true },
             -- { "ms-jpq/coq.thirdparty", branch = "3p", opt = true },
-            {
-                "glepnir/lspsaga.nvim",
-                branch = "main",
-                requires = {
-                    "nvim-tree/nvim-web-devicons",
-                },
-                opt = true,
-            },
+            -- { "ray-x/lsp_signature.nvim", opt = true },
+            { "glepnir/lspsaga.nvim", branch = "main", opt = true },
             { "jose-elias-alvarez/null-ls.nvim", opt = true },
-            { "ray-x/lsp_signature.nvim", opt = true },
         },
         wants = {
             "mason.nvim",
@@ -269,9 +262,9 @@ return packer.startup(function(use)
             -- "coq_nvim",
             -- "coq.artifacts",
             -- "coq.thirdparty",
+            -- "lsp_signature.nvim",
             "lspsaga.nvim",
             "null-ls.nvim",
-            "lsp_signature.nvim",
         },
         opt = true,
         event = "InsertEnter",

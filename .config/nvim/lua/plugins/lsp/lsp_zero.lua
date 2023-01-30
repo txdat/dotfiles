@@ -39,6 +39,7 @@ for server, cfg in pairs(lsp_servers.servers) do
         force_setup = true, -- global server
         on_attach = cmp_common.on_attach,
         capabilities = cmp_common.capabilities,
+        handlers = cmp_common.handlers,
     }
     for k, v in pairs(cfg) do
         config[k] = v
