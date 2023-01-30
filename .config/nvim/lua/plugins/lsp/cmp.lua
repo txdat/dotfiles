@@ -15,8 +15,6 @@ cmp_window.info = function(self)
     return info
 end
 
-local cmp_common = require("plugins.lsp.cmp_common")
-
 cmp.setup {
     completion = {
         completeopt = "menu,menuone,noinsert,noselect",
@@ -71,16 +69,48 @@ cmp.setup {
             luasnip.lsp_expand(args.body)
         end,
     },
-    sources = cmp_common.sources,
+    sources = {
+        { name = "nvim_lsp", keyword_length = 3 },
+        { name = "buffer", keyword_length = 3 },
+        { name = "path" },
+        -- { name = "nvim_lsp_signature_help" },
+        { name = "luasnip", keyword_length = 3 },
+    },
 }
 
-local lsp_servers = require("plugins.lsp.lsp_servers").servers
+-- lsp servers config
+-- on_attach
+local keymap = require("util").keymap
 
-for server, cfg in pairs(lsp_servers) do
+local function on_attach(_, bufnr)
+    local opts = { buffer = bufnr }
+
+    keymap("n", "<A-s>", vim.lsp.buf.signature_help, opts)
+end
+
+-- capabilities
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+
+-- handlers
+local handlers = {
+    ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+        border = "single",
+        close_events = { "CursorMoved", "InsertLeave", "BufHidden" },
+        focusable = false,
+        use_existing = true,
+        silent = true,
+    }),
+}
+
+-- config
+local servers_config = require("plugins.lsp.lsp_servers").servers_config
+
+for server, cfg in pairs(servers_config) do
     local config = {
-        on_attach = cmp_common.on_attach,
-        capabilities = cmp_common.capabilities,
-        handlers = cmp_common.handlers,
+        on_attach = on_attach,
+        capabilities = capabilities,
+        handlers = handlers,
     }
     for k, v in pairs(cfg) do
         config[k] = v

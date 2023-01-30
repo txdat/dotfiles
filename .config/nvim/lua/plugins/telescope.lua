@@ -25,6 +25,7 @@ telescope.setup {
         },
         vimgrep_arguments = {
             "rg",
+            "--hidden",
             "--color=never",
             "--no-heading",
             "--with-filename",
@@ -124,9 +125,6 @@ telescope.setup {
             theme = "ivy",
         },
         live_grep = {
-            additional_args = function(opts)
-                return { "--hidden" }
-            end,
             theme = "ivy",
         },
         buffers = {

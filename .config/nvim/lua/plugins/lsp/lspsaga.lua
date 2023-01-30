@@ -26,7 +26,7 @@ require("lspsaga").setup({
     code_action = {
         num_shortcut = true,
         keys = {
-            exec = "<CR>",
+            shell_cmd = "<CR>",
             quit = "<ESC>",
         },
     },
@@ -44,7 +44,7 @@ require("lspsaga").setup({
         custom_msg = "Diagnostic",
         custom_fix = "Action",
         keys = {
-            exec_action = "<CR>",
+            shell_cmd_action = "<CR>",
             quit = "<ESC>",
             go_action = "<Tab>",
         },
@@ -52,7 +52,7 @@ require("lspsaga").setup({
     rename = {
         mark = "<Tab>",
         confirm = "<CR>",
-        exec = "<CR>",
+        shell_cmd = "<CR>",
         quit = "<ESC>",
         in_select = true,
     },
@@ -103,7 +103,7 @@ require("lspsaga").setup({
         expand = " ",
         collaspe = " ",
         preview = " ",
-        code_action = " ",
+        code_action = "ﯦ ",
         diagnostic = " ",
         incoming = " ",
         outgoing = " ",

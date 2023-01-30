@@ -18,7 +18,6 @@ vim.api.nvim_create_autocmd("FileType", {
 -- adapters
 --require("plugins.dap.adapters.cppdbg")
 require("plugins.dap.adapters.lldb")
-
 require("plugins.dap.adapters.python")
 
 -- config
@@ -26,14 +25,6 @@ require("plugins.dap.config.cpp") -- c/c++/rust
 require("plugins.dap.config.python")
 
 -- keymaps
-local function dap_set_breakpoint_cond()
-    dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
-end
-
-local function dap_set_breakpoint_logp()
-    dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
-end
-
 local keymap = require("util").keymap
 
 keymap("n", "<F5>", dap.continue)
@@ -43,5 +34,9 @@ keymap("n", "<F11>", dap.step_into)
 keymap("n", "<F12>", dap.step_out)
 keymap("n", "<F9>", dap.toggle_breakpoint)
 keymap("n", "<leader>b", dap.toggle_breakpoint)
-keymap("n", "<leader>bc", dap_set_breakpoint_cond)
-keymap("n", "<leader>bl", dap_set_breakpoint_logp)
+keymap("n", "<leader>bc", function()
+    dap.set_breakpoint(vim.fn.input("Breakpoint condition: "))
+end)
+keymap("n", "<leader>bl", function()
+    dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
+end)

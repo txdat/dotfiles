@@ -46,9 +46,12 @@ return packer.startup(function(use)
     ------------------------------------
 
     -- colorscheme
-    use "rebelot/kanagawa.nvim"
-    -- use { "pineapplegiant/spaceduck", branch = "main" }
-    -- use "nyoom-engineering/oxocarbon.nvim"
+    use {
+        "rebelot/kanagawa.nvim",
+        config = function()
+            pcall(require, "plugins.colorscheme.kanagawa")
+        end
+    }
 
     -- statusline
     use {
@@ -123,25 +126,11 @@ return packer.startup(function(use)
         end
     }
 
-    -- key bindings
-    -- use "folke/which-key.nvim"
-
     ------------------------------------
     -- file manager, finder, svc
     ------------------------------------
 
     -- file manager
-    -- use {
-    --     "ms-jpq/chadtree",
-    --     branch = "chad",
-    --     run = "python3 -m chadtree deps",
-    --     opt = true,
-    --     keys = { { "n", "<C-e>" } },
-    --     config = function()
-    --         pcall(require, "plugins.chadtree")
-    --     end
-    -- }
-
     use {
         "nvim-tree/nvim-tree.lua",
         requires = {
@@ -149,6 +138,7 @@ return packer.startup(function(use)
         },
         wants = {
             "nvim-web-devicons",
+            "barbar.nvim",
         },
         opt = true,
         keys = { { "n", "<C-e>" } },
@@ -185,30 +175,9 @@ return packer.startup(function(use)
         end
     }
 
-    -- use {
-    --     "ibhagwan/fzf-lua",
-    --     requires = {
-    --         "nvim-tree/nvim-web-devicons",
-    --         -- { "junegunn/fzf", run = "./install --bin", opt = true },
-    --     },
-    --     wants = {
-    --         "nvim-web-devicons",
-    --         "nvim-bqf",
-    --     },
-    --     opt = true,
-    --     config = function()
-    --         pcall(require, "plugins.fzf_lua")
-    --     end
-    -- }
-
     -- quickfix
     use {
         "kevinhwang91/nvim-bqf",
-        requires = {
-            -- { "junegunn/fzf", run = "./install --bin", opt = true },
-        },
-        wants = {
-        },
         opt = true,
         config = function()
             pcall(require, "plugins.bqf")
@@ -235,34 +204,26 @@ return packer.startup(function(use)
         requires = {
             { "williamboman/mason.nvim", opt = true },
             { "williamboman/mason-lspconfig.nvim", opt = true },
-            -- { "VonHeikemen/lsp-zero.nvim", opt = true },
             { "hrsh7th/nvim-cmp", opt = true },
             { "hrsh7th/cmp-nvim-lsp", opt = true },
             { "hrsh7th/cmp-buffer", opt = true },
             { "hrsh7th/cmp-path", opt = true },
+            -- { "hrsh7th/cmp-nvim-lsp-signature-help", opt = true },
             { "saadparwaiz1/cmp_luasnip", opt = true },
             { "L3MON4D3/LuaSnip", opt = true },
-            -- { "ms-jpq/coq_nvim", branch = "coq", opt = true },
-            -- { "ms-jpq/coq.artifacts", branch = "artifacts", opt = true },
-            -- { "ms-jpq/coq.thirdparty", branch = "3p", opt = true },
-            -- { "ray-x/lsp_signature.nvim", opt = true },
             { "glepnir/lspsaga.nvim", branch = "main", opt = true },
             { "jose-elias-alvarez/null-ls.nvim", opt = true },
         },
         wants = {
             "mason.nvim",
             "mason-lspconfig.nvim",
-            -- "lsp-zero.nvim",
             "nvim-cmp",
             "cmp-nvim-lsp",
             "cmp-buffer",
             "cmp-path",
+            -- "cmp-nvim-lsp-signature-help",
             "cmp_luasnip",
             "LuaSnip",
-            -- "coq_nvim",
-            -- "coq.artifacts",
-            -- "coq.thirdparty",
-            -- "lsp_signature.nvim",
             "lspsaga.nvim",
             "null-ls.nvim",
         },
@@ -303,6 +264,7 @@ return packer.startup(function(use)
         end,
         opt = true,
         ft = { "markdown" }, -- triggered when opening *.md file
+        keys = { { "n", "<leader>md" } },
         config = function()
             pcall(require, "plugins.markdown_preview")
         end

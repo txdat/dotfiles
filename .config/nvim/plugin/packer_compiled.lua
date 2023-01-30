@@ -167,6 +167,7 @@ _G.packer_plugins = {
     url = "https://github.com/lukas-reineke/indent-blankline.nvim"
   },
   ["kanagawa.nvim"] = {
+    config = { "\27LJ\2\nF\0\0\4\0\3\0\0056\0\0\0006\2\1\0'\3\2\0B\0\3\1K\0\1\0!plugins.colorscheme.kanagawa\frequire\npcall\0" },
     loaded = true,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/start/kanagawa.nvim",
     url = "https://github.com/rebelot/kanagawa.nvim"
@@ -188,6 +189,7 @@ _G.packer_plugins = {
   },
   ["markdown-preview.nvim"] = {
     config = { "\27LJ\2\nB\0\0\4\0\3\0\0056\0\0\0006\2\1\0'\3\2\0B\0\3\1K\0\1\0\29plugins.markdown_preview\frequire\npcall\0" },
+    keys = { { "n", "<leader>md" } },
     loaded = false,
     needs_bufread = false,
     only_cond = false,
@@ -234,8 +236,7 @@ _G.packer_plugins = {
     loaded = false,
     needs_bufread = true,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/opt/nvim-bqf",
-    url = "https://github.com/kevinhwang91/nvim-bqf",
-    wants = {}
+    url = "https://github.com/kevinhwang91/nvim-bqf"
   },
   ["nvim-cmp"] = {
     load_after = {
@@ -276,7 +277,7 @@ _G.packer_plugins = {
     url = "https://github.com/theHamsta/nvim-dap-virtual-text"
   },
   ["nvim-lspconfig"] = {
-    after = { "mason.nvim", "mason-lspconfig.nvim", "cmp-nvim-lsp", "cmp-buffer", "LuaSnip", "lspsaga.nvim", "cmp-path", "null-ls.nvim", "nvim-cmp", "cmp_luasnip" },
+    after = { "mason.nvim", "mason-lspconfig.nvim", "nvim-cmp", "cmp-nvim-lsp", "cmp-buffer", "cmp-path", "LuaSnip", "lspsaga.nvim", "cmp_luasnip", "null-ls.nvim" },
     config = { "\27LJ\2\n5\0\0\4\0\3\0\0056\0\0\0006\2\1\0'\3\2\0B\0\3\1K\0\1\0\16plugins.lsp\frequire\npcall\0" },
     loaded = false,
     needs_bufread = false,
@@ -293,7 +294,7 @@ _G.packer_plugins = {
     only_cond = false,
     path = "/home/txdat/.local/share/nvim/site/pack/packer/opt/nvim-tree.lua",
     url = "https://github.com/nvim-tree/nvim-tree.lua",
-    wants = { "nvim-web-devicons" }
+    wants = { "nvim-web-devicons", "barbar.nvim" }
   },
   ["nvim-treesitter"] = {
     config = { "\27LJ\2\nA\0\0\4\0\3\0\0056\0\0\0006\2\1\0'\3\2\0B\0\3\1K\0\1\0\28plugins.nvim_treesitter\frequire\npcall\0" },
@@ -341,7 +342,7 @@ _G.packer_plugins = {
     url = "https://github.com/nvim-telescope/telescope-ui-select.nvim"
   },
   ["telescope.nvim"] = {
-    after = { "plenary.nvim", "telescope-fzy-native.nvim", "telescope-ui-select.nvim" },
+    after = { "plenary.nvim", "telescope-ui-select.nvim", "telescope-fzy-native.nvim" },
     config = { "\27LJ\2\n;\0\0\4\0\3\0\0056\0\0\0006\2\1\0'\3\2\0B\0\3\1K\0\1\0\22plugins.telescope\frequire\npcall\0" },
     keys = { { "n", "<leader>ff" }, { "n", "<leader>fg" }, { "n", "<leader>fb" }, { "n", "<leader>fs" } },
     loaded = false,
@@ -362,6 +363,10 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
+-- Config for: kanagawa.nvim
+time([[Config for kanagawa.nvim]], true)
+try_loadstring("\27LJ\2\nF\0\0\4\0\3\0\0056\0\0\0006\2\1\0'\3\2\0B\0\3\1K\0\1\0!plugins.colorscheme.kanagawa\frequire\npcall\0", "config", "kanagawa.nvim")
+time([[Config for kanagawa.nvim]], false)
 -- Config for: barbar.nvim
 time([[Config for barbar.nvim]], true)
 try_loadstring("\27LJ\2\n<\0\0\4\0\3\0\0056\0\0\0006\2\1\0'\3\2\0B\0\3\1K\0\1\0\23plugins.bufferline\frequire\npcall\0", "config", "barbar.nvim")
@@ -372,13 +377,14 @@ try_loadstring("\27LJ\2\n9\0\0\4\0\3\0\0056\0\0\0006\2\1\0'\3\2\0B\0\3\1K\0\1\0\
 time([[Config for lualine.nvim]], false)
 -- Keymap lazy-loads
 time([[Defining lazy-load keymaps]], true)
-vim.cmd [[nnoremap <silent> <F9> <cmd>lua require("packer.load")({'nvim-dap'}, { keys = "<lt>F9>", prefix = "" }, _G.packer_plugins)<cr>]]
 vim.cmd [[nnoremap <silent> <leader>fs <cmd>lua require("packer.load")({'telescope.nvim'}, { keys = "<lt>leader>fs", prefix = "" }, _G.packer_plugins)<cr>]]
+vim.cmd [[nnoremap <silent> <leader>fb <cmd>lua require("packer.load")({'telescope.nvim'}, { keys = "<lt>leader>fb", prefix = "" }, _G.packer_plugins)<cr>]]
 vim.cmd [[nnoremap <silent> <leader>fg <cmd>lua require("packer.load")({'telescope.nvim'}, { keys = "<lt>leader>fg", prefix = "" }, _G.packer_plugins)<cr>]]
 vim.cmd [[nnoremap <silent> <leader>ff <cmd>lua require("packer.load")({'telescope.nvim'}, { keys = "<lt>leader>ff", prefix = "" }, _G.packer_plugins)<cr>]]
+vim.cmd [[nnoremap <silent> <F9> <cmd>lua require("packer.load")({'nvim-dap'}, { keys = "<lt>F9>", prefix = "" }, _G.packer_plugins)<cr>]]
 vim.cmd [[nnoremap <silent> <C-e> <cmd>lua require("packer.load")({'nvim-tree.lua'}, { keys = "<lt>C-e>", prefix = "" }, _G.packer_plugins)<cr>]]
-vim.cmd [[nnoremap <silent> <leader>fb <cmd>lua require("packer.load")({'telescope.nvim'}, { keys = "<lt>leader>fb", prefix = "" }, _G.packer_plugins)<cr>]]
 vim.cmd [[nnoremap <silent> <F5> <cmd>lua require("packer.load")({'nvim-dap'}, { keys = "<lt>F5>", prefix = "" }, _G.packer_plugins)<cr>]]
+vim.cmd [[nnoremap <silent> <leader>md <cmd>lua require("packer.load")({'markdown-preview.nvim'}, { keys = "<lt>leader>md", prefix = "" }, _G.packer_plugins)<cr>]]
 time([[Defining lazy-load keymaps]], false)
 
 vim.cmd [[augroup packer_load_aucmds]]
@@ -390,8 +396,8 @@ vim.cmd [[au FileType markdown ++once lua require("packer.load")({'markdown-prev
 time([[Defining lazy-load filetype autocommands]], false)
   -- Event lazy-loads
 time([[Defining lazy-load event autocommands]], true)
-vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'nvim-lspconfig', 'Comment.nvim', 'nvim-autopairs'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
-vim.cmd [[au BufRead * ++once lua require("packer.load")({'indent-blankline.nvim', 'hop.nvim', 'gitsigns.nvim', 'nvim-treesitter'}, { event = "BufRead *" }, _G.packer_plugins)]]
+vim.cmd [[au InsertEnter * ++once lua require("packer.load")({'Comment.nvim', 'nvim-lspconfig', 'nvim-autopairs'}, { event = "InsertEnter *" }, _G.packer_plugins)]]
+vim.cmd [[au BufRead * ++once lua require("packer.load")({'indent-blankline.nvim', 'hop.nvim', 'nvim-treesitter', 'gitsigns.nvim'}, { event = "BufRead *" }, _G.packer_plugins)]]
 time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]

@@ -1,6 +1,6 @@
 vim.cmd([[
 function OpenMarkdownPreview (url)
-  execute "silent ! firefox --new-window " . a:url
+  shell_cmdute "silent ! firefox --new-window " . a:url
 endfunction
 ]])
 
@@ -30,7 +30,7 @@ vim.g.mkdp_preview_options = {
 vim.g.mkdp_markdown_css = ""
 vim.g.mkdp_highlight_css = ""
 vim.g.mkdp_port = ""
-vim.g.mkdp_page_title = "「${name}」"
+vim.g.mkdp_page_title = "${name}"
 vim.g.mkdp_filetypes = { "markdown" }
 vim.g.mkdp_theme = "dark"
 

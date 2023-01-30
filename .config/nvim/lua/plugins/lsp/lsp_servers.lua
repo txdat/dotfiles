@@ -6,7 +6,7 @@ M.ensure_installed = {
 }
 
 -- lsp servers with custom config
-M.servers = {
+M.servers_config = {
     sumneko_lua = {
         settings = {
             Lua = {

@@ -122,7 +122,7 @@ opt.updatetime = 250 -- milli-seconds to wait for trigger an event (keymap)
 -----------------------------------------
 
 -- python
-vim.g.python3_host_prog = require("util").exec("which python3")
+vim.g.python3_host_prog = require("util").shell_cmd("which python3")
 
 -----------------------------------------
 -- autocommand functions
@@ -152,12 +152,6 @@ autocmd("BufEnter", {
     command = "set fo-=c fo-=r fo-=o"
 })
 
--- make vertical split by default when opening files
---autocmd("WinNew", {
---    pattern = "*",
---    command = "wincmd L",
---})
-
 -- open terminal
 autocmd("CmdlineEnter", {
     command = "command! Term :botright split term://$SHELL"
@@ -167,11 +161,6 @@ autocmd("CmdlineEnter", {
 autocmd("TermOpen", {
     command = "setlocal listchars= nonumber norelativenumber nocursorline"
 })
-
--- autocmd("TermOpen", {
---     pattern = "*",
---     command = "startinsert"
--- })
 
 -- close terminal buffer on process exit
 autocmd("BufLeave", {
