@@ -28,7 +28,7 @@ vim.diagnostic.config({
     underline = true,
     severity_sort = true,
     virtual_text = {
-        prefix = "🔥",
+        prefix = "",
         source = true,
     },
 })

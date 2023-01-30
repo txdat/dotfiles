@@ -4,7 +4,7 @@ require("lsp_signature").setup({
     floating_window = true,
     floating_window_above_cur_line = true,
     hint_enable = false,
-    hint_prefix = "⛏️  ",
+    hint_prefix = " ",
     handler_opts = {
         border = "single",
     },
