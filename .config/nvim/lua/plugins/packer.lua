@@ -264,7 +264,6 @@ return packer.startup(function(use)
         end,
         opt = true,
         ft = { "markdown" }, -- triggered when opening *.md file
-        keys = { { "n", "<leader>md" } },
         config = function()
             pcall(require, "plugins.markdown_preview")
         end
