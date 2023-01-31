@@ -172,7 +172,7 @@ nnoremap <C-[> :bprevious<CR>
 nnoremap <C-]> :bnext<CR>
 
 nnoremap <C-d> :bd!<CR>
-nnoremap <C-S-d> :<C-U>bprevious <bar> bdelete #<CR>
+"nnoremap <C-S-d> :<C-U>bprevious <bar> bdelete #<CR>
 nnoremap <C-q> :qa!<CR>
 
 nnoremap <F2> :set invpaste paste?<CR>
@@ -182,7 +182,7 @@ nnoremap <leader>h :nohl<CR>
 
 nnoremap <C-s> :w<CR>
 inoremap <C-s> <C-c>:w<CR>
-nnoremap <C-S-s> :wa<CR>
+"nnoremap <C-S-s> :wa<CR>
 
 nnoremap <leader>co :copen<CR>
 nnoremap <leader>cw :cclose<CR>
