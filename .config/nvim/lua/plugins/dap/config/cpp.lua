@@ -6,7 +6,7 @@ dap.configurations.cpp = {
         type = vim.g.dap_cpp_adapter,
         request = "launch",
         program = function()
-            return vim.fn.input("Path to shell_cmdutable: ", vim.fn.getcwd() .. "/", "file")
+            return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
         end,
         stdio = { nil, nil, nil },
         cwd = "${workspaceFolder}",

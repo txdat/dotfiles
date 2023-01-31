@@ -9,6 +9,7 @@ require("lspsaga").setup({
     },
     request_timeout = 2000,
     finder = {
+        jump_to = "o",
         edit = "e",
         vsplit = "v",
         split = "s",
@@ -26,7 +27,7 @@ require("lspsaga").setup({
     code_action = {
         num_shortcut = true,
         keys = {
-            shell_cmd = "<CR>",
+            exec = "<CR>",
             quit = "<ESC>",
         },
     },
@@ -41,10 +42,12 @@ require("lspsaga").setup({
         show_code_action = true,
         show_source = true,
         jump_num_shortcut = true,
+        max_width = 0.7, -- in [0, 1]
         custom_msg = "Diagnostic",
         custom_fix = "Action",
+        text_hl_follow = false,
         keys = {
-            shell_cmd_action = "<CR>",
+            exec_action = "<CR>",
             quit = "<ESC>",
             go_action = "<Tab>",
         },
@@ -52,7 +55,7 @@ require("lspsaga").setup({
     rename = {
         mark = "<Tab>",
         confirm = "<CR>",
-        shell_cmd = "<CR>",
+        exec = "<CR>",
         quit = "<ESC>",
         in_select = true,
     },

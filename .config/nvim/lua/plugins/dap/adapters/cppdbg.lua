@@ -6,7 +6,7 @@ local cpptools_dir = require("util").shell_cmd('find "' ..
 
 dap.adapters.cppdbg = {
     id = "cppdbg",
-    type = "shell_cmdutable",
+    type = "executable",
     command = cpptools_dir .. "/debugAdapters/bin/OpenDebugAD7",
 }
 

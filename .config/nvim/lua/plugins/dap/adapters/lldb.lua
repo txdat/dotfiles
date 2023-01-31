@@ -2,7 +2,7 @@ local dap = require("dap")
 
 dap.adapters.lldb = {
     name = "lldb",
-    type = "shell_cmdutable",
+    type = "executable",
     command = require("util").shell_cmd("which lldb-vscode"),
 }
 
