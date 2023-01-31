@@ -18,11 +18,15 @@ null_ls.setup({
         end
     end,
     sources = {
-        fmt.black, -- python
+        -- fmt.clang_format, -- c/c++
         fmt.rustfmt.with({ -- rust
             extra_args = { "--edition=2021" }
         }),
+        fmt.black, -- python
         fmt.prettier, -- js,ts,...
+        fmt.sqlfluff.with({ -- sql
+            extra_args = { "--dialect", "postgres" }, -- change to your dialect
+        }),
     },
 })
 
