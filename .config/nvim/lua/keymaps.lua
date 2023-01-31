@@ -13,7 +13,7 @@ keymap("n", "<C-]>", ":bnext<CR>")
 
 -- close current buffer
 keymap("n", "<C-d>", ":bd!<CR>")
-keymap("n", "<C-S-D>", ":<C-U>bprevious <bar> bdelete #<CR>") -- and move to previous buffer
+keymap("n", "<C-S-d>", ":<C-U>bprevious <bar> bdelete #<CR>") -- and move to previous buffer
 keymap("n", "<C-q>", ":qa!<CR>") -- close all buffers and exit
 
 -- toggle auto-indenting for code paste
@@ -26,6 +26,7 @@ keymap("n", "<leader>h", ":nohl<CR>")
 -- quick save
 keymap("n", "<C-s>", ":w<CR>")
 keymap("i", "<C-s>", "<C-c>:w<CR>")
+keymap("n", "<C-S-s>", ":wa<CR>")
 
 -- quickfix list
 keymap("n", "<leader>co", ":copen<CR>")

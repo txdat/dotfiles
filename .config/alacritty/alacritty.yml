@@ -822,6 +822,9 @@ cursor:
 # If the same trigger is assigned to multiple actions, all of them are executed
 # in the order they were defined in.
 key_bindings:
+  - { key: D,         mods: Control|Shift,              chars: "\x1b[68;5u"    }
+  - { key: S,         mods: Control|Shift,              chars: "\x1b[83;5u"    }
+
   - { key: Paste,                                       action: Paste          }
   - { key: Copy,                                        action: Copy           }
   - { key: L,         mods: Control,                    action: ClearLogNotice }
