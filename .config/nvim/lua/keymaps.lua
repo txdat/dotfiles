@@ -4,12 +4,13 @@ local keymap = require("util").keymap
 keymap("n", "<leader>q", "q")
 keymap("n", "q", "<nop>")
 
---keymap("n", "<C-t>", ":Term<CR>")  -- open terminal
-keymap("t", "<Esc>", "<C-\\><C-n>") -- exit without closing
+-- keymap("n", "<C-t>", ":Term<CR>")  -- open terminal
+-- keymap("t", "<Esc>", "<C-\\><C-n>") -- exit without closing
 
 -- switch buffers
 keymap("n", "<C-[>", ":bprevious<CR>")
 keymap("n", "<C-]>", ":bnext<CR>")
+keymap("n", "<C-\\>", ":b#<CR>")
 
 -- close current buffer
 keymap("n", "<C-d>", ":bd!<CR>")

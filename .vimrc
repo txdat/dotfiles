@@ -162,36 +162,37 @@ autocmd BufLeave * stopinsert
 " keymaps
 " ----------------------------------
 
-nnoremap <leader>q q
-nnoremap q <nop>
+nnoremap <silent> <leader>q q
+nnoremap <silent> q <nop>
 
-nnoremap <C-t> :term<CR>
-nnoremap <Esc> <C-\\><C-n>
+nnoremap <silent> <C-t> :term<CR>
+"tnoremap <silent> <Esc> <C-\><C-n>
 
-nnoremap <C-[> :bprevious<CR>
-nnoremap <C-]> :bnext<CR>
+nnoremap <silent> <C-[> :bprevious<CR>
+nnoremap <silent> <C-]> :bnext<CR>
+nnoremap <silent> <C-\> :b#<CR>
 
-nnoremap <C-d> :bd!<CR>
-"nnoremap <C-S-d> :<C-U>bprevious <bar> bdelete #<CR>
-nnoremap <C-q> :qa!<CR>
+nnoremap <silent> <C-d> :bd!<CR>
+"nnoremap <silent> <C-S-d> :<C-U>bprevious <bar> bdelete #<CR>
+nnoremap <silent> <C-q> :qa!<CR>
 
-nnoremap <F2> :set invpaste paste?<CR>
+nnoremap <silent> <F2> :set invpaste paste?<CR>
 set pastetoggle=<F2>
 
-nnoremap <leader>h :nohl<CR>
+nnoremap <silent> <leader>h :nohl<CR>
 
-nnoremap <C-s> :w<CR>
-inoremap <C-s> <C-c>:w<CR>
-"nnoremap <C-S-s> :wa<CR>
+nnoremap <silent> <C-s> :w<CR>
+inoremap <silent> <C-s> <C-c>:w<CR>
+"nnoremap <silent> <C-S-s> :wa<CR>
 
-nnoremap <leader>co :copen<CR>
-nnoremap <leader>cw :cclose<CR>
-nnoremap <leader>cc :call setqflist([])<CR>
+nnoremap <silent> <leader>co :copen<CR>
+nnoremap <silent> <leader>cw :cclose<CR>
+nnoremap <silent> <leader>cc :call setqflist([])<CR>
 
-xnoremap J :move '>+1<CR>gv-gv
-xnoremap K :move '<-2<CR>gv-gv
-xnoremap <A-j> :move '>+1<CR>gv-gv
-xnoremap <A-k> :move '<-2<CR>gv-gv
+xnoremap <silent> J :move '>+1<CR>gv-gv
+xnoremap <silent> K :move '<-2<CR>gv-gv
+xnoremap <silent> <A-j> :move '>+1<CR>gv-gv
+xnoremap <silent> <A-k> :move '<-2<CR>gv-gv
 
 " ----------------------------------
 " colorscheme
