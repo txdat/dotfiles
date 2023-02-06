@@ -1,20 +1,18 @@
 require("lspsaga").setup({
-    preview = {
-        lines_above = 0,
-        lines_below = 10,
-    },
     scroll_preview = {
         scroll_down = "<C-j>",
         scroll_up = "<C-k>",
     },
-    request_timeout = 2000,
     finder = {
-        jump_to = "o",
-        edit = "e",
-        vsplit = "v",
-        split = "s",
-        tabe = "t",
-        quit = "<ESC>",
+        keys = {
+            jump_to = "o",
+            edit = "e",
+            vsplit = "v",
+            split = "s",
+            tabe = "t",
+            quit = "<ESC>",
+            close_in_preview = "<ESC>",
+        },
     },
     definition = {
         edit = "e",
@@ -25,7 +23,6 @@ require("lspsaga").setup({
         close = "<ESC>",
     },
     code_action = {
-        num_shortcut = true,
         keys = {
             exec = "<CR>",
             quit = "<ESC>",
@@ -34,18 +31,12 @@ require("lspsaga").setup({
     lightbulb = {
         enable = true,
         enable_in_insert = false,
-        sign = true,
-        sign_priority = 40,
+        sign = false,
         virtual_text = true,
     },
     diagnostic = {
-        show_code_action = true,
-        show_source = true,
-        jump_num_shortcut = true,
-        max_width = 0.7, -- in [0, 1]
-        custom_msg = "Diagnostic",
         custom_fix = "Action",
-        text_hl_follow = false,
+        custom_msg = "Diagnostic",
         keys = {
             exec_action = "<CR>",
             quit = "<ESC>",
@@ -57,17 +48,9 @@ require("lspsaga").setup({
         confirm = "<CR>",
         exec = "<CR>",
         quit = "<ESC>",
-        in_select = true,
     },
     outline = {
-        win_position = "right",
-        win_with = "",
         win_width = 50,
-        show_detail = true,
-        auto_preview = true,
-        auto_refresh = true,
-        auto_close = true,
-        custom_sort = nil,
         keys = {
             jump = "<CR>",
             expand_collaspe = "<Tab>",
@@ -75,7 +58,6 @@ require("lspsaga").setup({
         },
     },
     callhierarchy = {
-        show_detail = false,
         keys = {
             edit = "e",
             vsplit = "v",
@@ -89,11 +71,6 @@ require("lspsaga").setup({
     symbol_in_winbar = {
         enable = true,
         separator = "  ",
-        hide_keyword = true,
-        show_file = true,
-        folder_level = 2,
-        respect_root = false,
-        color_mode = true,
     },
     beacon = {
         enable = false,
@@ -102,16 +79,8 @@ require("lspsaga").setup({
         theme = "round",
         title = true,
         border = "single",
-        winblend = 0,
-        expand = " ",
-        collaspe = " ",
-        preview = " ",
-        code_action = "ﯦ ",
-        diagnostic = " ",
-        incoming = " ",
-        outgoing = " ",
-        hover = " ",
-        kind = {},
+        code_action = "ﯦ",
+        diagnostic = "",
     },
 })
 
