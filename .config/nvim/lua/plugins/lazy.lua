@@ -220,6 +220,7 @@ local opts = {
     defaults = {
         lazy = true,
     },
+    lockfile = vim.fn.stdpath("data") .. "/lazy/lazy-lock.json",
     dev = {
         path = "~/Documents/workspace/nvim", -- local plugins directory
     },
