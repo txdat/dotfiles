@@ -87,6 +87,9 @@ require("lspsaga").setup({
 vim.wo.winbar = require("lspsaga.symbolwinbar"):get_winbar()
 --vim.wo.stl = require("lspsaga.symbolwinbar"):get_winbar()
 
+-- disable shadow
+vim.api.nvim_set_hl(0, "SagaShadow", { bg = "NONE" })
+
 local keymap = require("util").keymap
 
 keymap("n", "<leader>lf", ":Lspsaga lsp_finder<CR>")
@@ -117,4 +120,4 @@ keymap("n", "<leader>ic", ":Lspsaga incoming_calls<CR>")
 keymap("n", "<leader>oc", ":Lspsaga outgoing_calls<CR>")
 
 -- float terminal
--- keymap({ "n", "t" }, "<A-t>", "<cmd>Lspsaga term_toggle<CR>")
+keymap({ "n", "t" }, "<leader>t", "<cmd>Lspsaga term_toggle<CR>")

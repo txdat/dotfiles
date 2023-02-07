@@ -6,14 +6,14 @@ local luasnip = require("luasnip")
 local lspconfig = require("lspconfig")
 
 -- disable window's scroll
-local cmp_window = require("cmp.utils.window")
-
-cmp_window.info_ = cmp_window.info
-cmp_window.info = function(self)
-    local info = self:info_()
-    info.scrollable = false
-    return info
-end
+-- local cmp_window = require("cmp.utils.window")
+--
+-- cmp_window.info_ = cmp_window.info
+-- cmp_window.info = function(self)
+--     local info = self:info_()
+--     info.scrollable = false
+--     return info
+-- end
 
 cmp.setup {
     completion = {
