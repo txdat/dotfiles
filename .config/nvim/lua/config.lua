@@ -1,5 +1,5 @@
 -- impatient
-pcall(require, "plugins.impatient")
+-- pcall(require, "plugins.impatient")
 
 -- vim/neovim config
 
@@ -172,7 +172,8 @@ autocmd("BufLeave", {
 -- plugins
 -----------------------------------------
 
-pcall(require, "plugins.packer")
+-- pcall(require, "plugins.packer")
+pcall(require, "plugins.lazy")
 
 -----------------------------------------
 -- keymaps
