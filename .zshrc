@@ -172,21 +172,18 @@ stop_kube () {
 # compile 'algo'
 algocpl () {
     dir=$(pwd)
-    fname=${1%%.*} # *.cpp/cc
     
     # precompile headers
     if [ ! -f "$dir/bits/stdc++.h.gch" ]
     then
         mkdir -p bits
-        sudo cp $(cut -d' ' -f2 <<<"$(g++ $1 -H 2>&1 | head -n 1)") "$dir/bits/stdc++.h"
-        sudo chmod 777 "$dir/bits/stdc++.h"
+        cat $(cut -d' ' -f2 <<<"$(g++ $1 -H 2>&1 | head -n 1)") >> "$dir/bits/stdc++.h"
 
-        echo -n "compiling stdc++.h (c++20)"
+        echo -n "compiling bits/stdc++.h"
         g++ -std=c++20 -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native "$dir/bits/stdc++.h"
         echo " - done!"
     fi
 
     # compile
-    g++ -std=c++20 -DDEBUG -g "$1" -o "$fname.out"
-    echo "run ./$fname.out"
+    g++ -std=c++20 -DDEBUG -g "$1"
 }

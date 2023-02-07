@@ -194,6 +194,9 @@ xnoremap <silent> K :move '<-2<CR>gv-gv
 xnoremap <silent> <A-j> :move '>+1<CR>gv-gv
 xnoremap <silent> <A-k> :move '<-2<CR>gv-gv
 
+" compile and run *.cpp
+nnoremap <silent> <leader>r :!g++ -std=c++20 -DDEBUG -g % && ./a.out<CR>
+
 " ----------------------------------
 " colorscheme
 " ----------------------------------

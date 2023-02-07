@@ -1,12 +1,14 @@
 require("nvim-treesitter.configs").setup {
     ensure_installed = {
         "lua",
-        "markdown",
         "c", "cpp", "cmake", "llvm", "cuda",
         "python",
+        "haskell",
         "rust",
         "go",
-        "latex"
+        "javascript", "typescript",
+        "markdown",
+        "latex",
     },
     sync_install = false,
     auto_install = false,
