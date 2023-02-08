@@ -122,6 +122,12 @@ local plugins = {
             "nvim-telescope/telescope-ui-select.nvim",
             -- { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
             "nvim-telescope/telescope-fzy-native.nvim",
+            {
+                "kevinhwang91/nvim-bqf",
+                config = function()
+                    pcall(require, "plugins.bqf")
+                end
+            },
         },
         keys = {
             "<leader>ff",
@@ -131,14 +137,6 @@ local plugins = {
         },
         config = function()
             pcall(require, "plugins.telescope")
-        end
-    },
-
-    -- quickfix
-    {
-        "kevinhwang91/nvim-bqf",
-        config = function()
-            pcall(require, "plugins.bqf")
         end
     },
 
