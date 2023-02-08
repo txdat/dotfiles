@@ -165,6 +165,11 @@ autocmd BufLeave * stopinsert
 nnoremap <silent> <leader>q q
 nnoremap <silent> q <nop>
 
+nnoremap <silent> <F1> <nop>
+
+nnoremap <silent> H ^
+nnoremap <silent> L $
+
 nnoremap <silent> <C-t> :term<CR>
 "tnoremap <silent> <Esc> <C-\><C-n>
 

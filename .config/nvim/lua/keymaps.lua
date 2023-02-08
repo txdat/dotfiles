@@ -1,5 +1,10 @@
 local keymap = require("util").keymap
 
+keymap("n", "<F1>", "<nop>")
+
+keymap("n", "H", "^")
+keymap("n", "L", "$")
+
 -- remap recoding
 keymap("n", "<leader>q", "q")
 keymap("n", "q", "<nop>")
