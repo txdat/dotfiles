@@ -117,6 +117,7 @@ alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 alias cpcb="xclip -sel c < " # copy from file to clipboard
 alias cpfi="xclip -sel c -o > " # copy from clipboard to file
+alias emacs="emacs -nw"
 alias lgit="lazygit"
 
 # >>> conda initialize >>>
