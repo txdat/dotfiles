@@ -107,7 +107,10 @@ require("lualine").setup {
         ignore_focus = dap_components,
     },
     sections = {
-        lualine_a = { "mode" },
+        lualine_a = {
+            { "fileformat", symbols = { unix = "" } },
+            "mode",
+        },
         lualine_b = {
             {
                 "diagnostics",
@@ -123,16 +126,13 @@ require("lualine").setup {
         --    },
         --},
         lualine_c = {},
-        lualine_x = {
+        lualine_x = {},
+        lualine_y = {
             {
                 "diff",
                 symbols = { added = " ", modified = " ", removed = " " },
             },
             "branch",
-        },
-        lualine_y = {
-            { "fileformat", symbols = { unix = "" } },
-            "encoding",
         },
         lualine_z = { "location", "progress" },
     },
