@@ -5,7 +5,7 @@ require("lspsaga").setup({
     },
     finder = {
         keys = {
-            jump_to = "o",
+            jump_to = "<CR>",
             edit = "e",
             vsplit = "v",
             split = "s",

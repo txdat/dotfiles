@@ -1,11 +1,11 @@
-- Fix KDE's emoji display
+- Fix emoji display
 
   ```bash
   sudo cp 75-noto-color-emoji.conf /usr/share/fontconfig/conf.avail && \
   sudo ln -s /usr/share/fontconfig/conf.avail/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-emoji.conf
   ```
 
-- Install ZSH
+- Install zsh
 
   ```bash
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \

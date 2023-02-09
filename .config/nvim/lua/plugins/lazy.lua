@@ -220,7 +220,7 @@ local opts = {
     },
     lockfile = vim.fn.stdpath("data") .. "/lazy/lazy-lock.json",
     dev = {
-        path = "~/Documents/workspace/nvim", -- local plugins directory
+        path = "~/workspace", -- local plugins directory
     },
     git = {
         timeout = 300, -- seconds
