@@ -41,7 +41,7 @@ cmp.setup {
         ["<C-k>"] = cmp.mapping.scroll_docs(-4),
         ["<C-j>"] = cmp.mapping.scroll_docs(4),
         ["<C-Space>"] = cmp.mapping.complete(),
-        ["<C-x>"] = cmp.mapping.abort(),
+        ["<ESC>"] = cmp.mapping.abort(),
         ["<CR>"] = cmp.mapping.confirm {
             behavior = cmp.ConfirmBehavior.Replace,
             select = false,

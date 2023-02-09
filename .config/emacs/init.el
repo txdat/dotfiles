@@ -1,3 +1,6 @@
+;;; init.el --- Personal configuration file -*- lexical-binding: t; no-byte-compile: t; -*-
+;; NOTE: init.el is now generated from readme.org.  Please edit that file instead
+
 ;; `file-name-handler-alist' is consulted on every `require', `load' and various
 ;; path/io functions. You get a minor speed up by nooping this. However, this
 ;; may cause problems on builds of Emacs where its site lisp files aren't
@@ -22,10 +25,12 @@
 ;; Ensure Doom is running out of this file's directory
 (setq user-emacs-directory (file-truename (file-name-directory load-file-name)))
 
-;; (add-to-list 'load-path "~/.config/emacs/lisp/")
+;; load modules
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))
 
 (let ((file-name-handler-alist nil)
       (gc-cons-threshold 100000000))
   (require 'core)
   )
+
+;;; init.el ends here
