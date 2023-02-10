@@ -108,12 +108,14 @@ sudo pacman -S --noconfirm blas cblas openblas \
                            gperftools gflags google-glog gtest protobuf \
                            cuda cudnn magma nccl nvidia-utils \
                            opencv-cuda \
-                           vulkan-icd-loader vulkan-intel
+                           vulkan-icd-loader \
+                           vulkan-radeon amdvlk \
+#                            vulkan-intel
 
 # docker, k3s, ...
 sudo pacman -S --noconfirm docker docker-compose kubectl helm skaffold nfs-utils
-sudo usermod -aG docker $USER
 paru -S --noconfirm nvidia-container-runtime nvidia-container-toolkit
+sudo usermod -aG docker $USER
 
 # rust
 rustup component add rust-src
@@ -124,20 +126,20 @@ sudo npm install -g typescript typescript-language-server eslint prettier
 
 # python
 axel -n 16 https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-chmod a+x ./Miniconda3-latest-Linux-x86_64
-./Miniconda3-latest-Linux-x86_64
-rm -f ./Miniconda3-latest-Linux-x86_64
-conda update --all -y
-pip install pynvim pyright black ruff dvc dvc-gdrive ansible debugpy sqlfluff --upgrade
+chmod a+x ./Miniconda3-latest-Linux-x86_64.sh
+./Miniconda3-latest-Linux-x86_64.sh
+rm -f ./Miniconda3-latest-Linux-x86_64.sh
+~/miniconda3/bin/conda update --all -y
+~/miniconda3/bin/pip install pynvim pyright black ruff dvc dvc-gdrive ansible debugpy sqlfluff --upgrade
 
 # latex
 sudo pacman -S --noconfirm texlive-core texlive-latexextra texlive-bibtexextra biber texlive-science texlab
-
 # TODO: fix tlmgr before run these commands
-tlmgr init-usertree
-tlmgr option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet
-tlmgr install libertine
-tlmgr install doublestroke
+sudo vim /usr/share/texmf-dist/scripts/texlive/tlmgr.pl
+/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode init-usertree
+/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet
+/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode install libertine
+/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode install doublestroke
 
 # install zsh shell -----------------------------------
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
@@ -149,7 +151,8 @@ rm -f ~/.zshrc
 
 # link configs ----------------------------------------
 cd ~
-git clone https://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@github.com/txdat/dotfiles .dotfiles
+git clone git@github.com:txdat/dotfiles .dotfiles
+# git clone https://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@github.com/txdat/dotfiles .dotfiles
 cd .dotfiles
 
 # k3s
@@ -160,10 +163,10 @@ sudo mkdir -p /etc/containerd && sudo ln -s ~/.dotfiles/k3s/containerd/config.to
 sudo cp -r fonts/jetbrains /usr/share/fonts && sudo fc-cache -vfs
 
 # fix displaying emoji
-sudo cp 75-noto-color-emoji.conf /usr/share/fontconfig/conf.avail
+sudo cp 75-noto-color-emoji.conf /usr/share/fontconfig/conf.avail && \
 sudo ln -s /usr/share/fontconfig/conf.avail/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-emoji.conf
 
-# link configs
+# link config
 sudo ln -s ~/.dotfiles/.vimrc /root/.vimrc
 
 ln -s ~/.dotfiles/.vimrc ~/.vimrc
@@ -171,8 +174,9 @@ ln -s ~/.dotfiles/.zshrc ~/.zshrc
 ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
 ln -s ~/.dotfiles/.oh-my-zsh/zsh-syntax-highlighting.zsh ~/.oh-my-zsh/zsh-syntax-highlighting.zsh
 
+# link config in ~/.config
 for d in ~/.dotfiles/.config/*/; do
-    ln -s "$d" "~/.config/$(basename "$d"")"
+    $(ln -s "$d" ~/.config/$(basename "$d"))
 done
 
 # config bat
