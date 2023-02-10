@@ -130,7 +130,7 @@ chmod a+x ./Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
 rm -f ./Miniconda3-latest-Linux-x86_64.sh
 ~/miniconda3/bin/conda update --all -y
-~/miniconda3/bin/pip install pynvim pyright black ruff dvc dvc-gdrive ansible debugpy sqlfluff --upgrade
+~/miniconda3/bin/pip install pynvim pyright black ruff dvc dvc-gdrive ansible debugpy sqlfluff jupyterlab --upgrade
 
 # latex
 sudo pacman -S --noconfirm texlive-core texlive-latexextra texlive-bibtexextra biber texlive-science texlab
