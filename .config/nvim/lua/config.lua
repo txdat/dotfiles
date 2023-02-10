@@ -1,7 +1,4 @@
--- impatient
--- pcall(require, "plugins.impatient")
-
--- vim/neovim config
+-- neovim config
 
 local opt = vim.opt
 

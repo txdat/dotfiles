@@ -205,13 +205,13 @@ local plugins = {
     },
 
     -- latex
-    {
-        "lervag/vimtex",
-        ft = { "tex" }, -- triggered when opening *.tex file
-        config = function()
-            pcall(require, "plugins.vimtex")
-        end
-    },
+    -- {
+    --     "lervag/vimtex",
+    --     ft = { "tex" }, -- triggered when opening *.tex file
+    --     config = function()
+    --         pcall(require, "plugins.vimtex")
+    --     end
+    -- },
 }
 
 local opts = {
