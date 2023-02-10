@@ -85,7 +85,7 @@ paru -S --noconfirm ibus-bamboo \
                     anki
 
 # git config --------------------------------------------
-git config --global user.name "txdat"
+git config --global user.name "txdat" && \
 git config --global user.email "dattranx105@gmail.com"
 
 # install essential development packages ----------------
