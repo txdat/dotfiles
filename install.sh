@@ -73,7 +73,8 @@ rustup toolchain install stable && rustup default stable
 git clone https://aur.archlinux.org/paru .paru && cd .paru/ && makepkg -si && cd -
 
 # install essential applications ------------------------
-sudo pacman -S --noconfirm alacritty \
+sudo pacman -S --noconfirm dolphin \
+                           alacritty \
                            firefox chromium \
                            gwenview mpv spectacle \
                            zathura zathura-pdf-mupdf \
