@@ -8,11 +8,13 @@ sudo pacman -S --noconfirm curl wget axel rsync \
                            zip unzip p7zip ark \
                            bat man \
                            xclip xdotool fzf fzy ripgrep fd \
+                           openssh \
                            pacman-contrib nvidia
 
 sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
 
 # enable essential services ----------------------------------
+sudo systemctl enable sshd.service
 sudo systemctl enable fstrim.timer
 sudo systemctl enable paccache.timer
 
@@ -81,12 +83,14 @@ sudo pacman -S --noconfirm alacritty \
 
 paru -S --noconfirm ibus-bamboo \
                     dropbox \
-                    visual-studio-code-bin sioyek \
+                    visual-studio-code-bin \
+                    sioyek \
                     anki
 
 # git config --------------------------------------------
 git config --global user.name "txdat" && \
-git config --global user.email "dattranx105@gmail.com"
+git config --global user.email "dattranx105@gmail.com" && \
+ssh-keygen
 
 # install essential development packages ----------------
 sudo pacman -S --noconfirm gcc gcc-fortran gdb \
