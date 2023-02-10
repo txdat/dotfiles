@@ -3,7 +3,7 @@
 # install base packages ---------------------------------------
 sudo pacman -S --noconfirm curl wget axel rsync \
                            git lazygit git-delta \
-                           zsh tmux ranger neofetch \
+                           zsh tmux htop ranger neofetch \
                            vim neovim emacs-nativecomp \
                            zip unzip p7zip ark \
                            bat man \
