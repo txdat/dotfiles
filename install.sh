@@ -9,6 +9,7 @@ sudo pacman -S --noconfirm curl wget axel rsync \
                            bat man \
                            xclip xdotool fzf fzy ripgrep fd \
                            openssh \
+                           # flatpak \
                            pacman-contrib nvidia
 
 sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
@@ -88,6 +89,8 @@ paru -S --noconfirm ibus-bamboo \
                     sioyek \
                     anki
 
+flatpak install flathub rest.insomnia.Insomnia
+
 # git config --------------------------------------------
 git config --global user.name "txdat" && \
 git config --global user.email "dattranx105@gmail.com" && \
@@ -135,8 +138,7 @@ rm -f ./Miniconda3-latest-Linux-x86_64.sh
 
 # latex
 sudo pacman -S --noconfirm texlive-core texlive-latexextra texlive-bibtexextra biber texlive-science texlab
-# TODO: fix tlmgr before run these commands
-sudo vim /usr/share/texmf-dist/scripts/texlive/tlmgr.pl
+sudo vim /usr/share/texmf-dist/scripts/texlive/tlmgr.pl # TODO: fix tlmgr before run these commands
 /usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode init-usertree
 /usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet
 /usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode install libertine
@@ -179,6 +181,10 @@ ln -s ~/.dotfiles/.oh-my-zsh/zsh-syntax-highlighting.zsh ~/.oh-my-zsh/zsh-syntax
 for d in ~/.dotfiles/.config/*/; do
     $(ln -s "$d" ~/.config/$(basename "$d"))
 done
+
+# jupyterlab
+mkdir -p ~/.jupyter/lab/user-settings && \
+ln -s ~/.dotfiles/.jupyter/lab/user-settings/@jupyterlab ~/.jupyter/lab/user-settings/@jupyterlab
 
 # config bat
 bat cache --build
