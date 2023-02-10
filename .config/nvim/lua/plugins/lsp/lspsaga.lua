@@ -30,8 +30,8 @@ require("lspsaga").setup({
     },
     lightbulb = {
         enable = true,
-        enable_in_insert = false,
-        sign = false,
+        enable_in_insert = true,
+        sign = true,
         virtual_text = true,
     },
     diagnostic = {
@@ -73,14 +73,14 @@ require("lspsaga").setup({
         separator = "  ",
     },
     beacon = {
-        enable = false,
+        enable = true,
     },
     ui = {
         theme = "round",
         title = true,
         border = "single",
-        code_action = "ﯦ",
-        diagnostic = "",
+        code_action = "💡",
+        diagnostic = "🐞",
     },
 })
 

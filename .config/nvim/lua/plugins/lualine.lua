@@ -116,7 +116,7 @@ require("lualine").setup {
                 "diagnostics",
                 sources = { "nvim_diagnostic", "nvim_lsp" },
                 symbols = { error = " ", warn = " ", info = " ", hint = " " },
-                update_in_insert = false,
+                update_in_insert = true,
             },
         },
         --lualine_c = {
