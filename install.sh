@@ -8,7 +8,7 @@ sudo pacman -S --noconfirm curl wget axel rsync \
                            zip unzip p7zip ark \
                            bat man \
                            xclip xdotool fzf fzy ripgrep fd \
-                           pacman-contrib
+                           pacman-contrib nvidia
 
 sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
 
