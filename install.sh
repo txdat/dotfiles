@@ -18,7 +18,7 @@ sudo systemctl enable paccache.timer
 
 # nvidia's hook
 sudo mkdir -p /etc/pacman.d/hooks
-sudo cat >/etc/pacman.d/hooks/nvidia.hook <<EOL
+sudo tee -a /etc/pacman.d/hooks/nvidia.hook > /dev/null <<EOL
 [Trigger]
 Operation=Install
 Operation=Upgrade
@@ -41,7 +41,7 @@ if [ $(cat /etc/hostname) == "yoga14" ]
 then
 # set sddm high dpi
 sudo mkdir -p /etc/sddm.conf.d
-sudo cat >/etc/sddm.conf.d/dpi.conf <<EOL
+sudo tee -a /etc/sddm.conf.d/dpi.conf > /dev/null <<EOL
 [X11]
 ServerArguments=-nolisten tcp -dpi 160
 EOL
@@ -49,7 +49,7 @@ EOL
 sudo pacman -S --noconfirm amd-ucode tlp tlp-rdw
 
 # enable tlp service
-sudo cat >/etc/tlp.conf <<EOL
+sudo tee -a /etc/tlp.conf > /dev/null <<EOL
 START_CHARGE_THRESH_BAT0=0  # dummy value
 STOP_CHARGE_THRESH_BAT0=1
 
