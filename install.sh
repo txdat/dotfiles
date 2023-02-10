@@ -1,0 +1,180 @@
+#!/bin/sh
+
+# install base packages ---------------------------------------
+sudo pacman -S --noconfirm curl wget axel rsync \
+                           git lazygit git-delta \
+                           zsh tmux ranger neofetch \
+                           vim neovim emacs-nativecomp \
+                           zip unzip p7zip ark \
+                           bat man \
+                           xclip xdotool fzf fzy ripgrep fd \
+                           pacman-contrib
+
+sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
+
+# enable essential services ----------------------------------
+sudo systemctl enable fstrim.timer
+sudo systemctl enable paccache.timer
+
+# nvidia's hook
+sudo mkdir -p /etc/pacman.d/hooks
+sudo cat >/etc/pacman.d/hooks/nvidia.hook <<EOL
+[Trigger]
+Operation=Install
+Operation=Upgrade
+Operation=Remove
+Type=Package
+Target=nvidia
+Target=linux
+# Change the linux part above and in the Exec line if a different kernel is used
+
+[Action]
+Description=Update NVIDIA module in initcpio
+Depends=mkinitcpio
+When=PostTransaction
+NeedsTargets
+Exec=/bin/sh -c 'while read -r trg; do case $trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
+EOL
+
+# for yoga14 -----------------------------------------------
+if [ $(cat /etc/hostname) == "yoga14" ]
+then
+# set sddm high dpi
+sudo mkdir -p /etc/sddm.conf.d
+sudo cat >/etc/sddm.conf.d/dpi.conf <<EOL
+[X11]
+ServerArguments=-nolisten tcp -dpi 160
+EOL
+
+sudo pacman -S --noconfirm amd-ucode tlp tlp-rdw
+
+# enable tlp service
+sudo cat >/etc/tlp.conf <<EOL
+START_CHARGE_THRESH_BAT0=0  # dummy value
+STOP_CHARGE_THRESH_BAT0=1
+
+NATACPI_ENABLE=1
+TPACPI_ENABLE=1
+TPSMAPI_ENABLE=1
+EOL
+
+sudo systemctl enable tlp.service
+fi # end of "yoga14"
+
+# install paru -------------------------------------------
+sudo pacman -S --noconfirm rustup
+
+# install rust toolchain
+rustup toolchain install stable && rustup default stable
+
+# compile paru
+git clone https://aur.archlinux.org/paru .paru && cd .paru/ && makepkg -si && cd -
+
+# install essential applications ------------------------
+sudo pacman -S --noconfirm alacritty \
+                           firefox chromium \
+                           gwenview mpv spectacle \
+                           zathura zathura-pdf-mupdf \
+                           calibre \
+                           obsidian \
+                           dbeaver
+
+paru -S --noconfirm ibus-bamboo \
+                    dropbox \
+                    visual-studio-code-bin sioyek \
+                    anki
+
+# git config --------------------------------------------
+git config --global user.name "txdat"
+git config --global user.email "dattranx105@gmail.com"
+
+# install essential development packages ----------------
+sudo pacman -S --noconfirm gcc gcc-fortran gdb \
+                           clang llvm lldb lld \
+                           make cmake ccache ctags valgrind strace \
+                           python python-pip \
+                           nodejs npm \
+                           go gopls
+
+sudo pacman -S --noconfirm blas cblas openblas \
+                           openmp openmpi \
+                           lapack lapacke eigen tbb \
+                           boost \
+                           ffmpeg4.4 libuv \
+                           gperftools gflags google-glog gtest protobuf \
+                           cuda cudnn magma nccl nvidia-utils \
+                           opencv-cuda \
+                           vulkan-icd-loader vulkan-intel
+
+# docker, k3s, ...
+sudo pacman -S --noconfirm docker docker-compose kubectl helm skaffold nfs-utils
+sudo usermod -aG docker $USER
+paru -S --noconfirm nvidia-container-runtime nvidia-container-toolkit
+
+# rust
+rustup component add rust-src
+rustup component add rust-analyzer
+
+# javascript/typescript
+sudo npm install -g typescript typescript-language-server eslint prettier
+
+# python
+axel -n 16 https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+chmod a+x ./Miniconda3-latest-Linux-x86_64
+./Miniconda3-latest-Linux-x86_64
+rm -f ./Miniconda3-latest-Linux-x86_64
+conda update --all -y
+pip install pynvim pyright black ruff dvc dvc-gdrive ansible debugpy sqlfluff --upgrade
+
+# latex
+sudo pacman -S --noconfirm texlive-core texlive-latexextra texlive-bibtexextra biber texlive-science texlab
+
+# TODO: fix tlmgr before run these commands
+tlmgr init-usertree
+tlmgr option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet
+tlmgr install libertine
+tlmgr install doublestroke
+
+# install zsh shell -----------------------------------
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
+git clone https://github.com/zsh-users/zsh-completions ~/.oh-my-zsh/custom/plugins/zsh-completions && \
+git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ~/.oh-my-zsh/custom/plugins/zsh-syntax-highlighting && \
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/plugins/zsh-autosuggestions && \
+git clone https://github.com/romkatv/powerlevel10k ~/.oh-my-zsh/custom/themes/powerlevel10k && \
+rm -f ~/.zshrc
+
+# link configs ----------------------------------------
+cd ~
+git clone https://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@github.com/txdat/dotfiles .dotfiles
+cd .dotfiles
+
+# k3s
+sudo mkdir -p /etc/docker && sudo ln -s ~/.dotfiles/k3s/docker/daemon.json /etc/docker/daemon.json
+sudo mkdir -p /etc/containerd && sudo ln -s ~/.dotfiles/k3s/containerd/config.toml /etc/containerd/config.toml
+
+# install fonts
+sudo cp -r fonts/jetbrains /usr/share/fonts && sudo fc-cache -vfs
+
+# fix displaying emoji
+sudo cp 75-noto-color-emoji.conf /usr/share/fontconfig/conf.avail
+sudo ln -s /usr/share/fontconfig/conf.avail/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-emoji.conf
+
+# link configs
+sudo ln -s ~/.dotfiles/.vimrc /root/.vimrc
+
+ln -s ~/.dotfiles/.vimrc ~/.vimrc
+ln -s ~/.dotfiles/.zshrc ~/.zshrc
+ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
+ln -s ~/.dotfiles/.oh-my-zsh/zsh-syntax-highlighting.zsh ~/.oh-my-zsh/zsh-syntax-highlighting.zsh
+
+for d in ~/.dotfiles/.config/*/; do
+    ln -s "$d" "~/.config/$(basename "$d"")"
+done
+
+# config bat
+bat cache --build
+
+cd -
+
+# finish installing ----------------------------------
+neofetch
