@@ -138,7 +138,8 @@ rm -f ./Miniconda3-latest-Linux-x86_64.sh
 
 # latex
 sudo pacman -S --noconfirm texlive-core texlive-latexextra texlive-bibtexextra biber texlive-science texlab
-sudo vim /usr/share/texmf-dist/scripts/texlive/tlmgr.pl # TODO: fix tlmgr before run these commands
+# sudo vim /usr/share/texmf-dist/scripts/texlive/tlmgr.pl # TODO: fix tlmgr before run these commands
+sudo sed -i -e "s/\$Master\/..\/../\$Master\/..\/..\/../g" /usr/share/texmf-dist/scripts/texlive/tlmgr.pl
 /usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode init-usertree
 /usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet
 /usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode install libertine
@@ -170,17 +171,18 @@ sudo cp 75-noto-color-emoji.conf /usr/share/fontconfig/conf.avail && \
 sudo ln -s /usr/share/fontconfig/conf.avail/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-emoji.conf
 
 # link config
-sudo ln -s ~/.dotfiles/.vimrc /root/.vimrc
-
-ln -s ~/.dotfiles/.vimrc ~/.vimrc
-ln -s ~/.dotfiles/.zshrc ~/.zshrc
-ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
-ln -s ~/.dotfiles/.oh-my-zsh/zsh-syntax-highlighting.zsh ~/.oh-my-zsh/zsh-syntax-highlighting.zsh
-
-# link config in ~/.config
-for d in ~/.dotfiles/.config/*/; do
-    $(ln -s "$d" ~/.config/$(basename "$d"))
-done
+# sudo ln -s ~/.dotfiles/.vimrc /root/.vimrc
+#
+# ln -s ~/.dotfiles/.vimrc ~/.vimrc
+# ln -s ~/.dotfiles/.zshrc ~/.zshrc
+# ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
+# ln -s ~/.dotfiles/.oh-my-zsh/zsh-syntax-highlighting.zsh ~/.oh-my-zsh/zsh-syntax-highlighting.zsh
+#
+# # link config in ~/.config
+# for d in ~/.dotfiles/.config/*/; do
+#     $(ln -s "$d" ~/.config/$(basename "$d"))
+# done
+./link_config.sh
 
 # jupyterlab
 mkdir -p ~/.jupyter/lab/user-settings && \

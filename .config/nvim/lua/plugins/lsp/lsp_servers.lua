@@ -2,12 +2,12 @@ local M = {}
 
 -- installed by mason automatically
 M.ensure_installed = {
-    "sumneko_lua",
+    "lua_ls",
 }
 
 -- lsp servers with custom config
 M.servers_config = {
-    sumneko_lua = {
+    lua_ls = {
         settings = {
             Lua = {
                 diagnostics = {
