@@ -23,7 +23,8 @@
                                        gc-cons-percentage 0.1)))
   )
 ;; Ensure Doom is running out of this file's directory
-(setq user-emacs-directory (file-truename (file-name-directory load-file-name)))
+;; (setq user-emacs-directory (file-truename (file-name-directory load-file-name)))
+(setq user-emacs-directory (file-truename "~/.emacs.d/"))
 
 ;; (add-to-list 'load-path "~/.emacs.d/lisp/")
 (add-to-list 'load-path (expand-file-name "lisp" user-emacs-directory))

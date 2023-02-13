@@ -120,4 +120,4 @@ keymap("n", "<leader>ic", ":Lspsaga incoming_calls<CR>")
 keymap("n", "<leader>oc", ":Lspsaga outgoing_calls<CR>")
 
 -- float terminal
-keymap({ "n", "t" }, "<leader>t", "<cmd>Lspsaga term_toggle<CR>")
+keymap({ "n", "t" }, "<C-S-t>", "<cmd>Lspsaga term_toggle<CR>")

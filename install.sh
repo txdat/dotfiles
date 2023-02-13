@@ -9,8 +9,8 @@ sudo pacman -S --noconfirm curl wget axel rsync \
                            bat man \
                            xclip xdotool fzf fzy ripgrep fd \
                            openssh \
+                           pacman-contrib nvidia \
                            # flatpak \
-                           pacman-contrib nvidia
 
 sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
 
@@ -114,7 +114,7 @@ sudo pacman -S --noconfirm blas cblas openblas \
                            opencv-cuda \
                            vulkan-icd-loader \
                            vulkan-radeon amdvlk \
-#                            vulkan-intel
+                           # vulkan-intel \
 
 # docker, k3s, ...
 sudo pacman -S --noconfirm docker docker-compose kubectl helm skaffold nfs-utils
@@ -170,6 +170,10 @@ sudo cp -r fonts/jetbrains /usr/share/fonts && sudo fc-cache -vfs
 sudo cp 75-noto-color-emoji.conf /usr/share/fontconfig/conf.avail && \
 sudo ln -s /usr/share/fontconfig/conf.avail/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-emoji.conf
 
+# jupyterlab
+mkdir -p ~/.jupyter/lab/user-settings && \
+ln -s ~/.dotfiles/.jupyter/lab/user-settings/@jupyterlab ~/.jupyter/lab/user-settings/@jupyterlab
+
 # link config
 # sudo ln -s ~/.dotfiles/.vimrc /root/.vimrc
 #
@@ -177,16 +181,13 @@ sudo ln -s /usr/share/fontconfig/conf.avail/75-noto-color-emoji.conf /etc/fonts/
 # ln -s ~/.dotfiles/.zshrc ~/.zshrc
 # ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
 # ln -s ~/.dotfiles/.oh-my-zsh/zsh-syntax-highlighting.zsh ~/.oh-my-zsh/zsh-syntax-highlighting.zsh
+# ln -s ~/.dotfiles/.emacs.d ~/.emacs.d
 #
 # # link config in ~/.config
 # for d in ~/.dotfiles/.config/*/; do
 #     $(ln -s "$d" ~/.config/$(basename "$d"))
 # done
 ./link_config.sh
-
-# jupyterlab
-mkdir -p ~/.jupyter/lab/user-settings && \
-ln -s ~/.dotfiles/.jupyter/lab/user-settings/@jupyterlab ~/.jupyter/lab/user-settings/@jupyterlab
 
 # config bat
 bat cache --build
