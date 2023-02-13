@@ -68,6 +68,7 @@ opt.guicursor = "n-v-c:block-Cursor" -- using block cursor
 opt.guicursor:append "i:block-iCursor"
 opt.guicursor:append "n-v-c:blinkon0"
 opt.guicursor:append "i:blinkon0"
+opt.colorcolumn = "80"
 -- opt.ruler = true  -- show cursor position
 opt.list = true -- show eol, ...
 opt.cursorline = true
@@ -172,7 +173,6 @@ autocmd("BufLeave", {
 -- plugins
 -----------------------------------------
 
--- pcall(require, "plugins.packer")
 pcall(require, "plugins.lazy")
 
 -----------------------------------------

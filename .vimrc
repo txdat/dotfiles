@@ -66,8 +66,10 @@ set guicursor=n-v-c:block-Cursor " using block cursor
 set guicursor+=i:block-iCursor
 set guicursor+=n-v-c:blinkon0
 set guicursor+=i:blinkon0
+set colorcolumn=80
 set ruler " show cursor position
-"set list " show eol, ...
+set listchars=eol:↴
+set list " show eol, ...
 set cursorline
 hi CursorLine cterm=none
 hi LineNR cterm=none guifg=dimgray
