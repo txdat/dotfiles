@@ -1,1 +1,1 @@
-pcall(require, "config")
+pcall(require, "core")

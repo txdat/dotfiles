@@ -31,7 +31,7 @@ require("lspsaga").setup({
     lightbulb = {
         enable = true,
         enable_in_insert = true,
-        sign = true,
+        sign = false,
         virtual_text = true,
     },
     diagnostic = {
