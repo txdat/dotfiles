@@ -1,6 +1,6 @@
 #!/bin/sh
 export_dir="${1}"
-ip_addr="${2:-192.168.1.198}"
+ip_addr=$(ip -o route get to 8.8.8.8 | sed -n 's/.*src \([0-9.]\+\).*/\1/p')
 
 sudo echo "${export_dir} ${ip_addr}(rw,sync,no_root_squash,no_subtree_check)" >> /etc/exports
 sudo exportfs -arv
