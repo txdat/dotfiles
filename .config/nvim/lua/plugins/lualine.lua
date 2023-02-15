@@ -108,7 +108,7 @@ require("lualine").setup {
     },
     sections = {
         lualine_a = {
-            { "fileformat", symbols = { unix = "" } },
+            -- { "fileformat", symbols = { unix = "" } },
             "mode",
         },
         lualine_b = {
@@ -126,15 +126,14 @@ require("lualine").setup {
         --    },
         --},
         lualine_c = {},
-        lualine_x = {},
+        lualine_x = { "location", "progress" },
         lualine_y = {
             {
                 "diff",
                 symbols = { added = " ", modified = " ", removed = " " },
             },
-            "branch",
         },
-        lualine_z = { "location", "progress" },
+        lualine_z = { "branch" },
     },
     inactive_sections = {
         lualine_a = {},
