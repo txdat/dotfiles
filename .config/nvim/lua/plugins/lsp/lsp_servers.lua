@@ -94,7 +94,7 @@ M.servers_config = {
         },
         single_file_support = true,
     },
-    -- texlab = {},
+    texlab = {},
 }
 
 return M
