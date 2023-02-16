@@ -185,7 +185,7 @@ ln -s ~/.dotfiles/.jupyter/lab/user-settings/@jupyterlab ~/.jupyter/lab/user-set
 # ln -s ~/.dotfiles/.zshrc ~/.zshrc
 # ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
 # ln -s ~/.dotfiles/.oh-my-zsh/zsh-syntax-highlighting.zsh ~/.oh-my-zsh/zsh-syntax-highlighting.zsh
-# rm -rf ~/.doom.d && /.dotfiles/.doom.d ~/.doom.d
+# rm -rf ~/.doom.d && ln -s ~/.dotfiles/.doom.d ~/.doom.d
 #
 # # link config in ~/.config
 # for d in ~/.dotfiles/.config/*/; do
