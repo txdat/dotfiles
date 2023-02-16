@@ -59,7 +59,6 @@ vim.g.mapleader = " "
 -- gui
 -----------------------------------------
 
-vim.g.colors_name = "kanagawa"
 opt.background = "dark"
 opt.shortmess:append "sI" -- disable nvim intro
 opt.laststatus = 3 -- set global statusline
@@ -219,9 +218,6 @@ keymap("x", "J", ":move '>+1<CR>gv-gv")
 keymap("x", "K", ":move '<-2<CR>gv-gv")
 keymap("x", "<A-j>", ":move '>+1<CR>gv-gv")
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv")
-
--- compile and run *.cpp
-keymap("n", "<leader>r", ":!g++ -std=c++20 -DDEBUG -g % && ./a.out<CR>")
 
 -----------------------------------------
 -- plugins

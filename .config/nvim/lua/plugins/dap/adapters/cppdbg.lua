@@ -2,7 +2,7 @@ local dap = require("dap")
 
 -- find cpptools directory
 local cpptools_dir = require("util").shell_cmd('find "' ..
-    os.getenv('HOME') .. '/.vscode/extensions' .. '" -maxdepth 1 -name *cpptools*')
+os.getenv('HOME') .. '/.vscode/extensions' .. '" -maxdepth 1 -name *cpptools*')
 
 dap.adapters.cppdbg = {
     id = "cppdbg",

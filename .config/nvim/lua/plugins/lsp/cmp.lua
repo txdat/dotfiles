@@ -38,7 +38,7 @@ cmp.setup {
         fields = { "abbr", "kind", "menu" },
     },
     mapping = cmp.mapping.preset.insert({
-        ["<C-k>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-k>"] = cmp.mapping.scroll_docs( -4),
         ["<C-j>"] = cmp.mapping.scroll_docs(4),
         ["<C-Space>"] = cmp.mapping.complete(),
         ["<ESC>"] = cmp.mapping.abort(),
@@ -58,8 +58,8 @@ cmp.setup {
         ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_prev_item()
-            elseif luasnip.jumpable(-1) then
-                luasnip.jump(-1)
+            elseif luasnip.jumpable( -1) then
+                luasnip.jump( -1)
             else
                 fallback()
             end
@@ -72,10 +72,10 @@ cmp.setup {
     },
     sources = {
         { name = "nvim_lsp", keyword_length = 3 },
-        { name = "buffer", keyword_length = 3 },
+        { name = "buffer",   keyword_length = 3 },
         { name = "path" },
         -- { name = "nvim_lsp_signature_help" },
-        { name = "luasnip", keyword_length = 3 },
+        { name = "luasnip",  keyword_length = 3 },
     },
 }
 

@@ -23,21 +23,21 @@ require("nvim-tree").setup {
         mappings = {
             custom_only = true,
             list = {
-                { key = "<ESC>", action = "close" },
+                { key = "<ESC>",                     action = "close" },
                 { key = { "<CR>", "<2-LeftMouse>" }, action = "edit" },
-                { key = "<F5>", action = "refresh" },
-                { key = "a", action = "create" },
-                { key = "d", action = "trash" }, -- move file/folder to trash
-                { key = "D", action = "remove" }, -- delete permanently
-                { key = "r", action = "rename" },
-                { key = "x", action = "cut" },
-                { key = "c", action = "copy" },
-                { key = "p", action = "paste" },
-                { key = "y", action = "copy_name" },
-                { key = "Y", action = "copy_absolute_path" },
-                { key = "W", action = "collapse_all" },
-                { key = "E", action = "expand_all" },
-                { key = "K", action = "toggle_file_info" },
+                { key = "<F5>",                      action = "refresh" },
+                { key = "a",                         action = "create" },
+                { key = "d",                         action = "trash" }, -- move file/folder to trash
+                { key = "D",                         action = "remove" }, -- delete permanently
+                { key = "r",                         action = "rename" },
+                { key = "x",                         action = "cut" },
+                { key = "c",                         action = "copy" },
+                { key = "p",                         action = "paste" },
+                { key = "y",                         action = "copy_name" },
+                { key = "Y",                         action = "copy_absolute_path" },
+                { key = "W",                         action = "collapse_all" },
+                { key = "E",                         action = "expand_all" },
+                { key = "K",                         action = "toggle_file_info" },
             },
         },
     },
@@ -85,17 +85,21 @@ local keymap = require("util").keymap
 
 keymap("n", "<C-e>", ":NvimTreeToggle<CR>")
 
--- bufferline
+-- auto change bufferline's offset
+local ok, bufferline_api = pcall(require, "bufferline.api")
+if not ok then
+    return
+end
+
 local nvim_tree_events = require("nvim-tree.events")
 local nvim_tree_view = require("nvim-tree.view")
-local bufferline_api = require("bufferline.api")
 
 nvim_tree_events.subscribe("TreeOpen", function()
-    bufferline_api.set_offset(nvim_tree_view.View.width + 1)
+    bufferline_api.set_offset(nvim_tree_view.View.width)
 end)
 
 nvim_tree_events.subscribe("Resize", function()
-    bufferline_api.set_offset(nvim_tree_view.View.width + 1)
+    bufferline_api.set_offset(nvim_tree_view.View.width)
 end)
 
 nvim_tree_events.subscribe("TreeClose", function()

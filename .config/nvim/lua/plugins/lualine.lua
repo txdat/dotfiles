@@ -99,7 +99,7 @@ local dap_components = {
 
 require("lualine").setup {
     options = {
-        theme = vim.g.colors_name, -- auto falling back to "auto"
+        theme = "kanagawa", -- auto falling back to "auto"
         section_separators = "",
         component_separators = "",
         globalstatus = true,
