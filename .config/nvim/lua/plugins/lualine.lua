@@ -126,14 +126,15 @@ require("lualine").setup {
         --    },
         --},
         lualine_c = {},
-        lualine_x = { "location", "progress" },
+        lualine_x = {},
         lualine_y = {
             {
                 "diff",
                 symbols = { added = " ", modified = " ", removed = " " },
             },
+            "branch",
         },
-        lualine_z = { "branch" },
+        lualine_z = { "location", "progress" },
     },
     inactive_sections = {
         lualine_a = {},

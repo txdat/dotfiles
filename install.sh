@@ -153,6 +153,10 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.oh-my-zsh/custom/p
 git clone https://github.com/romkatv/powerlevel10k ~/.oh-my-zsh/custom/themes/powerlevel10k && \
 rm -f ~/.zshrc
 
+# install doomemacs
+git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d && \
+~/.emacs.d/bin/doom install
+
 # link configs ----------------------------------------
 cd ~
 git clone git@github.com:txdat/dotfiles .dotfiles
@@ -181,7 +185,7 @@ ln -s ~/.dotfiles/.jupyter/lab/user-settings/@jupyterlab ~/.jupyter/lab/user-set
 # ln -s ~/.dotfiles/.zshrc ~/.zshrc
 # ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
 # ln -s ~/.dotfiles/.oh-my-zsh/zsh-syntax-highlighting.zsh ~/.oh-my-zsh/zsh-syntax-highlighting.zsh
-# ln -s ~/.dotfiles/.emacs.d ~/.emacs.d
+# rm -rf ~/.doom.d && /.dotfiles/.doom.d ~/.doom.d
 #
 # # link config in ~/.config
 # for d in ~/.dotfiles/.config/*/; do

@@ -118,7 +118,6 @@ alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 alias cpcb="xclip -sel c < " # copy from file to clipboard
 alias cpfi="xclip -sel c -o > " # copy from clipboard to file
 alias emacs="emacs -nw"
-alias lgit="lazygit"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
@@ -137,6 +136,7 @@ unset __conda_setup
 
 export PATH="$HOME/miniconda3/bin:$PATH"
 export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
+export PATH="$HOME/.emacs.d/bin:$PATH"
 
 # ibus
 export GTK_IM_MODULE=ibus
@@ -173,7 +173,7 @@ stop_kube () {
 # compile 'algo'
 algocpl () {
     dir=$(pwd)
-    
+
     # precompile headers
     if [ ! -f "$dir/bits/stdc++.h.gch" ]
     then
@@ -186,5 +186,5 @@ algocpl () {
     fi
 
     # compile
-    g++ -std=c++20 -DDEBUG -g "$1"
+    g++ -std=c++20 -g "$1"
 }
