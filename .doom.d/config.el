@@ -4,39 +4,45 @@
 ;; sync' after modifying this file!
 
 (setq-default
- auto-save-list-file-prefix nil
- create-lockfiles nil
- cursor-in-non-selected-windows nil
- delete-by-moving-to-trash t
- fill-column 80
- gc-cons-threshold (* 16 1024 1024)
- indent-tabs-mode nil
- inhibit-startup-screen t
- initial-scratch-message ""
- mouse-yank-at-point t
- native-comp-async-report-warnings-errors 'silent
- read-process-output-max (* 1024 1024)
- scroll-margin 1
- select-enable-clipboard t
- sentence-end-double-space nil
- show-help-function nil
- tab-always-indent 'complete
- tab-width 4
- uniquify-buffer-name-style 'forward
- use-short-answers t
- window-combination-resize t
- x-stretch-cursor t
- visible-cursor nil
- cursor-type 'box)
-
-(blink-cursor-mode 0)
-(delete-selection-mode 1)
-(global-subword-mode 1)
-(mouse-avoidance-mode 'exile)
-(put 'upcase-region 'disabled nil)
-(put 'downcase-region 'disabled nil)
-(put 'scroll-left 'disabled nil)
-(set-default-coding-systems 'utf-8)
+ ad-redefinition-action 'accept         ; Silence warnings for redefinition
+ auto-save-list-file-prefix nil         ; Prevent tracking for auto-saves
+ create-lockfiles nil                   ; Locks are more nuisance than blessing
+ cursor-in-non-selected-windows nil     ; Hide the cursor in inactive windows
+ cursor-type 'box                       ; Block-shaped cursor
+ custom-unlispify-menu-entries nil      ; Prefer kebab-case for titles
+ custom-unlispify-tag-names nil         ; Prefer kebab-case for symbols
+ delete-by-moving-to-trash t            ; Delete files to trash
+ fill-column 80                         ; Set width for automatic line breaks
+ gc-cons-threshold (* 16 1024 1024)     ; We're not using Game Boys anymore
+ help-window-select t                   ; Focus new help windows when opened
+ indent-tabs-mode nil                   ; Stop using tabs to indent
+ inhibit-startup-screen t               ; Disable start-up screen
+ initial-scratch-message ""             ; Empty the initial *scratch* buffer
+ initial-major-mode #'org-mode          ; Prefer `org-mode' for *scratch*
+ mouse-yank-at-point t                  ; Yank at point rather than pointer
+ native-comp-async-report-warnings-errors 'silent ; Skip error buffers
+ read-process-output-max (* 1024 1024)  ; Increase read size for data chunks
+ recenter-positions '(5 bottom)         ; Set re-centering positions
+ scroll-conservatively 101              ; Avoid recentering when scrolling far
+ scroll-margin 1                        ; Add a margin when scrolling vertically
+ select-enable-clipboard t              ; Merge system's and Emacs' clipboard
+ sentence-end-double-space nil          ; Use a single space after dots
+ show-help-function nil                 ; Disable help text everywhere
+ tab-always-indent 'complete            ; Indent first then try completions
+ tab-width 4                            ; Smaller width for tab characters
+ uniquify-buffer-name-style 'forward    ; Uniquify buffer names
+ use-short-answers t                    ; Replace yes/no prompts with y/n
+ window-combination-resize t            ; Resize windows proportionally
+ x-stretch-cursor t                     ; Stretch cursor to the glyph width
+ visible-cursor nil)                    ; Disable cursor blinking
+(blink-cursor-mode 0)                   ; Prefer a still cursor
+(delete-selection-mode 1)               ; Replace region when inserting text
+(global-subword-mode 1)                 ; Iterate through CamelCase words
+(mouse-avoidance-mode 'exile)           ; Avoid collision of mouse with point
+(put 'downcase-region 'disabled nil)    ; Enable `downcase-region'
+(put 'scroll-left 'disabled nil)        ; Enable `scroll-left'
+(put 'upcase-region 'disabled nil)      ; Enable `upcase-region'
+(set-default-coding-systems 'utf-8)     ; Default to utf-8 encoding
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
@@ -74,6 +80,9 @@
   :config
   (load-theme 'kanagawa t)
   )
+
+;; Change doom logo
+(setq fancy-splash-image "~/.doom.d/emacs.svg")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
