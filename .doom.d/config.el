@@ -3,11 +3,43 @@
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
 
+(setq-default
+ auto-save-list-file-prefix nil
+ create-lockfiles nil
+ cursor-in-non-selected-windows nil
+ delete-by-moving-to-trash t
+ fill-column 80
+ ;; gc-cons-threshold (* 8 1024 1024)
+ indent-tabs-mode nil
+ inhibit-startup-screen t
+ initial-scratch-message ""
+ mouse-yank-at-point t
+ native-comp-async-report-warnings-errors 'silent
+ read-process-output-max (* 1024 1024)
+ scroll-margin 1
+ select-enable-clipboard t
+ sentence-end-double-space nil
+ show-help-function nil
+ tab-always-indent 'complete
+ tab-width 4
+ uniquify-buffer-name-style 'forward
+ use-short-answers t
+ window-combination-resize t
+ x-stretch-cursor t)
+
+(setq visible-cursor nil)
+
+(blink-cursor-mode 0)
+(mouse-avoidance-mode 'exile)
+(put 'upcase-region 'disabled nil)
+(put 'downcase-region 'disabled nil)
+(put 'scroll-left 'disabled nil)
+(set-default-coding-systems 'utf-8)
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
-(setq user-full-name "John Doe"
-      user-mail-address "john@doe.com")
+(setq user-full-name "Dat Tran"
+      user-mail-address "dattranx105@gmail.com")
 
 ;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
@@ -21,8 +53,11 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-;;(setq doom-font (font-spec :family "Fira Code" :size 12 :weight 'semi-light)
-;;      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 13))
+(setq doom-font (font-spec :family "JetbrainsMono Nerd Font" :size 14)
+      doom-variable-pitch-font (font-spec :family "JetbrainsMono Nerd Font" :size 14)
+      doom-big-font (font-spec :family "JetbrainsMono Nerd Font" :size 14)
+      doom-unicode-font (font-spec :family "JetbrainsMono Nerd Font" :size 14)
+      doom-serif-font (font-spec :family "JetbrainsMono Nerd Font" :size 14))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -32,11 +67,15 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-one)
+;; (setq doom-theme 'doom-one)
+(use-package autothemer
+  :config
+  (load-theme 'kanagawa t)
+  )
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
-(setq display-line-numbers-type t)
+(setq display-line-numbers-type 'relative)
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
