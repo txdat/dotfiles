@@ -13,7 +13,7 @@
  custom-unlispify-tag-names nil         ; Prefer kebab-case for symbols
  delete-by-moving-to-trash t            ; Delete files to trash
  fill-column 80                         ; Set width for automatic line breaks
- gc-cons-threshold (* 16 1024 1024)     ; We're not using Game Boys anymore
+ gc-cons-threshold (* 100 1024 1024)    ; We're not using Game Boys anymore
  help-window-select t                   ; Focus new help windows when opened
  indent-tabs-mode nil                   ; Stop using tabs to indent
  inhibit-startup-screen t               ; Disable start-up screen
@@ -44,6 +44,9 @@
 (put 'upcase-region 'disabled nil)      ; Enable `upcase-region'
 (set-default-coding-systems 'utf-8)     ; Default to utf-8 encoding
 
+(setq evil-split-window-below t
+      evil-vsplit-window-right t)
+
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
 (setq user-full-name "Dat Tran"
@@ -61,11 +64,19 @@
 ;; See 'C-h v doom-font' for documentation and more examples of what they
 ;; accept. For example:
 ;;
-(setq doom-font (font-spec :family "JetbrainsMono Nerd Font" :size 14)
-      doom-variable-pitch-font (font-spec :family "JetbrainsMono Nerd Font" :size 14)
-      doom-big-font (font-spec :family "JetbrainsMono Nerd Font" :size 14)
-      doom-unicode-font (font-spec :family "JetbrainsMono Nerd Font" :size 14)
-      doom-serif-font (font-spec :family "JetbrainsMono Nerd Font" :size 14))
+
+(setq font-family "JetbrainsMono Nerd Font")
+
+(if (equal (display-pixel-width) 3072)
+ (setq font-size 24) ; hidpi
+ (setq font-size 14)
+ )
+
+(setq doom-font (font-spec :family font-family :size font-size)
+      doom-variable-pitch-font (font-spec :family font-family :size font-size)
+      doom-big-font (font-spec :family font-family :size font-size)
+      doom-unicode-font (font-spec :family font-family :size font-size)
+      doom-serif-font (font-spec :family font-family :size font-size))
 ;;
 ;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
 ;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
@@ -82,7 +93,7 @@
   )
 
 ;; Change doom logo
-(setq fancy-splash-image "~/.doom.d/emacs.svg")
+;; (setq fancy-splash-image "~/.doom.d/emacs.svg")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -123,3 +134,58 @@
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
+
+;; evil cursor's shapes
+(setq evil-emacs-state-cursor 'box
+      evil-normal-state-cursor 'box
+      evil-visual-state-cursor 'box
+      evil-insert-state-cursor 'box
+      evil-replace-state-cursor 'box
+      evil-operator-state-cursor 'box)
+
+;; Which-key
+(setq which-key-idle-delay 0.5
+      which-key-idle-secondary-delay 0.05
+      which-key-allow-multiple-replacements t)
+
+;; File templates
+(set-file-template! "\\.tex$" :trigger "__" :mode 'latex-mode)
+(set-file-template! "\\.org$" :trigger "__" :mode 'org-mode)
+
+;; Project errors on modeline
+(with-eval-after-load 'lsp-mode
+  ;; :global/:workspace/:file
+  (setq ))
+
+;; Breadcrumb on headerline
+(setq )
+
+;; Lsp
+(after! lsp-mode
+  (setq lsp-idle-delay 1.0
+        lsp-log-io nil
+        gc-cons-threshold (* 100 1024 1024)))
+
+(after! lsp-mode
+  (setq lsp-enable-symbol-highlighting t
+        lsp-ui-doc-enable t
+        lsp-lens-enable t
+        lsp-headerline-breadcrumb-enable t
+        lsp-ui-sideline-enable t
+        lsp-ui-sideline-show-diagnostics t
+        lsp-ui-sideline-show-code-actions t
+        lsp-modeline-code-actions-enable nil
+        lsp-modeline-diagnostics-enable nil
+        lsp-diagnostics-provider :flycheck
+        lsp-eldoc-enable-hover nil
+        lsp-signature-auto-activate nil
+        lsp-signature-render-documentation nil
+        lsp-completion-provider :company-mode
+        lsp-completion-show-detail t
+        lsp-completion-show-kind t))
+
+;; Lsp ~ Treemacs
+(lsp-treemacs-sync-mode 1)
+
+;; YASnippet
+(setq yas-triggers-in-field t)

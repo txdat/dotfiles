@@ -50,10 +50,7 @@ set fileencoding=utf-8
 set mouse=a " enable mouse support
 set noerrorbells
 set bs=2 " fix backspace
-let mapleader='\'
-" set leader key to <space>
-" nnoremap <silent> <SPACE> <nop>
-" let mapleader=' '
+let mapleader=' '
 
 " ----------------------------------
 " gui
