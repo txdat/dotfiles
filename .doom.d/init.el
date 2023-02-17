@@ -28,25 +28,25 @@
        (vertico +icons)      ; the search engine of the future
 
        :ui
-       ;;deft                ; notational velocity for Emacs
-       doom                  ; what makes DOOM look the way it does
-       doom-dashboard        ; a nifty splash screen for Emacs
-       doom-quit             ; DOOM quit-message prompts when you quit Emacs
-       (emoji +unicode)      ; 🙂
-       hl-todo               ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+       ;;deft                   ; notational velocity for Emacs
+       doom                     ; what makes DOOM look the way it does
+       doom-dashboard           ; a nifty splash screen for Emacs
+       doom-quit                ; DOOM quit-message prompts when you quit Emacs
+       (emoji +unicode)         ; 🙂
+       hl-todo                  ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;hydra
-       ;;indent-guides          ; highlighted indent columns
-       (ligatures +extra)       ; ligatures and symbols to make your code pretty again
+       indent-guides            ; highlighted indent columns
+       ;;(ligatures +extra)     ; ligatures and symbols to make your code pretty again
        ;;minimap                ; show a map of the code on the side
        modeline                 ; snazzy, Atom-inspired modeline, plus API
        nav-flash                ; blink cursor line after big motions
        ;;neotree                ; a project drawer, like NERDTree for vim
        ophints                  ; highlight the region an operation acts on
        (popup +all +defaults)   ; tame sudden yet inevitable temporary windows
-       ;;tabs                   ; a tab bar for Emacs
-       treemacs                 ; a project drawer, like neotree but cooler
+       tabs                     ; a tab bar for Emacs
+       (treemacs +lsp)          ; a project drawer, like neotree but cooler
        ;;unicode                ; extended unicode support for various languages
-       (vc-gutter +pretty)      ; vcs diff in the fringe
+       (vc-gutter +diff-hl +pretty) ; vcs diff in the fringe
        vi-tilde-fringe          ; fringe tildes to mark beyond EOB
        (window-select +numbers) ; visually switch windows
        workspaces               ; tab emulation, persistence & separate workspaces
@@ -80,22 +80,22 @@
        vterm                 ; the best terminal emulation in Emacs
 
        :checkers
-       syntax                ; tasing you for every semicolon you forget
-       ;; (spell +flyspell)  ; tasing you for misspelling mispelling
+       (syntax +childframe)  ; tasing you for every semicolon you forget
+       ;; (spell +aspell)    ; tasing you for misspelling mispelling
        ;; grammar            ; tasing grammar mistake every you make
 
        :tools
        ;;ansible
        biblio                ; Writes a PhD for you (citation needed)
-       debugger              ; FIXME stepping through code, to help you add bugs
+       (debugger +lsp)       ; FIXME stepping through code, to help you add bugs
        ;;direnv
        ;;docker
        ;;editorconfig        ; let someone else argue about tabs vs spaces
        ;;ein                 ; tame Jupyter notebooks with emacs
        (eval +overlay)       ; run code, run (also, repls)
        ;;gist                ; interacting with github gists
-       (lookup +dictionary +docsets) ; navigate your code and its documentation
-       lsp                   ; M-x vscode
+       (lookup +dictionary +docsets +offline) ; navigate your code and its documentation
+       (lsp +peek)           ; M-x vscode
        (magit +forge)        ; a git porcelain for Emacs
        make                  ; run make tasks from Emacs
        ;;pass                ; password manager for nerds
@@ -110,7 +110,7 @@
 
        :os
        ;;(:if IS-MAC macos)  ; improve compatibility with macOS
-       tty                   ; improve the terminal Emacs experience
+       (tty +osc)                   ; improve the terminal Emacs experience
 
        :lang
        ;;agda                ; types of types of types of types...
@@ -142,18 +142,18 @@
        ;;idris               ; a language you can depend on
        ;;json                ; At least it ain't XML
        ;;(java +lsp)         ; the poster child for carpal tunnel syndrome
-       ;;javascript          ; all(hope(abandon(ye(who(enter(here))))))
+       (javascript +lsp)     ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia               ; a better, faster MATLAB
        ;;kotlin              ; a better, slicker Java(Script)
-       (latex +latexmk +cdlatex +fold) ; writing papers in Emacs has never been so fun
+       (latex +cdlatex +fold +latexmk +lsp) ; writing papers in Emacs has never been so fun
        ;;lean                ; for folks with too much to prove
        ;;ledger              ; be audit you can be
        ;;lua                 ; one-based indices? one-based indices
-       markdown              ; writing docs for people to ignore
+       (markdown +grip)      ; writing docs for people to ignore
        ;;nim                 ; python + lisp at the speed of c
        ;;nix                 ; I hereby declare "nix geht mehr!"
        ;;ocaml               ; an objective camel
-       (org +dragndrop +hugo +noter +jupyter +pandoc +gnuplot +pomodoro +present +roam2) ; organize your plain life in plain text
+       (org +dragndrop +gnuplot +hugo +jupyter +noter +pandoc +pomodoro +present +roam2) ; organize your plain life in plain text
        ;;php                 ; perl's insecure younger brother
        ;;plantuml            ; diagrams for confusing people more
        ;;purescript          ; javascript, but functional

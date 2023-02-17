@@ -50,10 +50,10 @@ opt.encoding = "utf-8"
 opt.fileencoding = "utf-8"
 opt.mouse = "a" -- enable mouse support
 opt.errorbells = false
-
+vim.g.mapleader = "\\"
 -- set leader key to <space>
-vim.keymap.set("n", " ", "<nop>", { noremap = true, silent = true })
-vim.g.mapleader = " "
+-- vim.keymap.set("n", " ", "<nop>", { noremap = true, silent = true })
+-- vim.g.mapleader = " "
 
 -----------------------------------------
 -- gui

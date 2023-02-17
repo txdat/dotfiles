@@ -8,17 +8,14 @@ vim.opt.fillchars:append({
     verthoriz = "╋",
 })
 
--- spaceduck background
-local custom_colors = {
-    sumiInk0 = "#0f111b",
-    sumiInk1 = "#0f111b",
-    fujiWhite = "#ecf0c1",
-    oldWhite = "#ecf0c1",
-}
-
 require("kanagawa").setup {
-    colors = custom_colors,
-    theme = "default" -- Load "default" theme or the experimental "light" theme
+    globalStatus = true,
+    colors = {
+        sumiInk0 = "#0f111b",
+        sumiInk1 = "#0f111b",
+        fujiWhite = "#ecf0c1",
+        oldWhite = "#ecf0c1",
+    },
 }
 
 vim.cmd("colorscheme kanagawa")

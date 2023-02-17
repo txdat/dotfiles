@@ -9,7 +9,7 @@
  cursor-in-non-selected-windows nil
  delete-by-moving-to-trash t
  fill-column 80
- ;; gc-cons-threshold (* 8 1024 1024)
+ gc-cons-threshold (* 16 1024 1024)
  indent-tabs-mode nil
  inhibit-startup-screen t
  initial-scratch-message ""
@@ -25,11 +25,13 @@
  uniquify-buffer-name-style 'forward
  use-short-answers t
  window-combination-resize t
- x-stretch-cursor t)
-
-(setq visible-cursor nil)
+ x-stretch-cursor t
+ visible-cursor nil
+ cursor-type 'box)
 
 (blink-cursor-mode 0)
+(delete-selection-mode 1)
+(global-subword-mode 1)
 (mouse-avoidance-mode 'exile)
 (put 'upcase-region 'disabled nil)
 (put 'downcase-region 'disabled nil)
@@ -79,8 +81,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/org/")
-
+(setq org-directory "~/workspace/org/")
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
