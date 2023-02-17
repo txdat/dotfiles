@@ -113,12 +113,6 @@ source $ZSH/oh-my-zsh.sh
 
 export TERM="xterm-256color"
 
-alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
-alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
-alias cpcb="xclip -sel c < " # copy from file to clipboard
-alias cpfi="xclip -sel c -o > " # copy from clipboard to file
-alias emacs="emacs -nw"
-
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -142,6 +136,12 @@ export PATH="$HOME/.emacs.d/bin:$PATH"
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
+
+# custom aliases
+alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
+alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
+alias cpfi="xclip -sel c < " # copy from file to clipboard
+alias cpcb="xclip -sel c -o > " # copy from clipboard to file
 
 # kubernetes (k3s)
 export KUBECONFIG=$HOME/.kube/config
@@ -168,23 +168,4 @@ stop_kube () {
         echo stopping $svc
         sudo systemctl stop $svc
     done
-}
-
-# compile 'algo'
-algocpl () {
-    dir=$(pwd)
-
-    # precompile headers
-    if [ ! -f "$dir/bits/stdc++.h.gch" ]
-    then
-        mkdir -p bits
-        cat $(cut -d' ' -f2 <<<"$(g++ $1 -H 2>&1 | head -n 1)") >> "$dir/bits/stdc++.h"
-
-        echo -n "compiling bits/stdc++.h"
-        g++ -std=c++20 -mavx2 -mbmi -mbmi2 -mlzcnt -mpopcnt -mtune=native "$dir/bits/stdc++.h"
-        echo " - done!"
-    fi
-
-    # compile
-    g++ -std=c++20 -g "$1"
 }
