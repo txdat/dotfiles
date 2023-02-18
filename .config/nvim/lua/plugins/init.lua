@@ -198,6 +198,20 @@ local plugins = {
     -- prog. langs
     ------------------------------------
 
+    -- orgmode
+    {
+        "nvim-neorg/neorg",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "nvim-treesitter/nvim-treesitter",
+        },
+        build = ":Neorg sync-parsers",
+        ft = { "norg" },
+        config = function()
+            pcall(require, "plugins.neorg")
+        end
+    },
+
     -- markdown
     {
         "iamcco/markdown-preview.nvim",
@@ -240,3 +254,7 @@ local opts = {
 }
 
 require("lazy").setup(plugins, opts)
+
+-- custom keymap
+local lazy_view_config = require("lazy.view.config")
+lazy_view_config.keys.close = "<ESC>"
