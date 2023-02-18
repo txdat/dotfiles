@@ -201,9 +201,8 @@ vim.opt.pastetoggle = "<F2>"
 keymap("n", "<leader>h", ":nohl<CR>")
 
 -- quick save
-keymap("n", "<C-s>", ":w<CR>")
-keymap("i", "<C-s>", "<C-c>:w<CR>")
-keymap("n", "<C-S-s>", ":wa<CR>")
+keymap({ "n", "i" }, "<C-s>", "<cmd>w<CR>")
+keymap({ "n", "i" }, "<C-S-s>", "<cmd>wa<CR>")
 
 -- quickfix list
 keymap("n", "<leader>co", ":copen<CR>")

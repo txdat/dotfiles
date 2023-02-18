@@ -86,7 +86,7 @@ local keymap = require("util").keymap
 local function on_attach(_, bufnr)
     local opts = { buffer = bufnr }
 
-    keymap("n", "<A-s>", vim.lsp.buf.signature_help, opts)
+    keymap("n", "gs", vim.lsp.buf.signature_help, opts)
 end
 
 -- capabilities

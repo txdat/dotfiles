@@ -24,6 +24,7 @@ require("lspsaga").setup({
         close = "<ESC>",
     },
     code_action = {
+        extend_gitsigns = true,
         keys = {
             exec = "<CR>",
             quit = "<ESC>",
@@ -89,15 +90,15 @@ vim.api.nvim_set_hl(0, "SagaShadow", { bg = "NONE" })
 
 local keymap = require("util").keymap
 
-keymap("n", "<leader>lf", ":Lspsaga lsp_finder<CR>")
-keymap("n", "<leader>pd", ":Lspsaga peek_definition<CR>")
-keymap("n", "<leader>gd", ":Lspsaga goto_definition<CR>")
-keymap("n", "<leader>pt", ":Lspsaga peek_type_definition<CR>")
-keymap("n", "<leader>gt", ":Lspsaga goto_type_definition<CR>")
-keymap("n", "<leader>so", ":Lspsaga outline<CR>")
+keymap("n", "gh", ":Lspsaga lsp_finder<CR>")
+keymap("n", "gd", ":Lspsaga peek_definition<CR>")
+keymap("n", "gD", ":Lspsaga goto_definition<CR>")
+keymap("n", "gt", ":Lspsaga peek_type_definition<CR>")
+keymap("n", "gT", ":Lspsaga goto_type_definition<CR>")
+keymap("n", "<leader>o", ":Lspsaga outline<CR>")
 keymap("n", "<leader>ca", ":Lspsaga code_action<CR>")
-keymap("n", "<leader>rn", ":Lspsaga rename<CR>")
-keymap("n", "<leader>rnp", ":Lspsaga rename ++project<CR>")
+keymap("n", "gr", ":Lspsaga rename<CR>")
+keymap("n", "gR", ":Lspsaga rename ++project<CR>")
 keymap("n", "K", ":Lspsaga hover_doc<CR>")
 keymap("n", "Kk", ":Lspsaga hover_doc ++keep<CR>")
 

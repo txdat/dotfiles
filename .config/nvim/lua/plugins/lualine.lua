@@ -132,7 +132,7 @@ require("lualine").setup {
                 "diff",
                 symbols = { added = " ", modified = " ", removed = " " },
             },
-            "branch",
+            { "branch", icon = "" },
         },
         lualine_z = { "location", "progress" },
     },

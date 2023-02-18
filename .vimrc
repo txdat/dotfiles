@@ -189,7 +189,8 @@ set pastetoggle=<F2>
 nnoremap <silent> <leader>h :nohl<CR>
 
 nnoremap <silent> <C-s> :w<CR>
-inoremap <silent> <C-s> <C-c>:w<CR>
+inoremap <silent> <C-s> <cmd>w<CR>
+"inoremap <silent> <C-s> <C-c>:w<CR>
 "nnoremap <silent> <C-S-s> :wa<CR>
 
 nnoremap <silent> <leader>co :copen<CR>

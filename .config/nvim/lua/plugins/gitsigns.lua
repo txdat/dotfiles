@@ -2,5 +2,13 @@ require("gitsigns").setup()
 
 local keymap = require("util").keymap
 
-keymap("n", "<leader>df", ":Gitsigns diffthis<CR>")
-keymap("n", "<leader>di", ":Gitsigns preview_hunk_inline<CR>")
+keymap("n", "h[", ":Gitsigns prev_hunk<CR>")
+keymap("n", "h]", ":Gitsigns next_hunk<CR>")
+
+keymap("n", "<leader>hs", ":Gitsigns stage_hunk<CR>")
+keymap("n", "<leader>hr", ":Gitsigns reset_hunk<CR>")
+keymap("n", "<leader>hu", ":Gitsigns undo_stage_hunk<CR>")
+keymap("n", "<leader>hS", ":Gitsigns stage_buffer<CR>")
+keymap("n", "<leader>hR", ":Gitsigns reset_buffer<CR>")
+keymap("n", "<leader>hp", ":Gitsigns preview_hunk_inline<CR>")
+keymap("n", "<leader>hd", ":Gitsigns diffthis<CR>")
