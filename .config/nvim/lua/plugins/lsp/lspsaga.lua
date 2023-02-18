@@ -10,6 +10,7 @@ require("lspsaga").setup({
             vsplit = "v",
             split = "s",
             tabe = "t",
+            tabnew = "n",
             quit = "<ESC>",
             close_in_preview = "<ESC>",
         },
@@ -35,8 +36,6 @@ require("lspsaga").setup({
         virtual_text = true,
     },
     diagnostic = {
-        custom_fix = "Action",
-        custom_msg = "Diagnostic",
         keys = {
             exec_action = "<CR>",
             quit = "<ESC>",
@@ -53,7 +52,7 @@ require("lspsaga").setup({
         win_width = 50,
         keys = {
             jump = "<CR>",
-            expand_collaspe = "<Tab>",
+            expand_collapse = "<Tab>",
             quit = "<ESC>",
         },
     },
@@ -64,7 +63,7 @@ require("lspsaga").setup({
             split = "s",
             tabe = "t",
             jump = "<CR>",
-            expand_collaspe = "<Tab>",
+            expand_collapse = "<Tab>",
             quit = "<ESC>",
         },
     },
@@ -79,8 +78,6 @@ require("lspsaga").setup({
         theme = "round",
         title = true,
         border = "single",
-        code_action = "💡",
-        diagnostic = "🐞",
     },
 })
 
@@ -95,6 +92,8 @@ local keymap = require("util").keymap
 keymap("n", "<leader>lf", ":Lspsaga lsp_finder<CR>")
 keymap("n", "<leader>pd", ":Lspsaga peek_definition<CR>")
 keymap("n", "<leader>gd", ":Lspsaga goto_definition<CR>")
+keymap("n", "<leader>pt", ":Lspsaga peek_type_definition<CR>")
+keymap("n", "<leader>gt", ":Lspsaga goto_type_definition<CR>")
 keymap("n", "<leader>so", ":Lspsaga outline<CR>")
 keymap("n", "<leader>ca", ":Lspsaga code_action<CR>")
 keymap("n", "<leader>rn", ":Lspsaga rename<CR>")
@@ -116,8 +115,8 @@ keymap("n", "D]", function()
 end)
 
 -- callhierarchy
-keymap("n", "<leader>ic", ":Lspsaga incoming_calls<CR>")
-keymap("n", "<leader>oc", ":Lspsaga outgoing_calls<CR>")
+keymap("n", "<leader>ci", ":Lspsaga incoming_calls<CR>")
+keymap("n", "<leader>co", ":Lspsaga outgoing_calls<CR>")
 
 -- float terminal
 keymap({ "n", "t" }, "<C-S-t>", "<cmd>Lspsaga term_toggle<CR>")

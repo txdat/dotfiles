@@ -166,7 +166,13 @@ local plugins = {
             -- "hrsh7th/cmp-nvim-lsp-signature-help",
             "saadparwaiz1/cmp_luasnip",
             "L3MON4D3/LuaSnip",
-            { "glepnir/lspsaga.nvim", branch = "main" },
+            { "glepnir/lspsaga.nvim",
+                branch = "main",
+                dependencies = {
+                    "nvim-tree/nvim-web-devicons",
+                    "nvim-treesitter/nvim-treesitter"
+                }
+            },
             "jose-elias-alvarez/null-ls.nvim",
         },
         event = "InsertEnter",

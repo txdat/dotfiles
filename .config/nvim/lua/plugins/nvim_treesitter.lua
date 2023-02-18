@@ -7,7 +7,7 @@ require("nvim-treesitter.configs").setup {
         "python",
         "haskell",
         "javascript", "typescript",
-        "markdown",
+        "markdown", "markdown_inline",
         "latex",
     },
     sync_install = false,
