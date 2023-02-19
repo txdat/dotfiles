@@ -73,10 +73,9 @@ require("lspsaga").setup({
         separator = "  ",
     },
     beacon = {
-        enable = true,
+        enable = false,
     },
     ui = {
-        theme = "round",
         title = true,
         border = "single",
     },
