@@ -1,4 +1,23 @@
 require("sniprun").setup({
+    interpreter_options = {
+        C_original = {
+            compiler = "gcc -g",
+            -- compiler = "clang --debug",
+        },
+        Cpp_original = {
+            compiler = "g++ -std=c++20 -g",
+            -- compiler = "clang++ -std=c++20 --debug",
+        },
+        Rust_original = {
+            compiler = "rustc",
+        },
+        Go_original = {
+            compiler = "go",
+        },
+        Python3_original = {
+            interpreter = require("util").shell_cmd("which python3"),
+        },
+    },
     display = {
         "TerminalWithCode",
     },

@@ -197,7 +197,7 @@ local plugins = {
     -- repl
     {
         "michaelb/sniprun",
-        build = "bash ./install.sh",
+        build = "bash ./install.sh 1",
         keys = { "<leader>rl", "<leader>rb" },
         config = function()
             pcall(require, "plugins.sniprun")
@@ -216,7 +216,7 @@ local plugins = {
             "nvim-treesitter/nvim-treesitter",
         },
         build = ":Neorg sync-parsers",
-        ft = { "norg" },
+        ft = { "norg" }, -- triggered when opening *.norg file
         config = function()
             pcall(require, "plugins.neorg")
         end
