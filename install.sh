@@ -127,6 +127,7 @@ rustup component add rust-analyzer
 
 # javascript/typescript
 sudo npm install -g typescript typescript-language-server eslint prettier
+# curl -fsSL https://deno.land/install.sh | sh
 
 # python
 axel -n 16 https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -135,6 +136,14 @@ chmod a+x ./Miniconda3-latest-Linux-x86_64.sh
 rm -f ./Miniconda3-latest-Linux-x86_64.sh
 ~/miniconda3/bin/conda update --all -y
 ~/miniconda3/bin/pip install pynvim pyright black ruff dvc dvc-gdrive ansible debugpy sqlfluff jupyterlab --upgrade
+
+# important python packages
+# ~/miniconda3/bin/pip install numpy scipy cython numba pandas matplotlib seaborn scikit-learn xgboost catboost lightgbm statsmodels treelite treelite_runtime polars pyspark "dask[complete]" --upgrade
+# ~/miniconda3/bin/pip install torch torchvision pytorch-lightning transformers gym optuna mlflow wandb triton taichi --upgrade
+# ~/miniconda3/bin/pip install pyg-lib torch-scatter torch-sparse torch-cluster torch-spline-conv torch-geometric -f https://data.pyg.org/whl/torch-1.13.0+cu117.html --upgrade
+# ~/miniconda3/bin/pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+# ~/miniconda3/bin/pip install dm-haiku flax optax rlax trax --upgrade
+# ~/miniconda3/bin/pip install opencv-python opencv-contrib-python --upgrade
 
 # latex
 sudo pacman -S --noconfirm texlive-core texlive-latexextra texlive-bibtexextra biber texlive-science texlab
