@@ -127,7 +127,11 @@ rustup component add rust-analyzer
 
 # javascript/typescript
 sudo npm install -g typescript typescript-language-server eslint prettier
-# curl -fsSL https://deno.land/install.sh | sh
+curl -fsSL https://deno.land/install.sh | sh
+
+# haskell
+paru -S --noconfirm ghcup-hs-bin
+ghcup install ghc && ghcup install cabal && ghcup install hls
 
 # python
 axel -n 16 https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh

@@ -194,16 +194,6 @@ local plugins = {
         end,
     },
 
-    -- repl
-    {
-        "michaelb/sniprun",
-        build = "bash ./install.sh 1",
-        keys = { "<leader>rl", "<leader>rb" },
-        config = function()
-            pcall(require, "plugins.sniprun")
-        end
-    },
-
     ------------------------------------
     -- prog. langs
     ------------------------------------
