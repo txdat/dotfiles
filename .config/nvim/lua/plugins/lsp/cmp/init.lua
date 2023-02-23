@@ -23,8 +23,6 @@ cmp.setup {
         ghost_text = true, -- placeholder
     },
     window = {
-        -- completion = cmp.config.window.bordered(),
-        -- documentation = cmp.config.window.bordered(),
         completion = {
             border = "single",
             winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
@@ -105,17 +103,12 @@ local handlers = {
 }
 
 -- config
-local servers_config = require("plugins.lsp.lsp_servers").servers_config
+local servers_config = require("plugins.lsp.cmp.servers_config")
 
-for server, cfg in pairs(servers_config) do
-    local config = {
-        on_attach = on_attach,
-        capabilities = capabilities,
-        handlers = handlers,
-    }
-    for k, v in pairs(cfg) do
-        config[k] = v
-    end
+for server, config in pairs(servers_config) do
+    config[on_attach] = on_attach
+    config[capabilities] = capabilities
+    config[handlers] = handlers
 
     lspconfig[server].setup(config)
 end

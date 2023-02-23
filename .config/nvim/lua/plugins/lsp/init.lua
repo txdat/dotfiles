@@ -1,6 +1,5 @@
 pcall(require, "plugins.lsp.mason")
 pcall(require, "plugins.lsp.mason_lspconfig")
-pcall(require, "plugins.lsp.cmp")
 pcall(require, "plugins.lsp.lspsaga")
 pcall(require, "plugins.lsp.null_ls")
 

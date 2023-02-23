@@ -67,7 +67,7 @@ local plugins = {
         build = ":TSUpdate",
         event = "BufRead",
         config = function()
-            pcall(require, "plugins.nvim_treesitter")
+            pcall(require, "plugins.treesitter")
         end
     },
 
@@ -85,7 +85,7 @@ local plugins = {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
         config = function()
-            pcall(require, "plugins.nvim_autopairs")
+            pcall(require, "plugins.autopairs")
         end
     },
 
@@ -110,7 +110,7 @@ local plugins = {
         },
         keys = { "<C-e>" },
         config = function()
-            pcall(require, "plugins.nvim_tree")
+            pcall(require, "plugins.tree")
         end
     },
 
@@ -153,19 +153,12 @@ local plugins = {
     -- autocompletion, debugging
     ------------------------------------
 
-    -- autocompletion, diagnostics, formatting
+    -- diagnostics, formatting
     {
         "neovim/nvim-lspconfig",
         dependencies = {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
-            "hrsh7th/nvim-cmp",
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
-            -- "hrsh7th/cmp-nvim-lsp-signature-help",
-            "saadparwaiz1/cmp_luasnip",
-            "L3MON4D3/LuaSnip",
             { "glepnir/lspsaga.nvim",
                 branch = "main",
                 dependencies = {
@@ -175,9 +168,26 @@ local plugins = {
             },
             "jose-elias-alvarez/null-ls.nvim",
         },
-        event = "InsertEnter",
+        event = "BufRead",
         config = function()
             pcall(require, "plugins.lsp")
+        end,
+    },
+
+    -- autocompletion
+    {
+        "hrsh7th/nvim-cmp",
+        dependencies = {
+            "hrsh7th/cmp-nvim-lsp",
+            "hrsh7th/cmp-buffer",
+            "hrsh7th/cmp-path",
+            -- "hrsh7th/cmp-nvim-lsp-signature-help",
+            "saadparwaiz1/cmp_luasnip",
+            "L3MON4D3/LuaSnip",
+        },
+        event = "InsertEnter",
+        config = function()
+            pcall(require, "plugins.lsp.cmp")
         end,
     },
 

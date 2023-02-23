@@ -1,3 +1,3 @@
-require("plugins.dap.nvim_dap")
-require("plugins.dap.nvim_dap_ui")
-require("plugins.dap.nvim_dap_virtual_text")
+require("plugins.dap.dap")
+require("plugins.dap.dap_ui")
+require("plugins.dap.dap_virtual_text")
