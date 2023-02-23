@@ -106,9 +106,9 @@ local handlers = {
 local servers_config = require("plugins.lsp.cmp.servers_config")
 
 for server, config in pairs(servers_config) do
-    config[on_attach] = on_attach
-    config[capabilities] = capabilities
-    config[handlers] = handlers
+    config.on_attach = on_attach
+    config.capabilities = capabilities
+    config.handlers = handlers
 
     lspconfig[server].setup(config)
 end
