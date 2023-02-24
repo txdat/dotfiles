@@ -126,7 +126,7 @@ rustup component add rust-src
 rustup component add rust-analyzer
 
 # javascript/typescript
-sudo npm install -g typescript typescript-language-server eslint prettier
+sudo npm install -g typescript typescript-language-server eslint prettier prettier-eslint
 curl -fsSL https://deno.land/install.sh | sh
 
 # haskell
