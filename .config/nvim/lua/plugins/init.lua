@@ -89,6 +89,15 @@ local plugins = {
         end
     },
 
+    -- surround selections
+    {
+        "kylechui/nvim-surround",
+        event = "InsertEnter",
+        config = function()
+            pcall(require, "plugins.surround")
+        end,
+    },
+
     -- navigation
     {
         "phaazon/hop.nvim",
