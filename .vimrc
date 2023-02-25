@@ -52,6 +52,10 @@ set noerrorbells
 set bs=2 " fix backspace
 let mapleader=' '
 
+" spelling
+set spelllang=en_us
+" set spell
+
 " ----------------------------------
 " gui
 " ----------------------------------
@@ -168,6 +172,7 @@ nnoremap <silent> <leader>q q
 nnoremap <silent> q <nop>
 
 nnoremap <silent> <F1> <nop>
+nnoremap <silent> <F7> :setlocal spell! spell?<CR>
 
 nnoremap <silent> H ^
 nnoremap <silent> L $

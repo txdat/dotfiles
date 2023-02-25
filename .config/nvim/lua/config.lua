@@ -52,6 +52,10 @@ opt.mouse = "a" -- enable mouse support
 opt.errorbells = false
 vim.g.mapleader = " "
 
+-- spelling
+vim.opt.spelllang = "en_us"
+-- vim.opt.spell = true
+
 -----------------------------------------
 -- gui
 -----------------------------------------
@@ -176,6 +180,7 @@ keymap("n", "<leader>q", "q")
 keymap("n", "q", "<nop>")
 
 keymap("n", "<F1>", "<nop>")
+keymap("n", "<F7>", ":setlocal spell! spell?<CR>")
 
 keymap("n", "H", "^")
 keymap("n", "L", "$")
