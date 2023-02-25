@@ -1,7 +1,7 @@
 require("nvim-surround").setup({
     keymaps = {
-        insert = "<C-g>s",
-        insert_line = "<C-g>S",
+        insert = "<A-s>a",
+        insert_line = "<A-s>A",
         normal = "sa",
         normal_cur = "sca",
         normal_line = "sA",
