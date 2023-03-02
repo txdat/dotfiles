@@ -76,20 +76,24 @@ git clone https://aur.archlinux.org/paru .paru && cd .paru/ && makepkg -si && cd
 # install essential applications ------------------------
 sudo pacman -S --noconfirm dolphin \
                            alacritty \
-                           firefox chromium \
+                           firefox \
+                           # chromium \
                            gwenview mpv spectacle \
                            zathura zathura-pdf-mupdf \
+                           zenity ffmpeg4.4 \
                            calibre \
                            obsidian \
                            dbeaver
 
 paru -S --noconfirm ibus-bamboo \
                     dropbox \
+                    google-chrome \
+                    spotify \
                     visual-studio-code-bin \
                     sioyek \
                     anki
 
-flatpak install flathub rest.insomnia.Insomnia
+# flatpak install flathub rest.insomnia.Insomnia
 
 # git config --------------------------------------------
 git config --global user.name "txdat" && \
