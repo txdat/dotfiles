@@ -4,12 +4,14 @@
 sudo pacman -S --noconfirm curl wget axel rsync \
                            git lazygit git-delta \
                            zsh tmux htop ranger neofetch \
-                           vim neovim emacs-nativecomp \
+                           vim neovim \
+                           # emacs-nativecomp \
                            zip unzip p7zip ark \
                            bat man \
                            xclip xdotool fzf fzy ripgrep fd \
                            openssh \
                            pacman-contrib nvidia \
+                           # qemu-full \
                            # flatpak \
 
 sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
@@ -77,7 +79,7 @@ git clone https://aur.archlinux.org/paru .paru && cd .paru/ && makepkg -si && cd
 sudo pacman -S --noconfirm dolphin \
                            alacritty \
                            firefox \
-                           # chromium \
+                           chromium \
                            gwenview mpv spectacle \
                            zathura zathura-pdf-mupdf \
                            zenity ffmpeg4.4 \
@@ -87,13 +89,10 @@ sudo pacman -S --noconfirm dolphin \
 
 paru -S --noconfirm ibus-bamboo \
                     dropbox \
-                    google-chrome \
                     spotify \
                     visual-studio-code-bin \
                     sioyek \
                     anki
-
-# flatpak install flathub rest.insomnia.Insomnia
 
 # git config --------------------------------------------
 git config --global user.name "txdat" && \
@@ -134,8 +133,8 @@ sudo npm install -g typescript typescript-language-server eslint prettier pretti
 curl -fsSL https://deno.land/install.sh | sh
 
 # haskell
-paru -S --noconfirm ghcup-hs-bin
-ghcup install ghc && ghcup install cabal && ghcup install hls
+# paru -S --noconfirm ghcup-hs-bin
+# ghcup install ghc && ghcup install cabal && ghcup install hls
 
 # python
 axel -n 16 https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
@@ -155,7 +154,7 @@ rm -f ./Miniconda3-latest-Linux-x86_64.sh
 
 # latex
 sudo pacman -S --noconfirm texlive-core texlive-latexextra texlive-bibtexextra biber texlive-science texlab
-# sudo vim /usr/share/texmf-dist/scripts/texlive/tlmgr.pl # TODO: fix tlmgr before run these commands
+# TODO: fix tlmgr.pl
 sudo sed -i -e "s/\$Master\/..\/../\$Master\/..\/..\/../g" /usr/share/texmf-dist/scripts/texlive/tlmgr.pl
 /usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode init-usertree
 /usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet
@@ -171,8 +170,8 @@ git clone https://github.com/romkatv/powerlevel10k ~/.oh-my-zsh/custom/themes/po
 rm -f ~/.zshrc
 
 # install doomemacs
-git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d && \
-~/.emacs.d/bin/doom install
+# git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d && \
+# ~/.emacs.d/bin/doom install
 
 # link configs ----------------------------------------
 cd ~

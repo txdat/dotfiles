@@ -5,7 +5,7 @@ require("nvim-treesitter.configs").setup {
         "rust",
         "go",
         "python",
-        "haskell",
+        -- "haskell",
         "javascript", "typescript",
         "markdown", "markdown_inline",
         "latex",
