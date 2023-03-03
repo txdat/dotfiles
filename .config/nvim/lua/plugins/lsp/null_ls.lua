@@ -26,9 +26,9 @@ null_ls.setup({
         fmt.rustfmt.with({ -- rust
             extra_args = { "--edition=2021" }
         }),
-        fmt.black, -- python
-        fmt.prettier_eslint, -- js,ts,...
-        fmt.sqlfluff.with({ -- sql
+        fmt.black,                                    -- python
+        fmt.prettier_eslint,                          -- js,ts,...
+        fmt.sqlfluff.with({                           -- sql
             extra_args = { "--dialect", "postgres" }, -- change to your dialect
         }),
     },
@@ -36,6 +36,6 @@ null_ls.setup({
 
 local keymap = require("util").keymap
 
-keymap("n", "<leader>bf", function()
+keymap("n", "<C-S-i>", function()
     vim.lsp.buf.format { async = true }
 end)
