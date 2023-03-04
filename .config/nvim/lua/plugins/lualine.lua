@@ -100,7 +100,7 @@ local dap_components = {
 require("lualine").setup {
     options = {
         theme = "tokyonight", -- auto falling back to "auto"
-        section_separators = "",
+        section_separators = { left = "", right = "" },
         component_separators = "",
         globalstatus = true,
         disabled_filetypes = dap_components,

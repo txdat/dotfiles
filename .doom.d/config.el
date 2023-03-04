@@ -86,11 +86,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-;; (setq doom-theme 'doom-one)
-(use-package autothemer
-  :config
-  (load-theme 'kanagawa t)
-  )
+(setq doom-theme 'doom-tokyo-night)
 
 ;; Change doom logo
 ;; (setq fancy-splash-image "~/.doom.d/emacs.svg")
@@ -101,7 +97,7 @@
 
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/workspace/notes")
+(setq org-directory "~/Dropbox/notes")
 
 ;; Whenever you reconfigure a package, make sure to wrap your config in an
 ;; `after!' block, otherwise Doom's defaults may override your settings. E.g.

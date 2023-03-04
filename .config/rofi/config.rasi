@@ -1,11 +1,11 @@
 @theme "/dev/null"
 
 * {
-    bg-col:                     #0f111b;
-    border-col:                 #54546d;
-    selected-col:               #2d4f67;
-    fg-col:                     #ecf0c1;
-    fg-dim-col:                 #727169;
+    bg-col:                     #1a1b26;
+    border-col:                 #7aa2f7;
+    selected-col:               #33467c;
+    fg-col:                     #c0caf5;
+    fg-dim-col:                 #565f89;
 }
 
 configuration{

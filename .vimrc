@@ -215,7 +215,7 @@ xnoremap <silent> <A-k> :move '<-2<CR>gv-gv
 " with the appropriate license attributing the original VS Code
 " theme author.
 
-" Kanagawa - A nice dark theme
+" Tokyo Night - A nice dark theme
 
 " ==========> Reset
 set background=dark
@@ -226,12 +226,12 @@ if exists("syntax_on")
   syntax reset
 endif
 
-let g:colors_name = 'kanagawa'
+let g:colors_name = 'tokyo-night'
 
 " ==========> Highlight function
 function! s:h(face, guibg, guifg, ctermbg, ctermfg, gui)
   let l:cmd="highlight " . a:face
-
+  
   if a:guibg != ""
     let l:cmd = l:cmd . " guibg=" . a:guibg
   endif
@@ -262,76 +262,81 @@ let s:hex = {}
 " Terminal colors dictionary (256)
 let s:bit = {}
 
-let s:hex.color0="#0F111B"
-let s:hex.color1="#ECF0C1"
-let s:hex.color2="#DCD7BA"
-let s:hex.color3="#223249"
-let s:hex.color4="#191b25"
-let s:hex.color5="#41434d"
-let s:hex.color6="#23252f"
-let s:hex.color7="#555761"
-let s:hex.color8="#2a2a31"
-let s:hex.color9="#dcd4a7"
-let s:hex.color10="#43434a"
-let s:hex.color11="#f5edc0"
-let s:hex.color12="#5a5c66"
-let s:hex.color13="#6a88c4"
-let s:hex.color14="#2d2f39"
-let s:hex.color15="#ffffdf"
-let s:hex.color16="#f6facb"
-let s:hex.color17="#32343e"
-let s:hex.color18="#727169"
-let s:hex.color19="#7FB4CA"
-let s:hex.color20="#7E9CD8"
-let s:hex.color21="#C0A36E"
-let s:hex.color22="#98BB6C"
-let s:hex.color23="#D27E99"
+let s:hex.color0="#1a1b26"
+let s:hex.color1="#a9b1d6"
+let s:hex.color2="#c0caf5"
+let s:hex.color3="#474853"
+let s:hex.color4="#242530"
+let s:hex.color5="#4c4d58"
+let s:hex.color6="#2e2f3a"
+let s:hex.color7="#60616c"
+let s:hex.color8="#2a2a32"
+let s:hex.color9="#8c90ad"
+let s:hex.color10="#43434b"
+let s:hex.color11="#a5a9c6"
+let s:hex.color12="#656671"
+let s:hex.color13="#668ee3"
+let s:hex.color14="#383944"
+let s:hex.color15="#c7cff4"
+let s:hex.color16="#b3bbe0"
+let s:hex.color17="#3d3e49"
+let s:hex.color18="#444b6a"
+let s:hex.color19="#ff9e64"
+let s:hex.color20="#7aa2f7"
+let s:hex.color21="#bb9af7"
+let s:hex.color22="#89ddff"
+let s:hex.color23="#9ece6a"
 
-let s:bit.color8="59"
-let s:bit.color9="68"
-let s:bit.color15="107"
-let s:bit.color13="110"
-let s:bit.color14="143"
-let s:bit.color16="174"
-let s:bit.color2="187"
-let s:bit.color1="229"
-let s:bit.color10="230"
-let s:bit.color0="233"
-let s:bit.color4="234"
-let s:bit.color6="235"
-let s:bit.color3="236"
+let s:bit.color10="68"
+let s:bit.color7="103"
+let s:bit.color15="111"
+let s:bit.color17="117"
+let s:bit.color16="141"
+let s:bit.color1="146"
+let s:bit.color18="149"
+let s:bit.color2="153"
+let s:bit.color12="189"
+let s:bit.color14="215"
+let s:bit.color0="234"
+let s:bit.color4="235"
+let s:bit.color5="236"
 let s:bit.color11="237"
-let s:bit.color5="238"
-let s:bit.color7="240"
-let s:bit.color12="242"
+let s:bit.color8="238"
+let s:bit.color3="239"
+let s:bit.color13="240"
+let s:bit.color6="241"
+let s:bit.color9="242"
 
-" ==========> General highlights
+" ==========> General highlights 
 call s:h("Normal", s:hex.color0, s:hex.color1, s:bit.color0, s:bit.color1, "none")
-call s:h("Cursor", s:hex.color2, s:hex.color2, s:bit.color2, s:bit.color2, "none")
+call s:h("Cursor", s:hex.color2, "", s:bit.color2, "", "none")
 call s:h("Visual", s:hex.color3, "", s:bit.color3, "", "none")
 call s:h("ColorColumn", s:hex.color4, "", s:bit.color4, "", "none")
-call s:h("LineNr", "", s:hex.color5, "", s:bit.color5, "none")
-call s:h("CursorLine", s:hex.color6, "", s:bit.color6, "", "none")
-call s:h("CursorLineNr", "", s:hex.color7, "", s:bit.color7, "none")
-call s:h("CursorColumn", s:hex.color6, "", s:bit.color6, "", "none")
-call s:h("StatusLineNC", s:hex.color8, s:hex.color9, s:bit.color3, s:bit.color2, "none")
-call s:h("StatusLine", s:hex.color10, s:hex.color11, s:bit.color5, s:bit.color1, "none")
-call s:h("VertSplit", "", s:hex.color12, "", s:bit.color8, "none")
-call s:h("Folded", s:hex.color6, s:hex.color13, s:bit.color6, s:bit.color9, "none")
-call s:h("Pmenu", s:hex.color14, s:hex.color15, s:bit.color3, s:bit.color10, "none")
-call s:h("PmenuSel", s:hex.color4, s:hex.color16, s:bit.color4, s:bit.color10, "none")
-call s:h("EndOfBuffer", s:hex.color0, s:hex.color17, s:bit.color0, s:bit.color11, "none")
-call s:h("NonText", s:hex.color0, s:hex.color17, s:bit.color0, s:bit.color11, "none")
+call s:h("LineNr", "", s:hex.color5, "", s:bit.color3, "none")
+call s:h("CursorLine", s:hex.color6, "", s:bit.color5, "", "none")
+call s:h("CursorLineNr", "", s:hex.color7, "", s:bit.color6, "none")
+call s:h("CursorColumn", s:hex.color6, "", s:bit.color5, "", "none")
+call s:h("StatusLineNC", s:hex.color8, s:hex.color9, s:bit.color5, s:bit.color7, "none")
+call s:h("StatusLine", s:hex.color10, s:hex.color11, s:bit.color8, s:bit.color1, "none")
+call s:h("VertSplit", "", s:hex.color12, "", s:bit.color9, "none")
+call s:h("Folded", s:hex.color6, s:hex.color13, s:bit.color5, s:bit.color10, "none")
+call s:h("Pmenu", s:hex.color14, s:hex.color15, s:bit.color11, s:bit.color12, "none")
+call s:h("PmenuSel", s:hex.color4, s:hex.color16, s:bit.color4, s:bit.color1, "none")
+call s:h("EndOfBuffer", s:hex.color0, s:hex.color17, s:bit.color0, s:bit.color8, "none")
+call s:h("NonText", s:hex.color0, s:hex.color17, s:bit.color0, s:bit.color8, "none")
 
 " ==========> Syntax highlights
-call s:h("Comment", "", s:hex.color18, "", s:bit.color12, "none")
-call s:h("Constant", "", s:hex.color19, "", s:bit.color13, "none")
-call s:h("Special", "", s:hex.color19, "", s:bit.color13, "none")
+call s:h("Comment", "", s:hex.color18, "", s:bit.color13, "none")
+call s:h("Constant", "", s:hex.color19, "", s:bit.color14, "none")
+call s:h("Special", "", s:hex.color19, "", s:bit.color14, "none")
 call s:h("Identifier", "", s:hex.color2, "", s:bit.color2, "none")
-call s:h("Function", "", s:hex.color20, "", s:bit.color13, "none")
-call s:h("Operator", "", s:hex.color21, "", s:bit.color14, "none")
-call s:h("String", "", s:hex.color22, "", s:bit.color15, "none")
-call s:h("Number", "", s:hex.color23, "", s:bit.color16, "none")
+call s:h("Function", "", s:hex.color20, "", s:bit.color15, "none")
+call s:h("Statement", "", s:hex.color21, "", s:bit.color16, "none")
+call s:h("Operator", "", s:hex.color22, "", s:bit.color17, "none")
+call s:h("PreProc", "", s:hex.color21, "", s:bit.color16, "none")
+call s:h("Type", "", s:hex.color21, "", s:bit.color16, "none")
+call s:h("String", "", s:hex.color23, "", s:bit.color18, "none")
+call s:h("Number", "", s:hex.color19, "", s:bit.color14, "none")
 
 highlight link cStatement Statement
 highlight link cSpecial Special
