@@ -41,7 +41,7 @@ end
 
 opt.clipboard = "unnamed,unnamedplus" -- system"s clipboard
 opt.timeout = true
-opt.timeoutlen = 500 -- key mappings timeout
+opt.timeoutlen = 500                  -- key mappings timeout
 opt.swapfile = false
 opt.backup = false
 opt.writebackup = false
@@ -61,23 +61,23 @@ vim.opt.spelllang = "en_us"
 -----------------------------------------
 
 opt.background = "dark"
-opt.shortmess:append "sI" -- disable nvim intro
-opt.laststatus = 3 -- set global statusline
-opt.termguicolors = true -- enable 24bits colors
+opt.shortmess:append "sI"            -- disable nvim intro
+opt.laststatus = 3                   -- set global statusline
+opt.termguicolors = true             -- enable 24bits colors
 opt.guicursor = "n-v-c:block-Cursor" -- using block cursor
 opt.guicursor:append "i:block-iCursor"
 opt.guicursor:append "n-v-c:blinkon0"
 opt.guicursor:append "i:blinkon0"
 opt.colorcolumn = "80"
 -- opt.ruler = true  -- show cursor position
-opt.list = true -- show eol, ...
+opt.list = true           -- show eol, ...
 opt.cursorline = true
-opt.number = true -- show line number
+opt.number = true         -- show line number
 opt.relativenumber = true -- (-1,+1) line number
-opt.showmatch = true -- highlight matching parenthesis
+opt.showmatch = true      -- highlight matching parenthesis
 opt.foldmethod = "marker" -- enable folding
-opt.splitright = true -- vertical split to the right
-opt.splitbelow = true -- horizontal split to the bottom
+opt.splitright = true     -- vertical split to the right
+opt.splitbelow = true     -- horizontal split to the bottom
 opt.signcolumn = "yes"
 opt.fillchars = [[eob: ,fold: ,foldopen:-,foldsep:│,foldclose:+]]
 opt.foldcolumn = "1"
@@ -92,9 +92,9 @@ opt.cindent = true
 opt.smartindent = true
 opt.smarttab = true
 opt.expandtab = true -- use spaces instead of tab
-opt.tabstop = 4 -- 1 tab = 4 spaces
+opt.tabstop = 4      -- 1 tab = 4 spaces
 opt.softtabstop = 0
-opt.shiftwidth = 4 -- shifts 4 spaces when using tab
+opt.shiftwidth = 4   -- shifts 4 spaces when using tab
 opt.shiftround = true
 opt.linebreak = true -- wrap on word boundary
 opt.textwidth = 0
@@ -103,20 +103,20 @@ opt.textwidth = 0
 -- searching
 -----------------------------------------
 
-opt.hlsearch = true -- highlight search result
-opt.incsearch = true -- show first match when start typing
+opt.hlsearch = true   -- highlight search result
+opt.incsearch = true  -- show first match when start typing
 opt.ignorecase = true -- ignore case sensitive when searching
-opt.smartcase = true -- ignore lowercase for the whole pattern
+opt.smartcase = true  -- ignore lowercase for the whole pattern
 
 -----------------------------------------
 -- cpu, memory
 -----------------------------------------
 
-opt.hidden = true -- enable background buffers
-opt.history = 100 -- n lines in history
+opt.hidden = true     -- enable background buffers
+opt.history = 100     -- n lines in history
 opt.lazyredraw = true -- faster scrolling
-opt.synmaxcol = 240 -- max column for syntax highlight
-opt.updatetime = 250 -- milli-seconds to wait for trigger an event (keymap)
+opt.synmaxcol = 240   -- max column for syntax highlight
+opt.updatetime = 250  -- milli-seconds to wait for trigger an event (keymap)
 
 -----------------------------------------
 -- providers
@@ -196,7 +196,7 @@ keymap("n", "<C-\\>", ":b#<CR>") -- switch to last buffer
 -- close current buffer
 keymap("n", "<C-d>", ":bd!<CR>")
 keymap("n", "<C-S-d>", ":<C-U>bprevious <bar> bdelete #<CR>") -- and move to previous buffer
-keymap("n", "<C-q>", ":qa!<CR>") -- close all buffers and exit
+keymap("n", "<C-q>", ":qa!<CR>")                              -- close all buffers and exit
 
 -- toggle auto-indenting for code paste
 keymap("n", "<F2>", ":set invpaste paste?<CR>")

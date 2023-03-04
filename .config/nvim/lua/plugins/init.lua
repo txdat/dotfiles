@@ -21,10 +21,10 @@ local plugins = {
 
     -- colorscheme
     {
-        "rebelot/kanagawa.nvim",
+        "folke/tokyonight.nvim",
         lazy = false,
         config = function()
-            pcall(require, "plugins.colorscheme.kanagawa")
+            pcall(require, "plugins.colorscheme.tokyonight")
         end
     },
 
@@ -168,7 +168,8 @@ local plugins = {
         dependencies = {
             "williamboman/mason.nvim",
             "williamboman/mason-lspconfig.nvim",
-            { "glepnir/lspsaga.nvim",
+            {
+                "glepnir/lspsaga.nvim",
                 branch = "main",
                 dependencies = {
                     "nvim-tree/nvim-web-devicons",
@@ -265,7 +266,7 @@ local opts = {
         timeout = 300, -- seconds
     },
     install = {
-        colorscheme = { "kanagawa" },
+        colorscheme = { "tokyonight" },
     },
     ui = {
         border = "single",

@@ -27,7 +27,7 @@ require("nvim-tree").setup {
                 { key = { "<CR>", "<2-LeftMouse>" }, action = "edit" },
                 { key = "<F5>",                      action = "refresh" },
                 { key = "a",                         action = "create" },
-                { key = "d",                         action = "trash" }, -- move file/folder to trash
+                { key = "d",                         action = "trash" },  -- move file/folder to trash
                 { key = "D",                         action = "remove" }, -- delete permanently
                 { key = "r",                         action = "rename" },
                 { key = "x",                         action = "cut" },

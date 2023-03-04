@@ -69,55 +69,42 @@ telescope.setup {
         buffer_previewer_maker = previewers.buffer_previewer_maker,
         mappings = {
             i = {
-                ["<C-p>"] = action_layout.toggle_preview,
-
-                ["<ESC>"] = actions.close,
-
-                ["<C-j>"] = actions.move_selection_next,
-                ["<C-k>"] = actions.move_selection_previous,
-                ["<Down>"] = actions.move_selection_next,
-                ["<Up>"] = actions.move_selection_previous,
-
+                    ["<C-p>"] = action_layout.toggle_preview,
+                    ["<ESC>"] = actions.close,
+                    ["<C-j>"] = actions.move_selection_next,
+                    ["<C-k>"] = actions.move_selection_previous,
+                    ["<Down>"] = actions.move_selection_next,
+                    ["<Up>"] = actions.move_selection_previous,
                 -- ["<CR>"] = actions.select_default,
-                ["<C-x>"] = actions.select_horizontal,
-                ["<C-v>"] = actions.select_vertical,
-                ["<C-t>"] = actions.select_tab,
-
-                ["<C-u>"] = actions.preview_scrolling_up,
-                ["<C-d>"] = actions.preview_scrolling_down,
-
-                ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
-                ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
-
-                ["<C-a>"] = actions.toggle_all, -- toggle select/drop all
-                ["<CR>"] = custom_actions.multi_select,
+                    ["<C-x>"] = actions.select_horizontal,
+                    ["<C-v>"] = actions.select_vertical,
+                    ["<C-t>"] = actions.select_tab,
+                    ["<C-u>"] = actions.preview_scrolling_up,
+                    ["<C-d>"] = actions.preview_scrolling_down,
+                    ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
+                    ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
+                    ["<C-a>"] = actions.toggle_all, -- toggle select/drop all
+                    ["<CR>"] = custom_actions.multi_select,
             },
-
             n = {
-                ["<C-p>"] = action_layout.toggle_preview,
-
-                ["<ESC>"] = actions.close,
-
-                ["j"] = actions.move_selection_next,
-                ["k"] = actions.move_selection_previous,
-                ["<Down>"] = actions.move_selection_next,
-                ["<Up>"] = actions.move_selection_previous,
-                ["gg"] = actions.move_to_top,
-                ["G"] = actions.move_to_bottom,
-
+                    ["<C-p>"] = action_layout.toggle_preview,
+                    ["<ESC>"] = actions.close,
+                    ["j"] = actions.move_selection_next,
+                    ["k"] = actions.move_selection_previous,
+                    ["<Down>"] = actions.move_selection_next,
+                    ["<Up>"] = actions.move_selection_previous,
+                    ["gg"] = actions.move_to_top,
+                    ["G"] = actions.move_to_bottom,
                 -- ["<CR>"] = actions.select_default,
-                ["<C-x>"] = actions.select_horizontal,
-                ["<C-v>"] = actions.select_vertical,
-                ["<C-t>"] = actions.select_tab,
-
-                ["<C-u>"] = actions.preview_scrolling_up,
-                ["<C-d>"] = actions.preview_scrolling_down,
-
-                ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
-                ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
-
-                ["<C-a>"] = actions.toggle_all, -- toggle select/drop all
-                ["<CR>"] = custom_actions.multi_select,
+                    ["<C-x>"] = actions.select_horizontal,
+                    ["<C-v>"] = actions.select_vertical,
+                    ["<C-t>"] = actions.select_tab,
+                    ["<C-u>"] = actions.preview_scrolling_up,
+                    ["<C-d>"] = actions.preview_scrolling_down,
+                    ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
+                    ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
+                    ["<C-a>"] = actions.toggle_all, -- toggle select/drop all
+                    ["<CR>"] = custom_actions.multi_select,
             },
         },
     },
@@ -134,7 +121,7 @@ telescope.setup {
         },
     },
     extentions = {
-        ["ui-select"] = {
+            ["ui-select"] = {
             require("telescope.themes").get_dropdown {
                 -- even more opts
                 width = 1.0,

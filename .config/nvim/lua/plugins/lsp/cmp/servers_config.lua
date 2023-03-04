@@ -13,12 +13,12 @@ M.lua_ls = {
             },
             workspace = {
                 library = (function()
-                    local lib = {}
-                    for _, path in ipairs(vim.api.nvim_get_runtime_file("lua", true)) do
-                        lib[#lib + 1] = path:sub(1, -5)
-                    end
-                    return lib
-                end)(),
+                        local lib = {}
+                        for _, path in ipairs(vim.api.nvim_get_runtime_file("lua", true)) do
+                            lib[#lib + 1] = path:sub(1, -5)
+                        end
+                        return lib
+                    end)(),
                 checkThirdParty = false,
             },
             telemetry = {
@@ -40,7 +40,7 @@ M.clangd = {
 
 M.rust_analyzer = {
     settings = {
-        ["rust-analyzer"] = {
+            ["rust-analyzer"] = {
             imports = {
                 granularity = {
                     group = "module",

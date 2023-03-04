@@ -129,7 +129,7 @@ rustup component add rust-src
 rustup component add rust-analyzer
 
 # javascript/typescript
-sudo npm install -g typescript typescript-language-server eslint prettier prettier-eslint
+sudo npm install -g typescript typescript-language-server eslint prettier prettier-eslint prettier-eslint-cli
 curl -fsSL https://deno.land/install.sh | sh
 
 # haskell
@@ -195,18 +195,6 @@ mkdir -p ~/.jupyter/lab/user-settings && \
 ln -s ~/.dotfiles/.jupyter/lab/user-settings/@jupyterlab ~/.jupyter/lab/user-settings/@jupyterlab
 
 # link config
-# sudo ln -s ~/.dotfiles/.vimrc /root/.vimrc
-#
-# ln -s ~/.dotfiles/.vimrc ~/.vimrc
-# ln -s ~/.dotfiles/.zshrc ~/.zshrc
-# ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
-# ln -s ~/.dotfiles/.oh-my-zsh/zsh-syntax-highlighting.zsh ~/.oh-my-zsh/zsh-syntax-highlighting.zsh
-# rm -rf ~/.doom.d && ln -s ~/.dotfiles/.doom.d ~/.doom.d
-#
-# # link config in ~/.config
-# for d in ~/.dotfiles/.config/*/; do
-#     $(ln -s "$d" ~/.config/$(basename "$d"))
-# done
 ./link_config.sh
 
 # config bat
