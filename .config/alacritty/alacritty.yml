@@ -95,12 +95,24 @@ window:
     # General application class
     #general: Alacritty
 
-  # Decorations theme variant (Linux/BSD only)
+  # Decorations theme variant
   #
-  # Override the variant of the GTK theme/Wayland client side decorations.
-  # Commonly supported values are `dark` and `light`. Set this to `None` to use
-  # the default theme variant.
+  # Override the variant of the System theme/GTK theme/Wayland client side
+  # decorations. Commonly supported values are `Dark`, `Light`, and `None` for
+  # auto pick-up. Set this to `None` to use the default theme variant.
   #decorations_theme_variant: None
+
+  # Resize increments
+  #
+  # Prefer resizing window by discrete steps equal to cell dimensions.
+  #resize_increments: false
+
+  # Make `Option` key behave as `Alt` (macOS only):
+  #   - OnlyLeft
+  #   - OnlyRight
+  #   - Both
+  #   - None (default)
+  #option_as_alt: None
 
 scrolling:
   # Maximum number of lines in the scrollback buffer.
@@ -334,67 +346,38 @@ draw_bold_text_with_bright_colors: false
   # regardless of their background color.
   #transparent_background_colors: false
 
-  ## Kanagawa Alacritty Colors
-  #colors:
-  #  primary:
-  #    background: '0x1f1f28'
-  #    foreground: '0xdcd7ba'
-  #
-  #  normal:
-  #    black:   '0x090618'
-  #    red:     '0xc34043'
-  #    green:   '0x76946a'
-  #    yellow:  '0xc0a36e'
-  #    blue:    '0x7e9cd8'
-  #    magenta: '0x957fb8'
-  #    cyan:    '0x6a9589'
-  #    white:   '0xc8c093'
-  #
-  #  bright:
-  #    black:   '0x727169'
-  #    red:     '0xe82424'
-  #    green:   '0x98bb6c'
-  #    yellow:  '0xe6c384'
-  #    blue:    '0x7fb4ca'
-  #    magenta: '0x938aa9'
-  #    cyan:    '0x7aa89f'
-  #    white:   '0xdcd7ba'
-  #
-  #  selection:
-  #    background: '0x2d4f67'
-  #    foreground: '0xc8c093'
-  #
-  #  indexed_colors:
-  #    - { index: 16, color: '0xffa066' }
-  #    - { index: 17, color: '0xff5d62' }
-
-# Space Duck Alacritty Colors
+# TokyoNight Alacritty Colors
 colors:
   # Default colors
   primary:
-    background: '#0f111b'
-    foreground: '#ecf0c1'
+    background: '0x1a1b26'
+    foreground: '0xc0caf5'
+
   # Normal colors
   normal:
-    black:   '#000000'
-    red:     '#e33400'
-    green:   '#5ccc96'
-    yellow:  '#b3a1e6'
-    blue:    '#00a3cc'
-    magenta: '#f2ce00'
-    cyan:    '#7a5ccc'
-    white:   '#686f9a'
+    black:   '0x15161e'
+    red:     '0xf7768e'
+    green:   '0x9ece6a'
+    yellow:  '0xe0af68'
+    blue:    '0x7aa2f7'
+    magenta: '0xbb9af7'
+    cyan:    '0x7dcfff'
+    white:   '0xa9b1d6'
 
   # Bright colors
   bright:
-    black:   '#686f9a'
-    red:     '#e33400'
-    green:   '#5ccc96'
-    yellow:  '#b3a1e6'
-    blue:    '#00a3cc'
-    magenta: '#f2ce00'
-    cyan:    '#7a5ccc'
-    white:   '#f0f1ce'
+    black:   '0x414868'
+    red:     '0xf7768e'
+    green:   '0x9ece6a'
+    yellow:  '0xe0af68'
+    blue:    '0x7aa2f7'
+    magenta: '0xbb9af7'
+    cyan:    '0x7dcfff'
+    white:   '0xc0caf5'
+
+  indexed_colors:
+    - { index: 16, color: '0xff9e64' }
+    - { index: 17, color: '0xdb4b4b' }
 
 # Bell
 #
@@ -511,9 +494,6 @@ cursor:
 # Directory the shell is started in. If this is unset, or `None`, the working
 # directory of the parent process will be used.
 #working_directory: None
-
-# Send ESC (\x1b) before characters when alt is pressed.
-#alt_send_esc: true
 
 # Offer IPC using `alacritty msg` (unix only)
 #ipc_socket: true
@@ -678,6 +658,7 @@ cursor:
 #   - Quit
 #       Quit Alacritty.
 #   - ToggleFullscreen
+#   - ToggleMaximized
 #   - SpawnNewInstance
 #       Spawn a new instance of Alacritty.
 #   - CreateNewWindow
@@ -933,7 +914,7 @@ key_bindings:
   #- { key: M,              mods: Command,                    action: Minimize              }
   #- { key: Q,              mods: Command,                    action: Quit                  }
   #- { key: W,              mods: Command,                    action: Quit                  }
-  #- { key: N,              mods: Command,                    action: SpawnNewInstance      }
+  #- { key: N,              mods: Command,                    action: CreateNewWindow       }
   #- { key: F,              mods: Command|Control,            action: ToggleFullscreen      }
   #- { key: F,              mods: Command, mode: ~Search,     action: SearchForward         }
   #- { key: B,              mods: Command, mode: ~Search,     action: SearchBackward        }
