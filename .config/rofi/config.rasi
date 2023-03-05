@@ -2,8 +2,8 @@
 
 * {
     bg-col:                     #1a1b26;
-    border-col:                 #7aa2f7;
-    selected-col:               #33467c;
+    border-col:                 #2ac3de;
+    selected-col:               #292e42;
     fg-col:                     #c0caf5;
     fg-dim-col:                 #565f89;
 }
@@ -42,7 +42,7 @@ window {
     width:                      50%;
     y-offset:                   5px;
     padding:                    5px;
-    border:                     5px;
+    border:                     3px;
     border-color:               @border-col;
     background-color:           @bg-col;
 }
