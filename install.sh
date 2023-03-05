@@ -5,7 +5,7 @@ sudo pacman -S --noconfirm curl wget axel rsync \
                            git lazygit git-delta \
                            zsh tmux htop ranger neofetch \
                            vim neovim \
-                           # emacs-nativecomp \
+                           emacs-nativecomp \
                            zip unzip p7zip ark \
                            bat man \
                            xclip xdotool fzf fzy ripgrep fd \
@@ -170,7 +170,7 @@ git clone https://github.com/romkatv/powerlevel10k ~/.oh-my-zsh/custom/themes/po
 rm -f ~/.zshrc
 
 # install doomemacs
-# git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d && \
+git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
 # ~/.emacs.d/bin/doom install
 
 # link configs ----------------------------------------
