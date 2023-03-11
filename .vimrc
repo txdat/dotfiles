@@ -91,7 +91,7 @@ endif
 
 if has('gui_running')
     set guicursor& " reset to default
-    set guifont=Jetbrains\ Mono:h10
+    set guifont=JetbrainsMono\ Nerd\ Font\ Mono:h10
 endif
 
 " ----------------------------------
@@ -231,7 +231,7 @@ let g:colors_name = 'tokyo-night'
 " ==========> Highlight function
 function! s:h(face, guibg, guifg, ctermbg, ctermfg, gui)
   let l:cmd="highlight " . a:face
-  
+
   if a:guibg != ""
     let l:cmd = l:cmd . " guibg=" . a:guibg
   endif
@@ -307,7 +307,7 @@ let s:bit.color13="240"
 let s:bit.color6="241"
 let s:bit.color9="242"
 
-" ==========> General highlights 
+" ==========> General highlights
 call s:h("Normal", s:hex.color0, s:hex.color1, s:bit.color0, s:bit.color1, "none")
 call s:h("Cursor", s:hex.color2, "", s:bit.color2, "", "none")
 call s:h("Visual", s:hex.color3, "", s:bit.color3, "", "none")
