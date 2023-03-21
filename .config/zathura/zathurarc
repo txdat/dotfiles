@@ -9,17 +9,16 @@ set selection-clipboard clipboard
 
 #stop at page boundries
 set scroll-page-aware "true"
-set smooth-scroll "true"
 set scroll-full-overlap 0.01
 set scroll-step 100
 
 #setup dark theme
-set default-bg "#1a1b26"
-set default-fg "#c0caf5"
-set recolor "true"
-set recolor-lightcolor "#1a1b26"
-set recolor-darkcolor "#c0caf5"
-set recolor-reverse-video "true"
-set recolor-keephue "true"
+#set default-bg "#1a1b26"
+#set default-fg "#c0caf5"
+#set recolor "true"
+#set recolor-lightcolor "#1a1b26"
+#set recolor-darkcolor "#c0caf5"
+#set recolor-reverse-video "true"
+#set recolor-keephue "true"
 
 set render-loading "false"
