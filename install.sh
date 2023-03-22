@@ -84,7 +84,6 @@ sudo pacman -S --noconfirm dolphin \
                            zathura zathura-pdf-mupdf \
                            zenity ffmpeg4.4 \
                            calibre \
-                           obsidian \
                            dbeaver
 
 paru -S --noconfirm ibus-bamboo \
@@ -104,7 +103,7 @@ sudo pacman -S --noconfirm gcc gcc-fortran gdb \
                            clang llvm lldb lld \
                            make cmake ccache ctags valgrind strace \
                            python python-pip \
-                           nodejs npm \
+                           nodejs npm yarn \
                            go gopls
 
 sudo pacman -S --noconfirm blas cblas openblas \
@@ -113,7 +112,7 @@ sudo pacman -S --noconfirm blas cblas openblas \
                            boost \
                            ffmpeg4.4 libuv \
                            gperftools gflags google-glog gtest protobuf \
-                           cuda cudnn magma nccl nvidia-utils \
+                           cuda cudnn magma-cuda nccl nvidia-utils \
                            opencv-cuda \
                            vulkan-icd-loader \
                            vulkan-radeon amdvlk \
@@ -170,8 +169,8 @@ git clone https://github.com/romkatv/powerlevel10k ~/.oh-my-zsh/custom/themes/po
 rm -f ~/.zshrc
 
 # install doomemacs
-git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
-# ~/.emacs.d/bin/doom install
+git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d && \
+rm -rf ~/.doom.d
 
 # link configs ----------------------------------------
 cd ~

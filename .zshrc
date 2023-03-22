@@ -127,9 +127,8 @@ fi
 unset __conda_setup
 # <<< conda initialize <<<
 
-export PATH="$HOME/.emacs.d/bin:$PATH"
+# export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$HOME/miniconda3/bin:$PATH"
-export PATH="$HOME/.codon/bin:$PATH"
 export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
 export PATH="$HOME/.deno/bin:$PATH"
 #export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
