@@ -3,7 +3,7 @@
         "autoClosingBrackets": true,
         "codeFolding": true,
         "cursorBlinkRate": 530,
-        "fontFamily": "JetbrainsMono Nerd Font",
+        "fontFamily": "JetbrainsMono Nerd Font Mono",
         "fontSize": 14,
         "insertSpaces": true,
         "lineHeight": 1,

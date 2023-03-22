@@ -65,7 +65,7 @@
 ;; accept. For example:
 ;;
 
-(setq font-family "JetbrainsMono Nerd Font")
+(setq font-family "JetbrainsMono Nerd Font Mono")
 
 (if (equal (display-pixel-width) 3072)
  (setq font-size 24) ; hidpi

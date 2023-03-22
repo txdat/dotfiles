@@ -136,12 +136,12 @@ curl -fsSL https://deno.land/install.sh | sh
 # ghcup install ghc && ghcup install cabal && ghcup install hls
 
 # python
-axel -n 16 https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+axel -n 8 https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod a+x ./Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
 rm -f ./Miniconda3-latest-Linux-x86_64.sh
-~/miniconda3/bin/conda update --all -y
-~/miniconda3/bin/pip install pynvim pyright black ruff dvc dvc-gdrive ansible debugpy sqlfluff jupyterlab --upgrade
+~/.miniconda/bin/conda update --all -y
+~/.miniconda/bin/pip install pynvim pyright black ruff dvc dvc-gdrive debugpy sqlfluff --upgrade
 
 # important python packages
 # ~/miniconda3/bin/pip install numpy scipy cython numba pandas matplotlib seaborn scikit-learn xgboost catboost lightgbm statsmodels treelite treelite_runtime polars pyspark "dask[complete]" --upgrade
