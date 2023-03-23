@@ -142,7 +142,7 @@ chmod a+x ./Miniconda3-latest-Linux-x86_64.sh
 rm -f ./Miniconda3-latest-Linux-x86_64.sh
 ~/.miniconda/bin/conda update --all -y
 ~/.miniconda/bin/conda config --set auto_activate_base false
-~/.miniconda/bin/pip install pynvim pyright black ruff dvc dvc-gdrive debugpy sqlfluff --upgrade
+~/.miniconda/bin/pip install pynvim pyright black ruff debugpy sqlfluff dvc dvc-gdrive ansible --upgrade
 
 # install mlds environment
 # ~/.miniconda/bin/pip install numpy scipy cython numba pandas matplotlib seaborn scikit-learn xgboost catboost lightgbm statsmodels treelite treelite_runtime polars jupyterlab pyspark "dask[complete]" --upgrade
