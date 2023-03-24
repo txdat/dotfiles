@@ -218,19 +218,19 @@ local plugins = {
     -- prog. langs
     ------------------------------------
 
-    -- orgmode
-    {
-        "nvim-neorg/neorg",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-            "nvim-treesitter/nvim-treesitter",
-        },
-        build = ":Neorg sync-parsers",
-        ft = { "norg" }, -- triggered when opening *.norg file
-        config = function()
-            pcall(require, "plugins.neorg")
-        end
-    },
+    -- -- orgmode
+    -- {
+    --     "nvim-neorg/neorg",
+    --     dependencies = {
+    --         "nvim-lua/plenary.nvim",
+    --         "nvim-treesitter/nvim-treesitter",
+    --     },
+    --     build = ":Neorg sync-parsers",
+    --     ft = { "norg" }, -- triggered when opening *.norg file
+    --     config = function()
+    --         pcall(require, "plugins.neorg")
+    --     end
+    -- },
 
     -- markdown
     {
@@ -244,14 +244,14 @@ local plugins = {
         end
     },
 
-    -- latex
-    {
-        "lervag/vimtex",
-        ft = { "tex" }, -- triggered when opening *.tex file
-        config = function()
-            pcall(require, "plugins.vimtex")
-        end
-    },
+    -- -- latex
+    -- {
+    --     "lervag/vimtex",
+    --     ft = { "tex" }, -- triggered when opening *.tex file
+    --     config = function()
+    --         pcall(require, "plugins.vimtex")
+    --     end
+    -- },
 }
 
 local opts = {
