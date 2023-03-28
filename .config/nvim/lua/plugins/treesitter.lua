@@ -8,7 +8,7 @@ require("nvim-treesitter.configs").setup {
         -- "haskell",
         "javascript", "typescript",
         "markdown", "markdown_inline",
-        "latex",
+        -- "latex",
     },
     sync_install = false,
     auto_install = false,
