@@ -92,6 +92,8 @@ M.pyright = {
     single_file_support = true,
 }
 
-M.texlab = {}
+M.tsserver = {}
+
+-- M.texlab = {}
 
 return M
