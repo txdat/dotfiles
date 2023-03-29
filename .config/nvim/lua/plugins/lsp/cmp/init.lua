@@ -36,15 +36,15 @@ cmp.setup {
         fields = { "abbr", "kind", "menu" },
     },
     mapping = cmp.mapping.preset.insert({
-            ["<C-k>"] = cmp.mapping.scroll_docs(-4),
-            ["<C-j>"] = cmp.mapping.scroll_docs(4),
-            ["<C-Space>"] = cmp.mapping.complete(),
-            ["<ESC>"] = cmp.mapping.abort(),
-            ["<CR>"] = cmp.mapping.confirm {
+        ["<C-k>"] = cmp.mapping.scroll_docs(-4),
+        ["<C-j>"] = cmp.mapping.scroll_docs(4),
+        ["<C-Space>"] = cmp.mapping.complete(),
+        ["<ESC>"] = cmp.mapping.abort(),
+        ["<CR>"] = cmp.mapping.confirm {
             behavior = cmp.ConfirmBehavior.Replace,
             select = false,
         },
-            ["<Tab>"] = cmp.mapping(function(fallback)
+        ["<Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_next_item()
             elseif luasnip.expand_or_jumpable() then
@@ -53,7 +53,7 @@ cmp.setup {
                 fallback()
             end
         end, { "i", "s" }),
-            ["<S-Tab>"] = cmp.mapping(function(fallback)
+        ["<S-Tab>"] = cmp.mapping(function(fallback)
             if cmp.visible() then
                 cmp.select_prev_item()
             elseif luasnip.jumpable(-1) then
@@ -69,11 +69,11 @@ cmp.setup {
         end,
     },
     sources = {
-        { name = "nvim_lsp", keyword_length = 3 },
-        { name = "buffer",   keyword_length = 3 },
+        { name = "nvim_lsp", keyword_length = 2 },
+        { name = "buffer",   keyword_length = 2 },
         { name = "path" },
+        { name = "luasnip",  keyword_length = 2 },
         -- { name = "nvim_lsp_signature_help" },
-        { name = "luasnip",  keyword_length = 3 },
     },
 }
 
@@ -93,7 +93,7 @@ capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 -- handlers
 local handlers = {
-        ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+    ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
         border = "single",
         close_events = { "CursorMoved", "InsertLeave", "BufHidden" },
         focusable = false,
