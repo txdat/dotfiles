@@ -6,7 +6,7 @@ require("lspsaga").setup({
     finder = {
         keys = {
             jump_to = "<CR>",
-            edit = "e",
+            expand_or_jump = "<Tab>",
             vsplit = "v",
             split = "s",
             tabe = "t",
@@ -21,26 +21,31 @@ require("lspsaga").setup({
         split = "s",
         tabe = "t",
         quit = "<ESC>",
-        close = "<ESC>",
     },
     code_action = {
-        extend_gitsigns = true,
         keys = {
             exec = "<CR>",
             quit = "<ESC>",
         },
     },
     lightbulb = {
-        enable = true,
-        enable_in_insert = true,
         sign = false,
         virtual_text = true,
     },
+    hover = {
+        open_link = '<CR>',
+        open_browser = '!firefox',
+    },
     diagnostic = {
+        on_insert = true,
+        on_insert_follow = true,
+        insert_winblend = 0,
         keys = {
             exec_action = "<CR>",
             quit = "<ESC>",
             go_action = "<Tab>",
+            expand_or_jump = "<CR>",
+            quit_in_show = "<ESC>",
         },
     },
     rename = {
@@ -52,8 +57,7 @@ require("lspsaga").setup({
     outline = {
         win_width = 50,
         keys = {
-            jump = "<CR>",
-            expand_collapse = "<Tab>",
+            expand_or_jump = "<CR>",
             quit = "<ESC>",
         },
     },
@@ -71,6 +75,7 @@ require("lspsaga").setup({
     symbol_in_winbar = {
         enable = true,
         separator = "  ",
+        ignore_patterns = { "%w_spec" },
     },
     beacon = {
         enable = false,
@@ -78,6 +83,8 @@ require("lspsaga").setup({
     ui = {
         title = true,
         border = "single",
+        winblend = 0,
+        code_action = "",
     },
 })
 
@@ -102,9 +109,10 @@ keymap("n", "K", ":Lspsaga hover_doc<CR>")
 keymap("n", "Kk", ":Lspsaga hover_doc ++keep<CR>")
 
 -- diagnostic
-keymap("n", "<leader>dl", ":Lspsaga show_line_diagnostics<CR>")
 keymap("n", "<leader>dc", ":Lspsaga show_cursor_diagnostics<CR>")
+keymap("n", "<leader>dl", ":Lspsaga show_line_diagnostics<CR>")
 keymap("n", "<leader>db", ":Lspsaga show_buf_diagnostics<CR>")
+keymap("n", "<leader>dw", ":Lspsaga show_workspace_diagnostics<CR>")
 keymap("n", "d[", ":Lspsaga diagnostic_jump_prev<CR>")
 keymap("n", "d]", ":Lspsaga diagnostic_jump_next<CR>")
 keymap("n", "D[", function()
@@ -115,8 +123,8 @@ keymap("n", "D]", function()
 end)
 
 -- callhierarchy
-keymap("n", "<leader>ci", ":Lspsaga incoming_calls<CR>")
-keymap("n", "<leader>co", ":Lspsaga outgoing_calls<CR>")
+keymap("n", "<leader>gci", ":Lspsaga incoming_calls<CR>")
+keymap("n", "<leader>gco", ":Lspsaga outgoing_calls<CR>")
 
 -- float terminal
 keymap({ "n", "t" }, "<C-S-t>", "<cmd>Lspsaga term_toggle<CR>")
