@@ -93,6 +93,7 @@ M.pyright = {
 }
 
 M.tsserver = {}
+M.eslint = {}
 
 -- M.texlab = {}
 
