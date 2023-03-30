@@ -5,10 +5,12 @@ require("bufferline").setup {
         extensions = false,
         inactive = false,
     },
-    diagnostics = {
-        { enabled = false }, -- ERROR
-        { enabled = false }, -- WARN
-        { enabled = false }, -- INFO
-        { enabled = false }, -- HINT
+    icons = {
+        diagnostics = {
+            { enabled = false }, -- ERROR
+            { enabled = false }, -- WARN
+            { enabled = false }, -- INFO
+            { enabled = false }, -- HINT
+        },
     },
 }
