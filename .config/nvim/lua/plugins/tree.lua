@@ -51,7 +51,7 @@ require("nvim-tree").setup {
                 col = 1,
                 row = 1,
                 relative = "cursor",
-                border = "single",
+                border = "none",
                 style = "minimal",
             },
         },

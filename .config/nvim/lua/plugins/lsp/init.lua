@@ -28,4 +28,4 @@ vim.diagnostic.config({
 })
 
 -- lsp windows border
-require("lspconfig.ui.windows").default_options.border = "single"
+require("lspconfig.ui.windows").default_options.border = "none"

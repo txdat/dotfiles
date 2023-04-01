@@ -42,7 +42,7 @@ dapui.setup({
     floating = {
         max_height = nil,
         max_width = nil,
-        border = "single",
+        border = "none",
         mappings = {
             close = { "<Esc>" },
         },

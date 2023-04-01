@@ -269,7 +269,7 @@ local opts = {
         colorscheme = { "tokyonight" },
     },
     ui = {
-        border = "single",
+        border = "none",
     },
 }
 

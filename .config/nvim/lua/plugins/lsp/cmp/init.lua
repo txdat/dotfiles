@@ -24,11 +24,11 @@ cmp.setup {
     },
     window = {
         completion = {
-            border = "single",
+            border = "none",
             winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
         },
         documentation = {
-            border = "single",
+            border = "none",
             winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
         },
     },
@@ -94,7 +94,7 @@ capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 -- handlers
 local handlers = {
     ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = "single",
+        border = "none",
         close_events = { "CursorMoved", "InsertLeave", "BufHidden" },
         focusable = false,
         use_existing = true,

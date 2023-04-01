@@ -82,7 +82,7 @@ require("lspsaga").setup({
     },
     ui = {
         title = true,
-        border = "single",
+        border = "none",
         winblend = 0,
         code_action = "",
     },
