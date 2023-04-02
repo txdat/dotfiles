@@ -65,12 +65,13 @@
 ;; accept. For example:
 ;;
 
-(setq font-family "JetbrainsMono Nerd Font Mono")
+(setq font-family "JetbrainsMono Nerd Font Mono"
+      font-size 24)
 
-(if (equal (display-pixel-width) 3072)
- (setq font-size 24) ; hidpi
- (setq font-size 14)
- )
+;; (if (equal (display-pixel-width) 3072)
+;;  (setq font-size 24) ; hidpi
+;;  (setq font-size 14)
+;;  )
 
 (setq doom-font (font-spec :family font-family :size font-size)
       doom-variable-pitch-font (font-spec :family font-family :size font-size)

@@ -145,7 +145,7 @@ alias cpfi="xclip -sel c < " # copy from file to clipboard
 alias cpcb="xclip -sel c -o > " # copy from clipboard to file
 
 # setup external fullhd display to the right
-alias xfhdr="xrandr --output DP-1 --scale 2x2 && xrandr --output DP-1 --scale 1.6x1.7777 --right-of eDP-1 && xrandr --output eDP-1 --scale 0.9999x0.9999"
+alias xfhdr="xrandr --output DP-1 --scale 2x2 && xrandr --output DP-1 --scale 1.6x1.6 --right-of eDP-1 && xrandr --output eDP-1 --scale 0.9999x0.9999"
 
 # kubernetes (k3s)
 export KUBECONFIG=$HOME/.kube/config

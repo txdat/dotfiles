@@ -37,8 +37,8 @@ require("lspsaga").setup({
         open_browser = '!firefox',
     },
     diagnostic = {
-        on_insert = true,
-        on_insert_follow = true,
+        on_insert = false, -- use default lsp
+        on_insert_follow = false,
         insert_winblend = 0,
         keys = {
             exec_action = "<CR>",
