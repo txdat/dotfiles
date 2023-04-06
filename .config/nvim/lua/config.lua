@@ -50,7 +50,8 @@ opt.encoding = "utf-8"
 opt.fileencoding = "utf-8"
 opt.mouse = "a" -- enable mouse support
 opt.errorbells = false
-vim.g.mapleader = " "
+-- vim.g.mapleader = " "
+vim.g.mapleader = "\\"
 
 -- spelling
 vim.opt.spelllang = "en_us"

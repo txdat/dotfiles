@@ -101,7 +101,7 @@ ssh-keygen
 # install essential development packages ----------------
 sudo pacman -S --noconfirm gcc gcc-fortran gdb \
                            clang llvm lldb lld \
-                           make cmake ccache ctags valgrind strace \
+                           make cmake xmake ccache ctags valgrind strace \
                            python python-pip \
                            nodejs npm yarn \
                            go gopls
