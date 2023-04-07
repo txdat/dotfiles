@@ -20,11 +20,18 @@ local plugins = {
     ------------------------------------
 
     -- colorscheme
+    -- {
+    --     "folke/tokyonight.nvim",
+    --     lazy = false,
+    --     config = function()
+    --         pcall(require, "plugins.colorscheme.tokyonight")
+    --     end
+    -- },
     {
-        "folke/tokyonight.nvim",
+        "bluz71/vim-moonfly-colors",
         lazy = false,
         config = function()
-            pcall(require, "plugins.colorscheme.tokyonight")
+            pcall(require, "plugins.colorscheme.moonfly");
         end
     },
 
@@ -266,7 +273,7 @@ local opts = {
         timeout = 300, -- seconds
     },
     install = {
-        colorscheme = { "tokyonight" },
+        colorscheme = { "moonfly" },
     },
     ui = {
         border = "none",

@@ -99,7 +99,7 @@ local dap_components = {
 
 require("lualine").setup {
     options = {
-        theme = "tokyonight", -- auto falling back to "auto"
+        theme = "moonfly", -- auto falling back to "auto"
         -- section_separators = { left = "", right = "" },
         section_separators = "",
         component_separators = "",

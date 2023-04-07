@@ -1,5 +1,3 @@
-# run "bat cache --build" before using bat
---theme="Enki-Tokyo-Night"
 --style="grid,numbers,changes,header"
 --map-syntax h:cpp
 --map-syntax .ignore:.gitignore

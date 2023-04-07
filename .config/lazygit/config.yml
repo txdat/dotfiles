@@ -12,26 +12,26 @@ gui:
     language: auto
     timeFormat: 02 Jan 06 15:04 MST
     theme:
-        lightTheme: false 
+        lightTheme: false
         activeBorderColor:
-            - "#7aa2f7"
+            - "#8cc85f"
             - bold
         inactiveBorderColor:
-            - "#3b4261"
+            - "#323437"
         optionsTextColor:
-            - "#c0caf5"
+            - "#b2b2b2"
         selectedLineBgColor:
-            - "#33467c"
+            - "#323437"
             - reverse
         selectedRangeBgColor:
-            - "#33467c"
+            - "#323437"
             - reverse
         cherryPickedCommitBgColor:
-            - "#7aa2f7"
+            - "#8cc85f"
         cherryPickedCommitFgColor:
-            - "#c0caf5"
+            - "#b2b2b2"
         unstagedChangesColor:
-            - "#ff9e64"
+            - "#e3c78a"
     commitLength:
         show: true
     skipNoStagedFilesWarning: false
@@ -46,7 +46,7 @@ gui:
 git:
     paging:
         colorArg: always
-        pager: "delta --line-numbers --dark --syntax-theme Enki-Tokyo-Night --paging=never --diff-so-fancy"
+        pager: "delta --line-numbers --dark --paging=never --diff-so-fancy"
         useConfig: false
     commit:
         signOff: false

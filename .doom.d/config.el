@@ -87,7 +87,7 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
-(setq doom-theme 'doom-tokyo-night)
+(setq doom-theme 'doom-acario-dark)
 
 ;; Change doom logo
 ;; (setq fancy-splash-image "~/.doom.d/emacs.svg")
