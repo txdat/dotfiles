@@ -176,6 +176,9 @@ autocmd("BufLeave", {
 
 local keymap = require("util").keymap
 
+keymap("n", "<ESC>", "<nop>")
+keymap({ "i", "v" }, "jj", "<ESC>")
+
 -- remap recoding
 keymap("n", "<leader>q", "q")
 keymap("n", "q", "<nop>")

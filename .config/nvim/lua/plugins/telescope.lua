@@ -54,13 +54,13 @@ telescope.setup {
             height = 0.8,
             preview_cutoff = 120,
         },
-        border = false,
-        -- borderchars = {
-        --     { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-        --     prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-        --     results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-        --     preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-        -- },
+        border = true,
+        borderchars = {
+            { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+            prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+            results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+            preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+        },
         set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
         file_previewer = previewers.vim_buffer_cat.new,
         grep_previewer = previewers.vim_buffer_vimgrep.new,
@@ -80,8 +80,8 @@ telescope.setup {
                 ["<C-x>"] = actions.select_horizontal,
                 ["<C-v>"] = actions.select_vertical,
                 ["<C-t>"] = actions.select_tab,
-                ["<C-u>"] = actions.preview_scrolling_up,
-                ["<C-d>"] = actions.preview_scrolling_down,
+                ["<C-w>"] = actions.preview_scrolling_up,
+                ["<C-s>"] = actions.preview_scrolling_down,
                 ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
                 ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
                 ["<C-a>"] = actions.toggle_all, -- toggle select/drop all
@@ -100,8 +100,8 @@ telescope.setup {
                 ["<C-x>"] = actions.select_horizontal,
                 ["<C-v>"] = actions.select_vertical,
                 ["<C-t>"] = actions.select_tab,
-                ["<C-u>"] = actions.preview_scrolling_up,
-                ["<C-d>"] = actions.preview_scrolling_down,
+                ["<C-w>"] = actions.preview_scrolling_up,
+                ["<C-s>"] = actions.preview_scrolling_down,
                 ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
                 ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
                 ["<C-a>"] = actions.toggle_all, -- toggle select/drop all
@@ -127,13 +127,13 @@ telescope.setup {
                 width = 1.0,
                 previewer = false,
                 prompt_title = false,
-                border = false,
-                -- borderchars = {
-                --     { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-                --     prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-                --     results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-                --     preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-                -- },
+                border = true,
+                borderchars = {
+                    { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+                    prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+                    results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+                    preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+                },
             }
         },
         fzf = {
