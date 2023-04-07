@@ -81,7 +81,7 @@ require("lspsaga").setup({
         enable = false,
     },
     ui = {
-        title = true,
+        title = false,
         border = "none",
         winblend = 0,
         code_action = "",
