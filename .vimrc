@@ -38,7 +38,7 @@ endfor
 syntax on
 filetype plugin indent on
 
-set clipboard=unnamed,unnamedplus " system's clipboard
+set clipboard^=unnamed,unnamedplus " system's clipboard
 set timeout
 set timeoutlen=500 " key mappings timeout
 set noswapfile
@@ -88,11 +88,6 @@ if exists('+termguicolors')
     let &t_8f ="\<Esc>[38;2;%lu;%lu;%lum"
     let &t_8b ="\<Esc>[48;2;%lu;%lu;%lum"
     set termguicolors " enable 24bits colors
-endif
-
-if has('gui_running')
-    set guicursor& " reset to default
-    set guifont=JetbrainsMono\ Nerd\ Font\ Mono:h10
 endif
 
 " ----------------------------------

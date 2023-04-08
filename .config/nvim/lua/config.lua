@@ -79,10 +79,10 @@ opt.showmatch = true      -- highlight matching parenthesis
 opt.foldmethod = "marker" -- enable folding
 opt.splitright = true     -- vertical split to the right
 opt.splitbelow = true     -- horizontal split to the bottom
-opt.signcolumn = "yes"
+opt.signcolumn = "auto"
 opt.fillchars = [[eob: ,fold: ,foldopen:-,foldsep:│,foldclose:+]]
 opt.foldcolumn = "1"
-opt.statuscolumn = "%s%=%r%#IndentBlankLineChar# %C"
+opt.statuscolumn = "%s%=%r%#IndentBlankLineChar#│"
 
 -----------------------------------------
 -- tabs, indent, ...
