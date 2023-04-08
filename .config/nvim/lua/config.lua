@@ -82,7 +82,7 @@ opt.splitbelow = true     -- horizontal split to the bottom
 opt.signcolumn = "yes"
 opt.fillchars = [[eob: ,fold: ,foldopen:-,foldsep:│,foldclose:+]]
 opt.foldcolumn = "1"
-opt.statuscolumn = "%=%s%=%l %C%#IndentBlankLineChar#│ "
+opt.statuscolumn = "%s%=%r%#IndentBlankLineChar#│%C"
 
 -----------------------------------------
 -- tabs, indent, ...

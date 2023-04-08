@@ -16,7 +16,7 @@ for type, icon in pairs(signs) do
 end
 
 vim.diagnostic.config({
-    signs = false,
+    signs = true,
     update_in_insert = true,
     underline = true,
     severity_sort = true,
