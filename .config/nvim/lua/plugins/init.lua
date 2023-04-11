@@ -87,12 +87,19 @@ local plugins = {
         end
     },
 
-    -- auto close brackets
+    -- auto close brackets, tags
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
         config = function()
             pcall(require, "plugins.autopairs")
+        end
+    },
+    {
+        "windwp/nvim-ts-autotag",
+        event = "InsertEnter",
+        config = function()
+            pcall(require, "plugins.ts_autotag")
         end
     },
 
