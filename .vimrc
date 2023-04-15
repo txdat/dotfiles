@@ -165,8 +165,8 @@ autocmd BufLeave * stopinsert
 " ----------------------------------
 
 nnoremap <silent> <ESC> <nop>
-inoremap <silent> jj <ESC>
-vnoremap <silent> jj <ESC>
+" inoremap <silent> jj <ESC>
+" vnoremap <silent> jj <ESC>
 
 nnoremap <silent> <leader>q q
 nnoremap <silent> q <nop>
