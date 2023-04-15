@@ -246,7 +246,7 @@ set termguicolors
 
 let g:moonflyCursorColor = v:false
 let g:moonflyItalics = v:false
-let g:moonflyNormalFloat = v:false
+let g:moonflyNormalFloat = v:true
 let g:moonflyTerminalColors = v:true
 let g:moonflyTransparent = v:false
 let g:moonflyUndercurls = v:true

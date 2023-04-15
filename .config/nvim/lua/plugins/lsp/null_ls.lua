@@ -19,9 +19,14 @@ null_ls.setup({
     --     end
     -- end,
     sources = {
+        -------------------
         -- diagnostics
-        diag.eslint,
+        -------------------
+        -- diag.eslint,
+
+        -------------------
         -- formatting
+        -------------------
         -- fmt.clang_format, -- c/c++
         fmt.rustfmt.with({ -- rust
             extra_args = { "--edition=2021" }

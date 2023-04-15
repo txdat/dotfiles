@@ -8,7 +8,7 @@ sudo pacman -S --noconfirm curl wget axel rsync \
                            emacs-nativecomp \
                            zip unzip p7zip ark \
                            bat man \
-                           xclip xdotool fzf fzy ripgrep fd \
+                           xclip xdotool fzf fzy ripgrep fd jq \
                            openssh \
                            pacman-contrib nvidia \
                            # qemu-full \

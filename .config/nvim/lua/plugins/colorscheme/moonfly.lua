@@ -1,6 +1,6 @@
 vim.g.moonflyCursorColor = false
 vim.g.moonflyItalics = false
-vim.g.moonflyNormalFloat = false
+vim.g.moonflyNormalFloat = true
 vim.g.moonflyTerminalColors = true
 vim.g.moonflyTransparent = false
 vim.g.moonflyUndercurls = true
