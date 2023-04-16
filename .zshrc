@@ -137,6 +137,9 @@ export PATH="$HOME/.deno/bin:$PATH"
 export GTK_IM_MODULE=ibus
 export XMODIFIERS=@im=ibus
 export QT_IM_MODULE=ibus
+export QT4_IM_MODULE=ibus
+export CLUTTER_IM_MODULE=ibus
+export GLFW_IM_MODULE=ibus
 
 # custom aliases
 alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
