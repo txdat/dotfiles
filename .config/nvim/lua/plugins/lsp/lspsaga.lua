@@ -29,6 +29,8 @@ require("lspsaga").setup({
         },
     },
     lightbulb = {
+        enable = true,
+        enable_in_insert = true,
         sign = false,
         virtual_text = true,
     },
@@ -43,8 +45,7 @@ require("lspsaga").setup({
         keys = {
             exec_action = "<CR>",
             quit = "<ESC>",
-            go_action = "<Tab>",
-            expand_or_jump = "<CR>",
+            expand_or_jump = "<Tab>",
             quit_in_show = "<ESC>",
         },
     },
