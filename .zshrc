@@ -114,23 +114,22 @@ export TERM="xterm-256color"
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/.miniconda/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+__conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "$HOME/.miniconda/etc/profile.d/conda.sh" ]; then
-        . "$HOME/.miniconda/etc/profile.d/conda.sh"
+    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
+        . "$HOME/miniconda3/etc/profile.d/conda.sh"
     else
-        export PATH="$HOME/.miniconda/bin:$PATH"
+        export PATH="$HOME/miniconda3/bin:$PATH"
     fi
 fi
 unset __conda_setup
 # <<< conda initialize <<<
 
 export PATH="$HOME/.emacs.d/bin:$PATH"
-export PATH="$HOME/.miniconda/bin:$PATH"
+export PATH="$HOME/miniconda3/bin:$PATH"
 export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
-export PATH="$HOME/.deno/bin:$PATH"
 #export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 
 # ibus
@@ -144,8 +143,9 @@ export GLFW_IM_MODULE=ibus
 # custom aliases
 alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
-alias cpfi="xclip -sel c < " # copy from file to clipboard
-alias cpcb="xclip -sel c -o > " # copy from clipboard to file
+alias ficp="xclip -sel c < " # copy from file to clipboard
+alias fipt="xclip -sel c -o > " # paste from clipboard to file
+alias cpcb="xclip -sel c" # copy to clipboard
 
 # setup external fullhd display to the right
 alias xfhdr="xrandr --output DP-1 --scale 2x2 && xrandr --output DP-1 --scale 1.6x1.6 --right-of eDP-1 && xrandr --output eDP-1 --scale 0.9999x0.9999"

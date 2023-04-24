@@ -1,5 +1,8 @@
 #!/bin/sh
 
+# update server for pacman
+# Server = https://mirrors.tuna.tsinghua.edu.cn/archlinux/$repo/os/$arch
+
 # install base packages ---------------------------------------
 sudo pacman -S --noconfirm curl wget axel rsync \
                            git lazygit git-delta \
@@ -10,7 +13,8 @@ sudo pacman -S --noconfirm curl wget axel rsync \
                            bat man \
                            xclip xdotool fzf fzy ripgrep fd jq \
                            openssh \
-                           pacman-contrib nvidia \
+                           pacman-contrib \
+                           amd-ucode \
                            # qemu-full \
                            # flatpak \
 
@@ -42,8 +46,6 @@ Exec=/bin/sh -c 'while read -r trg; do case \$trg in linux) exit 0; esac; done; 
 EOL
 
 # for yoga14 -----------------------------------------------
-if [ $(cat /etc/hostname) == "yoga14" ]
-then
 # set sddm high dpi
 sudo mkdir -p /etc/sddm.conf.d
 sudo tee -a /etc/sddm.conf.d/dpi.conf > /dev/null <<EOL
@@ -51,7 +53,7 @@ sudo tee -a /etc/sddm.conf.d/dpi.conf > /dev/null <<EOL
 ServerArguments=-nolisten tcp -dpi 160
 EOL
 
-sudo pacman -S --noconfirm amd-ucode tlp tlp-rdw
+sudo pacman -S --noconfirm tlp tlp-rdw
 
 # enable tlp service
 sudo tee -a /etc/tlp.conf > /dev/null <<EOL
@@ -64,7 +66,6 @@ TPSMAPI_ENABLE=1
 EOL
 
 sudo systemctl enable tlp.service
-fi # end of "yoga14"
 
 # install paru -------------------------------------------
 sudo pacman -S --noconfirm rustup
@@ -90,6 +91,8 @@ paru -S --noconfirm ibus-bamboo \
                     dropbox \
                     spotify \
                     visual-studio-code-bin \
+                    mongodb-compass \
+                    postman-bin \
                     sioyek \
                     anki
 
@@ -106,7 +109,7 @@ sudo pacman -S --noconfirm gcc gcc-fortran gdb \
                            nodejs npm yarn \
                            go gopls
 
-sudo pacman -S --noconfirm blas cblas openblas \
+sudo pacman -S --noconfirm cblas openblas \
                            openmp openmpi \
                            lapack lapacke eigen tbb \
                            boost \
@@ -117,6 +120,8 @@ sudo pacman -S --noconfirm blas cblas openblas \
                            vulkan-icd-loader \
                            vulkan-radeon amdvlk \
                            # vulkan-intel \
+
+sudo pacman -S --noconfirm nvidia
 
 # docker, k3s, ...
 sudo pacman -S --noconfirm docker docker-compose kubectl helm skaffold nfs-utils
@@ -129,7 +134,6 @@ rustup component add rust-analyzer
 
 # javascript/typescript
 sudo npm install -g typescript typescript-language-server vscode-langservers-extracted eslint prettier prettier-eslint prettier-eslint-cli
-curl -fsSL https://deno.land/install.sh | sh
 
 # haskell
 # paru -S --noconfirm ghcup-hs-bin
@@ -140,24 +144,25 @@ axel -n 8 https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 chmod a+x ./Miniconda3-latest-Linux-x86_64.sh
 ./Miniconda3-latest-Linux-x86_64.sh
 rm -f ./Miniconda3-latest-Linux-x86_64.sh
-~/.miniconda/bin/conda update --all -y
-~/.miniconda/bin/conda config --set auto_activate_base false
-~/.miniconda/bin/pip install pynvim pyright black ruff debugpy sqlfluff dvc dvc-gdrive ansible --upgrade
+# conda update --all -y
+# conda config --set auto_activate_base false
+# pip install pynvim pyright black ruff debugpy sqlfluff dvc dvc-gdrive ansible --upgrade
 
 # install mlds environment
-# ~/.miniconda/bin/pip install numpy scipy cython numba pandas matplotlib seaborn scikit-learn xgboost catboost lightgbm statsmodels treelite treelite_runtime polars jupyterlab pyspark "dask[complete]" --upgrade
-# ~/.miniconda/bin/pip install torch torchvision pytorch-lightning transformers gym optuna mlflow wandb triton taichi --upgrade
-# ~/.miniconda/bin/pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
-# ~/.miniconda/bin/pip install opencv-python opencv-contrib-python --upgrade
+# conda create -n mlds python=3.10
+# pip install numpy scipy cython numba pandas matplotlib seaborn scikit-learn xgboost catboost lightgbm statsmodels treelite treelite_runtime polars jupyterlab pyspark "dask[complete]" --upgrade
+# pip install torch torchvision pytorch-lightning transformers gym optuna mlflow wandb triton taichi --upgrade
+# pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
+# pip install opencv-python opencv-contrib-python --upgrade
 
 # latex
 sudo pacman -S --noconfirm texlive-core texlive-latexextra texlive-bibtexextra biber texlive-science texlab
 # TODO: fix tlmgr.pl
 sudo sed -i -e "s/\$Master\/..\/../\$Master\/..\/..\/../g" /usr/share/texmf-dist/scripts/texlive/tlmgr.pl
-/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode init-usertree
-/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet
-/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode install libertine
-/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode install doublestroke
+# tlmgr init-usertree
+# tlmgr option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet
+# tlmgr install libertine
+# tlmgr install doublestroke
 
 # install zsh shell -----------------------------------
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \
@@ -194,9 +199,6 @@ ln -s ~/.dotfiles/.jupyter/lab/user-settings/@jupyterlab ~/.jupyter/lab/user-set
 
 # link config
 ./link_config.sh
-
-# config bat
-bat cache --build
 
 cd -
 
