@@ -132,14 +132,6 @@ export PATH="$HOME/miniconda3/bin:$PATH"
 export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
 #export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 
-# ibus
-export GTK_IM_MODULE=ibus
-export XMODIFIERS=@im=ibus
-export QT_IM_MODULE=ibus
-export QT4_IM_MODULE=ibus
-export CLUTTER_IM_MODULE=ibus
-export GLFW_IM_MODULE=ibus
-
 # custom aliases
 alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"

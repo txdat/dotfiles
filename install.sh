@@ -12,6 +12,7 @@ sudo pacman -S --noconfirm curl wget axel rsync \
                            zip unzip p7zip ark \
                            bat man \
                            xclip xdotool fzf fzy ripgrep fd jq \
+                           fcitx5 fcitx5-bamboo fcitx5-configtool fcitx5-qt fcitx5-gtk \
                            openssh \
                            pacman-contrib \
                            amd-ucode \
@@ -87,8 +88,7 @@ sudo pacman -S --noconfirm dolphin \
                            calibre \
                            dbeaver
 
-paru -S --noconfirm ibus-bamboo \
-                    dropbox \
+paru -S --noconfirm dropbox \
                     spotify \
                     visual-studio-code-bin \
                     mongodb-compass \
