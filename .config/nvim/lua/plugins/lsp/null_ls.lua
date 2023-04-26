@@ -38,9 +38,3 @@ null_ls.setup({
         }),
     },
 })
-
-local keymap = require("util").keymap
-
-keymap("n", "<C-S-i>", function()
-    vim.lsp.buf.format { async = true }
-end)
