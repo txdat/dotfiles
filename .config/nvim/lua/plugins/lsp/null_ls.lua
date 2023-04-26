@@ -32,7 +32,7 @@ null_ls.setup({
             extra_args = { "--edition=2021" }
         }),
         fmt.black,                                    -- python
-        fmt.prettier_eslint,                          -- js,ts,...
+        -- fmt.prettier_eslint,                          -- js,ts,...
         fmt.sqlfluff.with({                           -- sql
             extra_args = { "--dialect", "postgres" }, -- change to your dialect
         }),

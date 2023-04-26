@@ -81,7 +81,9 @@ cmp.setup {
 -- on_attach
 local keymap = require("util").keymap
 
-local function on_attach(_, bufnr)
+local function on_attach(client, bufnr)
+    client.server_capabilities.documentFormattingProvider = true
+
     local opts = { buffer = bufnr }
 
     keymap("n", "gs", vim.lsp.buf.signature_help, opts)

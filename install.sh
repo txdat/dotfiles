@@ -13,6 +13,7 @@ sudo pacman -S --noconfirm curl wget axel rsync \
                            bat man \
                            xclip xdotool fzf fzy ripgrep fd jq \
                            fcitx5 fcitx5-bamboo fcitx5-configtool fcitx5-qt fcitx5-gtk \
+                           xorg-xrandr \
                            openssh \
                            pacman-contrib \
                            amd-ucode \
@@ -133,7 +134,9 @@ rustup component add rust-src
 rustup component add rust-analyzer
 
 # javascript/typescript
-sudo npm install -g typescript typescript-language-server vscode-langservers-extracted eslint prettier prettier-eslint prettier-eslint-cli
+sudo npm install -g typescript typescript-language-server vscode-langservers-extracted eslint prettier eslint-plugin-prettier
+# optional:
+# sudo npm install -g prettier-eslint prettier-eslint-cli eslint-config-prettier
 
 # haskell
 # paru -S --noconfirm ghcup-hs-bin
