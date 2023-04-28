@@ -66,11 +66,10 @@
 ;;
 
 (setq font-family "JetbrainsMono Nerd Font Mono"
-      font-size 24)
-
+      font-size 22)
 ;; (if (equal (display-pixel-width) 3072)
-;;  (setq font-size 24) ; hidpi
-;;  (setq font-size 14)
+;;  (setq font-size 22) ; hidpi
+;;  (setq font-size 12)
 ;;  )
 
 (setq doom-font (font-spec :family font-family :size font-size)

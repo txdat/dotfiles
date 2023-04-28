@@ -4,7 +4,7 @@ set window-width 3000
 
 set font "JetbrainsMono Nerd Font Mono 10"
 
-# copy selection to system clipboard
+#copy selection to system clipboard
 set selection-clipboard clipboard
 
 #stop at page boundries
@@ -13,12 +13,12 @@ set scroll-full-overlap 0.01
 set scroll-step 100
 
 #setup dark theme
-#set default-bg "#080808"
-#set default-fg "#b2b2b2"
-#set recolor "true"
-#set recolor-lightcolor "#080808"
-#set recolor-darkcolor "#b2b2b2"
-#set recolor-reverse-video "true"
-#set recolor-keephue "true"
+set default-bg "#080808"
+set default-fg "#b2b2b2"
+set recolor "true"
+set recolor-lightcolor "#080808"
+set recolor-darkcolor "#b2b2b2"
+set recolor-reverse-video "true"
+set recolor-keephue "true"
 
 set render-loading "false"
