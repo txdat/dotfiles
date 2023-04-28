@@ -183,8 +183,8 @@ local plugins = {
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            "williamboman/mason.nvim",
-            "williamboman/mason-lspconfig.nvim",
+            -- "williamboman/mason.nvim",
+            -- "williamboman/mason-lspconfig.nvim",
             {
                 "glepnir/lspsaga.nvim",
                 branch = "main",
@@ -193,7 +193,7 @@ local plugins = {
                     "nvim-treesitter/nvim-treesitter"
                 }
             },
-            "jose-elias-alvarez/null-ls.nvim",
+            -- "jose-elias-alvarez/null-ls.nvim",
         },
         event = "BufRead",
         config = function()

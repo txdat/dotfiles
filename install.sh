@@ -7,7 +7,7 @@
 sudo pacman -S --noconfirm curl wget axel rsync \
                            git lazygit git-delta \
                            zsh tmux htop ranger neofetch \
-                           vi vim neovim luarocks \
+                           vi vim neovim luarocks lua-language-server \
                            emacs-nativecomp \
                            zip unzip p7zip ark \
                            bat man \

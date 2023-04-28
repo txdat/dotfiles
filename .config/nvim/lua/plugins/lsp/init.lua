@@ -1,7 +1,7 @@
-pcall(require, "plugins.lsp.mason")
-pcall(require, "plugins.lsp.mason_lspconfig")
+-- pcall(require, "plugins.lsp.mason")
+-- pcall(require, "plugins.lsp.mason_lspconfig")
 pcall(require, "plugins.lsp.lspsaga")
-pcall(require, "plugins.lsp.null_ls")
+-- pcall(require, "plugins.lsp.null_ls")
 
 -- custom diagnostic signs
 local signs = {
