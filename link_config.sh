@@ -9,6 +9,9 @@ ln -s ~/.dotfiles/.vim ~/.vim
 ln -s ~/.dotfiles/.zshrc ~/.zshrc
 ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
 
+# link kate's lsp config
+mkdir -p ~/.config/kate/lspclient && ln -s ~/.dotfiles/.config/kate/lspclient/settings.json ~/.config/kate/lspclient/settings.json
+
 # link config in ~/.config
 # TODO: remove unused symlinks
 for d in ~/.dotfiles/.config/*/; do
