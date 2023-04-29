@@ -80,8 +80,8 @@ telescope.setup {
                 ["<C-x>"] = actions.select_horizontal,
                 ["<C-v>"] = actions.select_vertical,
                 ["<C-t>"] = actions.select_tab,
-                ["<C-S-k>"] = actions.preview_scrolling_up,
-                ["<C-S-j>"] = actions.preview_scrolling_down,
+                ["<C-s>"] = actions.preview_scrolling_up,
+                ["<C-d>"] = actions.preview_scrolling_down,
                 ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
                 ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
                 ["<C-a>"] = actions.toggle_all, -- toggle select/drop all
@@ -100,8 +100,8 @@ telescope.setup {
                 ["<C-x>"] = actions.select_horizontal,
                 ["<C-v>"] = actions.select_vertical,
                 ["<C-t>"] = actions.select_tab,
-                ["<C-S-k>"] = actions.preview_scrolling_up,
-                ["<C-S-j>"] = actions.preview_scrolling_down,
+                ["<C-s>"] = actions.preview_scrolling_up,
+                ["<C-d>"] = actions.preview_scrolling_down,
                 ["<Tab>"] = actions.toggle_selection + actions.move_selection_worse,
                 ["<S-Tab>"] = actions.toggle_selection + actions.move_selection_better,
                 ["<C-a>"] = actions.toggle_all, -- toggle select/drop all

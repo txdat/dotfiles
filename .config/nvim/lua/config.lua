@@ -184,7 +184,7 @@ keymap("n", "<leader>q", "q")
 keymap("n", "q", "<nop>")
 
 keymap("n", "<F1>", "<nop>")
-keymap("n", "<F7>", ":setlocal spell! spell?<CR>")
+keymap("n", "<F7>", ":setlocal spell! spell?<CR>") -- toggle spelling
 
 keymap("n", "H", "^")
 keymap("n", "L", "$")

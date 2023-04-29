@@ -15,17 +15,22 @@ for type, icon in pairs(signs) do
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
-vim.diagnostic.config({
-    signs = true,
-    update_in_insert = true,
-    underline = true,
-    severity_sort = true,
-    -- virtual_text = false,
-    virtual_text = {
-        prefix = "",
-        source = true,
-    },
-})
+vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics,
+    {
+        signs = true,
+        update_in_insert = true,
+        underline = true,
+        severity_sort = true,
+        -- virtual_text = false,
+        virtual_text = {
+            prefix = "",
+            source = "if_many",
+            spacing = 5,
+            severity_limit = 'Warning',
+        },
+    }
+)
 
 -- lsp windows border
 require("lspconfig.ui.windows").default_options.border = "none"
