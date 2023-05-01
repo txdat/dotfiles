@@ -95,7 +95,8 @@ paru -S --noconfirm dropbox \
                     mongodb-compass \
                     postman-bin \
                     sioyek \
-                    anki
+                    anki \
+                    happy-hacking-gnu
 
 # git config --------------------------------------------
 git config --global user.name "txdat" && \

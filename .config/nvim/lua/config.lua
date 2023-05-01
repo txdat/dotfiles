@@ -50,8 +50,8 @@ opt.encoding = "utf-8"
 opt.fileencoding = "utf-8"
 opt.mouse = "a" -- enable mouse support
 opt.errorbells = false
--- vim.g.mapleader = " "
-vim.g.mapleader = "\\"
+vim.g.mapleader = " "
+-- vim.g.mapleader = "\\"
 
 -- spelling
 vim.opt.spelllang = "en_us"
@@ -82,7 +82,7 @@ opt.splitbelow = true     -- horizontal split to the bottom
 opt.signcolumn = "auto"
 opt.fillchars = [[eob: ,fold: ,foldopen:-,foldsep:│,foldclose:+]]
 opt.foldcolumn = "1"
-opt.statuscolumn = "%s%=%r%#IndentBlankLineChar#│"
+opt.statuscolumn = "%s%=%{&nu?(&rnu&&v:relnum?v:relnum:v:lnum):''}%=%C%#IndentBlankLineChar"
 
 -----------------------------------------
 -- tabs, indent, ...
