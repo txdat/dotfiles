@@ -37,6 +37,6 @@ require("lspconfig.ui.windows").default_options.border = "none"
 
 local keymap = require("util").keymap
 
-keymap("n", "<C-S-i>", function()
+keymap("n", "<C-i>", function()
     vim.lsp.buf.format { async = true }
 end)

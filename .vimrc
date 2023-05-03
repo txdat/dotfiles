@@ -165,14 +165,13 @@ autocmd BufLeave * stopinsert
 " ----------------------------------
 
 nnoremap <silent> <ESC> <nop>
-" inoremap <silent> jj <ESC>
-" vnoremap <silent> jj <ESC>
 
 nnoremap <silent> <leader>q q
 nnoremap <silent> q <nop>
 
-nnoremap <silent> <F1> <nop>
-nnoremap <silent> <F7> :setlocal spell! spell?<CR>
+nnoremap <silent> <F1> :setlocal spell! spell?<CR>
+" nnoremap <silent> <C-l> [s1z=<C-o>
+" inoremap <silent> <C-l> <C-g>u<ESC>[s1z=`]a<C-g>u
 
 nnoremap <silent> H ^
 nnoremap <silent> L $

@@ -177,14 +177,14 @@ autocmd("BufLeave", {
 local keymap = require("util").keymap
 
 keymap("n", "<ESC>", "<nop>")
--- keymap({ "i", "v" }, "jj", "<ESC>")
 
 -- remap recoding
 keymap("n", "<leader>q", "q")
 keymap("n", "q", "<nop>")
 
-keymap("n", "<F1>", "<nop>")
-keymap("n", "<F7>", ":setlocal spell! spell?<CR>") -- toggle spelling
+keymap("n", "<F1>", ":setlocal spell! spell?<CR>") -- toggle spelling
+-- keymap("n", "<C-l>", "[s1z=<C-o>")
+-- keymap("i", "<C-l>", "<C-g>u<ESC>[s1z=`]a<C-g>u")
 
 keymap("n", "H", "^")
 keymap("n", "L", "$")
