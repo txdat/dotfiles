@@ -140,7 +140,7 @@ alias fipt="xclip -sel c -o > " # paste from clipboard to file
 alias cpcb="xclip -sel c" # copy to clipboard
 
 # setup external fullhd display to the right
-alias xfhdr="xrandr --output DP-1 --scale 2x2 && xrandr --output DP-1 --scale 1.6x1.6 --right-of eDP-1 && xrandr --output eDP-1 --scale 0.9999x0.9999"
+alias xfhdr="xrandr --output DisplayPort-0 --scale 2x2 && xrandr --output DisplayPort-0 --scale 1.6x1.6 --right-of eDP && xrandr --output eDP --scale 0.9999x0.9999 && xrandr --output DisplayPort-0 --set TearFree on"
 
 # kubernetes (k3s)
 export KUBECONFIG=$HOME/.kube/config

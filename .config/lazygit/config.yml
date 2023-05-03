@@ -221,8 +221,8 @@ keybinding:
         update: u
         bulkMenu: b
 os:
-    openCommand: xdg-open {{filename}} >/dev/null
-    openLinkCommand: xdg-open {{link}} >/dev/null
+    open: xdg-open {{filename}} >/dev/null
+    openLink: xdg-open {{link}} >/dev/null
 disableStartupPopups: false
 customCommands: []
 services: {}
