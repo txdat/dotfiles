@@ -185,14 +185,14 @@ local plugins = {
         dependencies = {
             -- "williamboman/mason.nvim",
             -- "williamboman/mason-lspconfig.nvim",
-            {
-                "glepnir/lspsaga.nvim",
-                branch = "main",
-                dependencies = {
-                    "nvim-tree/nvim-web-devicons",
-                    "nvim-treesitter/nvim-treesitter"
-                }
-            },
+            -- {
+            --     "glepnir/lspsaga.nvim",
+            --     branch = "main",
+            --     dependencies = {
+            --         "nvim-tree/nvim-web-devicons",
+            --         "nvim-treesitter/nvim-treesitter"
+            --     }
+            -- },
             -- "jose-elias-alvarez/null-ls.nvim",
         },
         event = "BufRead",

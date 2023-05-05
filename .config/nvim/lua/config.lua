@@ -182,7 +182,7 @@ keymap("n", "<ESC>", "<nop>")
 keymap("n", "<leader>q", "q")
 keymap("n", "q", "<nop>")
 
-keymap("n", "<F1>", ":setlocal spell! spell?<CR>") -- toggle spelling
+keymap("n", "<F3>", ":setlocal spell! spell?<CR>") -- toggle spelling
 -- keymap("n", "<C-l>", "[s1z=<C-o>")
 -- keymap("i", "<C-l>", "<C-g>u<ESC>[s1z=`]a<C-g>u")
 
@@ -203,8 +203,8 @@ keymap("n", "<C-S-d>", ":<C-U>bprevious <bar> bdelete #<CR>") -- and move to pre
 keymap("n", "<C-q>", ":qa!<CR>")                              -- close all buffers and exit
 
 -- toggle auto-indenting for code paste
-keymap("n", "<F2>", ":set invpaste paste?<CR>")
-vim.opt.pastetoggle = "<F2>"
+keymap("n", "<F1>", ":set invpaste paste?<CR>")
+vim.opt.pastetoggle = "<F1>"
 
 -- clear search highlighting
 keymap("n", "<leader>h", ":nohl<CR>")

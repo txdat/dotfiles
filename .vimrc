@@ -169,7 +169,7 @@ nnoremap <silent> <ESC> <nop>
 nnoremap <silent> <leader>q q
 nnoremap <silent> q <nop>
 
-nnoremap <silent> <F1> :setlocal spell! spell?<CR>
+nnoremap <silent> <F3> :setlocal spell! spell?<CR>
 " nnoremap <silent> <C-l> [s1z=<C-o>
 " inoremap <silent> <C-l> <C-g>u<ESC>[s1z=`]a<C-g>u
 
@@ -187,8 +187,8 @@ nnoremap <silent> <C-d> :bd!<CR>
 "nnoremap <silent> <C-S-d> :<C-U>bprevious <bar> bdelete #<CR>
 nnoremap <silent> <C-q> :qa!<CR>
 
-nnoremap <silent> <F2> :set invpaste paste?<CR>
-set pastetoggle=<F2>
+nnoremap <silent> <F1> :set invpaste paste?<CR>
+set pastetoggle=<F1>
 
 nnoremap <silent> <leader>h :nohl<CR>
 

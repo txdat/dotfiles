@@ -8,7 +8,7 @@ require("lspsaga").setup({
             jump_to = "<CR>",
             expand_or_jump = "<Tab>",
             vsplit = "v",
-            split = "s",
+            split = "x",
             tabe = "t",
             tabnew = "n",
             quit = "<ESC>",
@@ -18,7 +18,7 @@ require("lspsaga").setup({
     definition = {
         edit = "e",
         vsplit = "v",
-        split = "s",
+        split = "x",
         tabe = "t",
         quit = "<ESC>",
     },
@@ -66,7 +66,7 @@ require("lspsaga").setup({
         keys = {
             edit = "e",
             vsplit = "v",
-            split = "s",
+            split = "x",
             tabe = "t",
             jump = "<CR>",
             expand_collapse = "<Tab>",

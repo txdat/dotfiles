@@ -1,6 +1,6 @@
 -- pcall(require, "plugins.lsp.mason")
 -- pcall(require, "plugins.lsp.mason_lspconfig")
-pcall(require, "plugins.lsp.lspsaga")
+-- pcall(require, "plugins.lsp.lspsaga")
 -- pcall(require, "plugins.lsp.null_ls")
 
 -- custom diagnostic signs
@@ -34,9 +34,3 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
 
 -- lsp windows border
 require("lspconfig.ui.windows").default_options.border = "none"
-
-local keymap = require("util").keymap
-
-keymap("n", "<C-i>", function()
-    vim.lsp.buf.format { async = true }
-end)

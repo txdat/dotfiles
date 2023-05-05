@@ -111,13 +111,13 @@ telescope.setup {
     pickers = {
         find_files = {
             hidden = true, -- show hidden files
-            theme = "ivy",
+            -- theme = "ivy",
         },
         live_grep = {
-            theme = "ivy",
+            -- theme = "ivy",
         },
         buffers = {
-            theme = "ivy",
+            -- theme = "ivy",
         },
     },
     extentions = {

@@ -58,7 +58,7 @@ require("bqf").setup({
     auto_resize_height = true,
     filter = {
         fzf = {
-            extra_opts = { "--bind", "ctrl-o:toggle-all", "--delimiter", "│" }
+            extra_opts = { "--bind", "ctrl-a:toggle-all", "--delimiter", "│" }
         }
     }
 })

@@ -17,6 +17,7 @@ sudo pacman -S --noconfirm curl wget axel rsync \
                            openssh \
                            pacman-contrib \
                            amd-ucode xf86-video-amdgpu \
+                           bluez bluez-utils \
                            # qemu-full \
                            # flatpak \
 

@@ -22,6 +22,9 @@ cmp.setup {
     experimental = {
         ghost_text = true, -- placeholder
     },
+    view = {
+        entries = { name = "native", selection_order = "near_cursor" },
+    },
     window = {
         completion = {
             border = "none",
@@ -33,13 +36,19 @@ cmp.setup {
         },
     },
     formatting = {
-        fields = { "abbr", "kind", "menu" },
+        fields = { "kind", "abbr", "menu" },
     },
     mapping = cmp.mapping.preset.insert({
         ["<C-k>"] = cmp.mapping.scroll_docs(-4),
         ["<C-j>"] = cmp.mapping.scroll_docs(4),
-        ["<C-Space>"] = cmp.mapping.complete(),
-        ["<ESC>"] = cmp.mapping.abort(),
+        -- ["<C-Space>"] = cmp.mapping.complete(),
+        -- ["<Space>"] = cmp.mapping.abort(),
+        ["<C-Space>"] = function ()
+            if cmp.visible() then
+                return cmp.close()
+            end
+            cmp.complete()
+        end,
         ["<CR>"] = cmp.mapping.confirm {
             behavior = cmp.ConfirmBehavior.Replace,
             select = false,
@@ -70,9 +79,9 @@ cmp.setup {
     },
     sources = {
         { name = "nvim_lsp", keyword_length = 2 },
+        { name = "luasnip",  keyword_length = 2 },
         { name = "buffer",   keyword_length = 2 },
         { name = "path" },
-        { name = "luasnip",  keyword_length = 2 },
         -- { name = "nvim_lsp_signature_help" },
     },
 }
@@ -81,36 +90,56 @@ cmp.setup {
 -- on_attach
 local keymap = require("util").keymap
 
-local function on_attach(client, bufnr)
-    client.server_capabilities.documentFormattingProvider = true
+vim.api.nvim_create_autocmd("LspAttach", {
+    callback = function(args)
+        local lspbuf = vim.lsp.buf
+        local diag = vim.diagnostic
+        local opts = { buffer = args.buf }
 
-    local opts = { buffer = bufnr }
+        keymap("n", "K", lspbuf.hover, opts)
+        keymap("n", "<F2>", lspbuf.rename, opts)
+        keymap("n", "gd", lspbuf.definition, opts)
+        keymap("n", "gD", lspbuf.declaration, opts)
+        keymap("n", "gt", lspbuf.type_definition, opts)
+        keymap("n", "gs", lspbuf.signature_help, opts)
+        keymap("n", "gi", lspbuf.implementation, opts)
+        keymap("n", "gr", lspbuf.references, opts)
+        keymap("n", "gc", lspbuf.code_action, opts)
+        keymap("n", "D", diag.open_float, opts)
+        keymap("n", "d[", diag.goto_prev, opts)
+        keymap("n", "d]", diag.goto_next, opts)
+        keymap("n", "<C-i>", function()
+            lspbuf.format { async = true }
+        end, opts)
+    end
+})
 
-    keymap("n", "gs", vim.lsp.buf.signature_help, opts)
-end
+-- local function on_attach(client, bufnr)
+--     client.server_capabilities.documentFormattingProvider = true
+-- end
 
 -- capabilities
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 -- handlers
-local handlers = {
-    ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-        border = "none",
-        close_events = { "CursorMoved", "InsertLeave", "BufHidden" },
-        focusable = false,
-        use_existing = true,
-        silent = true,
-    }),
-}
+-- local handlers = {
+--     ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+--         border = "none",
+--         close_events = { "CursorMoved", "InsertLeave", "BufHidden" },
+--         focusable = false,
+--         use_existing = true,
+--         silent = true,
+--     }),
+-- }
 
 -- config
 local servers_config = require("plugins.lsp.cmp.servers_config")
 
 for server, config in pairs(servers_config) do
-    config.on_attach = on_attach
     config.capabilities = capabilities
-    config.handlers = handlers
+    -- config.on_attach = on_attach
+    -- config.handlers = handlers
 
     lspconfig[server].setup(config)
 end
