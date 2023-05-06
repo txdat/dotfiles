@@ -20,8 +20,8 @@ configuration{
     sidebar-mode:               true;
     window-format:              "[{w}]\t\t{t:0}";
     drun-display-format:        "{icon} {name}";
-    display-drun:               "   Apps ";
-    display-run:                "   Run ";
+    display-drun:               "  Apps ";
+    display-run:                "  Run ";
     display-window:             " 﩯 Window ";
     kb-mode-previous:           "Control+Shift+Tab";
     kb-mode-next:               "Control+Tab";
