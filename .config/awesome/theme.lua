@@ -10,6 +10,7 @@ local dpi                                       = xresources.apply_dpi
 local gfs                                       = require("gears.filesystem")
 local themes_path                               = gfs.get_themes_dir()
 
+-- {{{ Colors
 -- vim-moonfly-colors
 local colors                                    = {
     -- Background and foreground
@@ -51,14 +52,15 @@ local colors                                    = {
     -- Extra colors
     spring = "#00875f",
 }
+-- }}}
 
 local theme                                     = {}
 
 theme.font                                      = "JetbrainsMono Nerd Font Mono 10"
 
 theme.bg_normal                                 = colors.black
-theme.bg_focus                                  = colors.black
-theme.bg_urgent                                 = colors.black
+theme.bg_focus                                  = colors.grey0
+theme.bg_urgent                                 = colors.grey0
 theme.bg_minimize                               = colors.black
 theme.bg_systray                                = theme.bg_normal
 
@@ -177,5 +179,3 @@ rnotification.connect_signal('request::rules', function()
 end)
 
 return theme
-
--- vim: filetype=lua:expandtab:shiftwidth=4:tabstop=8:softtabstop=4:textwidth=80
