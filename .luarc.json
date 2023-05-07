@@ -1,0 +1,9 @@
+{
+    "diagnostics.globals": [
+        "vim",
+        "client",
+        "tag",
+        "screen",
+        "awesome"
+    ]
+}
