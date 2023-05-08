@@ -2,15 +2,14 @@ local dap = require("dap")
 local dapui = require("dapui")
 
 dapui.setup({
-    icons = { expanded = "", collapsed = "", current_frame = "" },
-    mappings = {
-        -- Use a table to apply multiple mappings
-        expand = { "<CR>", "<2-LeftMouse>" },
-        open = "o",
-        remove = "d",
-        edit = "e",
-        repl = "r",
-        toggle = "t",
+    controls = {
+        enabled = true,
+    },
+    floating = {
+        border = "none",
+        mappings = {
+            close = { "<Esc>" },
+        },
     },
     layouts = {
         {
@@ -20,34 +19,26 @@ dapui.setup({
                 "stacks",
                 "watches",
             },
-            size = 0.25,
             position = "left",
+            size = 0.25,
         },
         {
             elements = {
                 "repl",
                 "console",
             },
-            size = 0.4,
             position = "bottom",
+            size = 0.4,
         },
     },
-    controls = {
-        enabled = true,
+    mappings = {
+        edit = "e",
+        expand = { "<CR>", "<2-LeftMouse>" },
+        open = "o",
+        remove = "d",
+        repl = "r",
+        toggle = "<Tab>",
     },
-    render = {
-        max_value_lines = 3,
-        max_type_length = nil,
-    },
-    floating = {
-        max_height = nil,
-        max_width = nil,
-        border = "none",
-        mappings = {
-            close = { "<Esc>" },
-        },
-    },
-    windows = { indent = 1 },
 })
 
 dap.listeners.after.event_initialized["dapui_config"] = function()

@@ -8,9 +8,10 @@ dap.configurations.cpp = {
         program = function()
             return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
         end,
-        stdio = { nil, nil, nil },
+        stdio = { nil, nil, nil }, -- stdin/stdout/stderr
         cwd = "${workspaceFolder}",
         stopOnEntry = false,
+        args = {},
         -- "lldb" requires this
         -- https://github.com/mfussenegger/nvim-dap/issues/210
         -- if you change `runInTerminal` to true, you might need to change the yama/ptrace_scope setting:

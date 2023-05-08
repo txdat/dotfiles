@@ -21,5 +21,8 @@ done
 # update bat config
 bat cache --build
 
+# enable nvim's cpp dap
+echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+
 # install doom's emacs
 ln -s ~/.dotfiles/.doom.d ~/.doom.d && ~/.emacs.d/bin/doom install
