@@ -275,7 +275,7 @@ local opts = {
     defaults = {
         lazy = true,
     },
-    lockfile = vim.fn.stdpath("data") .. "/lazy/lazy-lock.json",
+    -- lockfile = vim.fn.stdpath("data") .. "/lazy/lazy-lock.json",
     dev = {
         path = "~/workspace", -- local plugins directory
     },
