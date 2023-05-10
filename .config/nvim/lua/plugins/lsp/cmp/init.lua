@@ -55,7 +55,8 @@ cmp.setup {
         completeopt = "menu,menuone,noinsert,noselect",
     },
     experimental = {
-        ghost_text = true, -- placeholder
+        -- ghost_text = true, -- placeholder
+        ghost_text = { enabled = true },
     },
     view = {
         entries = { name = "native", selection_order = "near_cursor" },
