@@ -89,11 +89,26 @@ M.pyright = {
             }
         }
     },
-    single_file_support = true,
+}
+
+M.hls = {
+    filetypes = { "haskell", "lhaskell", "cabal", "cabalproject" },
+    settings = {
+        haskell = {
+            formattingProvider = "fourmolu",
+            cabalFormattingProvider = "cabalfmt",
+            maxCompletions = 40,
+            checkProject = true,
+            checkParents = "CheckOnSave",
+        },
+    },
 }
 
 M.tsserver = {}
-M.eslint = {}
+
+M.eslint = {
+    filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+}
 
 -- M.texlab = {}
 

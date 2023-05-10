@@ -56,7 +56,7 @@ cmp.setup {
     },
     experimental = {
         -- ghost_text = true, -- placeholder
-        ghost_text = { enabled = true },
+        ghost_text = {},
     },
     view = {
         entries = { name = "native", selection_order = "near_cursor" },
@@ -84,7 +84,7 @@ cmp.setup {
         ["<C-j>"] = cmp.mapping.scroll_docs(4),
         -- ["<C-Space>"] = cmp.mapping.complete(),
         -- ["<Space>"] = cmp.mapping.abort(),
-        ["<C-Space>"] = function()
+        ["<C-Space>"] = function() -- toggle completion
             if cmp.visible() then
                 return cmp.close()
             end
