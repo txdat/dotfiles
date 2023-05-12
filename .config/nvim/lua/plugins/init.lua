@@ -34,6 +34,14 @@ local plugins = {
             pcall(require, "plugins.colorscheme.moonfly");
         end
     },
+    -- {
+    --     "projekt0n/github-nvim-theme",
+    --     -- tag = "v0.0.7",
+    --     lazy = false,
+    --     config = function()
+    --         pcall(require, "plugins.colorscheme.github");
+    --     end
+    -- },
 
     -- statusline
     {
