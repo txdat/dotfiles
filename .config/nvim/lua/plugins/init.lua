@@ -229,17 +229,17 @@ local plugins = {
     },
 
     -- debugging
-    {
-        "mfussenegger/nvim-dap",
-        dependencies = {
-            "rcarriga/nvim-dap-ui",
-            "theHamsta/nvim-dap-virtual-text",
-        },
-        keys = { "<F5>", "<F9>" }, -- triggered when start debugging
-        config = function()
-            pcall(require, "plugins.dap")
-        end,
-    },
+    -- {
+    --     "mfussenegger/nvim-dap",
+    --     dependencies = {
+    --         "rcarriga/nvim-dap-ui",
+    --         "theHamsta/nvim-dap-virtual-text",
+    --     },
+    --     keys = { "<F5>", "<F9>" }, -- triggered when start debugging
+    --     config = function()
+    --         pcall(require, "plugins.dap")
+    --     end,
+    -- },
 
     ------------------------------------
     -- prog. langs
