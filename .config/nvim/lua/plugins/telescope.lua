@@ -1,6 +1,7 @@
 local telescope = require("telescope")
 local previewers = require("telescope.previewers")
 local actions = require("telescope.actions")
+local fb_actions = require("telescope._extensions.file_browser.actions")
 local action_state = require("telescope.actions.state")
 local action_layout = require("telescope.actions.layout")
 
@@ -121,9 +122,46 @@ telescope.setup {
         },
     },
     extentions = {
+        file_browser = {
+            grouped = true,
+            files = false,
+            auto_depth = true,
+            hidden = { file_browser = true, folder_browser = true },
+            hide_parent_dir = true,
+            collapse_dirs = true,
+            quiet = true,
+            hijack_netrw = true, -- disable hijack_netrw
+            use_fd = true,
+            git_status = true,
+            mappings = {
+                ["i"] = {
+                    ["<A-c>"] = fb_actions.create,
+                    ["<A-r>"] = fb_actions.rename,
+                    ["<A-x>"] = fb_actions.move,
+                    ["<A-y>"] = fb_actions.copy,
+                    ["<A-d>"] = fb_actions.remove,
+                    ["<CR>"] = fb_actions.open,
+                    ["<A-g>"] = fb_actions.goto_parent_dir,
+                    ["<A-w>"] = fb_actions.goto_cwd,
+                    ["<A-f>"] = fb_actions.toggle_browser,
+                    ["<A-h>"] = fb_actions.toggle_hidden,
+                },
+                ["n"] = {
+                    ["c"] = fb_actions.create,
+                    ["r"] = fb_actions.rename,
+                    ["x"] = fb_actions.move,
+                    ["y"] = fb_actions.copy,
+                    ["d"] = fb_actions.remove,
+                    ["<CR>"] = fb_actions.open,
+                    ["g"] = fb_actions.goto_parent_dir,
+                    ["w"] = fb_actions.goto_cwd,
+                    ["f"] = fb_actions.toggle_browser,
+                    ["h"] = fb_actions.toggle_hidden,
+                },
+            },
+        },
         ["ui-select"] = {
             require("telescope.themes").get_dropdown {
-                -- even more opts
                 width = 1.0,
                 previewer = false,
                 prompt_title = false,
@@ -149,12 +187,15 @@ telescope.setup {
     }
 }
 
+telescope.load_extension("file_browser")
 telescope.load_extension("ui-select")
 -- telescope.load_extension("fzf")
 telescope.load_extension("fzy_native")
 
 local keymap = require("util").keymap
 
+keymap("n", "<C-e>", ":Telescope file_browser<CR>")
+keymap("n", "<C-g>", ":Telescope git_status<CR>")
 keymap("n", "<leader>ff", ":Telescope find_files<CR>")
 keymap("n", "<leader>fg", ":Telescope live_grep<CR>")
 keymap("n", "<leader>fb", ":Telescope buffers<CR>")
