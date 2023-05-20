@@ -99,7 +99,7 @@ local dap_components = {
 
 require("lualine").setup {
     options = {
-        theme = "moonfly", -- auto falling back to "auto"
+        theme = "auto",
         -- section_separators = { left = "", right = "" },
         section_separators = "",
         component_separators = "",
@@ -133,7 +133,10 @@ require("lualine").setup {
                 "diff",
                 symbols = { added = " ", modified = " ", removed = " " },
             },
-            { "branch", icon = "" },
+            {
+                "branch",
+                icon = "",
+            },
         },
         lualine_z = { "location", "progress" },
     },

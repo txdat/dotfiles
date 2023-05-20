@@ -23,6 +23,7 @@ local plugins = {
     -- {
     --     "folke/tokyonight.nvim",
     --     lazy = false,
+    --     priority = 1000,
     --     config = function()
     --         pcall(require, "plugins.colorscheme.tokyonight")
     --     end
@@ -30,14 +31,15 @@ local plugins = {
     {
         "bluz71/vim-moonfly-colors",
         lazy = false,
+        priority = 1000,
         config = function()
             pcall(require, "plugins.colorscheme.moonfly");
         end
     },
     -- {
     --     "projekt0n/github-nvim-theme",
-    --     -- tag = "v0.0.7",
     --     lazy = false,
+    --     priority = 1000,
     --     config = function()
     --         pcall(require, "plugins.colorscheme.github");
     --     end
@@ -56,16 +58,16 @@ local plugins = {
     },
 
     -- bufferline
-    {
-        "romgrk/barbar.nvim",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-        },
-        lazy = false,
-        config = function()
-            pcall(require, "plugins.bufferline")
-        end,
-    },
+    -- {
+    --     "romgrk/barbar.nvim",
+    --     dependencies = {
+    --         "nvim-tree/nvim-web-devicons",
+    --     },
+    --     event = "BufRead",
+    --     config = function()
+    --         pcall(require, "plugins.bufferline")
+    --     end,
+    -- },
 
     -- indent
     {
