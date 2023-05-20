@@ -53,7 +53,7 @@ local plugins = {
         },
         lazy = false,
         config = function()
-            pcall(require, "plugins.lualine")
+            pcall(require, "plugins.evil_lualine")
         end,
     },
 
