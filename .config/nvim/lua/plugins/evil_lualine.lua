@@ -118,20 +118,21 @@ ins_left {
     function()
         return "▌"
     end,
-    color = { fg = colors.blue },      -- Sets highlighting of component
-    padding = { left = 0, right = 1 }, -- We don"t need space before this
-}
-
-ins_left {
-    -- mode component
-    function()
-        return "󰝥"
-    end,
     color = function()
         return { fg = mode_color[vim.fn.mode()] }
     end,
     padding = { right = 1 },
 }
+
+-- ins_left {
+--     -- mode component
+--     function()
+--         return "󰝥"
+--     end,
+--     color = function()
+--         return { fg = mode_color[vim.fn.mode()] }
+--     end,
+-- }
 
 ins_left {
     -- filesize component
@@ -234,7 +235,9 @@ ins_right {
     function()
         return "▐"
     end,
-    color = { fg = colors.blue },
+    color = function()
+        return { fg = mode_color[vim.fn.mode()] }
+    end,
     padding = { left = 1 },
 }
 
