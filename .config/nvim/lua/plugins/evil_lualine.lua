@@ -6,7 +6,7 @@ local lualine = require("lualine")
 -- Color table for highlights
 -- stylua: ignore
 local colors = {
-    bg       = "#080808",
+    bg       = "#303030",
     fg       = "#b2b2b2",
     yellow   = "#e3c78a",
     cyan     = "#79dac8",
@@ -118,21 +118,22 @@ ins_left {
     function()
         return "▌"
     end,
-    color = function()
-        return { fg = mode_color[vim.fn.mode()] }
-    end,
+    color = { fg = colors.blue },
+    -- color = function()
+    --     return { fg = mode_color[vim.fn.mode()] }
+    -- end,
     padding = { right = 1 },
 }
 
--- ins_left {
---     -- mode component
---     function()
---         return "󰝥"
---     end,
---     color = function()
---         return { fg = mode_color[vim.fn.mode()] }
---     end,
--- }
+ins_left {
+    -- mode component
+    function()
+        return "󰝥"
+    end,
+    color = function()
+        return { fg = mode_color[vim.fn.mode()] }
+    end,
+}
 
 ins_left {
     -- filesize component
@@ -235,9 +236,10 @@ ins_right {
     function()
         return "▐"
     end,
-    color = function()
-        return { fg = mode_color[vim.fn.mode()] }
-    end,
+    color = { fg = colors.blue },
+    -- color = function()
+    --     return { fg = mode_color[vim.fn.mode()] }
+    -- end,
     padding = { left = 1 },
 }
 
