@@ -156,6 +156,7 @@ local plugins = {
         dependencies = {
             "nvim-telescope/telescope-file-browser.nvim",
             "nvim-telescope/telescope-ui-select.nvim",
+            "nvim-telescope/telescope-live-grep-args.nvim",
             -- { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
             "nvim-telescope/telescope-fzy-native.nvim",
             "nvim-lua/plenary.nvim",
@@ -170,8 +171,6 @@ local plugins = {
             "<C-e>",
             "<leader>ff",
             "<leader>fg",
-            "<leader>fb",
-            "<leader>fs",
         },
         config = function()
             pcall(require, "plugins.telescope")

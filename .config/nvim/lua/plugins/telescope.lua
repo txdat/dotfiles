@@ -2,6 +2,7 @@ local telescope = require("telescope")
 local previewers = require("telescope.previewers")
 local actions = require("telescope.actions")
 local fb_actions = require("telescope._extensions.file_browser.actions")
+local lga_actions = require("telescope-live-grep-args.actions")
 local action_state = require("telescope.actions.state")
 local action_layout = require("telescope.actions.layout")
 
@@ -44,7 +45,7 @@ telescope.setup {
         layout_strategy = "horizontal",
         layout_config = {
             horizontal = {
-                prompt_position = "top",
+                prompt_position = "bottom",
                 preview_width = 0.6,
                 results_width = 0.8,
             },
@@ -56,12 +57,12 @@ telescope.setup {
             preview_cutoff = 120,
         },
         border = true,
-        borderchars = {
-            { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-            prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-            results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-            preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-        },
+        -- borderchars = {
+        --     { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+        --     prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+        --     results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+        --     preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+        -- },
         set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
         file_previewer = previewers.vim_buffer_cat.new,
         grep_previewer = previewers.vim_buffer_vimgrep.new,
@@ -134,7 +135,7 @@ telescope.setup {
             use_fd = true,
             git_status = true,
             mappings = {
-                ["i"] = {
+                i = {
                     ["<A-c>"] = fb_actions.create,
                     ["<A-r>"] = fb_actions.rename,
                     ["<A-x>"] = fb_actions.move,
@@ -146,7 +147,7 @@ telescope.setup {
                     ["<A-f>"] = fb_actions.toggle_browser,
                     ["<A-h>"] = fb_actions.toggle_hidden,
                 },
-                ["n"] = {
+                n = {
                     ["c"] = fb_actions.create,
                     ["r"] = fb_actions.rename,
                     ["x"] = fb_actions.move,
@@ -166,20 +167,26 @@ telescope.setup {
                 previewer = false,
                 prompt_title = false,
                 border = true,
-                borderchars = {
-                    { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-                    prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
-                    results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
-                    preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
-                },
+                -- borderchars = {
+                --     { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+                --     prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
+                --     results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
+                --     preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
+                -- },
             }
         },
-        fzf = {
-            fuzzy = true,
-            override_generic_sorter = true,
-            override_file_sorter = true,
-            case_mode = "smart_case",
+        live_grep_args = {
+            auto_quoting = true,
+            -- TODO: add custom keymaps
+            mappings = {
+            },
         },
+        -- fzf = {
+        --     fuzzy = true,
+        --     override_generic_sorter = true,
+        --     override_file_sorter = true,
+        --     case_mode = "smart_case",
+        -- },
         fzy_native = {
             override_generic_sorter = true,
             override_file_sorter = true,
@@ -189,14 +196,16 @@ telescope.setup {
 
 telescope.load_extension("file_browser")
 telescope.load_extension("ui-select")
+telescope.load_extension("live_grep_args")
 -- telescope.load_extension("fzf")
 telescope.load_extension("fzy_native")
 
 local keymap = require("util").keymap
 
 keymap("n", "<C-e>", ":Telescope file_browser<CR>")
-keymap("n", "<C-g>", ":Telescope git_status<CR>")
+keymap("n", "<leader>fh", ":Telescope git_status<CR>")
 keymap("n", "<leader>ff", ":Telescope find_files<CR>")
-keymap("n", "<leader>fg", ":Telescope live_grep<CR>")
+-- keymap("n", "<leader>fg", ":Telescope live_grep<CR>")
+keymap("n", "<leader>fg", ":lua require('telescope').extensions.live_grep_args.live_grep_args()<CR>")
 keymap("n", "<leader>fb", ":Telescope buffers<CR>")
 keymap("n", "<leader>fs", ":Telescope lsp_document_symbols<CR>")
