@@ -91,6 +91,15 @@ local plugins = {
         end
     },
 
+    -- colorizer
+    {
+        "norcalli/nvim-colorizer.lua",
+        event = "BufRead",
+        config = function()
+            pcall(require, "plugins.colorizer")
+        end
+    },
+
     -- commenting
     {
         "numToStr/Comment.nvim",
