@@ -93,7 +93,7 @@ local plugins = {
 
     -- colorizer
     {
-        "norcalli/nvim-colorizer.lua",
+        "NvChad/nvim-colorizer.lua",
         event = "BufRead",
         config = function()
             pcall(require, "plugins.colorizer")
