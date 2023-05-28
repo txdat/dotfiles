@@ -203,8 +203,12 @@ local plugins = {
     {
         "neovim/nvim-lspconfig",
         dependencies = {
-            -- "williamboman/mason.nvim",
-            -- "williamboman/mason-lspconfig.nvim",
+            -- {
+            --     "williamboman/mason.nvim",
+            --     dependencies = {
+            --         "williamboman/mason-lspconfig.nvim",
+            --     },
+            -- },
             -- {
             --     "glepnir/lspsaga.nvim",
             --     branch = "main",
@@ -214,6 +218,12 @@ local plugins = {
             --     }
             -- },
             -- "jose-elias-alvarez/null-ls.nvim",
+            {
+                "folke/trouble.nvim",
+                dependencies = {
+                    "nvim-tree/nvim-web-devicons",
+                },
+            },
         },
         event = "BufRead",
         config = function()
@@ -230,7 +240,12 @@ local plugins = {
             "hrsh7th/cmp-path",
             -- "hrsh7th/cmp-nvim-lsp-signature-help",
             "saadparwaiz1/cmp_luasnip",
-            "L3MON4D3/LuaSnip",
+            {
+                "L3MON4D3/LuaSnip",
+                dependencies = {
+                    "rafamadriz/friendly-snippets",
+                },
+            },
         },
         event = "InsertEnter",
         config = function()
