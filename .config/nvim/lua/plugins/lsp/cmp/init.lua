@@ -71,7 +71,7 @@ cmp.setup {
         },
     },
     formatting = {
-        fields = { "kind", "abbr", "menu" },
+        fields = { "abbr", "kind", "menu" },
         format = function(entry, vim_item)
             vim_item.kind = string.format('%s %s', lspkind_icons[vim_item.kind], vim_item.kind)
             vim_item.menu = string.format('[%s]', lspkind_menu[entry.source.name])
@@ -174,9 +174,8 @@ capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 -- }
 
 -- config
-local servers_config = require("plugins.lsp.cmp.servers_config")
-
-for server, config in pairs(servers_config) do
+local servers = require("plugins.lsp.cmp.servers")
+for server, config in pairs(servers) do
     config.capabilities = capabilities
     -- config.on_attach = on_attach
     -- config.handlers = handlers

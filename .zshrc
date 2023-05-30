@@ -125,13 +125,16 @@ else
     fi
 fi
 unset __conda_setup
+export PATH="$HOME/miniconda3/bin:$PATH"
 # <<< conda initialize <<<
 
 export PATH="$HOME/.emacs.d/bin:$PATH"
-export PATH="$HOME/miniconda3/bin:$PATH"
 export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
 #export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 
+# flutter development
+export JAVA_HOME='/usr/lib/jvm/java-8-openjdk'
+export PATH=$JAVA_HOME/bin:$PATH
 export ANDROID_SDK_ROOT='/opt/android-sdk'
 export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools/
 export PATH=$PATH:$ANDROID_SDK_ROOT/tools/bin/
@@ -142,8 +145,8 @@ export PATH=$PATH:$ANDROID_SDK_ROOT/tools/
 alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 alias ficp="xclip -sel c < " # copy from file to clipboard
-alias fipt="xclip -sel c -o > " # paste from clipboard to file
-alias cpcb="xclip -sel c" # copy to clipboard
+alias fipt="xclip -sel c -o > " # copy from clipboard to file
+alias cpcb="xclip -sel c" # copy output to clipboard
 
 # setup external fullhd display to the right
 alias xfhdr="xrandr --output DisplayPort-0 --scale 2x2 && xrandr --output DisplayPort-0 --scale 1.6x1.6 --right-of eDP && xrandr --output eDP --scale 0.9999x0.9999 && xrandr --output DisplayPort-0 --set TearFree on"
