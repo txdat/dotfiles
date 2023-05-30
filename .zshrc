@@ -114,35 +114,41 @@ source $ZSH/oh-my-zsh.sh
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('$HOME/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+CONDA_HOME="$HOME/miniconda3"
+
+__conda_setup="$('$CONDA_HOME/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
     eval "$__conda_setup"
 else
-    if [ -f "$HOME/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "$HOME/miniconda3/etc/profile.d/conda.sh"
+    if [ -f "$CONDA_HOME/etc/profile.d/conda.sh" ]; then
+        . "$CONDA_HOME/etc/profile.d/conda.sh"
     else
-        export PATH="$HOME/miniconda3/bin:$PATH"
+        export PATH="$CONDA_HOME/bin:$PATH"
     fi
 fi
 unset __conda_setup
-export PATH="$HOME/miniconda3/bin:$PATH"
+
+export PATH="$CONDA_HOME/bin:$PATH"
 # <<< conda initialize <<<
 
 export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
-#export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
+export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 
-# flutter development
-export JAVA_HOME='/usr/lib/jvm/java-8-openjdk'
+# flutter development (java8)
+export JAVA_HOME='/usr/lib/jvm/default'
 export PATH=$JAVA_HOME/bin:$PATH
+export PATH=$HOME/workspace/flutter/bin:$HOME/.pub-cache/bin:$PATH
 export ANDROID_SDK_ROOT='/opt/android-sdk'
-export PATH=$PATH:$ANDROID_SDK_ROOT/platform-tools/
-export PATH=$PATH:$ANDROID_SDK_ROOT/tools/bin/
-export PATH=$PATH:$ANDROID_ROOT/emulator
-export PATH=$PATH:$ANDROID_SDK_ROOT/tools/
+export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH
+export PATH=$ANDROID_SDK_ROOT/tools/bin:$PATH
+export PATH=$ANDROID_SDK_ROOT/emulator:$PATH
+export PATH=$ANDROID_SDK_ROOT/tools:$PATH
+export CHROME_EXECUTABLE=$(which chromium)
+export JAVA_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'
 
 # custom aliases
-alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
+alias syyu="sudo pacman -Syyu && paru -Syyu"
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 alias ficp="xclip -sel c < " # copy from file to clipboard
 alias fipt="xclip -sel c -o > " # copy from clipboard to file
