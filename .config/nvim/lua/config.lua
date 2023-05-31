@@ -39,6 +39,7 @@ end
 -- general
 -----------------------------------------
 
+opt.compatible = false
 opt.clipboard = "unnamed,unnamedplus" -- system"s clipboard
 opt.timeout = true
 opt.timeoutlen = 500                  -- key mappings timeout
@@ -50,6 +51,9 @@ opt.encoding = "utf-8"
 opt.fileencoding = "utf-8"
 opt.mouse = "a" -- enable mouse support
 opt.errorbells = false
+opt.belloff = "all"
+opt.modelines = 2
+opt.wildmode = "longest,list"
 vim.g.mapleader = " "
 -- vim.g.mapleader = "\\"
 
@@ -63,7 +67,7 @@ vim.opt.spelllang = "en_us"
 
 opt.background = "dark"
 opt.shortmess:append "sI"            -- disable nvim intro
-opt.laststatus = 3                   -- set global statusline
+opt.laststatus = 2                   -- set global statusline
 opt.termguicolors = true             -- enable 24bits colors
 opt.guicursor = "n-v-c:block-Cursor" -- using block cursor
 opt.guicursor:append "i:block-iCursor"
@@ -114,7 +118,7 @@ opt.smartcase = true  -- ignore lowercase for the whole pattern
 -----------------------------------------
 
 opt.hidden = true     -- enable background buffers
-opt.history = 100     -- n lines in history
+opt.history = 50      -- n lines in history
 opt.lazyredraw = true -- faster scrolling
 opt.synmaxcol = 240   -- max column for syntax highlight
 opt.updatetime = 250  -- milli-seconds to wait for trigger an event (keymap)

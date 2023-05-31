@@ -145,7 +145,6 @@ export PATH=$ANDROID_SDK_ROOT/tools/bin:$PATH
 export PATH=$ANDROID_SDK_ROOT/emulator:$PATH
 export PATH=$ANDROID_SDK_ROOT/tools:$PATH
 export CHROME_EXECUTABLE=$(which chromium)
-export JAVA_OPTS='-XX:+IgnoreUnrecognizedVMOptions --add-modules java.se.ee'
 
 # custom aliases
 alias syyu="sudo pacman -Syyu && paru -Syyu"

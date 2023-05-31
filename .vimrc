@@ -38,6 +38,8 @@ endfor
 syntax on
 filetype plugin indent on
 
+set rtp^=~/.vim
+set nocompatible " use vim defaults
 set clipboard^=unnamed,unnamedplus " system's clipboard
 set timeout
 set timeoutlen=500 " key mappings timeout
@@ -49,7 +51,10 @@ set encoding=utf-8
 set fileencoding=utf-8
 set mouse=a " enable mouse support
 set noerrorbells
-set bs=2 " fix backspace
+set belloff=all
+set bs=2 " backspacing in insert mode
+set modelines=2
+set wildmode=longest,list
 let mapleader=' '
 " let mapleader='\'
 
@@ -63,7 +68,7 @@ set spelllang=en_us
 
 set background="dark"
 set shortmess=I " disable vim intro
-set laststatus=3 " set global statusline
+set laststatus=2 " always show statusline
 set guicursor=n-v-c:block-Cursor " using block cursor
 set guicursor+=i:block-iCursor
 set guicursor+=n-v-c:blinkon0
@@ -120,7 +125,8 @@ set smartcase " ignore lowercase for the whole pattern
 " ----------------------------------
 
 set hidden " enable background buffers
-set history=100 " n lines in history
+set viminfo='20,\"50
+set history=50
 set lazyredraw " faster scrolling
 set synmaxcol=240 " maximum column for syntax highligh
 set updatetime=250 " milli-seconds to wait for trigger an event (keymap)
