@@ -54,6 +54,9 @@ cmp.setup {
     completion = {
         completeopt = "menu,menuone,noinsert,noselect",
     },
+    performance = {
+        max_view_entries = 20,
+    },
     experimental = {
         ghost_text = true, -- placeholder
     },
@@ -120,7 +123,7 @@ cmp.setup {
     sources = {
         { name = "nvim_lsp", keyword_length = 2 },
         { name = "luasnip",  keyword_length = 2 },
-        { name = "buffer",   keyword_length = 2 },
+        { name = "buffer",   keyword_length = 3 },
         { name = "path" },
         -- { name = "nvim_lsp_signature_help" },
     },

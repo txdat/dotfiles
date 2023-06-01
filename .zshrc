@@ -138,20 +138,22 @@ export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 # flutter development (java8)
 export JAVA_HOME='/usr/lib/jvm/default'
 export PATH=$JAVA_HOME/bin:$PATH
-export PATH=$HOME/workspace/flutter/bin:$HOME/.pub-cache/bin:$PATH
+export PATH=$HOME/flutter/bin:$HOME/.pub-cache/bin:$PATH
 export ANDROID_SDK_ROOT='/opt/android-sdk'
 export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH
 export PATH=$ANDROID_SDK_ROOT/tools/bin:$PATH
-export PATH=$ANDROID_SDK_ROOT/emulator:$PATH
 export PATH=$ANDROID_SDK_ROOT/tools:$PATH
+export PATH=$ANDROID_SDK_ROOT/emulator:$PATH
 export CHROME_EXECUTABLE=$(which chromium)
 
 # custom aliases
 alias syyu="sudo pacman -Syyu && paru -Syyu"
-alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
+
 alias ficp="xclip -sel c < " # copy from file to clipboard
 alias fipt="xclip -sel c -o > " # copy from clipboard to file
 alias cpcb="xclip -sel c" # copy output to clipboard
+
+alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 
 # setup external fullhd display to the right
 alias xfhdr="xrandr --output DisplayPort-0 --scale 2x2 && xrandr --output DisplayPort-0 --scale 1.6x1.6 --right-of eDP && xrandr --output eDP --scale 0.9999x0.9999 && xrandr --output DisplayPort-0 --set TearFree on"
