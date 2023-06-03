@@ -85,7 +85,6 @@ git clone https://aur.archlinux.org/paru .paru && cd .paru/ && makepkg -si && cd
 # install essential applications ------------------------
 sudo pacman -S --noconfirm dolphin \
                            alacritty \
-                           firefox \
                            chromium \
                            gwenview mpv spectacle \
                            zathura zathura-pdf-mupdf \
@@ -95,12 +94,9 @@ sudo pacman -S --noconfirm dolphin \
 
 paru -S --noconfirm dropbox \
                     spotify \
-                    visual-studio-code-bin \
                     mongodb-compass \
                     postman-bin \
-                    sioyek \
-                    anki \
-                    happy-hacking-gnu
+                    anki
 
 # git config --------------------------------------------
 git config --global user.name "txdat" && \
@@ -110,8 +106,7 @@ ssh-keygen
 # install essential development packages ----------------
 sudo pacman -S --noconfirm gcc gcc-fortran gdb \
                            clang llvm lldb lld \
-                           make cmake xmake ccache ctags valgrind strace \
-                           python python-pip \
+                           make cmake ccache ctags valgrind strace \
                            nodejs npm yarn \
                            go gopls
 
