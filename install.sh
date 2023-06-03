@@ -21,7 +21,7 @@ sudo pacman -S --noconfirm curl wget axel rsync \
                            amd-ucode xf86-video-amdgpu \
                            bluez bluez-utils \
                            # qemu-full \
-                           # flatpak \
+                           # flatpak
 
 sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
 
@@ -92,7 +92,8 @@ sudo pacman -S --noconfirm dolphin \
                            calibre \
                            dbeaver
 
-paru -S --noconfirm dropbox \
+paru -S --noconfirm google-chrome \
+                    dropbox \
                     spotify \
                     mongodb-compass \
                     postman-bin \
@@ -108,7 +109,8 @@ sudo pacman -S --noconfirm gcc gcc-fortran gdb \
                            clang llvm lldb lld \
                            make cmake ccache ctags valgrind strace \
                            nodejs npm yarn \
-                           go gopls
+                           go gopls \
+                           jdk-openjdk maven
 
 sudo pacman -S --noconfirm cblas openblas \
                            openmp openmpi \
@@ -118,9 +120,7 @@ sudo pacman -S --noconfirm cblas openblas \
                            gperftools gflags google-glog gtest protobuf \
                            cuda cudnn magma-cuda nccl nvidia-utils \
                            opencv-cuda \
-                           vulkan-icd-loader \
-                           vulkan-radeon amdvlk \
-                           # vulkan-intel \
+                           vulkan-icd-loader vulkan-radeon amdvlk
 
 sudo pacman -S --noconfirm nvidia
 
@@ -128,13 +128,18 @@ sudo pacman -S --noconfirm nvidia
 sudo pacman -S --noconfirm docker docker-compose kubectl helm skaffold nfs-utils
 paru -S --noconfirm nvidia-container-runtime nvidia-container-toolkit
 sudo usermod -aG docker $USER
+# curl -sfL https://get.k3s.io | sh -
 
 # rust
 rustup component add rust-src
 rustup component add rust-analyzer
 
 # javascript/typescript
-sudo npm install -g typescript typescript-language-server vscode-langservers-extracted neovim
+sudo npm install -g typescript typescript-language-server vscode-langservers-extracted prettier neovim
+
+# scala
+# paru -S --noconfirm scala3
+# sudo pacman -S --noconfirm sbt
 
 # haskell
 # paru -S --noconfirm ghcup-hs-bin
@@ -201,7 +206,6 @@ ln -s ~/.dotfiles/.jupyter/lab/user-settings/@jupyterlab ~/.jupyter/lab/user-set
 # link config
 ./link_config.sh
 
-cd -
-
 # finish installing ----------------------------------
+cd ~
 neofetch

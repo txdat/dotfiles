@@ -114,7 +114,7 @@ source $ZSH/oh-my-zsh.sh
 
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
-CONDA_HOME="$HOME/miniconda3"
+CONDA_HOME="$HOME/.miniconda"
 
 __conda_setup="$('$CONDA_HOME/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
@@ -135,16 +135,16 @@ export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
 export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 
-# flutter development (java8)
+# flutter development
 export JAVA_HOME='/usr/lib/jvm/default'
 export PATH=$JAVA_HOME/bin:$PATH
-export PATH=$HOME/flutter/bin:$HOME/.pub-cache/bin:$PATH
-export ANDROID_SDK_ROOT='/opt/android-sdk'
-export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH
-export PATH=$ANDROID_SDK_ROOT/tools/bin:$PATH
-export PATH=$ANDROID_SDK_ROOT/tools:$PATH
-export PATH=$ANDROID_SDK_ROOT/emulator:$PATH
-export CHROME_EXECUTABLE=$(which chromium)
+# export PATH=/opt/flutter/bin:$HOME/.pub-cache/bin:$PATH
+# export ANDROID_SDK_ROOT='/opt/android-sdk'
+# export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH
+# export PATH=$ANDROID_SDK_ROOT/tools/bin:$PATH
+# export PATH=$ANDROID_SDK_ROOT/tools:$PATH
+# export PATH=$ANDROID_SDK_ROOT/emulator:$PATH
+# export CHROME_EXECUTABLE=$(which chromium)
 
 # custom aliases
 alias syyu="sudo pacman -Syyu && paru -Syyu"
