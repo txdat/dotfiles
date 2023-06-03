@@ -134,9 +134,7 @@ rustup component add rust-src
 rustup component add rust-analyzer
 
 # javascript/typescript
-sudo npm install -g typescript typescript-language-server vscode-langservers-extracted eslint prettier eslint-plugin-prettier neovim
-# optional:
-# sudo npm install -g prettier-eslint prettier-eslint-cli eslint-config-prettier
+sudo npm install -g typescript typescript-language-server vscode-langservers-extracted neovim
 
 # haskell
 # paru -S --noconfirm ghcup-hs-bin
