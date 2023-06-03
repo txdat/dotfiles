@@ -270,6 +270,18 @@ local plugins = {
     -- prog. langs
     ------------------------------------
 
+    -- scala
+    {
+        "scalameta/nvim-metals",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        ft = { "scala" },
+        config = function()
+            pcall(require, "plugins.lsp.cmp.scala_metals")
+        end,
+    },
+
     -- -- orgmode
     -- {
     --     "nvim-neorg/neorg",

@@ -138,8 +138,9 @@ rustup component add rust-analyzer
 sudo npm install -g typescript typescript-language-server vscode-langservers-extracted prettier neovim
 
 # scala
-# paru -S --noconfirm scala3
+# paru -S --noconfirm scala3 coursier
 # sudo pacman -S --noconfirm sbt
+# coursier install metals
 
 # haskell
 # paru -S --noconfirm ghcup-hs-bin
