@@ -28,6 +28,7 @@ sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts
 sudo systemctl enable sshd.service
 sudo systemctl enable fstrim.timer
 sudo systemctl enable paccache.timer
+sudo systemctl enable bluetooth.service
 
 # nvidia's hook
 sudo mkdir -p /etc/pacman.d/hooks
