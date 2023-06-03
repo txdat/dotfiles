@@ -17,6 +17,7 @@ sudo pacman -S --noconfirm curl wget axel rsync \
                            xorg-xrandr \
                            openssh \
                            pacman-contrib \
+                           xf86-input-synaptics \
                            amd-ucode xf86-video-amdgpu \
                            bluez bluez-utils \
                            # qemu-full \
