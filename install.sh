@@ -136,6 +136,7 @@ rustup component add rust-analyzer
 
 # javascript/typescript
 sudo npm install -g typescript typescript-language-server vscode-langservers-extracted prettier neovim
+paru -S --noconfirm nvm
 
 # scala
 # paru -S --noconfirm scala3 coursier

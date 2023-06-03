@@ -139,6 +139,9 @@ export JAVA_HOME='/usr/lib/jvm/default'
 export PATH=$JAVA_HOME/bin:$PATH
 export PATH=$HOME/.local/share/coursier/bin:$PATH
 
+# nodejs
+source /usr/share/nvm/init-nvm.sh
+
 # flutter development
 # export PATH=/opt/flutter/bin:$HOME/.pub-cache/bin:$PATH
 # export ANDROID_SDK_ROOT='/opt/android-sdk'

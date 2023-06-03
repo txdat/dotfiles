@@ -270,17 +270,17 @@ local plugins = {
     -- prog. langs
     ------------------------------------
 
-    -- scala
-    {
-        "scalameta/nvim-metals",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
-        ft = { "scala" },
-        config = function()
-            pcall(require, "plugins.lsp.cmp.scala_metals")
-        end,
-    },
+    -- -- scala
+    -- {
+    --     "scalameta/nvim-metals",
+    --     dependencies = {
+    --         "nvim-lua/plenary.nvim",
+    --     },
+    --     ft = { "scala" },
+    --     config = function()
+    --         pcall(require, "plugins.lsp.cmp.scala_metals")
+    --     end,
+    -- },
 
     -- -- orgmode
     -- {
@@ -296,17 +296,17 @@ local plugins = {
     --     end
     -- },
 
-    -- markdown
-    {
-        "iamcco/markdown-preview.nvim",
-        build = function()
-            vim.fn["mkdp#util#install"]()
-        end,
-        ft = { "markdown" }, -- triggered when opening *.md file
-        config = function()
-            pcall(require, "plugins.markdown_preview")
-        end
-    },
+    -- -- markdown
+    -- {
+    --     "iamcco/markdown-preview.nvim",
+    --     build = function()
+    --         vim.fn["mkdp#util#install"]()
+    --     end,
+    --     ft = { "markdown" }, -- triggered when opening *.md file
+    --     config = function()
+    --         pcall(require, "plugins.markdown_preview")
+    --     end
+    -- },
 
     -- -- latex
     -- {
