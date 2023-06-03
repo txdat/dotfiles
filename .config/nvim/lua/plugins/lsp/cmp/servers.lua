@@ -32,9 +32,16 @@ M.clangd = {
     cmd = {
         "clangd",
         "--background-index",
-        "--suggest-missing-includes",
         "--clang-tidy",
+        "--suggest-missing-includes",
+        "--completion-style=bundled",
+        "--cross-file-rename",
         "--header-insertion=iwyu",
+    },
+    init_options = {
+        usePlaceholders = true,
+        completeUnimported = true,
+        clangdFileStatus = true
     },
 }
 
@@ -91,18 +98,18 @@ M.pyright = {
     },
 }
 
-M.hls = {
-    filetypes = { "haskell", "lhaskell", "cabal", "cabalproject" },
-    settings = {
-        haskell = {
-            formattingProvider = "fourmolu",
-            cabalFormattingProvider = "cabalfmt",
-            maxCompletions = 40,
-            checkProject = true,
-            checkParents = "CheckOnSave",
-        },
-    },
-}
+-- M.hls = {
+--     filetypes = { "haskell", "lhaskell", "cabal", "cabalproject" },
+--     settings = {
+--         haskell = {
+--             formattingProvider = "fourmolu",
+--             cabalFormattingProvider = "cabalfmt",
+--             maxCompletions = 40,
+--             checkProject = true,
+--             checkParents = "CheckOnSave",
+--         },
+--     },
+-- }
 
 M.tsserver = {}
 
