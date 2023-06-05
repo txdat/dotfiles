@@ -8,6 +8,7 @@ ln -s ~/.dotfiles/.vimrc ~/.vimrc
 ln -s ~/.dotfiles/.vim ~/.vim
 ln -s ~/.dotfiles/.zshrc ~/.zshrc
 ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
+ln -s ~/.dotfiles/.doom.d ~/.doom.d
 
 # link kate's lsp config
 mkdir -p ~/.config/kate/lspclient && ln -s ~/.dotfiles/.config/kate/lspclient/settings.json ~/.config/kate/lspclient/settings.json
@@ -25,4 +26,4 @@ bat cache --build
 echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
 # install doom's emacs
-ln -s ~/.dotfiles/.doom.d ~/.doom.d && ~/.emacs.d/bin/doom install
+~/.emacs.d/bin/doom install

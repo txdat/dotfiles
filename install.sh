@@ -23,7 +23,8 @@ sudo pacman -S --noconfirm curl wget axel rsync \
                            # qemu-full \
                            # flatpak
 
-sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra
+sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra && \
+sudo fc-cache -vfs
 
 # enable essential services ----------------------------------
 sudo systemctl enable sshd.service
@@ -109,8 +110,7 @@ sudo pacman -S --noconfirm gcc gcc-fortran gdb \
                            clang llvm lldb lld \
                            make cmake ccache ctags valgrind strace \
                            nodejs npm yarn \
-                           go gopls \
-                           jdk-openjdk maven
+                           go gopls
 
 sudo pacman -S --noconfirm cblas openblas \
                            openmp openmpi \
@@ -138,9 +138,9 @@ rustup component add rust-analyzer
 sudo npm install -g typescript typescript-language-server vscode-langservers-extracted prettier neovim
 paru -S --noconfirm nvm
 
-# scala
+# java/scala
+# sudo pacman -S --noconfirm jdk-openjdk maven sbt
 # paru -S --noconfirm scala3 coursier
-# sudo pacman -S --noconfirm sbt
 # coursier install metals
 
 # haskell
@@ -156,7 +156,7 @@ rm -f ./Miniconda3-latest-Linux-x86_64.sh
 # conda config --set auto_activate_base false
 # pip install pynvim pyright black ruff debugpy sqlfluff dvc dvc-gdrive ansible --upgrade
 
-# install mlds environment
+# install machine learning/data science (mlds) environment
 # conda create -n mlds python=3.10
 # pip install numpy scipy cython numba pandas matplotlib seaborn scikit-learn xgboost catboost lightgbm statsmodels treelite treelite_runtime polars jupyterlab pyspark "dask[complete]" --upgrade
 # pip install torch torchvision pytorch-lightning transformers gym optuna mlflow wandb triton taichi --upgrade
@@ -197,9 +197,9 @@ sudo mkdir -p /etc/containerd && sudo ln -s ~/.dotfiles/k3s/containerd/config.to
 # install fonts
 sudo cp -r fonts/jetbrains /usr/share/fonts && sudo fc-cache -vfs
 
-# fix displaying emoji
-sudo cp 75-noto-color-emoji.conf /usr/share/fontconfig/conf.avail && \
-sudo ln -s /usr/share/fontconfig/conf.avail/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-emoji.conf
+# fix emoji displaying
+sudo ln -s 75-noto-color-emoji.conf /usr/share/fontconfig/conf.avail/75-noto-color-emoji.conf && \
+sudo ln -s 75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-emoji.conf
 
 # jupyterlab
 mkdir -p ~/.jupyter/lab/user-settings && \
