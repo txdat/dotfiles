@@ -21,6 +21,7 @@ M.lua_ls = {
                 end)(),
                 checkThirdParty = false,
             },
+            hint = { enable = true },
             telemetry = {
                 enable = false,
             },
@@ -38,14 +39,17 @@ M.clangd = {
         "--cross-file-rename",
         "--header-insertion=iwyu",
     },
-    init_options = {
-        usePlaceholders = true,
-        completeUnimported = true,
-        clangdFileStatus = true
+    settings = {
+        clangd = {
+            usePlaceholders = true,
+            completeUnimported = true,
+            clangdFileStatus = true
+        },
     },
 }
 
 M.rust_analyzer = {
+    cmd = { "rustup", "run", "stable", "rust-analyzer" },
     settings = {
         ["rust-analyzer"] = {
             imports = {
@@ -55,6 +59,7 @@ M.rust_analyzer = {
                 prefix = "self",
             },
             cargo = {
+                allFeatures = true,
                 buildScripts = {
                     enable = true,
                 },
@@ -62,22 +67,34 @@ M.rust_analyzer = {
             procMacro = {
                 enable = true,
             },
+            checkOnSave = true,
+            check = {
+                command = "clippy",
+                extraArgs = { "--no-deps" },
+            },
         },
     },
 }
 
 M.gopls = {
     cmd = { "gopls", "serve" },
-    init_options = {
-        usePlaceholders = true,
-        completeUnimported = true,
-    },
     settings = {
         gopls = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            staticcheck = true,
             analyses = {
                 unusedparams = true,
             },
-            staticcheck = true,
+            hints = {
+                assignVariableTypes = true,
+                compositeLiteralFields = true,
+                compositeLiteralTypes = true,
+                constantValues = true,
+                functionTypeParameters = true,
+                parameterNames = true,
+                rangeVariableTypes = true,
+            },
         },
     },
 }
@@ -111,8 +128,36 @@ M.pyright = {
 --     },
 -- }
 
-M.tsserver = {}
+-- typescript-language-server
+M.tsserver = {
+    filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+    -- settings = {
+    --     javascript = {
+    --         inlayHints = {
+    --             includeInlayEnumMemberValueHints = true,
+    --             includeInlayFunctionLikeReturnTypeHints = true,
+    --             includeInlayFunctionParameterTypeHints = true,
+    --             includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+    --             includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+    --             includeInlayPropertyDeclarationTypeHints = true,
+    --             includeInlayVariableTypeHints = true,
+    --         },
+    --     },
+    --     typescript = {
+    --         inlayHints = {
+    --             includeInlayEnumMemberValueHints = true,
+    --             includeInlayFunctionLikeReturnTypeHints = true,
+    --             includeInlayFunctionParameterTypeHints = true,
+    --             includeInlayParameterNameHints = "all", -- 'none' | 'literals' | 'all';
+    --             includeInlayParameterNameHintsWhenArgumentMatchesName = true,
+    --             includeInlayPropertyDeclarationTypeHints = true,
+    --             includeInlayVariableTypeHints = true,
+    --         },
+    --     },
+    -- },
+}
 
+-- vscode-langservers-extracted
 M.eslint = {
     filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
 }

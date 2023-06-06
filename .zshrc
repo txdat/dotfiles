@@ -166,12 +166,11 @@ alias xfhdr="xrandr --output DisplayPort-0 --scale 2x2 && xrandr --output Displa
 # kubernetes (k3s)
 export KUBECONFIG=$HOME/.kube/config
 
-KUBE_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
-
 start_kube () {
     # add kube-system's dns to resolv
     sudo sed -i "1s/^/nameserver ${1:-10.43.0.10} # kube\n/" /etc/resolv.conf  # run 'kubectl get svc -n kube-system | grep dns'
 
+    KUBE_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
     for svc in "${KUBE_SERVICES[@]}"
     do
         echo starting $svc
@@ -183,9 +182,25 @@ stop_kube () {
     # remove kube-system's dns in resolv
     sudo sed -i "/kube$/d" /etc/resolv.conf
 
+    KUBE_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
     for svc in "${KUBE_SERVICES[@]}"
     do
         echo stopping $svc
         sudo systemctl stop $svc
     done
+}
+
+# update zsh and plugins
+update_zsh () {
+    omz update
+
+    cd ~/.oh-my-zsh/custom/themes/powerlevel10k && echo updating powerlevel10k && git pull
+
+    ZSH_PLUGINS=('zsh-completions' 'zsh-syntax-highlighting' 'zsh-autosuggestions')
+    for plg in "${ZSH_PLUGINS[@]}"
+    do
+        cd ~/.oh-my-zsh/custom/plugins/$plg && echo updating $plg && git pull
+    done
+
+    cd ~
 }

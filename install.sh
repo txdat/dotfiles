@@ -108,9 +108,7 @@ ssh-keygen
 # install essential development packages ----------------
 sudo pacman -S --noconfirm gcc gcc-fortran gdb \
                            clang llvm lldb lld \
-                           make cmake ccache ctags valgrind strace \
-                           nodejs npm yarn \
-                           go gopls
+                           make cmake ccache ctags valgrind strace
 
 sudo pacman -S --noconfirm cblas openblas \
                            openmp openmpi \
@@ -124,19 +122,18 @@ sudo pacman -S --noconfirm cblas openblas \
 
 sudo pacman -S --noconfirm nvidia
 
-# docker, k3s, ...
-sudo pacman -S --noconfirm docker docker-compose kubectl helm skaffold nfs-utils
-paru -S --noconfirm nvidia-container-runtime nvidia-container-toolkit
-sudo usermod -aG docker $USER
-# curl -sfL https://get.k3s.io | sh -
-
 # rust
-rustup component add rust-src
-rustup component add rust-analyzer
+# rustup component add rust-src
+# rustup component add rust-analyzer
+# rustup component add clippy
+
+# golang
+# sudo pacman -S --noconfirm go gopls
 
 # javascript/typescript
-sudo npm install -g typescript typescript-language-server vscode-langservers-extracted prettier neovim
-paru -S --noconfirm nvm
+# sudo pacman -S --noconfirm nodejs npm yarn
+# sudo npm install -g typescript typescript-language-server vscode-langservers-extracted prettier neovim
+# paru -S --noconfirm nvm
 
 # java/scala
 # sudo pacman -S --noconfirm jdk-openjdk maven sbt
@@ -148,10 +145,10 @@ paru -S --noconfirm nvm
 # ghcup install ghc && ghcup install cabal && ghcup install hls
 
 # python
-axel -n 8 https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-chmod a+x ./Miniconda3-latest-Linux-x86_64.sh
-./Miniconda3-latest-Linux-x86_64.sh
-rm -f ./Miniconda3-latest-Linux-x86_64.sh
+# axel -n 8 https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+# chmod a+x ./Miniconda3-latest-Linux-x86_64.sh
+# ./Miniconda3-latest-Linux-x86_64.sh
+# rm -f ./Miniconda3-latest-Linux-x86_64.sh
 # conda update --all -y
 # conda config --set auto_activate_base false
 # pip install pynvim pyright black ruff debugpy sqlfluff dvc dvc-gdrive ansible --upgrade
@@ -164,13 +161,19 @@ rm -f ./Miniconda3-latest-Linux-x86_64.sh
 # pip install opencv-python opencv-contrib-python --upgrade
 
 # latex
-sudo pacman -S --noconfirm texlive-core texlive-latexextra texlive-bibtexextra biber texlive-science texlab
+# sudo pacman -S --noconfirm texlive-core texlive-latexextra texlive-bibtexextra biber texlive-science texlab
 # TODO: fix tlmgr.pl
-sudo sed -i -e "s/\$Master\/..\/../\$Master\/..\/..\/../g" /usr/share/texmf-dist/scripts/texlive/tlmgr.pl
+# sudo sed -i -e "s/\$Master\/..\/../\$Master\/..\/..\/../g" /usr/share/texmf-dist/scripts/texlive/tlmgr.pl
 # tlmgr init-usertree
 # tlmgr option repository https://mirrors.tuna.tsinghua.edu.cn/CTAN/systems/texlive/tlnet
 # tlmgr install libertine
 # tlmgr install doublestroke
+
+# docker, k3s, ...
+# sudo pacman -S --noconfirm docker docker-compose kubectl helm skaffold nfs-utils
+# paru -S --noconfirm nvidia-container-runtime nvidia-container-toolkit
+# sudo usermod -aG docker $USER
+# curl -sfL https://get.k3s.io | sh -
 
 # install zsh shell -----------------------------------
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" && \

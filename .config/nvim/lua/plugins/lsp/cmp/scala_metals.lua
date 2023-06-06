@@ -41,8 +41,7 @@ end
 
 local nvim_metals_group = api.nvim_create_augroup("nvim-metals", { clear = true })
 api.nvim_create_autocmd("FileType", {
-    -- may conflict with nvim-jdtls for java
-    pattern = { "scala", "sbt", "java" },
+    pattern = { "scala", "sbt" },
     callback = function()
         require("metals").initialize_or_attach(metals_config)
     end,
