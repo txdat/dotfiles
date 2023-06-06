@@ -135,13 +135,13 @@ local plugins = {
     },
 
     -- navigation
-    {
-        "phaazon/hop.nvim",
-        event = "BufRead",
-        config = function()
-            pcall(require, "plugins.hop")
-        end
-    },
+    -- {
+    --     "phaazon/hop.nvim",
+    --     event = "BufRead",
+    --     config = function()
+    --         pcall(require, "plugins.hop")
+    --     end
+    -- },
 
     ------------------------------------
     -- file manager, finder, svc
