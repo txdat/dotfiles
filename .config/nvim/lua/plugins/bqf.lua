@@ -58,7 +58,9 @@ require("bqf").setup({
     auto_resize_height = true,
     magic_window = true,
     preview = {
+        show_scroll_bar = false,
         win_height = 30,
+        winblend = 0,
     },
     filter = {
         fzf = {
