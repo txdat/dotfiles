@@ -208,6 +208,7 @@ keymap("n", "<C-S-d>", ":<C-U>bprevious <bar> bdelete #<CR>") -- and move to pre
 keymap("n", "<C-q>", ":qa!<CR>")                              -- close all buffers and exit
 
 -- toggle auto-indenting for code paste
+keymap("i", "<F1>", "<nop>")
 keymap("n", "<F1>", ":set invpaste paste?<CR>")
 vim.opt.pastetoggle = "<F1>"
 

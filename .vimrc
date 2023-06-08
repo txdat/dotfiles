@@ -229,6 +229,7 @@ nnoremap <silent> <C-d> :bd!<CR>
 "nnoremap <silent> <C-S-d> :<C-U>bprevious <bar> bdelete #<CR>
 nnoremap <silent> <C-q> :qa!<CR>
 
+inoremap <silent> <F1> <nop>
 nnoremap <silent> <F1> :set invpaste paste?<CR>
 set pastetoggle=<F1>
 
