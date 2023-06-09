@@ -2,6 +2,7 @@
 -- https://miikanissi.com/blog/how-to-setup-nvim-lsp-for-code-analysis-autocompletion-and-linting/
 
 local cmp = require("cmp")
+local compare = require("cmp.config.compare")
 local luasnip = require("luasnip")
 local lspconfig = require("lspconfig")
 
@@ -121,11 +122,23 @@ cmp.setup {
         end,
     },
     sources = {
-        { name = "nvim_lsp", keyword_length = 2 },
+        { name = "nvim_lsp", keyword_length = 2, priority = 10 },
+        { name = "buffer",   keyword_length = 2, priority = 9 },
         { name = "luasnip",  keyword_length = 2 },
-        { name = "buffer",   keyword_length = 3 },
-        { name = "path",     keyword_length = 3 },
+        { name = "path",     keyword_length = 4 },
         -- { name = "nvim_lsp_signature_help" },
+    },
+    sorting = {
+        priority_weight = 2,
+        comparators = {
+            compare.offset,    -- we still want offset to be higher to order after 3rd letter
+            compare.score,     -- same as above
+            compare.sort_text, -- add higher precedence for sort_text, it must be above `kind`
+            compare.recently_used,
+            compare.kind,
+            compare.length,
+            compare.order,
+        },
     },
 }
 
