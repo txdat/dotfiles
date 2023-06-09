@@ -6,7 +6,6 @@ if not vim.loop.fs_stat(lazypath) then
         "clone",
         "--filter=blob:none",
         "https://github.com/folke/lazy.nvim.git",
-        "--branch=stable", -- latest stable release
         lazypath,
     })
 end
@@ -92,13 +91,13 @@ local plugins = {
     },
 
     -- colorizer
-    {
-        "NvChad/nvim-colorizer.lua",
-        event = "BufRead",
-        config = function()
-            pcall(require, "plugins.colorizer")
-        end
-    },
+    -- {
+    --     "NvChad/nvim-colorizer.lua",
+    --     event = "BufRead",
+    --     config = function()
+    --         pcall(require, "plugins.colorizer")
+    --     end
+    -- },
 
     -- commenting
     {
@@ -117,13 +116,14 @@ local plugins = {
             pcall(require, "plugins.autopairs")
         end
     },
-    {
-        "windwp/nvim-ts-autotag",
-        event = "InsertEnter",
-        config = function()
-            pcall(require, "plugins.ts_autotag")
-        end
-    },
+    -- html's tags
+    -- {
+    --     "windwp/nvim-ts-autotag",
+    --     event = "InsertEnter",
+    --     config = function()
+    --         pcall(require, "plugins.ts_autotag")
+    --     end
+    -- },
 
     -- surround selections
     {
@@ -159,16 +159,40 @@ local plugins = {
     --     end
     -- },
 
-    -- finder
+    -- fuzzy finder
+    -- {
+    --     "nvim-telescope/telescope.nvim",
+    --     dependencies = {
+    --         "nvim-telescope/telescope-file-browser.nvim",
+    --         "nvim-telescope/telescope-ui-select.nvim",
+    --         "nvim-telescope/telescope-live-grep-args.nvim",
+    --         -- { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
+    --         "nvim-telescope/telescope-fzy-native.nvim",
+    --         "nvim-lua/plenary.nvim",
+    --         {
+    --             "kevinhwang91/nvim-bqf",
+    --             config = function()
+    --                 pcall(require, "plugins.bqf")
+    --             end
+    --         },
+    --     },
+    --     keys = {
+    --         "<C-e>",
+    --         "<leader>ff",
+    --         "<leader>fg",
+    --     },
+    --     config = function()
+    --         pcall(require, "plugins.telescope")
+    --     end
+    -- },
     {
-        "nvim-telescope/telescope.nvim",
+        "ibhagwan/fzf-lua",
         dependencies = {
-            "nvim-telescope/telescope-file-browser.nvim",
-            "nvim-telescope/telescope-ui-select.nvim",
-            "nvim-telescope/telescope-live-grep-args.nvim",
-            -- { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
-            "nvim-telescope/telescope-fzy-native.nvim",
-            "nvim-lua/plenary.nvim",
+            -- {
+            --     "junegunn/fzf",
+            --     build = "./install --bin",
+            -- },
+            "nvim-tree/nvim-web-devicons",
             {
                 "kevinhwang91/nvim-bqf",
                 config = function()
@@ -176,13 +200,9 @@ local plugins = {
                 end
             },
         },
-        keys = {
-            "<C-e>",
-            "<leader>ff",
-            "<leader>fg",
-        },
+        -- keys = {},
         config = function()
-            pcall(require, "plugins.telescope")
+            pcall(require, "plugins.fzf")
         end
     },
 
@@ -218,12 +238,12 @@ local plugins = {
             --     }
             -- },
             -- "jose-elias-alvarez/null-ls.nvim",
-            {
-                "folke/trouble.nvim",
-                dependencies = {
-                    "nvim-tree/nvim-web-devicons",
-                },
-            },
+            -- {
+            --     "folke/trouble.nvim",
+            --     dependencies = {
+            --         "nvim-tree/nvim-web-devicons",
+            --     },
+            -- },
         },
         event = "BufRead",
         config = function()

@@ -1,4 +1,4 @@
-require("nvim-tree").setup {
+require("nvim-tree").setup({
     hijack_cursor = true,
     hijack_directories = {
         enable = true,
@@ -79,29 +79,27 @@ require("nvim-tree").setup {
     filters = {
         dotfiles = false,
     }
-}
+})
 
 local keymap = require("util").keymap
 
 keymap("n", "<C-e>", ":NvimTreeToggle<CR>")
 
 -- auto change bufferline's offset
-local ok, bufferline_api = pcall(require, "bufferline.api")
-if not ok then
-    return
+local bufferline_ok, bufferline_api = pcall(require, "bufferline.api")
+if bufferline_ok then
+    local nvim_tree_events = require("nvim-tree.events")
+    local nvim_tree_view = require("nvim-tree.view")
+
+    nvim_tree_events.subscribe("TreeOpen", function()
+        bufferline_api.set_offset(nvim_tree_view.View.width)
+    end)
+
+    nvim_tree_events.subscribe("Resize", function()
+        bufferline_api.set_offset(nvim_tree_view.View.width)
+    end)
+
+    nvim_tree_events.subscribe("TreeClose", function()
+        bufferline_api.set_offset(0)
+    end)
 end
-
-local nvim_tree_events = require("nvim-tree.events")
-local nvim_tree_view = require("nvim-tree.view")
-
-nvim_tree_events.subscribe("TreeOpen", function()
-    bufferline_api.set_offset(nvim_tree_view.View.width)
-end)
-
-nvim_tree_events.subscribe("Resize", function()
-    bufferline_api.set_offset(nvim_tree_view.View.width)
-end)
-
-nvim_tree_events.subscribe("TreeClose", function()
-    bufferline_api.set_offset(0)
-end)
