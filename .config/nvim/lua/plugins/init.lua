@@ -180,6 +180,7 @@ local plugins = {
     --         "<C-e>",
     --         "<leader>ff",
     --         "<leader>fg",
+    --         "<leader>fb",
     --     },
     --     config = function()
     --         pcall(require, "plugins.telescope")
@@ -200,7 +201,11 @@ local plugins = {
                 end
             },
         },
-        -- keys = {},
+        keys = {
+            "<leader>ff",
+            "<leader>fg",
+            "<leader>fb",
+        },
         config = function()
             pcall(require, "plugins.fzf")
         end
@@ -347,7 +352,7 @@ local opts = {
         path = "~/workspace", -- local plugins directory
     },
     git = {
-        timeout = 300, -- seconds
+        timeout = 120, -- seconds
     },
     install = {
         colorscheme = { "moonfly" },

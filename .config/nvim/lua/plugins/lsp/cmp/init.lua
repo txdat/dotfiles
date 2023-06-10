@@ -16,40 +16,40 @@ local lspconfig = require("lspconfig")
 --     return info
 -- end
 
--- lspkind on cmp's menu
-local lspkind_icons = {
-    Text = "",
-    Method = "󰆧",
-    Function = "󰊕",
-    Constructor = "",
-    Field = "󰇽",
-    Variable = "󰂡",
-    Class = "󰠱",
-    Interface = "",
-    Module = "",
-    Property = "󰜢",
-    Unit = "",
-    Value = "󰎠",
-    Enum = "",
-    Keyword = "󰌋",
-    Snippet = "",
-    Color = "󰏘",
-    File = "󰈙",
-    Reference = "",
-    Folder = "󰉋",
-    EnumMember = "",
-    Constant = "󰏿",
-    Struct = "",
-    Event = "",
-    Operator = "󰆕",
-    TypeParameter = "󰅲",
-}
-
-local lspkind_menu = {
-    nvim_lsp = "LSP",
-    luasnip = "Snip",
-    buffer = "Buf",
-};
+-- -- lspkind on cmp's menu
+-- local lspkind_icons = {
+--     Text = "",
+--     Method = "󰆧",
+--     Function = "󰊕",
+--     Constructor = "",
+--     Field = "󰇽",
+--     Variable = "󰂡",
+--     Class = "󰠱",
+--     Interface = "",
+--     Module = "",
+--     Property = "󰜢",
+--     Unit = "",
+--     Value = "󰎠",
+--     Enum = "",
+--     Keyword = "󰌋",
+--     Snippet = "",
+--     Color = "󰏘",
+--     File = "󰈙",
+--     Reference = "",
+--     Folder = "󰉋",
+--     EnumMember = "",
+--     Constant = "󰏿",
+--     Struct = "",
+--     Event = "",
+--     Operator = "󰆕",
+--     TypeParameter = "󰅲",
+-- }
+--
+-- local lspkind_menu = {
+--     nvim_lsp = "LSP",
+--     luasnip = "Snip",
+--     buffer = "Buf",
+-- };
 
 cmp.setup {
     completion = {
@@ -76,11 +76,11 @@ cmp.setup {
     },
     formatting = {
         fields = { "abbr", "kind", "menu" },
-        format = function(entry, vim_item)
-            vim_item.kind = string.format('%s %s', lspkind_icons[vim_item.kind], vim_item.kind)
-            vim_item.menu = string.format('[%s]', lspkind_menu[entry.source.name])
-            return vim_item
-        end
+        -- format = function(entry, vim_item)
+        --     vim_item.kind = string.format('%s %s', lspkind_icons[vim_item.kind], vim_item.kind)
+        --     vim_item.menu = string.format('[%s]', lspkind_menu[entry.source.name])
+        --     return vim_item
+        -- end
     },
     mapping = cmp.mapping.preset.insert({
         ["<C-k>"] = cmp.mapping.scroll_docs(-4),

@@ -1,4 +1,4 @@
 --theme="fly16"
---style="grid,numbers,changes,header"
+--style="numbers,changes"
 --map-syntax h:cpp
 --map-syntax .ignore:.gitignore
