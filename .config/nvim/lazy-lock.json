@@ -14,9 +14,9 @@
   "nvim-autopairs": { "branch": "master", "commit": "59df87a84c80a357ca8d8fe86e451b93ac476ccc" },
   "nvim-bqf": { "branch": "main", "commit": "5895e26e34d032f48d0b9a843da1eb24e25680ea" },
   "nvim-cmp": { "branch": "main", "commit": "09ff53ff579cfa3368f8051b0dbe88406891aabe" },
-  "nvim-lspconfig": { "branch": "master", "commit": "0f598b9ab9f2a6d7e137074be99c8d89af44b990" },
+  "nvim-lspconfig": { "branch": "master", "commit": "179803f537807fff5b5961a2b3efd9e7ddac54a2" },
   "nvim-surround": { "branch": "main", "commit": "10b20ca7d9da1ac8df8339e140ffef94f9ab3b18" },
-  "nvim-treesitter": { "branch": "master", "commit": "7be9ebd06abe2ed836abd3e91acb0b243ddcafba" },
+  "nvim-treesitter": { "branch": "master", "commit": "f9d701176cb9a3e206a4c690920a8993630c3ec8" },
   "nvim-web-devicons": { "branch": "master", "commit": "2a125024a137677930efcfdf720f205504c97268" },
   "vim-moonfly-colors": { "branch": "master", "commit": "8f2b6b97ae5ba1090229c4eb842cbc912d7ffb65" }
 }

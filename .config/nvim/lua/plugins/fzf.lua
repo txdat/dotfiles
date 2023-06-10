@@ -12,11 +12,16 @@ require("fzf-lua").setup({
         },
     },
     fzf_opts = {
-        ["--ansi"]   = "",
-        ["--info"]   = "inline",
-        ["--height"] = "100%",
-        ["--layout"] = "reverse",
-        ["--border"] = "none",
+        ["--ansi"]         = "",
+        ["--multi"]        = "",
+        ["--no-separator"] = "",
+        ["--scrollbar"]    = "''",
+        ["--info"]         = "inline",
+        ["--height"]       = "100%",
+        ["--layout"]       = "reverse",
+        ["--border"]       = "none",
+        ["--pointer"]      = "",
+        ["--marker"]       = "▶",
     },
     previewers = {
         bat = {
@@ -40,13 +45,14 @@ require("fzf-lua").setup({
         },
     },
     files = {
-        path_shorten = true,
+        path_shorten = 1,
+        cmd          = "fd --color=never --type f --hidden --follow --exclude .git",
     },
     grep = {
         prompt       = "Grep❯ ",
         input_prompt = "Grep❯ ",
-        rg_opts      =
-        "--hidden --color=always --no-heading --with-filename --line-number --column --smart-case --max-columns=4096",
+        cmd          =
+        "rg --hidden --color=always --no-heading --with-filename --line-number --column --smart-case --max-columns=4096",
         no_header    = true,
         no_header_i  = true,
     },
