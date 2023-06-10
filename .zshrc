@@ -112,6 +112,15 @@ source $ZSH/oh-my-zsh.sh
 
 #export TERM="xterm-256color"
 
+export FZF_DEFAULT_OPTS="
+ --ansi --multi --no-separator
+ --scrollbar='' --info=inline --height=100%
+ --layout=reverse --border=none --pointer= --marker=▶
+ --preview-window=hidden:noborder
+ --bind=ctrl-p:toggle-preview,alt-p:toggle-preview-wrap
+ --bind=alt-j:preview-page-down,alt-k:preview-page-up
+"
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 CONDA_HOME="$HOME/.miniconda"
