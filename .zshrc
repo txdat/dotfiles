@@ -121,6 +121,8 @@ export FZF_DEFAULT_OPTS="
  --bind=alt-j:preview-page-down,alt-k:preview-page-up
 "
 
+alias fzfp="fzf --preview 'bat --color=always {}'" # fzf with bat preview
+
 # >>> conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 CONDA_HOME="$HOME/.miniconda"

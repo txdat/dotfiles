@@ -135,8 +135,11 @@ sudo pacman -S --noconfirm nvidia
 # sudo npm install -g typescript typescript-language-server vscode-langservers-extracted prettier neovim
 # paru -S --noconfirm nvm
 
-# java/scala
-# sudo pacman -S --noconfirm jdk-openjdk maven sbt
+# java
+# sudo pacman -S --noconfirm jdk-openjdk maven
+# scala
+# sudo pacman -S --noconfirm jdk17-openjdk sbt
+# sudo archlinux-java set jdk17-openjdk
 # paru -S --noconfirm scala3 coursier
 # coursier install metals
 

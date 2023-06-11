@@ -35,6 +35,7 @@ require("fzf-lua").setup({
     },
     git = {
         status = {
+            previewer = "git_diff",
             preview_pager = "delta --width=$FZF_PREVIEW_COLUMNS",
         },
         commits = {
@@ -46,13 +47,13 @@ require("fzf-lua").setup({
     },
     files = {
         path_shorten = 1,
-        cmd          = "fd --color=never --type f --hidden --follow --exclude .git",
+        cmd          = "fd --color=never --type f --hidden --follow --exclude .git --exclude node_modules",
     },
     grep = {
         prompt       = "Grep❯ ",
         input_prompt = "Grep❯ ",
         cmd          =
-        "rg --hidden --color=always --no-heading --with-filename --line-number --column --smart-case --max-columns=4096",
+        "rg --hidden --color=always --no-heading --with-filename --line-number --column --smart-case --max-columns=4096 -g '!{.git,node_modules}/*'",
         no_header    = true,
         no_header_i  = true,
     },
@@ -83,6 +84,12 @@ require("fzf-lua").setup({
             ["alt-k"] = "preview-page-up",
         },
     },
+})
+
+-- Redraw Fzf-if window is resized
+vim.api.nvim_create_autocmd("VimResized", {
+    pattern = "*",
+    command = "lua require('fzf-lua').redraw()"
 })
 
 local keymap = require("util").keymap
