@@ -112,6 +112,7 @@ source $ZSH/oh-my-zsh.sh
 
 #export TERM="xterm-256color"
 
+# export FZF_DEFAULT_COMMAND="rg --hidden --color=always --no-heading --with-filename --line-number --column --smart-case --max-columns=4096 ''"
 export FZF_DEFAULT_OPTS="
  --ansi --multi --no-separator
  --scrollbar='' --info=inline --height=100%
