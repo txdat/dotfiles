@@ -46,8 +46,8 @@ local lspconfig = require("lspconfig")
 -- }
 --
 -- local lspkind_menu = {
---     nvim_lsp = "LSP",
---     luasnip = "Snip",
+--     nvim_lsp = "Lsp",
+--     luasnip = "Snp",
 --     buffer = "Buf",
 -- };
 
@@ -123,9 +123,9 @@ cmp.setup {
     },
     sources = {
         { name = "nvim_lsp", keyword_length = 2, priority = 10 },
-        { name = "buffer",   keyword_length = 2, priority = 9 },
-        { name = "luasnip",  keyword_length = 2 },
-        { name = "path",     keyword_length = 4 },
+        { name = "buffer",   keyword_length = 2, priority = 8 },
+        { name = "luasnip",  keyword_length = 2, priority = 7 },
+        { name = "path",     keyword_length = 3 },
         -- { name = "nvim_lsp_signature_help" },
     },
     sorting = {

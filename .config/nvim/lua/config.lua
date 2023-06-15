@@ -234,4 +234,7 @@ keymap("x", "<A-k>", ":move '<-2<CR>gv-gv")
 -- plugins
 -----------------------------------------
 
-pcall(require, "plugins")
+-- skip loading plugins in vscode
+if not vim.g.vscode then
+    pcall(require, "plugins")
+end
