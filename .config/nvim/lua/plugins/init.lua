@@ -284,7 +284,8 @@ local plugins = {
                 },
             },
         },
-        event = "InsertEnter",
+        -- event = "InsertEnter",
+        event = "BufRead",
         config = function()
             pcall(require, "plugins.lsp.cmp")
         end,

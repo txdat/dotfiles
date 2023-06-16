@@ -82,6 +82,7 @@ require("fzf-lua").setup({
             ["alt-p"] = "toggle-preview-wrap",
             ["alt-j"] = "preview-page-down",
             ["alt-k"] = "preview-page-up",
+            ["alt-a"] = "toggle-all",
         },
     },
 })

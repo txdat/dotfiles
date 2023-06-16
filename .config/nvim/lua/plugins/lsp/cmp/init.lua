@@ -44,12 +44,14 @@ local lspconfig = require("lspconfig")
 --     Operator = "󰆕",
 --     TypeParameter = "󰅲",
 -- }
---
--- local lspkind_menu = {
---     nvim_lsp = "Lsp",
---     luasnip = "Snp",
---     buffer = "Buf",
--- };
+
+local lspkind_menu = {
+    nvim_lsp = "Lsp",
+    luasnip = "Snp",
+    buffer = "Buf",
+};
+
+vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
 
 cmp.setup {
     completion = {
@@ -59,7 +61,7 @@ cmp.setup {
         max_view_entries = 20,
     },
     experimental = {
-        ghost_text = true, -- placeholder
+        ghost_text = { hl_group = "CmpGhostText" }
     },
     view = {
         entries = { name = "native", selection_order = "near_cursor" },
@@ -76,11 +78,11 @@ cmp.setup {
     },
     formatting = {
         fields = { "abbr", "kind", "menu" },
-        -- format = function(entry, vim_item)
-        --     vim_item.kind = string.format('%s %s', lspkind_icons[vim_item.kind], vim_item.kind)
-        --     vim_item.menu = string.format('[%s]', lspkind_menu[entry.source.name])
-        --     return vim_item
-        -- end
+        format = function(entry, vim_item)
+            -- vim_item.kind = string.format('%s %s', lspkind_icons[vim_item.kind], vim_item.kind)
+            vim_item.menu = string.format('[%s]', lspkind_menu[entry.source.name])
+            return vim_item
+        end
     },
     mapping = cmp.mapping.preset.insert({
         ["<C-k>"] = cmp.mapping.scroll_docs(-4),
@@ -202,7 +204,8 @@ end
 -- snippet
 luasnip.config.set_config({
     history = false,
-    updateevents = "TextChanged,TextChangedI",
+    update_events = "TextChanged,TextChangedI",
+    delete_check_events = "TextChanged",
 })
 
 require("luasnip.loaders.from_vscode").lazy_load()
