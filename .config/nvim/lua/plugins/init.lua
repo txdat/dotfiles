@@ -103,6 +103,7 @@ local plugins = {
     {
         "numToStr/Comment.nvim",
         event = "InsertEnter",
+        keys = { "<A-/>" },
         config = function()
             pcall(require, "plugins.comment")
         end

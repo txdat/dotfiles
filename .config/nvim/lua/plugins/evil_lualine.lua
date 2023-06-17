@@ -57,14 +57,14 @@ local conditions = {
     end,
 }
 
-local dap_components = {
-    "dapui_watches",
-    "dapui_breakpoints",
-    "dapui_scopes",
-    "dapui_console",
-    "dapui_stacks",
-    "dap-repl",
-}
+-- local dap_components = {
+--     "dapui_watches",
+--     "dapui_breakpoints",
+--     "dapui_scopes",
+--     "dapui_console",
+--     "dapui_stacks",
+--     "dap-repl",
+-- }
 
 -- Config
 local config = {
@@ -73,8 +73,8 @@ local config = {
         component_separators = "",
         section_separators = "",
         globalstatus = true,
-        disabled_filetypes = dap_components,
-        ignore_focus = dap_components,
+        -- disabled_filetypes = dap_components,
+        -- ignore_focus = dap_components,
         theme = {
             -- We are going to use lualine_c an lualine_x as left and
             -- right section. Both are highlighted by c theme .  So we
@@ -114,26 +114,27 @@ local function ins_right(component)
     table.insert(config.sections.lualine_x, component)
 end
 
-ins_left {
-    function()
-        return "▌"
-    end,
-    -- color = { fg = colors.blue },
-    color = function()
-        return { fg = mode_color[vim.fn.mode()] }
-    end,
-    padding = { right = 1 },
-}
-
 -- ins_left {
---     -- mode component
 --     function()
---         return "󰝥"
+--         return "▌"
 --     end,
+--     -- color = { fg = colors.blue },
 --     color = function()
 --         return { fg = mode_color[vim.fn.mode()] }
 --     end,
+--     padding = { right = 1 },
 -- }
+
+ins_left {
+    -- mode component
+    function()
+        -- return "󰝥"
+        return "<" .. vim.fn.mode():upper() .. ">"
+    end,
+    color = function()
+        return { fg = mode_color[vim.fn.mode()] }
+    end,
+}
 
 ins_left {
     -- filesize component
@@ -144,7 +145,7 @@ ins_left {
 ins_left {
     "filename",
     cond = conditions.buffer_not_empty,
-    color = { fg = colors.magenta, gui = "bold" },
+    color = { fg = colors.magenta },
     file_status = true,
     symbols = {
         modified = "",
@@ -156,7 +157,7 @@ ins_left {
 
 ins_left { "location" }
 
-ins_left { "progress", color = { fg = colors.fg, gui = "bold" } }
+ins_left { "progress", color = { fg = colors.fg } }
 
 ins_left {
     "diagnostics",
@@ -196,28 +197,28 @@ ins_left {
 --         return msg
 --     end,
 --     icon = " LSP:",
---     color = { fg = colors.fg, gui = "bold" },
+--     color = { fg = colors.fg },
 -- }
 
 -- Add components to right sections
 ins_right {
-    "o:encoding",       -- option component same as &encoding in viml
-    fmt = string.upper, -- I"m not sure why it"s upper case either ;)
+    "o:encoding", -- option component same as &encoding in viml
+    fmt = string.upper,
     cond = conditions.hide_in_width,
-    color = { fg = colors.green, gui = "bold" },
+    color = { fg = colors.green },
 }
 
 ins_right {
     "fileformat",
     fmt = string.upper,
     icons_enabled = false, -- I think icons are cool but Eviline doesn"t have them. sigh
-    color = { fg = colors.green, gui = "bold" },
+    color = { fg = colors.green },
 }
 
 ins_right {
     "branch",
     icon = "",
-    color = { fg = colors.violet, gui = "bold" },
+    color = { fg = colors.violet },
 }
 
 ins_right {
@@ -232,16 +233,16 @@ ins_right {
     cond = conditions.hide_in_width,
 }
 
-ins_right {
-    function()
-        return "▐"
-    end,
-    -- color = { fg = colors.blue },
-    color = function()
-        return { fg = mode_color[vim.fn.mode()] }
-    end,
-    padding = { left = 1 },
-}
+-- ins_right {
+--     function()
+--         return "▐"
+--     end,
+--     -- color = { fg = colors.blue },
+--     color = function()
+--         return { fg = mode_color[vim.fn.mode()] }
+--     end,
+--     padding = { left = 1 },
+-- }
 
 -- Now don"t forget to initialize lualine
 lualine.setup(config)
