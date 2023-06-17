@@ -69,11 +69,11 @@ cmp.setup {
     window = {
         completion = {
             border = "none",
-            winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+            winhighlight = "Normal:CmpNormal",
         },
         documentation = {
             border = "none",
-            winhighlight = "Normal:Normal,FloatBorder:FloatBorder,CursorLine:Visual,Search:None",
+            winhighlight = "Normal:CmpDocNormal",
         },
     },
     formatting = {
