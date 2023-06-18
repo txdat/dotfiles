@@ -194,6 +194,8 @@ keymap("n", "<F3>", ":setlocal spell! spell?<CR>") -- toggle spelling
 keymap("n", "H", "^")
 keymap("n", "L", "$")
 
+keymap("n", "<A-v>", ":vsplit<CR>")
+
 -- keymap("n", "<C-t>", ":Term<CR>")  -- open terminal
 -- keymap("t", "<Esc>", "<C-\\><C-n>") -- exit without closing
 

@@ -21,7 +21,7 @@ M.lua_ls = {
                 end)(),
                 checkThirdParty = false,
             },
-            hint = { enable = true },
+            -- hint = { enable = true },
             telemetry = {
                 enable = false,
             },
@@ -86,15 +86,15 @@ M.gopls = {
             analyses = {
                 unusedparams = true,
             },
-            hints = {
-                assignVariableTypes = true,
-                compositeLiteralFields = true,
-                compositeLiteralTypes = true,
-                constantValues = true,
-                functionTypeParameters = true,
-                parameterNames = true,
-                rangeVariableTypes = true,
-            },
+            -- hints = {
+            --     assignVariableTypes = true,
+            --     compositeLiteralFields = true,
+            --     compositeLiteralTypes = true,
+            --     constantValues = true,
+            --     functionTypeParameters = true,
+            --     parameterNames = true,
+            --     rangeVariableTypes = true,
+            -- },
         },
     },
 }

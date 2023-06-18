@@ -137,12 +137,6 @@ ins_left {
 }
 
 ins_left {
-    -- filesize component
-    "filesize",
-    cond = conditions.buffer_not_empty,
-}
-
-ins_left {
     "filename",
     cond = conditions.buffer_not_empty,
     color = { fg = colors.magenta },
@@ -154,6 +148,12 @@ ins_left {
         newfile = "[New]",
     }
 }
+
+-- ins_left {
+--     -- filesize component
+--     "filesize",
+--     cond = conditions.buffer_not_empty,
+-- }
 
 ins_left { "location" }
 
@@ -201,25 +201,19 @@ ins_left {
 -- }
 
 -- Add components to right sections
-ins_right {
-    "o:encoding", -- option component same as &encoding in viml
-    fmt = string.upper,
-    cond = conditions.hide_in_width,
-    color = { fg = colors.green },
-}
-
-ins_right {
-    "fileformat",
-    fmt = string.upper,
-    icons_enabled = false, -- I think icons are cool but Eviline doesn"t have them. sigh
-    color = { fg = colors.green },
-}
-
-ins_right {
-    "branch",
-    icon = "",
-    color = { fg = colors.violet },
-}
+-- ins_right {
+--     "o:encoding", -- option component same as &encoding in viml
+--     fmt = string.upper,
+--     cond = conditions.hide_in_width,
+--     color = { fg = colors.green },
+-- }
+--
+-- ins_right {
+--     "fileformat",
+--     fmt = string.upper,
+--     icons_enabled = false, -- I think icons are cool but Eviline doesn"t have them. sigh
+--     color = { fg = colors.green },
+-- }
 
 ins_right {
     "diff",
@@ -231,6 +225,12 @@ ins_right {
         removed = { fg = colors.red },
     },
     cond = conditions.hide_in_width,
+}
+
+ins_right {
+    "branch",
+    icon = "",
+    color = { fg = colors.violet },
 }
 
 -- ins_right {

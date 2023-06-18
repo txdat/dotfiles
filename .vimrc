@@ -159,12 +159,12 @@ let g:currentmode={
 
 set noshowmode
 set statusline=
-set statusline+=%0*\ %{toupper(g:currentmode[mode()])}\  " The current mode
-set statusline+=%1*\ %<%F%m%r%h%w\                       " File path, modified, readonly, helpfile, preview
-set statusline+=%2*\ %l:%v\ %3p%%                        " Line:Col number, percentage of document
-set statusline+=%=                                       " Right Side
-set statusline+=%1*\ %{''.(&fenc!=''?&fenc:&enc).''}     " Encoding
-set statusline+=\ (%{&ff})                               " FileFormat (dos/unix..)
+set statusline+=%1*\ <%{toupper(mode())}>\  " The current mode
+set statusline+=%2*\ %<%F%m%r%h%w\          " File path, modified, readonly, helpfile, preview
+set statusline+=%3*\ %l:%v\ %3p%%           " Line:Col number, percentage of document
+set statusline+=%=                          " Right Side
+" set statusline+=%1*\ %{''.(&fenc!=''?&fenc:&enc).''}     " Encoding
+" set statusline+=\ (%{&ff})                               " FileFormat (dos/unix..)
 
 " ----------------------------------
 " autocommand functions
@@ -217,6 +217,8 @@ nnoremap <silent> <F3> :setlocal spell! spell?<CR>
 
 nnoremap <silent> H ^
 nnoremap <silent> L $
+
+nnoremap <silent> <A-v> :vsplit<CR>
 
 nnoremap <silent> <C-t> :term<CR>
 "tnoremap <silent> <Esc> <C-\><C-n>
