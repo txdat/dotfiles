@@ -155,13 +155,13 @@ export PATH=$HOME/.local/share/coursier/bin:$PATH
 source /usr/share/nvm/init-nvm.sh
 
 # flutter development
-# export PATH=/opt/flutter/bin:$HOME/.pub-cache/bin:$PATH
-# export ANDROID_SDK_ROOT='/opt/android-sdk'
-# export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH
-# export PATH=$ANDROID_SDK_ROOT/tools/bin:$PATH
-# export PATH=$ANDROID_SDK_ROOT/tools:$PATH
-# export PATH=$ANDROID_SDK_ROOT/emulator:$PATH
-# export CHROME_EXECUTABLE=$(which chromium)
+export ANDROID_SDK_ROOT=$HOME/Android/Sdk
+export PATH=$HOME/flutter/bin:$HOME/.pub-cache/bin:$PATH
+export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH
+export PATH=$ANDROID_SDK_ROOT/tools/bin:$PATH
+export PATH=$ANDROID_SDK_ROOT/tools:$PATH
+export PATH=$ANDROID_SDK_ROOT/emulator:$PATH
+export CHROME_EXECUTABLE=$(which chromium)
 
 # custom aliases
 alias syyu="sudo pacman -Syyu && paru -Syyu"
