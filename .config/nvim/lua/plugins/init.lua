@@ -143,17 +143,17 @@ local plugins = {
     --         pcall(require, "plugins.hop")
     --     end
     -- },
-    -- {
-    --     "ggandor/leap.nvim",
-    --     dependencies = {
-    --         "tpope/vim-repeat",
-    --         "ggandor/flit.nvim",
-    --     },
-    --     event = "BufRead",
-    --     config = function()
-    --         pcall(require, "plugins.leap")
-    --     end
-    -- },
+    {
+        "ggandor/leap.nvim",
+        dependencies = {
+            "tpope/vim-repeat",
+            "ggandor/flit.nvim",
+        },
+        event = "BufRead",
+        config = function()
+            pcall(require, "plugins.leap")
+        end
+    },
 
     ------------------------------------
     -- file manager, finder, svc
