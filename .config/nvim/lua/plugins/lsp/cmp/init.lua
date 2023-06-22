@@ -178,9 +178,14 @@ vim.api.nvim_create_autocmd("LspAttach", {
     end
 })
 
--- local function on_attach(client, bufnr)
---     client.server_capabilities.documentFormattingProvider = true
--- end
+local function on_attach(client, bufnr)
+    -- disable tsserver document formatting
+    if client.name == "tsserver" then
+        client.server_capabilities.documentFormattingProvider = false
+    else
+        client.server_capabilities.documentFormattingProvider = true
+    end
+end
 
 -- capabilities
 local capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -201,7 +206,7 @@ capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 local servers = require("plugins.lsp.cmp.servers")
 for server, config in pairs(servers) do
     config.capabilities = capabilities
-    -- config.on_attach = on_attach
+    config.on_attach = on_attach
     -- config.handlers = handlers
 
     lspconfig[server].setup(config)

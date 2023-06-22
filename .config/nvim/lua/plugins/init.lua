@@ -143,15 +143,22 @@ local plugins = {
     --         pcall(require, "plugins.hop")
     --     end
     -- },
+    -- {
+    --     "ggandor/leap.nvim",
+    --     dependencies = {
+    --         "tpope/vim-repeat",
+    --         "ggandor/flit.nvim",
+    --     },
+    --     event = "BufRead",
+    --     config = function()
+    --         pcall(require, "plugins.leap")
+    --     end
+    -- },
     {
-        "ggandor/leap.nvim",
-        dependencies = {
-            "tpope/vim-repeat",
-            "ggandor/flit.nvim",
-        },
+        "folke/flash.nvim",
         event = "BufRead",
         config = function()
-            pcall(require, "plugins.leap")
+            pcall(require, "plugins.flash")
         end
     },
 
@@ -308,6 +315,19 @@ local plugins = {
     ------------------------------------
     -- prog. langs
     ------------------------------------
+
+    -- typescript
+    {
+        "pmizio/typescript-tools.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            "neovim/nvim-lspconfig",
+        },
+        ft = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+        config = function()
+            pcall(require, "plugins.lsp.cmp.typescript_tools")
+        end
+    }
 
     -- -- scala
     -- {
