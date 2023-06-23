@@ -167,16 +167,16 @@ local plugins = {
     ------------------------------------
 
     -- file manager
-    -- {
-    --     "nvim-tree/nvim-tree.lua",
-    --     dependencies = {
-    --         "nvim-tree/nvim-web-devicons",
-    --     },
-    --     keys = { "<C-e>" },
-    --     config = function()
-    --         pcall(require, "plugins.tree")
-    --     end
-    -- },
+    {
+        "nvim-tree/nvim-tree.lua",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        keys = { "<C-e>" },
+        config = function()
+            pcall(require, "plugins.tree")
+        end
+    },
 
     -- fuzzy finder
     -- {

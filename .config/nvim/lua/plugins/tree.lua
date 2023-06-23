@@ -86,8 +86,8 @@ local keymap = require("util").keymap
 keymap("n", "<C-e>", ":NvimTreeToggle<CR>")
 
 -- auto change bufferline's offset
-local bufferline_ok, bufferline_api = pcall(require, "bufferline.api")
-if bufferline_ok then
+local have_bufferline, bufferline_api = pcall(require, "bufferline.api")
+if have_bufferline then
     local nvim_tree_events = require("nvim-tree.events")
     local nvim_tree_view = require("nvim-tree.view")
 
