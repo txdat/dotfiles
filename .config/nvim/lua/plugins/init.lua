@@ -262,12 +262,12 @@ local plugins = {
             --     }
             -- },
             -- "jose-elias-alvarez/null-ls.nvim",
-            -- {
-            --     "folke/trouble.nvim",
-            --     dependencies = {
-            --         "nvim-tree/nvim-web-devicons",
-            --     },
-            -- },
+            {
+                "folke/trouble.nvim",
+                dependencies = {
+                    "nvim-tree/nvim-web-devicons",
+                },
+            },
         },
         event = "BufRead",
         config = function()
