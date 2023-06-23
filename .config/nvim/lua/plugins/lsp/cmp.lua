@@ -1,10 +1,6 @@
--- https://github.com/neovim/nvim-lspconfig/wiki/Autocompletion
--- https://miikanissi.com/blog/how-to-setup-nvim-lsp-for-code-analysis-autocompletion-and-linting/
-
 local cmp = require("cmp")
 local compare = require("cmp.config.compare")
 local luasnip = require("luasnip")
-local lspconfig = require("lspconfig")
 
 -- disable window's scroll
 -- local cmp_window = require("cmp.utils.window")
@@ -143,74 +139,6 @@ cmp.setup {
         },
     },
 }
-
--- lsp servers config
--- on_attach
-local keymap = require("util").keymap
-
-vim.api.nvim_create_autocmd("LspAttach", {
-    callback = function(args)
-        local lspbuf = vim.lsp.buf
-        local diag = vim.diagnostic
-        local opts = { buffer = args.buf }
-
-        keymap("n", "K", lspbuf.hover, opts)
-        keymap("n", "<F2>", lspbuf.rename, opts)
-        keymap("n", "gd", lspbuf.definition, opts)
-        keymap("n", "gD", lspbuf.declaration, opts)
-        keymap("n", "gt", lspbuf.type_definition, opts)
-        keymap("n", "gs", lspbuf.signature_help, opts)
-        keymap("n", "gi", lspbuf.implementation, opts)
-        keymap("n", "gr", lspbuf.references, opts)
-        keymap("n", "gc", lspbuf.code_action, opts)
-        keymap("n", "D", diag.open_float, opts)
-        keymap("n", "d[", diag.goto_prev, opts)
-        keymap("n", "d]", diag.goto_next, opts)
-        keymap("n", "D[", function()
-            diag.goto_prev({ severity = diag.severity.ERROR })
-        end, opts)
-        keymap("n", "D]", function()
-            diag.goto_next({ severity = diag.severity.ERROR })
-        end, opts)
-        keymap("n", "<C-i>", function()
-            lspbuf.format { async = true }
-        end, opts)
-    end
-})
-
-local function on_attach(client, bufnr)
-    -- disable tsserver document formatting
-    if client.name == "tsserver" then
-        client.server_capabilities.documentFormattingProvider = false
-    else
-        client.server_capabilities.documentFormattingProvider = true
-    end
-end
-
--- capabilities
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
-
--- handlers
--- local handlers = {
---     ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
---         border = "none",
---         close_events = { "CursorMoved", "InsertLeave", "BufHidden" },
---         focusable = false,
---         use_existing = true,
---         silent = true,
---     }),
--- }
-
--- config
-local servers = require("plugins.lsp.cmp.servers")
-for server, config in pairs(servers) do
-    config.capabilities = capabilities
-    config.on_attach = on_attach
-    -- config.handlers = handlers
-
-    lspconfig[server].setup(config)
-end
 
 -- snippet
 luasnip.config.set_config({

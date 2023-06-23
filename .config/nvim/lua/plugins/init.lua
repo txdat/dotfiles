@@ -243,10 +243,11 @@ local plugins = {
     -- autocompletion, debugging
     ------------------------------------
 
-    -- diagnostics, formatting
+    -- lsp server: diagnostics, formatting
     {
         "neovim/nvim-lspconfig",
         dependencies = {
+            "hrsh7th/cmp-nvim-lsp",
             -- {
             --     "williamboman/mason.nvim",
             --     dependencies = {
@@ -292,8 +293,7 @@ local plugins = {
                 },
             },
         },
-        -- event = "InsertEnter",
-        event = "BufRead",
+        event = "InsertEnter",
         config = function()
             pcall(require, "plugins.lsp.cmp")
         end,
@@ -325,7 +325,7 @@ local plugins = {
         },
         ft = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
         config = function()
-            pcall(require, "plugins.lsp.cmp.typescript_tools")
+            pcall(require, "plugins.lsp.servers.typescript_tools")
         end
     }
 
@@ -337,7 +337,7 @@ local plugins = {
     --     },
     --     ft = { "scala" },
     --     config = function()
-    --         pcall(require, "plugins.lsp.cmp.scala_metals")
+    --         pcall(require, "plugins.lsp.servers.scala_metals")
     --     end,
     -- },
 
