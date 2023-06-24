@@ -167,16 +167,16 @@ local plugins = {
     ------------------------------------
 
     -- file manager
-    {
-        "nvim-tree/nvim-tree.lua",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-        },
-        keys = { "<C-e>" },
-        config = function()
-            pcall(require, "plugins.tree")
-        end
-    },
+    -- {
+    --     "nvim-tree/nvim-tree.lua",
+    --     dependencies = {
+    --         "nvim-tree/nvim-web-devicons",
+    --     },
+    --     keys = { "<C-e>" },
+    --     config = function()
+    --         pcall(require, "plugins.tree")
+    --     end
+    -- },
 
     -- fuzzy finder
     -- {
@@ -383,7 +383,7 @@ local opts = {
     },
     -- lockfile = vim.fn.stdpath("data") .. "/lazy/lazy-lock.json",
     dev = {
-        path = "~/workspace", -- local plugins directory
+        path = "~/work/nvim", -- local plugins directory
     },
     git = {
         timeout = 120, -- seconds
