@@ -1,5 +1,4 @@
 -- neovim config
-
 local opt = vim.opt
 
 -- disable built-in plugins
@@ -58,8 +57,8 @@ vim.g.mapleader = " "
 -- vim.g.mapleader = "\\"
 
 -- spelling
-vim.opt.spelllang = "en_us"
--- vim.opt.spell = true
+opt.spelllang = "en_us"
+-- opt.spell = true
 
 -----------------------------------------
 -- gui
@@ -126,6 +125,10 @@ opt.updatetime = 250  -- milli-seconds to wait for trigger an event (keymap)
 -----------------------------------------
 -- providers
 -----------------------------------------
+
+-- disable providers
+vim.g.loaded_perl_provider = 0
+vim.g.loaded_ruby_provider = 0
 
 -- python
 vim.g.python3_host_prog = require("util").shell_cmd("which python3")
@@ -212,7 +215,7 @@ keymap("n", "<C-q>", ":qa!<CR>")                              -- close all buffe
 -- toggle auto-indenting for code paste
 keymap("i", "<F1>", "<nop>")
 keymap("n", "<F1>", ":set invpaste paste?<CR>")
-vim.opt.pastetoggle = "<F1>"
+opt.pastetoggle = "<F1>"
 
 -- clear search highlighting
 keymap("n", "<leader>h", ":nohl<CR>")

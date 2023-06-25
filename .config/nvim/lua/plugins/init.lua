@@ -12,7 +12,7 @@ end
 
 vim.opt.runtimepath:prepend(lazypath)
 
--- config
+-- plugins' config
 local plugins = {
     ------------------------------------
     -- gui, navigation
@@ -177,6 +177,16 @@ local plugins = {
     --         pcall(require, "plugins.tree")
     --     end
     -- },
+    {
+        "stevearc/oil.nvim",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        keys = { "<C-e>" },
+        config = function()
+            pcall(require, "plugins.oil")
+        end
+    },
 
     -- fuzzy finder
     -- {
@@ -385,7 +395,7 @@ local plugins = {
     -- },
 }
 
-local opts = {
+require("lazy").setup(plugins, {
     defaults = {
         lazy = true,
     },
@@ -402,10 +412,7 @@ local opts = {
     ui = {
         border = "none",
     },
-}
+})
 
-require("lazy").setup(plugins, opts)
-
--- custom keymap
 local lazy_view_config = require("lazy.view.config")
 lazy_view_config.keys.close = "<ESC>"
