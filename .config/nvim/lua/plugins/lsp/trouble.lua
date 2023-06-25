@@ -1,4 +1,6 @@
 require("trouble").setup({
+    position = "bottom",
+    height = 30,
     mode = "workspace_diagnostics",
     severity = vim.diagnostic.severity.WARN, -- >= WARN only
     signs = {
