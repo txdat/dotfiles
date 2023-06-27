@@ -37,29 +37,30 @@ require("lspconfig.ui.windows").default_options.border = "none"
 
 -- asynchronous formatting
 -- https://www.reddit.com/r/neovim/comments/14iqm8t/my_setup_for_responsive_immutable_formatting/
-local function apply_formatting(bufnr, result, client_id)
-    vim.bo[bufnr].modifiable = true
-    if not result then
-        return
-    end
-
-    local client = vim.lsp.get_client_by_id(client_id)
-    vim.lsp.util.apply_text_edits(result, bufnr, client.offset_encoding)
-    if vim.b[bufnr].write_after_format then
-        vim.cmd("let buf = bufnr('%') | exec '" .. bufnr .. "bufdo :noa w' | exec 'b' buf")
-    end
-    vim.b[bufnr].write_after_format = nil
-end
-
-vim.lsp.handlers["textDocument/formatting"] = function(_, result, ctx, _)
-    apply_formatting(ctx.bufnr, result, ctx.client_id)
-end
-
-local function format_async(bufnr, write_after)
-    vim.bo[bufnr].modifiable = false
-    vim.b[bufnr].write_after_format = write_after
-    vim.lsp.buf.format({ async = true })
-end
+-- TODO: fix without lsp
+-- local function apply_formatting(bufnr, result, client_id)
+--     vim.bo[bufnr].modifiable = true
+--     if not result then
+--         return
+--     end
+--
+--     local client = vim.lsp.get_client_by_id(client_id)
+--     vim.lsp.util.apply_text_edits(result, bufnr, client.offset_encoding)
+--     if vim.b[bufnr].write_after_format then
+--         vim.cmd("let buf = bufnr('%') | exec '" .. bufnr .. "bufdo :noa w' | exec 'b' buf")
+--     end
+--     vim.b[bufnr].write_after_format = nil
+-- end
+--
+-- vim.lsp.handlers["textDocument/formatting"] = function(_, result, ctx, _)
+--     apply_formatting(ctx.bufnr, result, ctx.client_id)
+-- end
+--
+-- local function format_async(bufnr, write_after)
+--     vim.bo[bufnr].modifiable = false
+--     vim.b[bufnr].write_after_format = write_after
+--     vim.lsp.buf.format({ async = true })
+-- end
 
 -- lsp servers config
 local keymap = require("util").keymap
@@ -89,8 +90,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
             diag.goto_next({ severity = diag.severity.ERROR })
         end, opts)
         keymap("n", "<C-i>", function()
-            -- lspbuf.format { async = true }
-            format_async(args.buf, true)
+            lspbuf.format { async = true }
+            -- format_async(args.buf, true)
         end, opts)
     end
 })

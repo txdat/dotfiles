@@ -234,12 +234,3 @@ keymap("x", "J", ":move '>+1<CR>gv-gv")
 keymap("x", "K", ":move '<-2<CR>gv-gv")
 keymap("x", "<A-j>", ":move '>+1<CR>gv-gv")
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv")
-
------------------------------------------
--- plugins
------------------------------------------
-
--- skip loading plugins in vscode
-if not vim.g.vscode then
-    pcall(require, "plugins")
-end
