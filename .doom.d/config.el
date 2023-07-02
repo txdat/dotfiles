@@ -156,6 +156,9 @@
 ;; Breadcrumb on headerline
 (setq )
 
+;; org-mode src highlighting
+(setq org-src-fontify-natively t)
+
 ;; Lsp
 (after! lsp-mode
   (setq lsp-idle-delay 1.0
