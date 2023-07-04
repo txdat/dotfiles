@@ -214,6 +214,12 @@ ln -s ~/.dotfiles/.jupyter/lab/user-settings/@jupyterlab ~/.jupyter/lab/user-set
 # link config
 ./link_config.sh
 
+# enable nvim's dap for c/c++/rust
+# echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+
+# install doom's emacs
+# doom install
+
 # finish installing ----------------------------------
 cd ~
 neofetch
