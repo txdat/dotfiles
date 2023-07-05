@@ -1,8 +1,14 @@
+local highlight = vim.api.nvim_set_hl
+
+-- use default highlights
+highlight(0, "GitConflictDiffAdd", {})
+highlight(0, "GitConflictDiffText", {})
+
 require("git-conflict").setup({
     default_mappings = false,
     highlights = {
-        incoming = "DiffAdd",
-        current = "DiffText",
+        incoming = "GitConflictDiffAdd",
+        current = "GitConflictDiffText",
     },
 })
 

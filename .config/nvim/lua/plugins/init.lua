@@ -71,7 +71,8 @@ local plugins = {
     -- indent
     {
         "lukas-reineke/indent-blankline.nvim",
-        event = "BufRead",
+        -- event = "BufRead",
+        lazy = false, -- TODO: fix quickfix issue
         config = function()
             pcall(require, "plugins.indent_blankline")
         end
@@ -162,6 +163,16 @@ local plugins = {
         end
     },
 
+    -- quickfix
+    {
+        "kevinhwang91/nvim-bqf",
+        lazy = false,
+        config = function()
+            pcall(require, "plugins.bqf")
+        end
+    },
+
+
     ------------------------------------
     -- file manager, finder, svc
     ------------------------------------
@@ -223,12 +234,6 @@ local plugins = {
             --     build = "./install --bin",
             -- },
             "nvim-tree/nvim-web-devicons",
-            {
-                "kevinhwang91/nvim-bqf",
-                config = function()
-                    pcall(require, "plugins.bqf")
-                end
-            },
         },
         keys = {
             "<leader>ff",
