@@ -350,7 +350,7 @@ local plugins = {
         config = function()
             pcall(require, "plugins.lsp.servers.typescript_tools")
         end
-    }
+    },
 
     -- -- scala
     -- {
@@ -390,14 +390,14 @@ local plugins = {
     --     end
     -- },
 
-    -- -- latex
-    -- {
-    --     "lervag/vimtex",
-    --     ft = { "tex" }, -- triggered when opening *.tex file
-    --     config = function()
-    --         pcall(require, "plugins.vimtex")
-    --     end
-    -- },
+    -- latex
+    {
+        "lervag/vimtex",
+        ft = { "tex" }, -- triggered when opening *.tex file
+        config = function()
+            pcall(require, "plugins.vimtex")
+        end
+    },
 }
 
 require("lazy").setup(plugins, {

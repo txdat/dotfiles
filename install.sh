@@ -164,7 +164,7 @@ sudo pacman -S --noconfirm nvidia
 # pip install opencv-python opencv-contrib-python --upgrade
 
 # latex
-# sudo pacman -S --noconfirm texlive-core texlive-latexextra texlive-bibtexextra biber texlive-science texlab
+# sudo pacman -S --noconfirm texlive-core texlive-latexextra texlive-bibtexextra biber texlive-science texlab texlive-binextra
 # TODO: fix tlmgr.pl
 # sudo sed -i -e "s/\$Master\/..\/../\$Master\/..\/..\/../g" /usr/share/texmf-dist/scripts/texlive/tlmgr.pl
 # tlmgr init-usertree
@@ -223,3 +223,6 @@ ln -s ~/.dotfiles/.jupyter/lab/user-settings/@jupyterlab ~/.jupyter/lab/user-set
 # finish installing ----------------------------------
 cd ~
 neofetch
+
+# install openssl 1.1
+# sudo pacman -U --overwrite '/usr/lib/*' Downloads/openssl-1.1-1.1.1.u-1-x86_64.pkg.tar.zst
