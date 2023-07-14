@@ -235,7 +235,7 @@ inoremap <silent> <F1> <nop>
 nnoremap <silent> <F1> :set invpaste paste?<CR>
 set pastetoggle=<F1>
 
-nnoremap <silent> <leader>h :nohl<CR>
+nnoremap <silent> xh :nohl<CR>
 
 nnoremap <silent> <C-s> :w<CR>
 inoremap <silent> <C-s> <cmd>w<CR>
@@ -277,16 +277,6 @@ let g:colors_name='moonfly'
 
 " Enable terminal true-color support.
 set termguicolors
-
-" let g:moonflyCursorColor = get(g:, 'moonflyCursorColor', v:false)
-" let g:moonflyItalics = get(g:, 'moonflyItalics', v:true)
-" let g:moonflyNormalFloat = get(g:, 'moonflyNormalFloat', v:false)
-" let g:moonflyTerminalColors = get(g:, 'moonflyTerminalColors', v:true)
-" let g:moonflyTransparent = get(g:, 'moonflyTransparent', v:false)
-" let g:moonflyUndercurls = get(g:, 'moonflyUndercurls', v:true)
-" let g:moonflyUnderlineMatchParen = get(g:, 'moonflyUnderlineMatchParen', v:false)
-" let g:moonflyVirtualTextColor =  get(g:, 'moonflyVirtualTextColor', v:false)
-" let g:moonflyWinSeparator = get(g:, 'moonflyWinSeparator', 1)
 
 let g:moonflyCursorColor = v:false
 let g:moonflyItalics = v:false
