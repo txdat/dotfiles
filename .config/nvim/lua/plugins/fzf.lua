@@ -6,6 +6,7 @@ require("fzf-lua").setup({
         preview = {
             default = "bat_native",
             hidden = "hidden", -- hide preview
+            wrap = "nowrap",
             border = "noborder",
             layout = "horizontal",
             scrollbar = false,
@@ -46,7 +47,7 @@ require("fzf-lua").setup({
         },
     },
     files = {
-        path_shorten = 1,
+        path_shorten = false,
         cmd          = "fd --color=never --type f --hidden --follow --exclude .git --exclude node_modules",
     },
     grep = {
