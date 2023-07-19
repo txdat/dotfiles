@@ -1,118 +1,44 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
-
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in $ZSH/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS="true"
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in $ZSH/plugins/
-# Custom plugins may be added to $ZSH_CUSTOM/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-#plugins=(git docker docker-compose kubectl zsh-autosuggestions zsh-syntax-highlighting)
-plugins=(zsh-autosuggestions zsh-syntax-highlighting)
-
-#fpath+=$ZSH/custom/plugins/zsh-completions/src
-
-source $ZSH/oh-my-zsh.sh
-
-# User configuration
-
-# export MANPATH="/usr/local/man:$MANPATH"
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+# ------------------
+# config
+# ------------------
 
 #export TERM="xterm-256color"
+export EDITOR="vim"
 
+# history
+HISTFILE=~/.zsh_history
+HISTSIZE=1000
+SAVEHIST=1000
+setopt extended_history       # record timestamp of command in HISTFILE
+setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
+setopt hist_ignore_dups       # ignore duplicated commands history list
+setopt hist_ignore_space      # ignore commands that start with space
+setopt hist_verify            # show command with history expansion to user before running it
+setopt inc_append_history     # add commands to HISTFILE in order of execution
+setopt share_history          # share command history data
+
+# ------------------
+# plugins
+# ------------------
+
+# completion
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+bindkey '^I'   complete-word       # tab          | complete
+bindkey '^[[Z' autosuggest-accept  # shift + tab  | autosuggest
+
+# syntax highlighting
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# prompt
+source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh # run 'p10k configure'
+
+# ------------------
+# user's config
+# ------------------
+
+# fzf
 # export FZF_DEFAULT_COMMAND="rg --hidden --color=always --no-heading --with-filename --line-number --column --smart-case --max-columns=4096 ''"
 export FZF_DEFAULT_OPTS="
  --ansi --multi --no-separator
@@ -125,8 +51,7 @@ export FZF_DEFAULT_OPTS="
 
 alias fzfp="fzf --preview 'bat --color=always {}'" # fzf with bat preview
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
+# conda
 CONDA_HOME="$HOME/.miniconda"
 
 __conda_setup="$('$CONDA_HOME/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -142,8 +67,8 @@ fi
 unset __conda_setup
 
 export PATH="$CONDA_HOME/bin:$PATH"
-# <<< conda initialize <<<
 
+# emacs
 export PATH="$HOME/.emacs.d/bin:$PATH"
 
 # rust
@@ -156,18 +81,6 @@ export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
 export JAVA_HOME='/usr/lib/jvm/default'
 export PATH=$JAVA_HOME/bin:$PATH
 export PATH=$HOME/.local/share/coursier/bin:$PATH
-
-# nodejs
-#source /usr/share/nvm/init-nvm.sh
-
-# flutter
-#export ANDROID_SDK_ROOT=$HOME/Android/Sdk
-#export PATH=$HOME/flutter/bin:$HOME/.pub-cache/bin:$PATH
-#export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH
-#export PATH=$ANDROID_SDK_ROOT/tools/bin:$PATH
-#export PATH=$ANDROID_SDK_ROOT/tools:$PATH
-#export PATH=$ANDROID_SDK_ROOT/emulator:$PATH
-#export CHROME_EXECUTABLE=$(which chromium)
 
 # custom aliases
 alias syyu="sudo pacman -Syyu && paru -Syyu"
@@ -191,7 +104,6 @@ start_kube () {
     KUBE_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
     for svc in "${KUBE_SERVICES[@]}"
     do
-        echo starting $svc
         sudo systemctl start $svc
     done
 }
@@ -203,21 +115,16 @@ stop_kube () {
     KUBE_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
     for svc in "${KUBE_SERVICES[@]}"
     do
-        echo stopping $svc
         sudo systemctl stop $svc
     done
 }
 
 # update zsh and plugins
 update_zsh () {
-    omz update
-
-    cd ~/.oh-my-zsh/custom/themes/powerlevel10k && echo updating powerlevel10k && git pull
-
-    ZSH_PLUGINS=('zsh-completions' 'zsh-syntax-highlighting' 'zsh-autosuggestions')
+    ZSH_PLUGINS=('powerlevel10k' 'zsh-syntax-highlighting' 'zsh-autosuggestions')
     for plg in "${ZSH_PLUGINS[@]}"
     do
-        cd ~/.oh-my-zsh/custom/plugins/$plg && echo updating $plg && git pull
+        cd ~/.zsh/$plg && git pull
     done
 
     cd ~
