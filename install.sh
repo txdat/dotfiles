@@ -5,7 +5,8 @@
 
 # install base packages ---------------------------------------
 sudo pacman -S --noconfirm curl wget axel rsync \
-                           git lazygit git-delta \
+                           git github-cli \
+                           lazygit git-delta \
                            zsh tmux htop ranger neofetch \
                            vi vim neovim luarocks lua-language-server \
                            emacs-nativecomp \

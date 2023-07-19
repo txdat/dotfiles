@@ -75,9 +75,10 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker docker-compose kubectl zsh-autosuggestions zsh-syntax-highlighting)
+#plugins=(git docker docker-compose kubectl zsh-autosuggestions zsh-syntax-highlighting)
+plugins=(zsh-autosuggestions zsh-syntax-highlighting)
 
-fpath+=$ZSH/custom/plugins/zsh-completions/src
+#fpath+=$ZSH/custom/plugins/zsh-completions/src
 
 source $ZSH/oh-my-zsh.sh
 
@@ -144,9 +145,14 @@ export PATH="$CONDA_HOME/bin:$PATH"
 # <<< conda initialize <<<
 
 export PATH="$HOME/.emacs.d/bin:$PATH"
-export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
-export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 
+# rust
+export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
+
+# haskell
+#export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
+
+# java/scala
 export JAVA_HOME='/usr/lib/jvm/default'
 export PATH=$JAVA_HOME/bin:$PATH
 export PATH=$HOME/.local/share/coursier/bin:$PATH
@@ -154,14 +160,14 @@ export PATH=$HOME/.local/share/coursier/bin:$PATH
 # nodejs
 #source /usr/share/nvm/init-nvm.sh
 
-# flutter development
-export ANDROID_SDK_ROOT=$HOME/Android/Sdk
-export PATH=$HOME/flutter/bin:$HOME/.pub-cache/bin:$PATH
-export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH
-export PATH=$ANDROID_SDK_ROOT/tools/bin:$PATH
-export PATH=$ANDROID_SDK_ROOT/tools:$PATH
-export PATH=$ANDROID_SDK_ROOT/emulator:$PATH
-export CHROME_EXECUTABLE=$(which chromium)
+# flutter
+#export ANDROID_SDK_ROOT=$HOME/Android/Sdk
+#export PATH=$HOME/flutter/bin:$HOME/.pub-cache/bin:$PATH
+#export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH
+#export PATH=$ANDROID_SDK_ROOT/tools/bin:$PATH
+#export PATH=$ANDROID_SDK_ROOT/tools:$PATH
+#export PATH=$ANDROID_SDK_ROOT/emulator:$PATH
+#export CHROME_EXECUTABLE=$(which chromium)
 
 # custom aliases
 alias syyu="sudo pacman -Syyu && paru -Syyu"
@@ -172,7 +178,7 @@ alias cpcb="xclip -sel c" # copy output to clipboard
 
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 
-# setup external fullhd display to the right
+# extend fullhd display to the right
 alias xfhdr="xrandr --output DisplayPort-0 --scale 2x2 && xrandr --output DisplayPort-0 --scale 1.6x1.6 --right-of eDP && xrandr --output eDP --scale 0.9999x0.9999 && xrandr --output DisplayPort-0 --set TearFree on"
 
 # kubernetes (k3s)
