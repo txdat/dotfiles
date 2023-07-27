@@ -202,7 +202,6 @@ rm -rf ~/.doom.d
 # link configs ----------------------------------------
 cd ~
 git clone git@github.com:txdat/dotfiles .dotfiles
-# git clone https://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@github.com/txdat/dotfiles .dotfiles
 cd .dotfiles
 
 # k3s

@@ -89,9 +89,9 @@ export PATH=$HOME/.local/share/coursier/bin:$PATH
 # custom aliases
 alias syyu="sudo pacman -Syyu && paru -Syyu"
 
-alias ficp="xclip -sel c < " # copy from file to clipboard
-alias fipt="xclip -sel c -o > " # copy from clipboard to file
-alias cpcb="xclip -sel c" # copy output to clipboard
+alias x2cb="xclip -sel c" # copy output to clipboard
+alias f2cb="xclip -sel c < " # copy from file to clipboard
+alias cb2f="xclip -sel c -o > " # copy from clipboard to file
 
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 

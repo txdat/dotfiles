@@ -113,6 +113,11 @@ source $ZSH/oh-my-zsh.sh
 
 #export TERM="xterm-256color"
 
+# ------------------
+# user's config
+# ------------------
+
+# fzf
 # export FZF_DEFAULT_COMMAND="rg --hidden --color=always --no-heading --with-filename --line-number --column --smart-case --max-columns=4096 ''"
 export FZF_DEFAULT_OPTS="
  --ansi --multi --no-separator
@@ -125,8 +130,7 @@ export FZF_DEFAULT_OPTS="
 
 alias fzfp="fzf --preview 'bat --color=always {}'" # fzf with bat preview
 
-# >>> conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
+# conda
 CONDA_HOME="$HOME/.miniconda"
 
 __conda_setup="$('$CONDA_HOME/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -142,8 +146,8 @@ fi
 unset __conda_setup
 
 export PATH="$CONDA_HOME/bin:$PATH"
-# <<< conda initialize <<<
 
+# emacs
 export PATH="$HOME/.emacs.d/bin:$PATH"
 
 # rust
@@ -157,24 +161,12 @@ export JAVA_HOME='/usr/lib/jvm/default'
 export PATH=$JAVA_HOME/bin:$PATH
 export PATH=$HOME/.local/share/coursier/bin:$PATH
 
-# nodejs
-#source /usr/share/nvm/init-nvm.sh
-
-# flutter
-#export ANDROID_SDK_ROOT=$HOME/Android/Sdk
-#export PATH=$HOME/flutter/bin:$HOME/.pub-cache/bin:$PATH
-#export PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH
-#export PATH=$ANDROID_SDK_ROOT/tools/bin:$PATH
-#export PATH=$ANDROID_SDK_ROOT/tools:$PATH
-#export PATH=$ANDROID_SDK_ROOT/emulator:$PATH
-#export CHROME_EXECUTABLE=$(which chromium)
-
 # custom aliases
 alias syyu="sudo pacman -Syyu && paru -Syyu"
 
-alias ficp="xclip -sel c < " # copy from file to clipboard
-alias fipt="xclip -sel c -o > " # copy from clipboard to file
-alias cpcb="xclip -sel c" # copy output to clipboard
+alias x2cb="xclip -sel c" # copy output to clipboard
+alias f2cb="xclip -sel c < " # copy from file to clipboard
+alias cb2f="xclip -sel c -o > " # copy from clipboard to file
 
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 
@@ -191,7 +183,6 @@ start_kube () {
     KUBE_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
     for svc in "${KUBE_SERVICES[@]}"
     do
-        echo starting $svc
         sudo systemctl start $svc
     done
 }
@@ -203,21 +194,16 @@ stop_kube () {
     KUBE_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
     for svc in "${KUBE_SERVICES[@]}"
     do
-        echo stopping $svc
         sudo systemctl stop $svc
     done
 }
 
 # update zsh and plugins
 update_zsh () {
-    omz update
-
-    cd ~/.oh-my-zsh/custom/themes/powerlevel10k && echo updating powerlevel10k && git pull
-
-    ZSH_PLUGINS=('zsh-completions' 'zsh-syntax-highlighting' 'zsh-autosuggestions')
+    ZSH_PLUGINS=('powerlevel10k' 'zsh-syntax-highlighting' 'zsh-autosuggestions')
     for plg in "${ZSH_PLUGINS[@]}"
     do
-        cd ~/.oh-my-zsh/custom/plugins/$plg && echo updating $plg && git pull
+        cd ~/.zsh/$plg && git pull
     done
 
     cd ~
