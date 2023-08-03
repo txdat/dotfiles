@@ -170,8 +170,15 @@ alias cb2f="xclip -sel c -o > " # copy from clipboard to file
 
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 
-# extend fullhd display to the right
-alias xfhdr="xrandr --output DisplayPort-0 --scale 2x2 && xrandr --output DisplayPort-0 --scale 1.6x1.6 --right-of eDP && xrandr --output eDP --scale 0.9999x0.9999 && xrandr --output DisplayPort-0 --set TearFree on"
+# extend display from eDP
+extend_display () {
+    display="${1:-DisplayPort-0}"
+    width="${2:-1920}"
+    direction="${3:-right-of}"
+    scale=$((3072.0/width))
+
+    xrandr --output $display --scale 2x2 && xrandr --output $display --scale ${scale}x${scale} --$direction eDP && xrandr --output eDP --scale 0.9999x0.9999 && xrandr --output $display --set TearFree on
+}
 
 # kubernetes (k3s)
 export KUBECONFIG=$HOME/.kube/config
