@@ -202,6 +202,11 @@ keymap("n", "<A-v>", ":vsplit<CR>")
 -- keymap("n", "<C-t>", ":Term<CR>")  -- open terminal
 -- keymap("t", "<Esc>", "<C-\\><C-n>") -- exit without closing
 
+-- switch tabs
+keymap("n", "<A-[>", "gT")
+keymap("n", "<A-]>", "gt")
+keymap("n", "<A-\\>", ":tablast<CR>")
+
 -- switch buffers
 keymap("n", "<C-[>", ":bprevious<CR>")
 keymap("n", "<C-]>", ":bnext<CR>")

@@ -223,6 +223,10 @@ nnoremap <silent> <A-v> :vsplit<CR>
 nnoremap <silent> <C-t> :term<CR>
 "tnoremap <silent> <Esc> <C-\><C-n>
 
+nnoremap <silent> <A-[> :gT<CR>
+nnoremap <silent> <A-]> :gt<CR>
+nnoremap <silent> <A-\> :tablast<CR>
+
 nnoremap <silent> <C-[> :bprevious<CR>
 nnoremap <silent> <C-]> :bnext<CR>
 nnoremap <silent> <C-\> :b#<CR>
