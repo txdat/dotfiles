@@ -138,6 +138,6 @@ M.eslint = {
     filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
 }
 
--- M.texlab = {}
+M.texlab = {}
 
 return M

@@ -292,11 +292,6 @@ let g:moonflyUnderlineMatchParen = v:false
 let g:moonflyVirtualTextColor = v:true
 let g:moonflyWinSeparator = 0
 
-" if has('nvim')
-"     lua require("moonfly").style()
-" else
-"     call moonfly#Style()
-" end
 call moonfly#Style()
 
 " moonfly is a dark theme. Note, set this at the end for startup performance
