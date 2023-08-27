@@ -215,6 +215,8 @@ nnoremap <silent> <F3> :setlocal spell! spell?<CR>
 " nnoremap <silent> <C-l> [s1z=<C-o>
 " inoremap <silent> <C-l> <C-g>u<ESC>[s1z=`]a<C-g>u
 
+nnoremap <silent> dx "_dd
+
 nnoremap <silent> H ^
 nnoremap <silent> L $
 

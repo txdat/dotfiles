@@ -194,6 +194,8 @@ keymap("n", "<F3>", ":setlocal spell! spell?<CR>") -- toggle spelling
 -- keymap("n", "<C-l>", "[s1z=<C-o>")
 -- keymap("i", "<C-l>", "<C-g>u<ESC>[s1z=`]a<C-g>u")
 
+keymap("n", "dx", '"_dd') -- delete
+
 keymap("n", "H", "^")
 keymap("n", "L", "$")
 
