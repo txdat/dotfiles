@@ -36,6 +36,8 @@ let s:crimson   = '#ff5189'
 let s:red       = '#ff5454'
 " Extra colors
 let s:spring    = '#00875f'
+let s:mineral   = '#314940'
+let s:bay       = '#4d5d8d'
 
 function! moonfly#Style() abort
     "-----------------------------------------------------------------------
@@ -52,6 +54,7 @@ function! moonfly#Style() abort
     exec 'highlight MoonflyGrey241 guifg=' . s:grey241
     exec 'highlight MoonflyGrey239 guifg=' . s:grey239
     exec 'highlight MoonflyGrey238 guifg=' . s:grey238
+    exec 'highlight MoonflyGrey237 guifg=' . s:grey237
     exec 'highlight MoonflyGrey236 guifg=' . s:grey236
     exec 'highlight MoonflyGrey235 guifg=' . s:grey235
     exec 'highlight MoonflyKhaki guifg=' . s:khaki
@@ -70,12 +73,6 @@ function! moonfly#Style() abort
     exec 'highlight MoonflyViolet guifg=' . s:violet
     exec 'highlight MoonflyCrimson guifg=' . s:crimson
     exec 'highlight MoonflyRed guifg=' . s:red
-    " Misc helpers
-    exec 'highlight MoonflyYellowAlert guibg=bg guifg=' . s:yellow
-    exec 'highlight MoonflyCoralAlert guibg=bg guifg=' . s:coral
-    exec 'highlight MoonflyEmeraldAlert guibg=bg guifg=' . s:emerald
-    exec 'highlight MoonflySkyAlert guibg=bg guifg=' . s:sky
-    exec 'highlight MoonflyRedAlert guibg=bg guifg=' . s:red
     " Statusline helper colors
     exec 'highlight MoonflyBlueMode guibg=' . s:blue . ' guifg=' . s:grey234
     exec 'highlight MoonflyEmeraldMode guibg=' . s:emerald . ' guifg=' . s:grey234
@@ -203,7 +200,6 @@ function! moonfly#Style() abort
     " Visual selection
     highlight! link Visual MoonflyVisual
     exec 'highlight VisualNOS guibg=' . s:grey0 . ' guifg=fg gui=none'
-    exec 'highlight VisualInDiff guibg=' . s:grey0 . ' guifg=' . s:white
 
     " Errors, warnings and whitespace-eol
     exec 'highlight Error guibg=bg guifg=' . s:red
@@ -266,10 +262,10 @@ function! moonfly#Style() abort
     exec 'highlight Conceal guibg=NONE guifg=' . s:grey249
 
     " vimdiff -d
-    exec 'highlight DiffAdd guibg=' . s:emerald . ' guifg=' . s:black
+    exec 'highlight DiffAdd guibg=' . s:mineral
     exec 'highlight DiffChange guibg=' . s:grey236
     exec 'highlight DiffDelete guibg=' . s:grey236 . ' guifg=' . s:grey241 . ' gui=none'
-    exec 'highlight DiffText guibg=' . s:blue . ' guifg=' . s:black . ' gui=none'
+    exec 'highlight DiffText guibg=' . s:bay
 
     "-----------------------------------------------------------------------
     " Language styling
@@ -540,12 +536,14 @@ function! moonfly#Style() abort
     exec 'highlight scalaKeywordModifier guifg=' . s:lime
     exec 'highlight scalaSpecial guifg=' . s:crimson
 
-    " Shell scripts
+    " Shell
     highlight! link shAlias MoonflyTurquoise
     highlight! link shCommandSub MoonflyWhite
+    highlight! link shCtrlSeq MoonflyKhaki
     highlight! link shLoop MoonflyViolet
+    highlight! link shRange MoonflyWhite
     highlight! link shSetList MoonflyTurquoise
-    highlight! link shShellVariables MoonflyLime
+    highlight! link shShellVariables MoonflyTurquoise
     highlight! link shVariable MoonflyTurquoise
 
     " TypeScript (leafgarland/typescript-vim)
@@ -642,7 +640,7 @@ function! moonfly#Style() abort
     highlight! link TagbarKind MoonflyEmerald
 
     " NERDTree plugin
-    highlight! link NERDTreeClosable MoonflyGrey247
+    highlight! link NERDTreeClosable MoonflyGrey246
     highlight! link NERDTreeCWD MoonflyPurple
     highlight! link NERDTreeDir MoonflySky
     highlight! link NERDTreeDirSlash MoonflyCranberry
@@ -652,7 +650,7 @@ function! moonfly#Style() abort
     highlight! link NERDTreeLinkDir MoonflyBlue
     highlight! link NERDTreeLinkFile MoonflyBlue
     highlight! link NERDTreeLinkTarget MoonflyTurquoise
-    highlight! link NERDTreeOpenable MoonflyGrey247
+    highlight! link NERDTreeOpenable MoonflyGrey246
     highlight! link NERDTreePart MoonflyGrey0
     highlight! link NERDTreePartFile MoonflyGrey0
     highlight! link NERDTreeUp MoonflyBlue
@@ -665,9 +663,9 @@ function! moonfly#Style() abort
     highlight! link NERDTreeGitStatusUntracked MoonflyRed
 
     " fern.vim plugin
-    highlight! link FernBranchSymbol MoonflyGrey241
+    highlight! link FernBranchSymbol MoonflyGrey246
     highlight! link FernLeafSymbol MoonflyBlue
-    highlight! link FernLeaderSymbol MoonflyGrey239
+    highlight! link FernLeaderSymbol MoonflyGrey237
     highlight! link FernBranchText MoonflyBlue
     highlight! link FernMarkedLine MoonflyVisual
     highlight! link FernMarkedText MoonflyCrimson
@@ -714,6 +712,8 @@ function! moonfly#Style() abort
     endif
     exec 'highlight snipLeadingSpaces guibg=bg guifg=fg'
     exec 'highlight MatchWordCur guibg=bg'
+    highlight! link fishVariable MoonflyTurquoise
+    highlight! link fishInnerVariable MoonflyTurquoise
 
     " ALE plugin
     if g:moonflyUndercurls
@@ -725,9 +725,9 @@ function! moonfly#Style() abort
         highlight! link ALEWarning MoonflyDiagnosticUnderlineWarn
         highlight! link ALEInfo MoonflyDiagnosticUnderlineInfo
     endif
-    highlight! link ALEWarningSign MoonflyYellowAlert
-    highlight! link ALEErrorSign MoonflyRedAlert
-    highlight! link ALEInfoSign MoonflySkyAlert
+    highlight! link ALEWarningSign MoonflyYellow
+    highlight! link ALEErrorSign MoonflyRed
+    highlight! link ALEInfoSign MoonflySky
     if g:moonflyVirtualTextColor
         highlight! link ALEVirtualTextError MoonflyDiagnosticVirtualTextError
         highlight! link ALEVirtualTextWarning MoonflyDiagnosticVirtualTextWarn
@@ -739,16 +739,16 @@ function! moonfly#Style() abort
     endif
 
     " GitGutter plugin
-    highlight! link GitGutterAdd MoonflyEmeraldAlert
-    highlight! link GitGutterChange MoonflySkyAlert
-    highlight! link GitGutterChangeDelete MoonflyCoralAlert
-    highlight! link GitGutterDelete MoonflyRedAlert
+    highlight! link GitGutterAdd MoonflyEmerald
+    highlight! link GitGutterChange MoonflySky
+    highlight! link GitGutterChangeDelete MoonflyCoral
+    highlight! link GitGutterDelete MoonflyRed
 
     " Signify plugin
-    highlight! link SignifySignAdd MoonflyEmeraldAlert
-    highlight! link SignifySignChange MoonflySkyAlert
-    highlight! link SignifySignChangeDelete MoonflyCoralAlert
-    highlight! link SignifySignDelete MoonflyRedAlert
+    highlight! link SignifySignAdd MoonflyEmerald
+    highlight! link SignifySignChange MoonflySky
+    highlight! link SignifySignChangeDelete MoonflyCoral
+    highlight! link SignifySignDelete MoonflyRed
 
     " FZF plugin
     exec 'highlight fzf1 guifg=' . s:crimson . ' guibg=' . s:grey236

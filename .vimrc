@@ -1,15 +1,19 @@
 " disable built-in plugins
 let built_in_plugins = [
+    \'tutor',
+    \'tohtml',
     \'2html_plugin',
     \'getscript',
     \'getscriptPlugin',
     \'gzip',
+    \'zipPlugin',
     \'logipat',
     \'netrw',
     \'netrwPlugin',
     \'netrwSettings',
     \'netrwFileHandlers',
     \'matchit',
+    \'matchparen',
     \'tar',
     \'tarPlugin',
     \'rrhelper',
@@ -34,9 +38,6 @@ endfor
 " ----------------------------------
 " general
 " ----------------------------------
-
-syntax on
-filetype plugin indent on
 
 set rtp^=~/.vim
 set nocompatible " use vim defaults
@@ -66,7 +67,9 @@ set spelllang=en_us
 " gui
 " ----------------------------------
 
-set background="dark"
+syntax on
+filetype plugin indent on
+" set background="dark"
 set shortmess=I " disable vim intro
 set laststatus=2 " always show statusline
 set guicursor=n-v-c:block-Cursor " using block cursor
@@ -215,7 +218,7 @@ nnoremap <silent> <F3> :setlocal spell! spell?<CR>
 " nnoremap <silent> <C-l> [s1z=<C-o>
 " inoremap <silent> <C-l> <C-g>u<ESC>[s1z=`]a<C-g>u
 
-nnoremap <silent> dx "_dd
+nnoremap <silent> D "_dd
 
 nnoremap <silent> H ^
 nnoremap <silent> L $
@@ -241,7 +244,7 @@ inoremap <silent> <F1> <nop>
 nnoremap <silent> <F1> :set invpaste paste?<CR>
 set pastetoggle=<F1>
 
-nnoremap <silent> xh :nohl<CR>
+nnoremap <silent> hh :nohl<CR>
 
 nnoremap <silent> <C-s> :w<CR>
 inoremap <silent> <C-s> <cmd>w<CR>
@@ -260,19 +263,6 @@ xnoremap <silent> <A-k> :move '<-2<CR>gv-gv
 " ----------------------------------
 " colorscheme
 " ----------------------------------
-
-" Dark Vim/Neovim color scheme.
-"
-" URL:     github.com/bluz71/vim-moonfly-colors
-" License: MIT (https://opensource.org/licenses/MIT)
-
-" if has('nvim') && !has('nvim-0.8')
-"     lua vim.api.nvim_echo({
-"         \ { "moonfly requires Neovim 0.8 or later.\n", "WarningMsg" },
-"         \ { "Please use the moonfly 'legacy' branch if you can't upgrade Neovim.\n", "Normal"} },
-"         \ false, {})
-"     finish
-" endif
 
 " Clear highlights and reset syntax.
 highlight clear

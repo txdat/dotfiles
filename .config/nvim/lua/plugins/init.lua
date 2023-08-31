@@ -209,12 +209,6 @@ local plugins = {
     --         -- { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
     --         "nvim-telescope/telescope-fzy-native.nvim",
     --         "nvim-lua/plenary.nvim",
-    --         {
-    --             "kevinhwang91/nvim-bqf",
-    --             config = function()
-    --                 pcall(require, "plugins.bqf")
-    --             end
-    --         },
     --     },
     --     keys = {
     --         "<C-e>",
@@ -416,6 +410,9 @@ require("lazy").setup(plugins, {
     },
     ui = {
         border = "none",
+    },
+    readme = {
+        enable = false,
     },
 })
 

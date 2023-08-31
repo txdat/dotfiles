@@ -38,7 +38,7 @@
       "highlightingModeRegex": "^Go$"
     },
     "python": {
-      "command": ["/home/txdat/miniconda3/bin/pyright-langserver", "--stdio"],
+      "command": ["/home/txdat/.miniconda/bin/pyright-langserver", "--stdio"],
       "url": "https://github.com/python-lsp/python-lsp-server",
       "highlightingModeRegex": "^Python$"
     },

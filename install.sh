@@ -12,7 +12,7 @@ sudo pacman -S --noconfirm curl wget axel rsync \
                            emacs-nativecomp \
                            zip unzip p7zip ark \
                            bat man \
-                           xclip xdotool fzf fzy ripgrep fd jq \
+                           xclip xdotool fzf fzy ripgrep fd jq bc \
                            maim graphviz gnuplot \
                            fcitx5 fcitx5-bamboo fcitx5-configtool fcitx5-qt fcitx5-gtk \
                            xorg-xrandr \

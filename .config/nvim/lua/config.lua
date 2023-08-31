@@ -3,16 +3,20 @@ local opt = vim.opt
 
 -- disable built-in plugins
 local built_in_plugins = {
+    "tutor",
+    "tohtml",
     "2html_plugin",
     "getscript",
     "getscriptPlugin",
     "gzip",
+    "zipPlugin",
     "logipat",
     "netrw",
     "netrwPlugin",
     "netrwSettings",
     "netrwFileHandlers",
     "matchit",
+    "matchparen",
     "tar",
     "tarPlugin",
     "rrhelper",
@@ -194,7 +198,7 @@ keymap("n", "<F3>", ":setlocal spell! spell?<CR>") -- toggle spelling
 -- keymap("n", "<C-l>", "[s1z=<C-o>")
 -- keymap("i", "<C-l>", "<C-g>u<ESC>[s1z=`]a<C-g>u")
 
-keymap("n", "dx", '"_dd') -- delete
+keymap("n", "D", '"_dd') -- delete
 
 keymap("n", "H", "^")
 keymap("n", "L", "$")
@@ -225,7 +229,7 @@ keymap("n", "<F1>", ":set invpaste paste?<CR>")
 opt.pastetoggle = "<F1>"
 
 -- clear search highlighting
-keymap("n", "xh", ":nohl<CR>")
+keymap("n", "hh", ":nohl<CR>")
 
 -- quick save
 keymap({ "n", "i" }, "<C-s>", "<cmd>w<CR>")
