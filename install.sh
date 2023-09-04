@@ -212,8 +212,8 @@ sudo mkdir -p /etc/containerd && sudo ln -s ~/.dotfiles/k3s/containerd/config.to
 sudo cp -r fonts/jetbrains /usr/share/fonts && sudo fc-cache -vfs
 
 # fix emoji displaying
-sudo ln -s 75-noto-color-emoji.conf /usr/share/fontconfig/conf.avail/75-noto-color-emoji.conf && \
-sudo ln -s 75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-emoji.conf
+sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /usr/share/fontconfig/conf.avail/75-noto-color-emoji.conf && \
+sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-emoji.conf
 
 # jupyterlab
 mkdir -p ~/.jupyter/lab/user-settings && \
