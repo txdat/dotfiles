@@ -229,7 +229,7 @@ keymap("n", "<F1>", ":set invpaste paste?<CR>")
 opt.pastetoggle = "<F1>"
 
 -- clear search highlighting
-keymap("n", "hh", ":nohl<CR>")
+keymap("n", "\\\\", ":nohl<CR>")
 
 -- quick save
 keymap({ "n", "i" }, "<C-s>", "<cmd>w<CR>")

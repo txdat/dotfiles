@@ -244,7 +244,7 @@ inoremap <silent> <F1> <nop>
 nnoremap <silent> <F1> :set invpaste paste?<CR>
 set pastetoggle=<F1>
 
-nnoremap <silent> hh :nohl<CR>
+nnoremap <silent> \\ :nohl<CR>
 
 nnoremap <silent> <C-s> :w<CR>
 inoremap <silent> <C-s> <cmd>w<CR>
