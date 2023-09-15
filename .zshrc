@@ -86,6 +86,9 @@ export JAVA_HOME='/usr/lib/jvm/default'
 export PATH=$JAVA_HOME/bin:$PATH
 export PATH=$HOME/.local/share/coursier/bin:$PATH
 
+# javascript
+#source /usr/share/nvm/init-nvm.sh
+
 # custom aliases
 alias syyu="sudo pacman -Syyu && paru -Syyu"
 

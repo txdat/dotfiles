@@ -247,14 +247,14 @@ local plugins = {
             pcall(require, "plugins.gitsigns")
         end
     },
-    {
-        "akinsho/git-conflict.nvim",
-        -- event = "BufRead",
-        keys = { "<leader>hc" },
-        config = function()
-            pcall(require, "plugins.git_conflict")
-        end
-    },
+    -- {
+    --     "akinsho/git-conflict.nvim",
+    --     -- event = "BufRead",
+    --     keys = { "<leader>hc" },
+    --     config = function()
+    --         pcall(require, "plugins.git_conflict")
+    --     end
+    -- },
 
     ------------------------------------
     -- autocompletion, debugging
