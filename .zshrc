@@ -1,3 +1,10 @@
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
 # ------------------
 # config
 # ------------------
@@ -73,13 +80,13 @@ unset __conda_setup
 export PATH="$CONDA_HOME/bin:$PATH"
 
 # emacs
-export PATH="$HOME/.emacs.d/bin:$PATH"
+# export PATH="$HOME/.emacs.d/bin:$PATH"
 
 # rust
 export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
 
 # haskell
-#export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
+# export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 
 # java/scala
 export JAVA_HOME='/usr/lib/jvm/default'
@@ -87,7 +94,7 @@ export PATH=$JAVA_HOME/bin:$PATH
 export PATH=$HOME/.local/share/coursier/bin:$PATH
 
 # javascript
-#source /usr/share/nvm/init-nvm.sh
+# source /usr/share/nvm/init-nvm.sh
 
 # custom aliases
 alias syyu="sudo pacman -Syyu && paru -Syyu"
