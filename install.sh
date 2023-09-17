@@ -96,7 +96,10 @@ sudo pacman -S --noconfirm nvidia
 # golang
 # sudo pacman -S --noconfirm go gopls
 
-# javascript/typescript
+# zig
+# sudo pacman -S --noconfirm zig zls
+
+# javascript, typescript
 # sudo pacman -S --noconfirm nodejs npm yarn
 # sudo npm install -g typescript typescript-language-server vscode-langservers-extracted typescript-styled-plugin prettier neovim
 # paru -S --noconfirm nvm

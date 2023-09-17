@@ -12,6 +12,7 @@ require("nvim-treesitter.configs").setup {
         "scala",
         "rust",
         "go",
+        "zig",
         "python",
         "haskell",
         "javascript",
