@@ -1,0 +1,4 @@
+inherits = "jellybeans"
+
+[palette]
+background = "#080808"

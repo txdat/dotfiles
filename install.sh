@@ -103,7 +103,7 @@ sudo pacman -S --noconfirm nvidia
 
 # java, scala
 # sudo pacman -S --noconfirm jdk17-openjdk maven sbt
-# sudo archlinux-java set jdk17-openjdk
+# sudo archlinux-java set java-17-openjdk
 # paru -S --noconfirm scala3 coursier
 # coursier install metals
 

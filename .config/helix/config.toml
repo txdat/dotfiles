@@ -1,0 +1,23 @@
+theme = "colorscheme"
+
+[editor]
+line-number = "relative"
+cursorline = true
+true-color = true
+auto-pairs = true
+
+[editor.statusline]
+left = ["mode", "file-name", "position", "position-percentage", "workspace-diagnostics"]
+center = []
+right = ["version-control"]
+mode.normal = "<N>"
+mode.insert = "<I>"
+mode.select = "<S>"
+
+[editor.file-picker]
+hidden = false
+
+[editor.indent-guides]
+render = true
+character = "│"
+

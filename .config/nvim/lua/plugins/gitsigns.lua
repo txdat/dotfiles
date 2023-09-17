@@ -6,6 +6,9 @@ require("gitsigns").setup({
         topdelete = { text = "" },
         changedelete = { text = "▎" },
         untracked = { text = "▎" },
+    },
+    preview_config = {
+        border = "none"
     }
 })
 

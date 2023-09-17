@@ -116,6 +116,15 @@ extend_display () {
     xrandr --output $display --scale 2x2 && xrandr --output $display --scale ${scale}x${scale} --$direction $display0 && xrandr --output $display0 --scale 0.9999x0.9999 && xrandr --output $display --set TearFree on
 }
 
+set_primary_display () {
+    display="${1:-DisplayPort-0}"
+    width="${2:-1920}"
+    display0="${3:-eDP}"
+    width0="${4:-3072}"
+    scale=$(echo "scale=5;$width0/$width" | bc)
+    xrandr --output $display --scale 2x2 && xrandr --output $display --scale ${scale}x${scale} --set TearFree on
+}
+
 # kubernetes (k3s)
 export KUBECONFIG=$HOME/.kube/config
 

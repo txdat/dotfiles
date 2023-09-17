@@ -214,7 +214,9 @@ nnoremap <silent> <ESC> <nop>
 nnoremap <silent> <leader>q q
 nnoremap <silent> q <nop>
 
-nnoremap <silent> <F3> :setlocal spell! spell?<CR>
+nnoremap <silent> <F3> :set wrap!<CR>
+
+" nnoremap <silent> <F3> :setlocal spell! spell?<CR>
 " nnoremap <silent> <C-l> [s1z=<C-o>
 " inoremap <silent> <C-l> <C-g>u<ESC>[s1z=`]a<C-g>u
 
