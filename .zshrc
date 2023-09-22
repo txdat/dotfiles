@@ -105,6 +105,8 @@ alias cb2f="xclip -sel c -o > " # copy from clipboard to file
 
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 
+alias git_clean_merged="git branch --merged | grep -v \* | xargs git branch -D"
+
 # display projecting
 extend_display () {
     display="${1:-DisplayPort-0}"
