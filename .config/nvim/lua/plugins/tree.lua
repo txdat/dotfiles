@@ -74,7 +74,7 @@ require("nvim-tree").setup({
             min = vim.diagnostic.severity.WARN,
             max = vim.diagnostic.severity.ERROR,
         },
-        icons = { error = "", warning = "", info = "", hint = "" },
+        icons = { error = "", warning = "", info = "", hint = "" },
     },
     filters = {
         dotfiles = false,

@@ -6,7 +6,7 @@ pcall(require, "plugins.lsp.trouble")
 
 -- custom diagnostic signs
 local signs = {
-    Error = " ",
+    Error = " ",
     Warn = " ",
     Info = " ",
     Hint = " ",

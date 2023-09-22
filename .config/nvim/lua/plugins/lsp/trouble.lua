@@ -4,7 +4,7 @@ require("trouble").setup({
     mode = "workspace_diagnostics",
     severity = vim.diagnostic.severity.WARN, -- >= WARN only
     signs = {
-        error = "",
+        error = "",
         warning = "",
         hint = "",
         information = "",
