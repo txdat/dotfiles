@@ -280,6 +280,7 @@ local plugins = {
             --     }
             -- },
             -- "jose-elias-alvarez/null-ls.nvim",
+            "stevearc/conform.nvim",
             {
                 "folke/trouble.nvim",
                 dependencies = {
