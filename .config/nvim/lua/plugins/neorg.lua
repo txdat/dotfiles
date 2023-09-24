@@ -5,7 +5,7 @@ require("neorg").setup({
         ["core.norg.dirman"] = {      -- Manages Neorg workspaces
             config = {
                 workspaces = {
-                    notes = "~/work/notes",
+                    notes = os.getenv("HOME") .. "/work/notes",
                 },
                 default_workspace = "notes",
             },

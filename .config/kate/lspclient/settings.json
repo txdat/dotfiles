@@ -4,9 +4,11 @@
       "command": [
         "clangd",
         "--background-index",
-        "--suggest-missing-includes",
         "--clang-tidy",
-        "--header-insertion=iwyu"
+        "--suggest-missing-includes",
+        "--completion-style=bundled",
+        "--cross-file-rename",
+        "--header-insertion=iwyu",
       ],
       "url": "https://clang.llvm.org/extra/clangd/",
       "highlightingModeRegex": "^(C|ANSI C89|Objective-C)$"
@@ -38,7 +40,7 @@
       "highlightingModeRegex": "^Go$"
     },
     "python": {
-      "command": ["/home/txdat/.miniconda/bin/pyright-langserver", "--stdio"],
+      "command": ["pyright-langserver", "--stdio"],
       "url": "https://github.com/python-lsp/python-lsp-server",
       "highlightingModeRegex": "^Python$"
     },

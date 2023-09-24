@@ -347,6 +347,14 @@ local plugins = {
         end
     },
 
+    -- -- java
+    -- {
+    --     "mfussenegger/nvim-jdtls",
+    --     ft = { "java" },
+    --     config = function()
+    --         pcall(require, "plugins.lsp.servers.java_jdtls")
+    --     end
+    -- },
     -- -- scala
     -- {
     --     "scalameta/nvim-metals",
@@ -401,7 +409,7 @@ require("lazy").setup(plugins, {
     },
     -- lockfile = vim.fn.stdpath("data") .. "/lazy/lazy-lock.json",
     dev = {
-        path = "~/work/nvim", -- local plugins directory
+        path = os.getenv("HOME") .. "/work/nvim", -- local plugins directory
     },
     git = {
         timeout = 120, -- seconds
