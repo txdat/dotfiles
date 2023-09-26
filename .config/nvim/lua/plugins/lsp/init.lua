@@ -63,8 +63,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         keymap("n", "D]", function()
             diag.goto_next({ severity = diag.severity.ERROR })
         end, opts)
-        keymap("n", "<C-i>", lspbuf.format, opts)
-        keymap("n", "<C-S-i>", function()
+        keymap("n", "<C-i>", function()
             require("conform").format({ bufnr = args.buf, lsp_fallback = true })
         end, opts)
     end
