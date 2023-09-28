@@ -48,49 +48,49 @@ M.clangd = {
     },
 }
 
-M.rust_analyzer = {
-    cmd = { "rustup", "run", "stable", "rust-analyzer" },
-    settings = {
-        ["rust-analyzer"] = {
-            imports = {
-                granularity = {
-                    group = "module",
-                },
-                prefix = "self",
-            },
-            cargo = {
-                allFeatures = true,
-                buildScripts = {
-                    enable = true,
-                },
-            },
-            procMacro = {
-                enable = true,
-            },
-            checkOnSave = true,
-            check = {
-                command = "clippy",
-                extraArgs = { "--no-deps" },
-            },
-        },
-    },
-}
+-- M.rust_analyzer = {
+--     cmd = { "rustup", "run", "stable", "rust-analyzer" },
+--     settings = {
+--         ["rust-analyzer"] = {
+--             imports = {
+--                 granularity = {
+--                     group = "module",
+--                 },
+--                 prefix = "self",
+--             },
+--             cargo = {
+--                 allFeatures = true,
+--                 buildScripts = {
+--                     enable = true,
+--                 },
+--             },
+--             procMacro = {
+--                 enable = true,
+--             },
+--             checkOnSave = true,
+--             check = {
+--                 command = "clippy",
+--                 extraArgs = { "--no-deps" },
+--             },
+--         },
+--     },
+-- }
 
-M.gopls = {
-    cmd = { "gopls", "serve" },
-    settings = {
-        gopls = {
-            completeUnimported = true,
-            usePlaceholders = true,
-            staticcheck = true,
-            analyses = {
-                unusedparams = true,
-            },
-        },
-    },
-}
+-- M.gopls = {
+--     cmd = { "gopls", "serve" },
+--     settings = {
+--         gopls = {
+--             completeUnimported = true,
+--             usePlaceholders = true,
+--             staticcheck = true,
+--             analyses = {
+--                 unusedparams = true,
+--             },
+--         },
+--     },
+-- }
 
-M.zls = {}
+-- M.zls = {}
 
 M.pyright = {
     settings = {
@@ -108,18 +108,18 @@ M.pyright = {
     },
 }
 
-M.hls = {
-    filetypes = { "haskell", "lhaskell", "cabal", "cabalproject" },
-    settings = {
-        haskell = {
-            formattingProvider = "fourmolu",
-            cabalFormattingProvider = "cabalfmt",
-            maxCompletions = 40,
-            checkProject = true,
-            checkParents = "CheckOnSave",
-        },
-    },
-}
+-- M.hls = {
+--     filetypes = { "haskell", "lhaskell", "cabal", "cabalproject" },
+--     settings = {
+--         haskell = {
+--             formattingProvider = "fourmolu",
+--             cabalFormattingProvider = "cabalfmt",
+--             maxCompletions = 40,
+--             checkProject = true,
+--             checkParents = "CheckOnSave",
+--         },
+--     },
+-- }
 
 -- -- typescript-language-server
 -- M.tsserver = {

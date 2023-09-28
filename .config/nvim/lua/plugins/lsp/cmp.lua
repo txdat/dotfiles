@@ -1,3 +1,17 @@
+-- local highlight = vim.api.nvim_set_hl
+--
+-- highlight(0, 'CmpItemAbbrDeprecated', { bg = 'NONE', strikethrough = true, fg = '#949494' })
+-- highlight(0, 'CmpItemAbbrMatch', { bg = 'NONE', fg = '#80a0ff' }) -- blue
+-- highlight(0, 'CmpItemAbbrMatchFuzzy', { link = 'CmpIntemAbbrMatch' })
+-- highlight(0, 'CmpItemKindVariable', { bg = 'NONE', fg = '#36c692' }) -- emerald
+-- highlight(0, 'CmpItemKindInterface', { link = 'CmpItemKindVariable' })
+-- highlight(0, 'CmpItemKindText', { link = 'CmpItemKindVariable' })
+-- highlight(0, 'CmpItemKindFunction', { bg = 'NONE', fg = '#cf87e8' }) -- violet
+-- highlight(0, 'CmpItemKindMethod', { link = 'CmpItemKindFunction' })
+-- highlight(0, 'CmpItemKindKeyword', { bg = 'NONE', fg = '#c6c6c6' }) -- front
+-- highlight(0, 'CmpItemKindProperty', { link = 'CmpItemKindKeyword' })
+-- highlight(0, 'CmpItemKindUnit', { link = 'CmpItemKindKeyword' })
+
 local cmp = require("cmp")
 local compare = require("cmp.config.compare")
 local luasnip = require("luasnip")
@@ -121,7 +135,26 @@ cmp.setup {
     },
     sources = {
         { name = "nvim_lsp", keyword_length = 2, priority = 10 },
-        { name = "buffer",   keyword_length = 2, priority = 8 },
+        {
+            name = "buffer",
+            keyword_length = 2,
+            priority = 8,
+            option = {
+                get_bufnrs = function()
+                    local bufs = {}
+                    for _, win in ipairs(vim.api.nvim_list_wins()) do
+                        local buf = vim.api.nvim_win_get_buf(win);
+                        local byte_size = vim.api.nvim_buf_get_offset(buf, vim.api.nvim_buf_line_count(buf))
+                        if byte_size > 5242880 then -- skip large buffer (> 5MB)
+                            goto continue
+                        end
+                        bufs[buf] = true
+                        ::continue::
+                    end
+                    return vim.tbl_keys(bufs)
+                end
+            }
+        },
         { name = "luasnip",  keyword_length = 2, priority = 7 },
         { name = "path",     keyword_length = 3 },
         -- { name = "nvim_lsp_signature_help" },
