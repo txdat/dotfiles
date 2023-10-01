@@ -101,7 +101,7 @@ sudo pacman -S --noconfirm nvidia
 
 # javascript, typescript
 # sudo pacman -S --noconfirm nodejs npm yarn
-# sudo npm install -g typescript typescript-language-server vscode-langservers-extracted typescript-styled-plugin prettier neovim
+# sudo npm install -g typescript typescript-language-server vscode-langservers-extracted typescript-styled-plugin prettier @fsouza/prettierd neovim
 # paru -S --noconfirm nvm
 
 # java, scala

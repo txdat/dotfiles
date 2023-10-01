@@ -208,7 +208,7 @@ autocmd BufLeave * stopinsert
 " keymaps
 " ----------------------------------
 
-nnoremap <silent> <ESC> <nop>
+" nnoremap <silent> <ESC> <nop>
 " inoremap <silent> jj <ESC>
 
 nnoremap <silent> <leader>q q
@@ -246,7 +246,7 @@ inoremap <silent> <F1> <nop>
 nnoremap <silent> <F1> :set invpaste paste?<CR>
 set pastetoggle=<F1>
 
-nnoremap <silent> \\ :nohl<CR>
+nnoremap <silent> <ESC> :nohl<CR>
 
 nnoremap <silent> <C-s> :w<CR>
 inoremap <silent> <C-s> <cmd>w<CR>

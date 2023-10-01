@@ -187,7 +187,7 @@ autocmd("BufLeave", {
 
 local keymap = require("util").keymap
 
-keymap("n", "<ESC>", "<nop>")
+-- keymap("n", "<ESC>", "<nop>")
 -- keymap("i", "jj", "<ESC>")
 
 -- remap recoding
@@ -231,7 +231,7 @@ keymap("n", "<F1>", ":set invpaste paste?<CR>")
 opt.pastetoggle = "<F1>"
 
 -- clear search highlighting
-keymap("n", "\\\\", ":nohl<CR>")
+keymap("n", "<ESC>", ":nohl<CR>")
 
 -- quick save
 keymap({ "n", "i" }, "<C-s>", "<cmd>w<CR>")

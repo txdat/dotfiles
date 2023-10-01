@@ -1,12 +1,12 @@
 require("conform").setup({
     formatters_by_ft = {
         python = { "black" },
-        javascript = { "prettier" },
-        javascriptreact = { "prettier" },
-        typescript = { "prettier" },
-        typescriptreact = { "prettier" },
-        json = { "prettier" },
-        markdown = { "prettier" },
+        javascript = { "prettierd" },
+        javascriptreact = { "prettierd" },
+        typescript = { "prettierd" },
+        typescriptreact = { "prettierd" },
+        json = { "prettierd" },
+        markdown = { "prettierd" },
     },
     log_level = vim.log.levels.ERROR,
 })
