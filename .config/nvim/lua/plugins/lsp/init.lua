@@ -3,7 +3,7 @@
 -- pcall(require, "plugins.lsp.lspsaga")
 -- pcall(require, "plugins.lsp.null_ls")
 pcall(require, "plugins.lsp.conform")
-pcall(require, "plugins.lsp.trouble")
+-- pcall(require, "plugins.lsp.trouble")
 
 -- custom diagnostic signs
 local signs = {

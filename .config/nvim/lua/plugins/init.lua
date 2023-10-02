@@ -71,8 +71,7 @@ local plugins = {
     -- indent
     {
         "lukas-reineke/indent-blankline.nvim",
-        -- event = "BufRead",
-        lazy = false, -- TODO: fix quickfix issue
+        event = "BufRead",
         config = function()
             pcall(require, "plugins.indent_blankline")
         end
@@ -281,17 +280,30 @@ local plugins = {
             -- },
             -- "jose-elias-alvarez/null-ls.nvim",
             "stevearc/conform.nvim",
-            {
-                "folke/trouble.nvim",
-                dependencies = {
-                    "nvim-tree/nvim-web-devicons",
-                },
-            },
+            -- {
+            --     "folke/trouble.nvim",
+            --     dependencies = {
+            --         "nvim-tree/nvim-web-devicons",
+            --     },
+            -- },
         },
         event = "BufRead",
         config = function()
             pcall(require, "plugins.lsp")
         end,
+    },
+    {
+        "folke/trouble.nvim",
+        dependencies = {
+            "nvim-tree/nvim-web-devicons",
+        },
+        keys = {
+            "<leader>tt",
+            "<leader>tq",
+        },
+        config = function()
+            pcall(require, "plugins.lsp.trouble")
+        end
     },
 
     -- autocompletion

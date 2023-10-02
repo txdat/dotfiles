@@ -1,9 +1,9 @@
 if vim.loader then
     vim.loader.enable()
 end
-if not vim.uv then
-    vim.uv = vim.loop
-end
+-- if not vim.uv then
+--     vim.uv = vim.loop
+-- end
 
 pcall(require, "config")
 
