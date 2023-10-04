@@ -51,6 +51,8 @@ local colors                                    = {
     red = "#ff5454",
     -- Extra colors
     spring = "#00875f",
+    mineral = "#314940",
+    bay = "#4d5d8d"
 }
 -- }}}
 

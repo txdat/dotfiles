@@ -17,21 +17,21 @@ gui:
             - "#8cc85f"
             - bold
         inactiveBorderColor:
-            - "#323437"
+            - "#949494"
         optionsTextColor:
             - "#b2b2b2"
         selectedLineBgColor:
-            - "#323437"
+            - "#949494"
             - reverse
         selectedRangeBgColor:
-            - "#323437"
+            - "#949494"
             - reverse
         cherryPickedCommitBgColor:
             - "#8cc85f"
         cherryPickedCommitFgColor:
             - "#b2b2b2"
         unstagedChangesColor:
-            - "#e3c78a"
+            - "#e4e4e4"
     commitLength:
         show: true
     skipNoStagedFilesWarning: false
