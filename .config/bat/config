@@ -1,4 +1,4 @@
---theme="fly16"
+--theme="tokyonight"
 --style="numbers,changes"
 --map-syntax h:cpp
 --map-syntax .ignore:.gitignore

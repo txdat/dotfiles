@@ -3,6 +3,7 @@
 sudo ln -s ~/.dotfiles/.vimrc /root/.vimrc
 sudo ln -s ~/.dotfiles/.vim /root/.vim
 
+ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
 ln -s ~/.dotfiles/.xprofile ~/.xprofile
 ln -s ~/.dotfiles/.vimrc ~/.vimrc
 ln -s ~/.dotfiles/.vim ~/.vim

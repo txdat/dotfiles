@@ -28,7 +28,7 @@ require("fzf-lua").setup({
         bat = {
             cmd = "bat",
             args = "--style=numbers,changes --color always",
-            theme = "fly16",
+            theme = "tokyonight",
         },
         git_diff = {
             pager = "delta --width=$FZF_PREVIEW_COLUMNS",

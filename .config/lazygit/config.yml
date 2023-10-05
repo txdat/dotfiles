@@ -14,24 +14,24 @@ gui:
     theme:
         lightTheme: false
         activeBorderColor:
-            - "#8cc85f"
+            - "#9ece6a"
             - bold
         inactiveBorderColor:
-            - "#949494"
+            - "#565f89"
         optionsTextColor:
-            - "#b2b2b2"
+            - "#c0caf5"
         selectedLineBgColor:
-            - "#949494"
+            - "#565f89"
             - reverse
         selectedRangeBgColor:
-            - "#949494"
+            - "#565f89"
             - reverse
         cherryPickedCommitBgColor:
-            - "#8cc85f"
+            - "#9ece6a"
         cherryPickedCommitFgColor:
-            - "#b2b2b2"
+            - "#c0caf5"
         unstagedChangesColor:
-            - "#e4e4e4"
+            - "#a9b1d6"
     commitLength:
         show: true
     skipNoStagedFilesWarning: false
