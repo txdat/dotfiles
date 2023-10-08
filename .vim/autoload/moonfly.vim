@@ -1,4 +1,28 @@
 function! moonfly#Style() abort
+    " Clear highlights and reset syntax.
+    highlight clear
+    if exists('syntax_on')
+        syntax reset
+    endif
+    let g:colors_name='moonfly'
+
+    " Enable terminal true-color support.
+    set termguicolors
+
+    let g:moonflyCursorColor = v:false
+    let g:moonflyItalics = v:false
+    let g:moonflyNormalFloat = v:true
+    let g:moonflyTerminalColors = v:true
+    let g:moonflyTransparent = v:false
+    let g:moonflyUndercurls = v:true
+    let g:moonflyUnderlineMatchParen = v:false
+    let g:moonflyVirtualTextColor = v:true
+    let g:moonflyWinSeparator = 0
+
+    "-----------------------------------------------------------------------
+    " Custom styling groups
+    "-----------------------------------------------------------------------
+
     " Background and foreground
     let s:black     = '#080808'
     let s:white     = '#c6c6c6'
@@ -39,10 +63,6 @@ function! moonfly#Style() abort
     let s:spring    = '#00875f'
     let s:mineral   = '#314940'
     let s:bay       = '#4d5d8d'
-
-    "-----------------------------------------------------------------------
-    " Custom styling groups
-    "-----------------------------------------------------------------------
 
     exec 'highlight MoonflyVisual guibg=' . s:grey0
     exec 'highlight MoonflyWhite guifg=' . s:white
@@ -801,4 +821,6 @@ function! moonfly#Style() abort
     if !exists('g:indentLine_defaultGroup') && !exists('g:indentLine_color_gui')
         let g:indentLine_color_gui = s:grey235
     endif
+
+    set background=dark
 endfunction

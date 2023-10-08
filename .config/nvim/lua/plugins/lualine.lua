@@ -3,17 +3,17 @@ local lualine = require("lualine")
 -- Color table for highlights
 -- stylua: ignore
 local colors = {
-    bg       = "#1a1b26",
-    fg       = "#c0caf5",
-    yellow   = "#e0af68",
-    cyan     = "#7dcfff",
+    bg       = "#080808",
+    fg       = "#b2b2b2",
+    yellow   = "#e3c78a",
+    cyan     = "#79dac8",
     darkblue = "#394b70",
-    green    = "#9ece6a",
+    green    = "#8cc85f",
     orange   = "#ff9e64",
-    violet   = "#9d7cd8",
-    magenta  = "#ff007c",
-    blue     = "#7aa2f7",
-    red      = "#db4b4b",
+    violet   = "#cf87e8",
+    magenta  = "#ff5189",
+    blue     = "#80a0ff",
+    red      = "#ff5454",
 }
 
 -- auto change color according to neovims mode

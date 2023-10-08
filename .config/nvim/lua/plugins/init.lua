@@ -19,22 +19,22 @@ local plugins = {
     ------------------------------------
 
     -- colorscheme
-    {
-        "folke/tokyonight.nvim",
-        lazy = false,
-        priority = 1000,
-        config = function()
-            pcall(require, "plugins.colorscheme.tokyonight")
-        end
-    },
     -- {
-    --     "bluz71/vim-moonfly-colors",
+    --     "folke/tokyonight.nvim",
     --     lazy = false,
     --     priority = 1000,
     --     config = function()
-    --         pcall(require, "plugins.colorscheme.moonfly");
+    --         pcall(require, "plugins.colorscheme.tokyonight")
     --     end
     -- },
+    {
+        "bluz71/vim-moonfly-colors",
+        lazy = false,
+        priority = 1000,
+        config = function()
+            pcall(require, "plugins.colorscheme.moonfly");
+        end
+    },
 
     -- statusline
     {
@@ -398,13 +398,13 @@ local plugins = {
     -- },
 
     -- latex
-    {
-        "lervag/vimtex",
-        ft = { "tex" }, -- triggered when opening *.tex file
-        config = function()
-            pcall(require, "plugins.vimtex")
-        end
-    },
+    -- {
+    --     "lervag/vimtex",
+    --     ft = { "tex" }, -- triggered when opening *.tex file
+    --     config = function()
+    --         pcall(require, "plugins.vimtex")
+    --     end
+    -- },
 }
 
 require("lazy").setup(plugins, {
@@ -419,7 +419,7 @@ require("lazy").setup(plugins, {
         timeout = 120, -- seconds
     },
     install = {
-        colorscheme = { "tokyonight" },
+        colorscheme = { "moonfly" },
     },
     ui = {
         border = "none",
