@@ -61,7 +61,7 @@ vim.g.mapleader = " "
 -- vim.g.mapleader = "\\"
 
 -- spelling
-opt.spelllang = "en_us"
+-- opt.spelllang = "en_us"
 -- opt.spell = true
 
 -----------------------------------------

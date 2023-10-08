@@ -56,20 +56,6 @@ set belloff=all
 set bs=2 " backspacing in insert mode
 set modelines=2
 set wildmode=longest,list
-let mapleader=' '
-" let mapleader='\'
-
-" spelling
-set spelllang=en_us
-" set spell
-
-" ----------------------------------
-" gui
-" ----------------------------------
-
-syntax on
-filetype plugin indent on
-" set background="dark"
 set shortmess=I " disable vim intro
 set laststatus=2 " always show statusline
 set guicursor=n-v-c:block-Cursor " using block cursor
@@ -81,10 +67,6 @@ set ruler " show cursor position
 set listchars=eol:↴
 set list " show eol, ...
 set cursorline
-hi CursorLine cterm=none
-hi LineNR cterm=none guifg=dimgray
-hi CursorLineNR cterm=bold guifg=orange
-hi! link Folded Normal
 set number " show line number
 set relativenumber " (-1,+1) line number
 set showmatch " highlight matching parenthesis
@@ -92,11 +74,12 @@ set foldmethod=marker " enable folding
 set splitright " vertical split to the right
 set splitbelow " horizontal split to the bottom
 
-if exists('+termguicolors')
-    let &t_8f ="\<Esc>[38;2;%lu;%lu;%lum"
-    let &t_8b ="\<Esc>[48;2;%lu;%lu;%lum"
-    set termguicolors " enable 24bits colors
-endif
+let mapleader=' '
+" let mapleader='\'
+
+" spelling
+" set spelllang=en_us
+" set spell
 
 " ----------------------------------
 " tabs, indent, ...
@@ -266,6 +249,11 @@ xnoremap <silent> <A-k> :move '<-2<CR>gv-gv
 " colorscheme
 " ----------------------------------
 
-colorscheme quiet
-" call moonfly#Style()
-" call tokyonight#Style()
+syntax on
+filetype plugin indent on
+" let &t_8f ="\<Esc>[38;2;%lu;%lu;%lum"
+" let &t_8b ="\<Esc>[48;2;%lu;%lu;%lum"
+set termguicolors " enable 24bits colors
+set background="dark"
+
+colorscheme jellybeans
