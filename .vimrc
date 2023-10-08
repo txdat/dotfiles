@@ -214,13 +214,14 @@ autocmd BufLeave * stopinsert
 nnoremap <silent> <leader>q q
 nnoremap <silent> q <nop>
 
-nnoremap <silent> <F3> :set wrap!<CR>
+inoremap <silent> <F1> <nop>
+nnoremap <silent> <F1> :set wrap!<CR>
 
-" nnoremap <silent> <F3> :setlocal spell! spell?<CR>
+" nnoremap <silent> <F2> :setlocal spell! spell?<CR>
 " nnoremap <silent> <C-l> [s1z=<C-o>
 " inoremap <silent> <C-l> <C-g>u<ESC>[s1z=`]a<C-g>u
 
-nnoremap <silent> D "_dd
+nnoremap <silent> <A-d> "_dd
 
 nnoremap <silent> H ^
 nnoremap <silent> L $
@@ -242,9 +243,8 @@ nnoremap <silent> <C-d> :bd!<CR>
 "nnoremap <silent> <C-S-d> :<C-U>bprevious <bar> bdelete #<CR>
 nnoremap <silent> <C-q> :qa!<CR>
 
-inoremap <silent> <F1> <nop>
-nnoremap <silent> <F1> :set invpaste paste?<CR>
-set pastetoggle=<F1>
+nnoremap <silent> <F3> :set invpaste paste?<CR>
+set pastetoggle=<F3>
 
 nnoremap <silent> <ESC> :nohl<CR>
 
@@ -266,5 +266,6 @@ xnoremap <silent> <A-k> :move '<-2<CR>gv-gv
 " colorscheme
 " ----------------------------------
 
-call moonfly#Style()
+colorscheme quiet
+" call moonfly#Style()
 " call tokyonight#Style()

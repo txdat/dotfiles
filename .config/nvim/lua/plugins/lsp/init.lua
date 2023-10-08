@@ -46,13 +46,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
         local opts = { buffer = args.buf }
 
         keymap("n", "K", lspbuf.hover, opts)
-        keymap("n", "<F2>", lspbuf.rename, opts)
+        keymap("n", "gr", lspbuf.rename, opts)
         keymap("n", "gd", lspbuf.definition, opts)
         keymap("n", "gD", lspbuf.declaration, opts)
         keymap("n", "gt", lspbuf.type_definition, opts)
         keymap("n", "gs", lspbuf.signature_help, opts)
         keymap("n", "gi", lspbuf.implementation, opts)
-        keymap("n", "gr", lspbuf.references, opts)
+        keymap("n", "gR", lspbuf.references, opts)
         keymap("n", "gc", lspbuf.code_action, opts)
         keymap("n", "D", diag.open_float, opts)
         keymap("n", "d[", diag.goto_prev, opts)
@@ -63,8 +63,8 @@ vim.api.nvim_create_autocmd("LspAttach", {
         keymap("n", "D]", function()
             diag.goto_next({ severity = diag.severity.ERROR })
         end, opts)
-        keymap("n", "<C-i>", function()
-            require("conform").format({ bufnr = args.buf, lsp_fallback = true })
+        keymap({ "n", "v" }, "<C-i>", function()
+            require("conform").format({ bufnr = args.buf, async = true, lsp_fallback = true })
         end, opts)
     end
 })

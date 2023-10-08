@@ -194,13 +194,14 @@ local keymap = require("util").keymap
 keymap("n", "<leader>q", "q")
 keymap("n", "q", "<nop>")
 
-keymap("n", "<F3>", ":set wrap!<CR>") -- toggle wrapping
+keymap("i", "<F1>", "<nop>")
+keymap("n", "<F1>", ":set wrap!<CR>") -- toggle wrapping
 
--- keymap("n", "<F3>", ":setlocal spell! spell?<CR>") -- toggle spelling
+-- keymap("n", "<F2>", ":setlocal spell! spell?<CR>") -- toggle spelling
 -- keymap("n", "<C-l>", "[s1z=<C-o>")
 -- keymap("i", "<C-l>", "<C-g>u<ESC>[s1z=`]a<C-g>u")
 
-keymap("n", "D", '"_dd') -- delete
+keymap("n", "<A-d>", '"_dd') -- delete
 
 keymap("n", "H", "^")
 keymap("n", "L", "$")
@@ -226,9 +227,8 @@ keymap("n", "<C-S-d>", ":<C-U>bprevious <bar> bdelete #<CR>") -- and move to pre
 keymap("n", "<C-q>", ":qa!<CR>")                              -- close all buffers and exit
 
 -- toggle auto-indenting for code paste
-keymap("i", "<F1>", "<nop>")
-keymap("n", "<F1>", ":set invpaste paste?<CR>")
-opt.pastetoggle = "<F1>"
+keymap("n", "<F3>", ":set invpaste paste?<CR>")
+opt.pastetoggle = "<F3>"
 
 -- clear search highlighting
 keymap("n", "<ESC>", ":nohl<CR>")

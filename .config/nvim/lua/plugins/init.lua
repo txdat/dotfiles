@@ -284,19 +284,19 @@ local plugins = {
             pcall(require, "plugins.lsp")
         end,
     },
-    {
-        "folke/trouble.nvim",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-        },
-        keys = {
-            "<leader>tt",
-            "<leader>tq",
-        },
-        config = function()
-            pcall(require, "plugins.lsp.trouble")
-        end
-    },
+    -- {
+    --     "folke/trouble.nvim",
+    --     dependencies = {
+    --         "nvim-tree/nvim-web-devicons",
+    --     },
+    --     keys = {
+    --         "<leader>tt",
+    --         "<leader>tq",
+    --     },
+    --     config = function()
+    --         pcall(require, "plugins.lsp.trouble")
+    --     end
+    -- },
 
     -- autocompletion
     {
