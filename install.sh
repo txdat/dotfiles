@@ -153,6 +153,7 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosugges
 git clone https://github.com/romkatv/powerlevel10k ~/.zsh/powerlevel10k
 
 # doomemacs
+# sudo pacman -S --noconfirm emacs-nativecomp
 # git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
 # ln -s ~/.dotfiles/.doom.d ~/.doom.d
 # doom install

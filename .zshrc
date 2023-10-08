@@ -80,7 +80,7 @@ unset __conda_setup
 export PATH="$CONDA_HOME/bin:$PATH"
 
 # emacs
-# export PATH="$HOME/.emacs.d/bin:$PATH"
+export PATH="$HOME/.emacs.d/bin:$PATH"
 
 # rust
 export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
