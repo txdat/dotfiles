@@ -247,3 +247,11 @@ keymap("x", "J", ":move '>+1<CR>gv-gv")
 keymap("x", "K", ":move '<-2<CR>gv-gv")
 keymap("x", "<A-j>", ":move '>+1<CR>gv-gv")
 keymap("x", "<A-k>", ":move '<-2<CR>gv-gv")
+
+-- multicursor replacing
+keymap("n", "<A-r>", function()
+    vim.api.nvim_command "norm! yiw"
+    vim.fn.setreg("/", vim.fn.getreg "+")
+    vim.api.nvim_feedkeys("ciw", "n", false)
+end)
+keymap("v", "<A-r>", [[y/\V<C-R>=escape(@",'/\')<CR><CR>Ncgn]])

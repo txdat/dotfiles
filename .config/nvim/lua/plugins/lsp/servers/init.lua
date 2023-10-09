@@ -48,33 +48,33 @@ M.clangd = {
     },
 }
 
--- M.rust_analyzer = {
---     cmd = { "rustup", "run", "stable", "rust-analyzer" },
---     settings = {
---         ["rust-analyzer"] = {
---             imports = {
---                 granularity = {
---                     group = "module",
---                 },
---                 prefix = "self",
---             },
---             cargo = {
---                 allFeatures = true,
---                 buildScripts = {
---                     enable = true,
---                 },
---             },
---             procMacro = {
---                 enable = true,
---             },
---             checkOnSave = true,
---             check = {
---                 command = "clippy",
---                 extraArgs = { "--no-deps" },
---             },
---         },
---     },
--- }
+M.rust_analyzer = {
+    cmd = { "rustup", "run", "stable", "rust-analyzer" },
+    settings = {
+        ["rust-analyzer"] = {
+            imports = {
+                granularity = {
+                    group = "module",
+                },
+                prefix = "self",
+            },
+            cargo = {
+                allFeatures = true,
+                buildScripts = {
+                    enable = true,
+                },
+            },
+            procMacro = {
+                enable = true,
+            },
+            checkOnSave = true,
+            check = {
+                command = "clippy",
+                extraArgs = { "--no-deps" },
+            },
+        },
+    },
+}
 
 -- M.gopls = {
 --     cmd = { "gopls", "serve" },
@@ -89,8 +89,6 @@ M.clangd = {
 --         },
 --     },
 -- }
-
--- M.zls = {}
 
 M.pyright = {
     settings = {
@@ -131,6 +129,6 @@ M.eslint = {
     filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
 }
 
-M.texlab = {}
+-- M.texlab = {}
 
 return M

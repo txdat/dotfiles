@@ -48,18 +48,6 @@ local plugins = {
         end,
     },
 
-    -- bufferline
-    -- {
-    --     "romgrk/barbar.nvim",
-    --     dependencies = {
-    --         "nvim-tree/nvim-web-devicons",
-    --     },
-    --     event = "BufRead",
-    --     config = function()
-    --         pcall(require, "plugins.bufferline")
-    --     end,
-    -- },
-
     -- indent
     {
         "lukas-reineke/indent-blankline.nvim",
@@ -112,7 +100,9 @@ local plugins = {
     -- html's tags
     -- {
     --     "windwp/nvim-ts-autotag",
-    --     event = "InsertEnter",
+    --     -- event = "InsertEnter",
+    --     ft = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx",
+    --         "html" },
     --     config = function()
     --         pcall(require, "plugins.ts_autotag")
     --     end
@@ -128,13 +118,6 @@ local plugins = {
     },
 
     -- navigation
-    -- {
-    --     "phaazon/hop.nvim",
-    --     event = "BufRead",
-    --     config = function()
-    --         pcall(require, "plugins.hop")
-    --     end
-    -- },
     -- {
     --     "ggandor/leap.nvim",
     --     dependencies = {
@@ -169,16 +152,6 @@ local plugins = {
     ------------------------------------
 
     -- file manager
-    -- {
-    --     "nvim-tree/nvim-tree.lua",
-    --     dependencies = {
-    --         "nvim-tree/nvim-web-devicons",
-    --     },
-    --     keys = { "<C-e>" },
-    --     config = function()
-    --         pcall(require, "plugins.tree")
-    --     end
-    -- },
     {
         "stevearc/oil.nvim",
         dependencies = {
@@ -238,14 +211,6 @@ local plugins = {
             pcall(require, "plugins.gitsigns")
         end
     },
-    -- {
-    --     "akinsho/git-conflict.nvim",
-    --     -- event = "BufRead",
-    --     keys = { "<leader>hc" },
-    --     config = function()
-    --         pcall(require, "plugins.git_conflict")
-    --     end
-    -- },
 
     ------------------------------------
     -- autocompletion, debugging
@@ -256,28 +221,7 @@ local plugins = {
         "neovim/nvim-lspconfig",
         dependencies = {
             "hrsh7th/cmp-nvim-lsp",
-            -- {
-            --     "williamboman/mason.nvim",
-            --     dependencies = {
-            --         "williamboman/mason-lspconfig.nvim",
-            --     },
-            -- },
-            -- {
-            --     "glepnir/lspsaga.nvim",
-            --     branch = "main",
-            --     dependencies = {
-            --         "nvim-tree/nvim-web-devicons",
-            --         "nvim-treesitter/nvim-treesitter"
-            --     }
-            -- },
-            -- "jose-elias-alvarez/null-ls.nvim",
             "stevearc/conform.nvim",
-            -- {
-            --     "folke/trouble.nvim",
-            --     dependencies = {
-            --         "nvim-tree/nvim-web-devicons",
-            --     },
-            -- },
         },
         event = "BufRead",
         config = function()
@@ -350,40 +294,6 @@ local plugins = {
             pcall(require, "plugins.lsp.servers.typescript_tools")
         end
     },
-
-    -- -- java
-    -- {
-    --     "mfussenegger/nvim-jdtls",
-    --     ft = { "java" },
-    --     config = function()
-    --         pcall(require, "plugins.lsp.servers.java_jdtls")
-    --     end
-    -- },
-    -- -- scala
-    -- {
-    --     "scalameta/nvim-metals",
-    --     dependencies = {
-    --         "nvim-lua/plenary.nvim",
-    --     },
-    --     ft = { "scala" },
-    --     config = function()
-    --         pcall(require, "plugins.lsp.servers.scala_metals")
-    --     end,
-    -- },
-
-    -- -- orgmode
-    -- {
-    --     "nvim-neorg/neorg",
-    --     dependencies = {
-    --         "nvim-lua/plenary.nvim",
-    --         "nvim-treesitter/nvim-treesitter",
-    --     },
-    --     build = ":Neorg sync-parsers",
-    --     ft = { "norg" }, -- triggered when opening *.norg file
-    --     config = function()
-    --         pcall(require, "plugins.neorg")
-    --     end
-    -- },
 
     -- -- markdown
     -- {
