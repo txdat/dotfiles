@@ -76,19 +76,19 @@ M.rust_analyzer = {
     },
 }
 
--- M.gopls = {
---     cmd = { "gopls", "serve" },
---     settings = {
---         gopls = {
---             completeUnimported = true,
---             usePlaceholders = true,
---             staticcheck = true,
---             analyses = {
---                 unusedparams = true,
---             },
---         },
---     },
--- }
+M.gopls = {
+    cmd = { "gopls", "serve" },
+    settings = {
+        gopls = {
+            completeUnimported = true,
+            usePlaceholders = true,
+            staticcheck = true,
+            analyses = {
+                unusedparams = true,
+            },
+        },
+    },
+}
 
 M.pyright = {
     settings = {

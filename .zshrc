@@ -105,7 +105,7 @@ alias cb2f="xclip -sel c -o > " # copy from clipboard to file
 
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 
-alias git_clean_merged="git branch --merged | grep -v \* | xargs git branch -D"
+# alias git_clean_merged="git branch --merged | grep -v \* | xargs git branch -D"
 
 # display projecting
 extend_display () {
@@ -132,9 +132,16 @@ export KUBECONFIG=$HOME/.kube/config
 
 start_kube () {
     # add kube-system's dns to resolv
-    sudo sed -i "1s/^/nameserver ${1:-10.43.0.10} # kube\n/" /etc/resolv.conf  # run 'kubectl get svc -n kube-system | grep dns'
+    dns=$(echo $(kubectl get svc -n kube-system | grep dns) | awk '{ print $3 }')
+    sudo sed -i "1s/^/nameserver ${dns} # kube\n/" /etc/resolv.conf
 
-    KUBE_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
+    KUBE_SERVICES=(
+        # 'docker.socket'
+        # 'docker.service'
+        'containerd.service'
+        'nfs-server.service'
+        'k3s.service'
+    )
     for svc in "${KUBE_SERVICES[@]}"
     do
         sudo systemctl start $svc
@@ -145,7 +152,13 @@ stop_kube () {
     # remove kube-system's dns in resolv
     sudo sed -i "/kube$/d" /etc/resolv.conf
 
-    KUBE_SERVICES=('docker.socket' 'docker.service' 'containerd.service' 'nfs-server.service' 'k3s.service')
+    KUBE_SERVICES=(
+        # 'docker.socket'
+        # 'docker.service'
+        'containerd.service'
+        'nfs-server.service'
+        'k3s.service'
+    )
     for svc in "${KUBE_SERVICES[@]}"
     do
         sudo systemctl stop $svc

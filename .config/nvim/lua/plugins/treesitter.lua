@@ -9,7 +9,7 @@ require("nvim-treesitter.configs").setup {
         "llvm",
         "cuda",
         "rust",
-        -- "go",
+        "go",
         "python",
         -- "haskell",
         "javascript",
