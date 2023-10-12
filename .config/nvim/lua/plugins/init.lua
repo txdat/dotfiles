@@ -178,7 +178,7 @@ local plugins = {
     --         "<C-e>",
     --         "<leader>ff",
     --         "<leader>fg",
-    --         "<leader>fb",
+    --         "<leader>fh",
     --     },
     --     config = function()
     --         pcall(require, "plugins.telescope")
@@ -196,7 +196,7 @@ local plugins = {
         keys = {
             "<leader>ff",
             "<leader>fg",
-            "<leader>fb",
+            "<leader>fh",
         },
         config = function()
             pcall(require, "plugins.fzf")

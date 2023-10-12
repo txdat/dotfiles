@@ -75,7 +75,7 @@ set splitright " vertical split to the right
 set splitbelow " horizontal split to the bottom
 
 let mapleader=' '
-" let mapleader='\'
+let maplocalleader='\'
 
 " spelling
 " set spelllang=en_us
@@ -222,9 +222,11 @@ nnoremap <silent> <C-[> :bprevious<CR>
 nnoremap <silent> <C-]> :bnext<CR>
 nnoremap <silent> <C-\> :b#<CR>
 
-nnoremap <silent> <C-d> :bd!<CR>
+"nnoremap <silent> <C-d> :bd!<CR>
 "nnoremap <silent> <C-S-d> :<C-U>bprevious <bar> bdelete #<CR>
-nnoremap <silent> <C-q> :qa!<CR>
+"nnoremap <silent> <C-q> :qa!<CR>
+nnoremap <silent> <C-q> :bd!<CR>
+nnoremap <silent> <C-S-q> :qa!<CR>
 
 nnoremap <silent> <F3> :set invpaste paste?<CR>
 set pastetoggle=<F3>

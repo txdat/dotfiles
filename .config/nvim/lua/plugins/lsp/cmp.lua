@@ -1,5 +1,5 @@
--- local highlight = vim.api.nvim_set_hl
---
+local highlight = vim.api.nvim_set_hl
+
 -- highlight(0, 'CmpItemAbbrDeprecated', { bg = 'NONE', strikethrough = true, fg = '#949494' })
 -- highlight(0, 'CmpItemAbbrMatch', { bg = 'NONE', fg = '#80a0ff' }) -- blue
 -- highlight(0, 'CmpItemAbbrMatchFuzzy', { link = 'CmpIntemAbbrMatch' })
@@ -12,8 +12,9 @@
 -- highlight(0, 'CmpItemKindProperty', { link = 'CmpItemKindKeyword' })
 -- highlight(0, 'CmpItemKindUnit', { link = 'CmpItemKindKeyword' })
 
+highlight(0, "CmpGhostText", { link = "Comment", default = true })
+
 local cmp = require("cmp")
-local compare = require("cmp.config.compare")
 local luasnip = require("luasnip")
 
 -- disable window's scroll
@@ -70,8 +71,6 @@ local lspkind_menu = {
     luasnip = "Snp",
     buffer = "Buf",
 };
-
-vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
 
 cmp.setup {
     completion = {
@@ -166,7 +165,7 @@ cmp.setup {
             }
         },
         { name = "luasnip",  keyword_length = 2, priority = 7 },
-        { name = "path",     keyword_length = 3 },
+        { name = "path",     keyword_length = 3, priority = 5 },
         -- { name = "nvim_lsp_signature_help" },
     },
     sorting = {

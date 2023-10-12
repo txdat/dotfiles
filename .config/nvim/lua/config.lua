@@ -58,7 +58,7 @@ opt.belloff = "all"
 opt.modelines = 2
 opt.wildmode = "longest,list"
 vim.g.mapleader = " "
--- vim.g.mapleader = "\\"
+vim.g.maplocalleader = "\\"
 
 -- spelling
 -- opt.spelllang = "en_us"
@@ -222,9 +222,11 @@ keymap("n", "<C-]>", ":bnext<CR>")
 keymap("n", "<C-\\>", ":b#<CR>") -- switch to last buffer
 
 -- close current buffer
-keymap("n", "<C-d>", ":bd!<CR>")
-keymap("n", "<C-S-d>", ":<C-U>bprevious <bar> bdelete #<CR>") -- and move to previous buffer
-keymap("n", "<C-q>", ":qa!<CR>")                              -- close all buffers and exit
+-- keymap("n", "<C-d>", ":bd!<CR>")
+-- keymap("n", "<C-S-d>", ":<C-U>bprevious <bar> bdelete #<CR>") -- and move to previous buffer
+-- keymap("n", "<C-q>", ":qa!<CR>")                              -- close all buffers and exit
+keymap("n", "<C-q>", ":bd!<CR>")
+keymap("n", "<C-S-q>", ":qa!<CR>")
 
 -- toggle auto-indenting for code paste
 keymap("n", "<F3>", ":set invpaste paste?<CR>")
