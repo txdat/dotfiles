@@ -195,9 +195,9 @@ keymap("n", "<leader>q", "q")
 keymap("n", "q", "<nop>")
 
 keymap("i", "<F1>", "<nop>")
-keymap("n", "<F1>", ":set wrap!<CR>") -- toggle wrapping
+keymap("n", "<F1>", ":set wrap!<CR>")              -- toggle wrapping
 
--- keymap("n", "<F2>", ":setlocal spell! spell?<CR>") -- toggle spelling
+keymap("n", "<F2>", ":setlocal spell! spell?<CR>") -- toggle spelling
 -- keymap("n", "<C-l>", "[s1z=<C-o>")
 -- keymap("i", "<C-l>", "<C-g>u<ESC>[s1z=`]a<C-g>u")
 
@@ -226,7 +226,7 @@ keymap("n", "<C-\\>", ":b#<CR>") -- switch to last buffer
 -- keymap("n", "<C-S-d>", ":<C-U>bprevious <bar> bdelete #<CR>") -- and move to previous buffer
 -- keymap("n", "<C-q>", ":qa!<CR>")                              -- close all buffers and exit
 keymap("n", "<C-q>", ":bd!<CR>")
-keymap("n", "<C-S-q>", ":qa!<CR>")
+keymap("n", "<C-q>q", ":qa!<CR>")
 
 -- toggle auto-indenting for code paste
 keymap("n", "<F3>", ":set invpaste paste?<CR>")

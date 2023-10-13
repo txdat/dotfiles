@@ -37,6 +37,7 @@ source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
 bindkey '^I'   complete-word       # tab          | complete
 bindkey '^[[Z' autosuggest-accept  # shift + tab  | autosuggest
+bindkey -v '^?' backward-delete-char
 
 # syntax highlighting
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
