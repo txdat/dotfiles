@@ -2,7 +2,7 @@ local dap = require("dap")
 
 dap.configurations.python = {
     {
-        name = "Python",
+        name = "Python Debug",
         type = "python",
         request = "launch",
         program = "${file}",

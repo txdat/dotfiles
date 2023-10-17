@@ -18,10 +18,12 @@ vim.api.nvim_create_autocmd("FileType", {
 -- adapters
 -- require("plugins.dap.adapters.cppdbg")
 require("plugins.dap.adapters.lldb")
+require("plugins.dap.adapters.go_delve")
 require("plugins.dap.adapters.python")
 
 -- config
 require("plugins.dap.config.cpp") -- c/c++/rust
+require("plugins.dap.config.go")
 require("plugins.dap.config.python")
 
 -- keymaps
@@ -42,5 +44,5 @@ keymap("n", "<leader>dl", function()
     dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
 end)
 
--- require("plugins.dap.dap_ui")
--- require("plugins.dap.dap_virtual_text")
+-- require("plugins.dap.ui")
+-- require("plugins.dap.virtual_text")

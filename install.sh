@@ -94,7 +94,7 @@ sudo pacman -S --noconfirm nvidia
 # rustup component add rust-analyzer
 
 # golang
-# sudo pacman -S --noconfirm go gopls
+# sudo pacman -S --noconfirm go gopls delve
 
 # zig
 # sudo pacman -S --noconfirm zig zls
@@ -121,7 +121,7 @@ sudo pacman -S --noconfirm nvidia
 # rm -f ./Miniconda3-latest-Linux-x86_64.sh
 # conda update --all -y
 # conda config --set auto_activate_base false
-# pip install pynvim pyright black --upgrade
+# pip install pynvim pyright black debugpy --upgrade
 
 # ml/ds env
 # conda create -n mlds python=3.11
