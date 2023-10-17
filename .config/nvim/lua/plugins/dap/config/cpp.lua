@@ -2,7 +2,7 @@ local dap = require("dap")
 
 dap.configurations.cpp = {
     {
-        name = "C++ debug and run",
+        name = "C/C++/Rust",
         type = vim.g.dap_cpp_adapter,
         request = "launch",
         program = function()

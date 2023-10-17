@@ -82,9 +82,9 @@ local plugins = {
     -- commenting
     {
         "numToStr/Comment.nvim",
-        dependencies = {
-            "JoosepAlviste/nvim-ts-context-commentstring",
-        },
+        -- dependencies = {
+        --     "JoosepAlviste/nvim-ts-context-commentstring",
+        -- },
         event = "InsertEnter",
         keys = { { "<A-/>", mode = { "n", "v" } } },
         config = function()
@@ -269,17 +269,17 @@ local plugins = {
     },
 
     -- debugging
-    -- {
-    --     "mfussenegger/nvim-dap",
-    --     dependencies = {
-    --         "rcarriga/nvim-dap-ui",
-    --         "theHamsta/nvim-dap-virtual-text",
-    --     },
-    --     keys = { "<F5>", "<F9>" }, -- triggered when start debugging
-    --     config = function()
-    --         pcall(require, "plugins.dap")
-    --     end,
-    -- },
+    {
+        "mfussenegger/nvim-dap",
+        -- dependencies = {
+        --     "rcarriga/nvim-dap-ui",
+        --     "theHamsta/nvim-dap-virtual-text",
+        -- },
+        keys = { "<leader>dr", "<leader>db" },
+        config = function()
+            pcall(require, "plugins.dap")
+        end,
+    },
 
     ------------------------------------
     -- prog. langs
@@ -304,7 +304,7 @@ local plugins = {
     --     build = function()
     --         vim.fn["mkdp#util#install"]()
     --     end,
-    --     ft = { "markdown" }, -- triggered when opening *.md file
+    --     ft = { "markdown" },
     --     config = function()
     --         pcall(require, "plugins.markdown_preview")
     --     end
@@ -313,7 +313,7 @@ local plugins = {
     -- latex
     -- {
     --     "lervag/vimtex",
-    --     ft = { "tex" }, -- triggered when opening *.tex file
+    --     ft = { "tex" },
     --     config = function()
     --         pcall(require, "plugins.vimtex")
     --     end

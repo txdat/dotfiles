@@ -3,6 +3,6 @@ local dap = require("dap")
 dap.adapters.python = {
     name = "python",
     type = "executable",
-    command = require("util").shell_cmd("which python3"),
+    command = vim.g.python3_host_prog,
     args = { "-m", "debugpy.adapter" },
 }
