@@ -275,7 +275,6 @@ local plugins = {
         --     "rcarriga/nvim-dap-ui",
         --     "theHamsta/nvim-dap-virtual-text",
         -- },
-        keys = { "<leader>dr", "<leader>db" },
         config = function()
             pcall(require, "plugins.dap")
         end,

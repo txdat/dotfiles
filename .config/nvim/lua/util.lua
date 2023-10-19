@@ -9,10 +9,7 @@ function M.keymap(mode, lhs, rhs, opts)
 end
 
 function M.shell_cmd(cmd)
-    local handler = io.popen(cmd)
-    local res = handler:read("*a"):gsub("\n[^\n]*$", "")
-    handler:close()
-    return res
+    return vim.fn.system(cmd):gsub("\n[^\n]*$", "")
 end
 
 return M
