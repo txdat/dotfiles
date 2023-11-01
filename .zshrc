@@ -129,7 +129,9 @@ set_primary_display () {
 }
 
 # kubernetes (k3s)
+alias k=kubectl
 export KUBECONFIG=$HOME/.kube/config
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 start_kube () {
     # add kube-system's dns to resolv
