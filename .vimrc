@@ -222,11 +222,12 @@ nnoremap <silent> <C-[> :bprevious<CR>
 nnoremap <silent> <C-]> :bnext<CR>
 nnoremap <silent> <C-\> :b#<CR>
 
-"nnoremap <silent> <C-d> :bd!<CR>
+nnoremap <silent> <A-u> <C-u>
+nnoremap <silent> <A-d> <C-d>
+nnoremap <silent> <C-u> <nop>
+nnoremap <silent> <C-d> :bd!<CR>
 "nnoremap <silent> <C-S-d> :<C-U>bprevious <bar> bdelete #<CR>
-"nnoremap <silent> <C-q> :qa!<CR>
-nnoremap <silent> <C-q> :bd!<CR>
-nnoremap <silent> <C-q>q :qa!<CR>
+nnoremap <silent> <C-q> :qa!<CR>
 
 nnoremap <silent> <F3> :set invpaste paste?<CR>
 set pastetoggle=<F3>
@@ -241,6 +242,8 @@ inoremap <silent> <C-s> <cmd>w<CR>
 nnoremap <silent> <leader>co :copen<CR>
 nnoremap <silent> <leader>cw :cclose<CR>
 nnoremap <silent> <leader>cc :call setqflist([])<CR>
+nnoremap <silent> <A-j> :cnext<CR>
+nnoremap <silent> <A-k> :cprev<CR>
 
 xnoremap <silent> J :move '>+1<CR>gv-gv
 xnoremap <silent> K :move '<-2<CR>gv-gv
@@ -255,7 +258,7 @@ syntax on
 filetype plugin indent on
 " let &t_8f ="\<Esc>[38;2;%lu;%lu;%lum"
 " let &t_8b ="\<Esc>[48;2;%lu;%lu;%lum"
-set termguicolors " enable 24bits colors
-set background="dark"
+" set termguicolors " enable 24bits colors
+" set background="dark"
 
-colorscheme jellybeans
+colorscheme moonfly

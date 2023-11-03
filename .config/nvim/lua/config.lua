@@ -222,11 +222,12 @@ keymap("n", "<C-]>", ":bnext<CR>")
 keymap("n", "<C-\\>", ":b#<CR>") -- switch to last buffer
 
 -- close current buffer
--- keymap("n", "<C-d>", ":bd!<CR>")
+keymap("n", "<A-u>", "<C-u>")
+keymap("n", "<A-d>", "<C-d>")
+keymap("n", "<C-u>", "<nop>")
+keymap("n", "<C-d>", ":bd!<CR>")
 -- keymap("n", "<C-S-d>", ":<C-U>bprevious <bar> bdelete #<CR>") -- and move to previous buffer
--- keymap("n", "<C-q>", ":qa!<CR>")                              -- close all buffers and exit
-keymap("n", "<C-q>", ":bd!<CR>")
-keymap("n", "<C-q>q", ":qa!<CR>")
+keymap("n", "<C-q>", ":qa!<CR>") -- close all buffers and exit
 
 -- toggle auto-indenting for code paste
 keymap("n", "<F3>", ":set invpaste paste?<CR>")
@@ -243,6 +244,8 @@ keymap({ "n", "i" }, "<C-S-s>", "<cmd>wa<CR>")
 keymap("n", "<leader>co", ":copen<CR>")
 keymap("n", "<leader>cw", ":cclose<CR>")
 keymap("n", "<leader>cc", ":call setqflist([])<CR>") -- clear list
+keymap("n", "<A-j>", ":cnext<CR>")
+keymap("n", "<A-k>", ":cprev<CR>")
 
 -- move visual block up/down
 keymap("x", "J", ":move '>+1<CR>gv-gv")

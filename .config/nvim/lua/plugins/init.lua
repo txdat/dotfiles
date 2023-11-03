@@ -200,6 +200,7 @@ local plugins = {
             "<leader>ff",
             "<leader>fg",
             "<leader>fh",
+            "<leader>fb",
         },
         config = function()
             pcall(require, "plugins.fzf")
