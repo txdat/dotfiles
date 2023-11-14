@@ -7,8 +7,8 @@ sudo pacman -S --noconfirm curl wget axel git \
                            vi vim neovim lua-language-server \
                            zip unzip p7zip ark \
                            bat \
-                           xclip xdotool fzf fzy ripgrep fd jq bc \
-                           fcitx5 fcitx5-bamboo fcitx5-configtool fcitx5-qt fcitx5-gtk \
+                           xclip xdotool fzf fzy ripgrep fd jq bc less \
+                           fcitx5 fcitx5-bamboo fcitx5-mozc fcitx5-configtool fcitx5-qt fcitx5-gtk \
                            xorg-xrandr \
                            openssh \
                            pacman-contrib \
