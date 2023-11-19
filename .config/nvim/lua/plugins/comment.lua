@@ -15,6 +15,25 @@ require("Comment").setup({
     },
 })
 
+local has_ts_comment, ts_comment = pcall(require, "ts_context_commentstring")
+if has_ts_comment then
+    ts_comment.setup({
+        enable_autocmd = true,
+        config = {
+            javascript = {
+                __default = "// %s",
+                jsx_element = "{/* %s */}",
+                jsx_fragment = "{/* %s */}",
+                jsx_attribute = "// %s",
+                comment = "// %s",
+            },
+            typescript = { __default = "// %s", __multiline = "/* %s */" },
+        },
+    })
+
+    vim.g.skip_ts_context_commentstring_module = true
+end
+
 -- insert mode key binding
 local api = require("Comment.api")
 local keymap = require("util").keymap

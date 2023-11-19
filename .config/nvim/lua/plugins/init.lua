@@ -276,6 +276,7 @@ local plugins = {
         --     "rcarriga/nvim-dap-ui",
         --     "theHamsta/nvim-dap-virtual-text",
         -- },
+        keys = { "<F9>" },
         config = function()
             pcall(require, "plugins.dap")
         end,
@@ -311,13 +312,13 @@ local plugins = {
     -- },
 
     -- latex
-    -- {
-    --     "lervag/vimtex",
-    --     ft = { "tex" },
-    --     config = function()
-    --         pcall(require, "plugins.vimtex")
-    --     end
-    -- },
+    {
+        "lervag/vimtex",
+        ft = { "tex" },
+        config = function()
+            pcall(require, "plugins.vimtex")
+        end
+    },
 }
 
 require("lazy").setup(plugins, {

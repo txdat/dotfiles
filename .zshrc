@@ -131,6 +131,7 @@ set_primary_display () {
 # kubernetes (k3s)
 alias k=kubectl
 export KUBECONFIG=$HOME/.kube/config
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 start_kube () {

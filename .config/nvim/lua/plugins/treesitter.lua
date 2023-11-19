@@ -12,10 +12,10 @@ require("nvim-treesitter.configs").setup {
         "rust",
         "go",
         "python",
-        -- "haskell",
+        "haskell",
         "javascript",
         "typescript",
-        -- "latex",
+        "latex",
         "markdown",
         "markdown_inline",
         "json",
@@ -33,20 +33,6 @@ require("nvim-treesitter.configs").setup {
     },
     autotag = {
         enable = true,
-    },
-    context_commentstring = {
-        enable = true,
-        enable_autocmd = true,
-        config = {
-            javascript = {
-                __default = "// %s",
-                jsx_element = "{/* %s */}",
-                jsx_fragment = "{/* %s */}",
-                jsx_attribute = "// %s",
-                comment = "// %s",
-            },
-            typescript = { __default = "// %s", __multiline = "/* %s */" },
-        },
     },
     highlight = {
         enable = true,
