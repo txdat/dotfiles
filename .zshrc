@@ -129,10 +129,12 @@ set_primary_display () {
 }
 
 # kubernetes (k3s)
-alias k=kubectl
 export KUBECONFIG=$HOME/.kube/config
 export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
+alias k=kubectl
+alias kcn='kubectl config set-context --current --namespace'
 
 start_kube () {
     # add kube-system's dns to resolv
