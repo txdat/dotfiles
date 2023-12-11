@@ -73,6 +73,9 @@ require("fzf-lua").setup({
             symbol_style = 3,
             symbol_icons = {},
         },
+        code_actions = {
+            previewer = "codeaction_native"
+        }
     },
     diagnostics = {
         cwd_only = true,
