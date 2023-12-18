@@ -25,9 +25,9 @@ require("fzf-lua").setup({
         ["--marker"]       = "▶",
     },
     previewers = {
-        bat = {
+        bat_native = {
             cmd = "bat",
-            args = "--style=numbers,changes --color always",
+            args = "--color=always --style=numbers,changes",
             theme = "fly16",
         },
         git_diff = {
