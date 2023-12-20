@@ -2,17 +2,12 @@ require("trouble").setup({
     position = "bottom",
     height = 30,
     mode = "workspace_diagnostics",
-    severity = vim.diagnostic.severity.WARN, -- >= WARN only
-    signs = {
-        error = "",
-        warning = "",
-        hint = "",
-        information = "",
-        other = "󰝥",
-    },
+    severity = vim.diagnostic.severity.ERROR,
     use_diagnostic_signs = true,
+    auto_preview = false,
+    win_config = { border = "none" },
     action_keys = {
-        close = {},
+        close = "<leader>tq",
         cancel = "<ESC>",
         refresh = "r",
         jump = "<CR>",
@@ -25,6 +20,7 @@ require("trouble").setup({
         toggle_preview = "<C-p>",
         preview = "p",
         hover = "K",
+        open_code_href = "c",
         close_folds = "zm",
         open_folds = "zr",
         toggle_folds = "za",
@@ -38,5 +34,5 @@ local keymap = require("util").keymap
 keymap("n", "<leader>tt", ":TroubleToggle<CR>")
 keymap("n", "<leader>tw", ":TroubleToggle workspace_diagnostics<CR>")
 keymap("n", "<leader>td", ":TroubleToggle document_diagnostics<CR>")
-keymap("n", "<leader>tq", ":TroubleToggle quickfix<CR>")
+keymap("n", "<leader>tc", ":TroubleToggle quickfix<CR>")
 keymap("n", "<leader>tl", ":TroubleToggle loclist<CR>")
