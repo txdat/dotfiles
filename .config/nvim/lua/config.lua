@@ -241,9 +241,9 @@ keymap({ "n", "i" }, "<C-s>", "<cmd>w<CR>")
 keymap({ "n", "i" }, "<C-S-s>", "<cmd>wa<CR>")
 
 -- quickfix list
-keymap("n", "<leader>co", ":copen<CR>")
-keymap("n", "<leader>cw", ":cclose<CR>")
-keymap("n", "<leader>cc", ":call setqflist([])<CR>") -- clear list
+keymap("n", "co", ":copen<CR>")
+keymap("n", "cw", ":cclose<CR>")
+keymap("n", "cc", ":call setqflist([])<CR>") -- clear list
 keymap("n", "<A-j>", ":cnext<CR>")
 keymap("n", "<A-k>", ":cprev<CR>")
 

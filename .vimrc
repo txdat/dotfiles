@@ -239,9 +239,9 @@ inoremap <silent> <C-s> <cmd>w<CR>
 "inoremap <silent> <C-s> <C-c>:w<CR>
 "nnoremap <silent> <C-S-s> :wa<CR>
 
-nnoremap <silent> <leader>co :copen<CR>
-nnoremap <silent> <leader>cw :cclose<CR>
-nnoremap <silent> <leader>cc :call setqflist([])<CR>
+nnoremap <silent> co :copen<CR>
+nnoremap <silent> cw :cclose<CR>
+nnoremap <silent> cc :call setqflist([])<CR>
 nnoremap <silent> <A-j> :cnext<CR>
 nnoremap <silent> <A-k> :cprev<CR>
 

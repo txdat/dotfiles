@@ -7,7 +7,7 @@ require("trouble").setup({
     auto_preview = false,
     win_config = { border = "none" },
     action_keys = {
-        close = "<leader>tq",
+        close = {},
         cancel = "<ESC>",
         refresh = "r",
         jump = "<CR>",
