@@ -135,7 +135,7 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 
 -- python
-vim.g.python3_host_prog = require("util").shell_cmd("which python3")
+vim.g.python3_host_prog = require("util").cmd("which python3")
 
 -----------------------------------------
 -- autocommand functions

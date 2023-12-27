@@ -29,7 +29,7 @@ require("plugins.dap.config.python")
 -- keymaps
 local keymap = require("util").keymap
 
-keymap("n", "<F4>", dap.terminate)
+keymap("n", "<S-F5>", dap.terminate)
 keymap("n", "<F5>", dap.continue)
 keymap("n", "<F9>", dap.toggle_breakpoint)
 keymap("n", "<F10>", dap.step_over)

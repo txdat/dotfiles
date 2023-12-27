@@ -106,18 +106,18 @@ M.pyright = {
     },
 }
 
--- M.hls = {
---     filetypes = { "haskell", "lhaskell", "cabal", "cabalproject" },
---     settings = {
---         haskell = {
---             formattingProvider = "fourmolu",
---             cabalFormattingProvider = "cabalfmt",
---             maxCompletions = 40,
---             checkProject = true,
---             checkParents = "CheckOnSave",
---         },
---     },
--- }
+M.hls = {
+    filetypes = { "haskell", "lhaskell", "cabal", "cabalproject" },
+    settings = {
+        haskell = {
+            formattingProvider = "fourmolu",
+            cabalFormattingProvider = "cabalfmt",
+            maxCompletions = 40,
+            checkProject = true,
+            checkParents = "CheckOnSave",
+        },
+    },
+}
 
 -- -- typescript-language-server
 -- M.tsserver = {

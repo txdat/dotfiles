@@ -55,6 +55,7 @@ require("fzf-lua").setup({
         input_prompt = "Grep❯ ",
         cmd          =
         "rg --hidden --color=always --no-heading --with-filename --line-number --column --smart-case --max-columns=4096 -g '!{.git,node_modules}/*'",
+        rg_glob      = true,
         no_header    = true,
         no_header_i  = true,
     },
@@ -71,7 +72,6 @@ require("fzf-lua").setup({
     lsp = {
         symbols = {
             symbol_style = 3,
-            symbol_icons = {},
         },
         code_actions = {
             previewer = "codeaction_native"
@@ -79,6 +79,7 @@ require("fzf-lua").setup({
     },
     diagnostics = {
         cwd_only = true,
+        severity_only = "error", -- error only
     },
     keymap = {
         fzf = {
@@ -104,3 +105,4 @@ keymap("n", "<leader>ff", ":FzfLua files<CR>")
 keymap("n", "<leader>fg", ":FzfLua live_grep_glob<CR>")
 keymap("n", "<leader>fb", ":FzfLua buffers<CR>")
 keymap("n", "<leader>fs", ":FzfLua lsp_document_symbols<CR>")
+keymap("n", "<leader>fd", ":FzfLua diagnostics_workspace<CR>")

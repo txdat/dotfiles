@@ -139,10 +139,10 @@ ins_left {
     color = { fg = colors.magenta },
     file_status = true,
     symbols = {
-        modified = "",
+        modified = "󰝥",
         readonly = "",
-        unnamed = "[Null]",
-        newfile = "[New]",
+        unnamed = "",
+        newfile = "",
     },
     fmt = function(filename)
         if #filename > 80 then
@@ -167,7 +167,7 @@ ins_left { "progress" }
 
 ins_left {
     "diagnostics",
-    sources = { "nvim_workspace_diagnostic", "nvim_diagnostic", "nvim_lsp" },
+    sources = { "nvim_diagnostic" },
     symbols = { error = " ", warn = " ", info = " ", hint = " " },
     update_in_insert = true,
     diagnostics_color = {

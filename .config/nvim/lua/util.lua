@@ -8,7 +8,7 @@ function M.keymap(mode, lhs, rhs, opts)
     vim.keymap.set(mode, lhs, rhs, options)
 end
 
-function M.shell_cmd(cmd)
+function M.cmd(cmd)
     return vim.fn.system(cmd):gsub("\n[^\n]*$", "")
 end
 

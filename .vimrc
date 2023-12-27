@@ -250,7 +250,7 @@ xnoremap <silent> K :move '<-2<CR>gv-gv
 xnoremap <silent> <A-j> :move '>+1<CR>gv-gv
 xnoremap <silent> <A-k> :move '<-2<CR>gv-gv
 
-nnoremap <silent> <F9> :!g++ -g % && ./a.out<CR>
+nnoremap <silent> <F9> :!g++ -g % && time ./a.out<CR>
 
 " ----------------------------------
 " colorscheme

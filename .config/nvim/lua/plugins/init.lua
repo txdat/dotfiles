@@ -83,7 +83,7 @@ local plugins = {
     {
         "numToStr/Comment.nvim",
         dependencies = {
-            "JoosepAlviste/nvim-ts-context-commentstring",
+            -- "JoosepAlviste/nvim-ts-context-commentstring",
         },
         event = "InsertEnter",
         keys = { { "<A-/>", mode = { "n", "v" } } },
@@ -200,7 +200,6 @@ local plugins = {
             "<leader>ff",
             "<leader>fg",
             "<leader>fh",
-            "<leader>fb",
         },
         config = function()
             pcall(require, "plugins.fzf")
@@ -232,19 +231,19 @@ local plugins = {
             pcall(require, "plugins.lsp")
         end,
     },
-    {
-        "folke/trouble.nvim",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-        },
-        keys = {
-            "<leader>tt",
-            "<leader>tc",
-        },
-        config = function()
-            pcall(require, "plugins.lsp.trouble")
-        end
-    },
+    -- {
+    --     "folke/trouble.nvim",
+    --     dependencies = {
+    --         "nvim-tree/nvim-web-devicons",
+    --     },
+    --     keys = {
+    --         "<leader>tt",
+    --         "<leader>tc",
+    --     },
+    --     config = function()
+    --         pcall(require, "plugins.lsp.trouble")
+    --     end
+    -- },
 
     -- autocompletion
     {
@@ -291,7 +290,6 @@ local plugins = {
         "pmizio/typescript-tools.nvim",
         dependencies = {
             "nvim-lua/plenary.nvim",
-            "neovim/nvim-lspconfig",
         },
         ft = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
         config = function()

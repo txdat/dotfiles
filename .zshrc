@@ -5,10 +5,6 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# ------------------
-# config
-# ------------------
-
 #export TERM="xterm-256color"
 export EDITOR="vim"
 
@@ -28,10 +24,6 @@ setopt share_history          # share command history data
 autoload -Uz compinit && compinit
 autoload -Uz bashcompinit && bashcompinit
 
-# ------------------
-# plugins
-# ------------------
-
 # completion
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 
@@ -45,10 +37,6 @@ source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 # prompt
 source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh # run 'p10k configure'
-
-# ------------------
-# user's config
-# ------------------
 
 # fzf
 # export FZF_DEFAULT_COMMAND="rg --hidden --color=always --no-heading --with-filename --line-number --column --smart-case --max-columns=4096 ''"
@@ -66,19 +54,21 @@ alias fzfp="fzf --preview 'bat --color=always {}'" # fzf with bat preview
 # conda
 CONDA_HOME="$HOME/.miniconda"
 
-__conda_setup="$('$CONDA_HOME/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "$CONDA_HOME/etc/profile.d/conda.sh" ]; then
-        . "$CONDA_HOME/etc/profile.d/conda.sh"
+if [[ -n "$CONDA_HOME" ]]; then
+    __conda_setup="$('$CONDA_HOME/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+    if [ $? -eq 0 ]; then
+        eval "$__conda_setup"
     else
-        export PATH="$CONDA_HOME/bin:$PATH"
+        if [ -f "$CONDA_HOME/etc/profile.d/conda.sh" ]; then
+            . "$CONDA_HOME/etc/profile.d/conda.sh"
+        else
+            export PATH="$CONDA_HOME/bin:$PATH"
+        fi
     fi
-fi
-unset __conda_setup
+    unset __conda_setup
 
-export PATH="$CONDA_HOME/bin:$PATH"
+    export PATH="$CONDA_HOME/bin:$PATH"
+fi
 
 # emacs
 export PATH="$HOME/.emacs.d/bin:$PATH"
@@ -97,7 +87,12 @@ export PATH=$HOME/.local/share/coursier/bin:$PATH
 # javascript
 # source /usr/share/nvm/init-nvm.sh
 
-# custom aliases
+# kubernetes (k3s)
+export KUBECONFIG=$HOME/.kube/config
+export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+
+# aliases
 alias syyu="sudo pacman -Syyu && paru -Syyu"
 
 alias x2cb="xclip -sel c" # copy output to clipboard
@@ -106,15 +101,12 @@ alias cb2f="xclip -sel c -o > " # copy from clipboard to file
 
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 
-alias gsu="git branch --set-upstream-to"
+alias k=kubectl
 
-# alias git_clean_merged="git branch --merged | grep -v \* | xargs git branch -D"
-
-# display projecting
 extend_display () {
-    display="${1:-DisplayPort-0}"
-    width="${2:-1920}"
-    direction="${3:-right-of}"
+    direction="${1:-same-as}"
+    display="${2:-DisplayPort-0}"
+    width="${3:-1920}"
     display0="${4:-eDP}"
     width0="${5:-3072}"
     scale=$(echo "scale=5;$width0/$width" | bc)
@@ -124,30 +116,20 @@ extend_display () {
 set_primary_display () {
     display="${1:-DisplayPort-0}"
     width="${2:-1920}"
-    display0="${3:-eDP}"
-    width0="${4:-3072}"
-    scale=$(echo "scale=5;$width0/$width" | bc)
+    scale=$(echo "scale=5;3072/$width" | bc)
     xrandr --output $display --scale 2x2 && xrandr --output $display --scale ${scale}x${scale} --set TearFree on
 }
 
-# kubernetes (k3s)
-export KUBECONFIG=$HOME/.kube/config
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
-export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-
-alias k=kubectl
-alias kcn='kubectl config set-context --current --namespace'
-
-start_kube () {
+start_k3s () {
     # add kube-system's dns to resolv
     dns=$(echo $(kubectl get svc -n kube-system | grep dns) | awk '{ print $3 }')
-    sudo sed -i "1s/^/nameserver ${dns} # kube\n/" /etc/resolv.conf
+    sudo sed -i "1s/^/nameserver ${dns} #k3s\n/" /etc/resolv.conf
 
     KUBE_SERVICES=(
         # 'docker.socket'
         # 'docker.service'
         'containerd.service'
-        'nfs-server.service'
+        # 'nfs-server.service'
         'k3s.service'
     )
     for svc in "${KUBE_SERVICES[@]}"
@@ -156,15 +138,15 @@ start_kube () {
     done
 }
 
-stop_kube () {
+stop_k3s () {
     # remove kube-system's dns in resolv
-    sudo sed -i "/kube$/d" /etc/resolv.conf
+    sudo sed -i "/#k3s$/d" /etc/resolv.conf
 
     KUBE_SERVICES=(
         # 'docker.socket'
         # 'docker.service'
         'containerd.service'
-        'nfs-server.service'
+        # 'nfs-server.service'
         'k3s.service'
     )
     for svc in "${KUBE_SERVICES[@]}"
@@ -175,11 +157,13 @@ stop_kube () {
 
 # update zsh and plugins
 update_zsh () {
+    dir=$(pwd)
+
     ZSH_PLUGINS=('powerlevel10k' 'zsh-syntax-highlighting' 'zsh-autosuggestions')
     for plg in "${ZSH_PLUGINS[@]}"
     do
         cd ~/.zsh/$plg && git pull
     done
 
-    cd ~
+    cd $dir
 }

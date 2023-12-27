@@ -1,4 +1,4 @@
-inherits = "modus_vivendi"
+inherits = "jellybeans"
 
 [palette]
 background = "#080808"

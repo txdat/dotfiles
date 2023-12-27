@@ -1,5 +1,6 @@
 vim.opt.smartindent = false
 
+---@diagnostic disable-next-line: missing-fields
 require("nvim-treesitter.configs").setup {
     ensure_installed = {
         "vim",
@@ -12,7 +13,7 @@ require("nvim-treesitter.configs").setup {
         "rust",
         "go",
         "python",
-        -- "haskell",
+        "haskell",
         "javascript",
         "typescript",
         "latex",
@@ -21,8 +22,8 @@ require("nvim-treesitter.configs").setup {
         "json",
         "yaml",
         "dockerfile",
-        -- "terraform",
-        -- "hcl",
+        "terraform",
+        "hcl",
         "proto",
     },
     sync_install = false,
