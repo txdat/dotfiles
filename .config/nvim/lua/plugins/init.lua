@@ -83,7 +83,7 @@ local plugins = {
     {
         "numToStr/Comment.nvim",
         dependencies = {
-            -- "JoosepAlviste/nvim-ts-context-commentstring",
+            "JoosepAlviste/nvim-ts-context-commentstring",
         },
         event = "InsertEnter",
         keys = { { "<A-/>", mode = { "n", "v" } } },

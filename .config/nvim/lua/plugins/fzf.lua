@@ -103,6 +103,8 @@ local keymap = require("util").keymap
 keymap("n", "<leader>fh", ":FzfLua git_status<CR>")
 keymap("n", "<leader>ff", ":FzfLua files<CR>")
 keymap("n", "<leader>fg", ":FzfLua live_grep_glob<CR>")
+keymap("n", "<leader>fG", ":FzfLua live_grep_native<CR>")
 keymap("n", "<leader>fb", ":FzfLua buffers<CR>")
+keymap("n", "<leader>ft", ":FzfLua tags_live_grep<CR>")
 keymap("n", "<leader>fs", ":FzfLua lsp_document_symbols<CR>")
 keymap("n", "<leader>fd", ":FzfLua diagnostics_workspace<CR>")
