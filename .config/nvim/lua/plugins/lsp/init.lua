@@ -23,7 +23,7 @@ vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
             -- prefix = "",
             source = "if_many",
             spacing = 5,
-            severity_limit = 'Warning',
+            severity_limit = 'Error',
         },
     }
 )
