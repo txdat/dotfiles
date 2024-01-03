@@ -110,14 +110,26 @@ extend_display () {
     display0="${4:-eDP}"
     width0="${5:-3072}"
     scale=$(echo "scale=5;$width0/$width" | bc)
-    xrandr --output $display --scale 2x2 && xrandr --output $display --scale ${scale}x${scale} --$direction $display0 && xrandr --output $display0 --scale 0.9999x0.9999 && xrandr --output $display --set TearFree on
+
+    if [[ $XDG_SESSION_TYPE == "wayland" ]]; then
+        # wayland
+    else
+        # x11
+        xrandr --output $display --scale 2x2 && xrandr --output $display --scale ${scale}x${scale} --$direction $display0 && xrandr --output $display0 --scale 0.9999x0.9999 && xrandr --output $display --set TearFree on
+    fi
 }
 
 set_primary_display () {
     display="${1:-DisplayPort-0}"
     width="${2:-1920}"
     scale=$(echo "scale=5;3072/$width" | bc)
-    xrandr --output $display --scale 2x2 && xrandr --output $display --scale ${scale}x${scale} --set TearFree on
+
+    if [[ $XDG_SESSION_TYPE == "wayland" ]]; then
+        # wayland
+    else
+        # x11
+        xrandr --output $display --scale 2x2 && xrandr --output $display --scale ${scale}x${scale} --set TearFree on
+    fi
 }
 
 start_k3s () {

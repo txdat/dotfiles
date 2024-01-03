@@ -145,15 +145,15 @@ ins_left {
         unnamed = "",
         newfile = "",
     },
-    fmt = function(filename)
-        if #filename > 80 then
-            filename = vim.fs.basename(filename)
-        end
-        if #filename > 80 then
-            return string.sub(filename, #filename - 80, #filename)
-        end
-        return filename
-    end
+    -- fmt = function(filename)
+    --     if #filename > 80 then
+    --         filename = vim.fs.basename(filename)
+    --     end
+    --     if #filename > 80 then
+    --         return string.sub(filename, #filename - 80, #filename)
+    --     end
+    --     return filename
+    -- end
 }
 
 -- ins_left {
@@ -169,14 +169,15 @@ ins_left { "progress" }
 ins_left {
     "diagnostics",
     sources = { "nvim_diagnostic" },
-    symbols = { error = " ", warn = " ", info = " ", hint = " " },
     update_in_insert = true,
-    diagnostics_color = {
-        color_error = { fg = colors.red },
-        color_warn = { fg = colors.yellow },
-        color_info = { fg = colors.cyan },
-        color_hint = { fg = colors.white },
-    },
+    sections = { "warn", "error" },
+    symbols = { error = " ", warn = " ", info = " ", hint = " " },
+    -- diagnostics_color = {
+    --     color_error = { fg = colors.red },
+    --     color_warn = { fg = colors.yellow },
+    --     color_info = { fg = colors.cyan },
+    --     color_hint = { fg = colors.white },
+    -- },
 }
 
 -- Insert mid section. You can make any number of sections in neovim :)

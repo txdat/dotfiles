@@ -43,7 +43,7 @@ set rtp^=~/.vim
 set nocompatible " use vim defaults
 set clipboard^=unnamed,unnamedplus " system's clipboard
 set timeout
-set timeoutlen=250 " key mappings timeout
+set timeoutlen=300 " key mappings timeout
 set noswapfile
 set nobackup
 set nowritebackup
