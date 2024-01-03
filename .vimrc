@@ -115,42 +115,20 @@ set viminfo='20,\"50
 set history=50
 set lazyredraw " faster scrolling
 set synmaxcol=240 " maximum column for syntax highligh
-set updatetime=250 " milli-seconds to wait for trigger an event (keymap)
+set updatetime=100 " milli-seconds to wait for trigger an event (keymap)
 
 " ----------------------------------
 " statusline
 " ----------------------------------
 
-let g:currentmode={
-    \ 'n'  : 'Normal',
-    \ 'no' : 'Normal·Operator Pending',
-    \ 'v'  : 'Visual',
-    \ 'V'  : 'V·Line',
-    \ '^V' : 'V·Block',
-    \ 's'  : 'Select',
-    \ 'S'  : 'S·Line',
-    \ '^S' : 'S·Block',
-    \ 'i'  : 'Insert',
-    \ 'R'  : 'Replace',
-    \ 'Rv' : 'V·Replace',
-    \ 'c'  : 'Command',
-    \ 'cv' : 'Vim Ex',
-    \ 'ce' : 'Ex',
-    \ 'r'  : 'Prompt',
-    \ 'rm' : 'More',
-    \ 'r?' : 'Confirm',
-    \ '!'  : 'Shell',
-    \ 't'  : 'Terminal'
-    \}
-
-set noshowmode
+" set noshowmode
 set statusline=
 set statusline+=%1*\ <%{toupper(mode())}>\  " The current mode
 set statusline+=%2*\ %<%F%m%r%h%w\          " File path, modified, readonly, helpfile, preview
-set statusline+=%3*\ %l:%v\ %3p%%           " Line:Col number, percentage of document
 set statusline+=%=                          " Right Side
-" set statusline+=%1*\ %{''.(&fenc!=''?&fenc:&enc).''}     " Encoding
-" set statusline+=\ (%{&ff})                               " FileFormat (dos/unix..)
+set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of document
+" set statusline+=%2*\ %{''.(&fenc!=''?&fenc:&enc).''}     " Encoding
+" set statusline+=%3*\ (%{&ff})                            " FileFormat (dos/unix..)
 
 " ----------------------------------
 " autocommand functions
@@ -194,7 +172,7 @@ autocmd BufLeave * stopinsert
 " nnoremap <silent> <ESC> <nop>
 " inoremap <silent> jj <ESC>
 
-nnoremap <silent> <leader>q q
+nnoremap <silent> <A-q> q
 nnoremap <silent> q <nop>
 
 inoremap <silent> <F1> <nop>

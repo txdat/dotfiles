@@ -37,16 +37,16 @@ local plugins = {
     },
 
     -- statusline
-    {
-        "nvim-lualine/lualine.nvim",
-        dependencies = {
-            "nvim-tree/nvim-web-devicons",
-        },
-        lazy = false,
-        config = function()
-            pcall(require, "plugins.lualine")
-        end,
-    },
+    -- {
+    --     "nvim-lualine/lualine.nvim",
+    --     dependencies = {
+    --         "nvim-tree/nvim-web-devicons",
+    --     },
+    --     lazy = false,
+    --     config = function()
+    --         pcall(require, "plugins.lualine")
+    --     end,
+    -- },
 
     -- indent
     {
@@ -83,7 +83,7 @@ local plugins = {
     {
         "numToStr/Comment.nvim",
         dependencies = {
-            "JoosepAlviste/nvim-ts-context-commentstring",
+            -- "JoosepAlviste/nvim-ts-context-commentstring",
         },
         event = "InsertEnter",
         keys = { { "<A-/>", mode = { "n", "v" } } },
@@ -258,7 +258,7 @@ local plugins = {
                 "L3MON4D3/LuaSnip",
                 build = "make install_jsregexp",
                 dependencies = {
-                    "rafamadriz/friendly-snippets",
+                    -- "rafamadriz/friendly-snippets",
                 },
             },
         },

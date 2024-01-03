@@ -1,5 +1,6 @@
--- neovim config
 local opt = vim.opt
+local augroup = vim.api.nvim_create_augroup
+local autocmd = vim.api.nvim_create_autocmd
 
 -- disable built-in plugins
 local built_in_plugins = {
@@ -91,6 +92,26 @@ opt.fillchars = [[eob: ,fold: ,foldopen:-,foldsep:│,foldclose:+]]
 opt.foldcolumn = "1"
 opt.statuscolumn = "%s%=%{&nu?(&rnu&&v:relnum?v:relnum:v:lnum):''}%=%C%#IndentBlankLineChar"
 
+-- statusline
+function Statusline()
+    return table.concat({
+        "%#Normal#",
+        "%1* " .. string.format("<%s>", vim.api.nvim_get_mode().mode):upper(), -- The current mode
+        "%2* %<%F%m%r%h%w",                                                    -- File path, modified, readonly, helpfile, preview
+        "%=",                                                                  -- Right side
+        "%1* %l:%v %3p%%",                                                     -- Line:Col number, percentage of document
+        -- "%2* %{''.(&fenc!=''?&fenc:&enc).''}",                                 -- Encoding
+        -- "%3* (%{&ff})"                                                         -- FileFormat (dos/unix..)
+    })
+end
+
+vim.api.nvim_exec([[
+  augroup Statusline
+  au!
+  au WinEnter,BufEnter * setlocal statusline=%!v:lua.Statusline()
+  augroup END
+]], false)
+
 -----------------------------------------
 -- tabs, indent, ...
 -----------------------------------------
@@ -124,7 +145,7 @@ opt.hidden = true     -- enable background buffers
 opt.history = 50      -- n lines in history
 opt.lazyredraw = true -- faster scrolling
 opt.synmaxcol = 240   -- max column for syntax highlight
-opt.updatetime = 250  -- milli-seconds to wait for trigger an event (keymap)
+opt.updatetime = 100  -- milli-seconds to wait for trigger an event (keymap)
 
 -----------------------------------------
 -- providers
@@ -140,9 +161,6 @@ vim.g.python3_host_prog = require("util").cmd("which python3")
 -----------------------------------------
 -- autocommand functions
 -----------------------------------------
-
-local augroup = vim.api.nvim_create_augroup
-local autocmd = vim.api.nvim_create_autocmd
 
 -- highlight on yank (selected copy)
 augroup("YankHighlight", { clear = true })
@@ -191,7 +209,7 @@ local keymap = require("util").keymap
 -- keymap("i", "jj", "<ESC>")
 
 -- remap recoding
-keymap("n", "<leader>q", "q")
+keymap("n", "<A-q>", "q")
 keymap("n", "q", "<nop>")
 
 keymap("i", "<F1>", "<nop>")
