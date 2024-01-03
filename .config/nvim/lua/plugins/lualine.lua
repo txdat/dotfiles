@@ -14,6 +14,7 @@ local colors = {
     magenta  = "#ff5189",
     blue     = "#80a0ff",
     red      = "#ff5454",
+    white    = "#c6c6c6",
 }
 
 -- auto change color according to neovims mode
@@ -174,6 +175,7 @@ ins_left {
         color_error = { fg = colors.red },
         color_warn = { fg = colors.yellow },
         color_info = { fg = colors.cyan },
+        color_hint = { fg = colors.white },
     },
 }
 

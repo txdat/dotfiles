@@ -15,10 +15,12 @@ end
 vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
     vim.lsp.diagnostic.on_publish_diagnostics,
     {
-        signs = true,
         update_in_insert = true,
         underline = true,
         severity_sort = true,
+        signs = {
+            severity_limit = 'Error',
+        },
         virtual_text = {
             -- prefix = "",
             source = "if_many",

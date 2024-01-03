@@ -45,7 +45,7 @@ end
 opt.compatible = false
 opt.clipboard = "unnamed,unnamedplus" -- system"s clipboard
 opt.timeout = true
-opt.timeoutlen = 500                  -- key mappings timeout
+opt.timeoutlen = 250                  -- key mappings timeout
 opt.swapfile = false
 opt.backup = false
 opt.writebackup = false
