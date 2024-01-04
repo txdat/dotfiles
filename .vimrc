@@ -124,11 +124,11 @@ set updatetime=100 " milli-seconds to wait for trigger an event (keymap)
 " set noshowmode
 set statusline=
 set statusline+=%1*\ <%{toupper(mode())}>\  " The current mode
-set statusline+=%2*\ %<%F%m%r%h%w\          " File path, modified, readonly, helpfile, preview
+set statusline+=%2*\ %<%f%m%r%h%w\          " File path, modified, readonly, helpfile, preview
+set statusline+=%3*\ %l:%v\ %3p%%           " Line:Col number, percentage of document
 set statusline+=%=                          " Right Side
-set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of document
-" set statusline+=%2*\ %{''.(&fenc!=''?&fenc:&enc).''}     " Encoding
-" set statusline+=%3*\ (%{&ff})                            " FileFormat (dos/unix..)
+" set statusline+=%1*\ %{''.(&fenc!=''?&fenc:&enc).''}     " Encoding
+" set statusline+=%2*\ (%{&ff})                            " FileFormat (dos/unix..)
 
 " ----------------------------------
 " autocommand functions

@@ -43,13 +43,13 @@ vim.api.nvim_create_autocmd("LspAttach", {
         local opts = { buffer = args.buf }
 
         keymap("n", "K", lspbuf.hover, opts)
-        keymap("n", "gr", lspbuf.rename, opts)
+        keymap("n", "H", lspbuf.rename, opts)
         keymap("n", "gd", lspbuf.definition, opts)
         keymap("n", "gD", lspbuf.declaration, opts)
         keymap("n", "gt", lspbuf.type_definition, opts)
         keymap("n", "gs", lspbuf.signature_help, opts)
         keymap("n", "gi", lspbuf.implementation, opts)
-        keymap("n", "gR", lspbuf.references, opts)
+        keymap("n", "gr", lspbuf.references, opts)
         keymap("n", "gc", lspbuf.code_action, opts)
         -- keymap("n", "gc", function()
         --     require("fzf-lua").lsp_code_actions()
