@@ -182,10 +182,12 @@ nnoremap <silent> <F2> :setlocal spell! spell?<CR>
 " nnoremap <silent> <C-l> [s1z=<C-o>
 " inoremap <silent> <C-l> <C-g>u<ESC>[s1z=`]a<C-g>u
 
-nnoremap <silent> <A-d> "_dd
+nnoremap <silent> D "_dd
 
 nnoremap <silent> H ^
 nnoremap <silent> L $
+nnoremap <silent> J 10j
+nnoremap <silent> K 10k
 
 nnoremap <silent> <A-v> :vsplit<CR>
 
@@ -200,8 +202,6 @@ nnoremap <silent> <C-[> :bprevious<CR>
 nnoremap <silent> <C-]> :bnext<CR>
 nnoremap <silent> <C-\> :b#<CR>
 
-nnoremap <silent> <A-u> <C-u>
-nnoremap <silent> <A-d> <C-d>
 nnoremap <silent> <C-u> <nop>
 nnoremap <silent> <C-d> :bd!<CR>
 "nnoremap <silent> <C-S-d> :<C-U>bprevious <bar> bdelete #<CR>
@@ -220,13 +220,11 @@ inoremap <silent> <C-s> <cmd>w<CR>
 nnoremap <silent> co :copen<CR>
 nnoremap <silent> cw :cclose<CR>
 nnoremap <silent> cc :call setqflist([])<CR>
-nnoremap <silent> <A-j> :cnext<CR>
-nnoremap <silent> <A-k> :cprev<CR>
+nnoremap <silent> ]c :cnext<CR>
+nnoremap <silent> [c :cprev<CR>
 
 xnoremap <silent> J :move '>+1<CR>gv-gv
 xnoremap <silent> K :move '<-2<CR>gv-gv
-xnoremap <silent> <A-j> :move '>+1<CR>gv-gv
-xnoremap <silent> <A-k> :move '<-2<CR>gv-gv
 
 nnoremap <silent> <F9> :!g++ -g % && time ./a.out<CR>
 

@@ -218,10 +218,12 @@ keymap("n", "<F2>", ":setlocal spell! spell?<CR>") -- toggle spelling
 -- keymap("n", "<C-l>", "[s1z=<C-o>")
 -- keymap("i", "<C-l>", "<C-g>u<ESC>[s1z=`]a<C-g>u")
 
-keymap("n", "<A-d>", '"_dd') -- delete
+keymap("n", "D", '"_dd') -- delete
 
 keymap("n", "H", "^")
 keymap("n", "L", "$")
+keymap("n", "J", "10j")
+keymap("n", "K", "10k")
 
 keymap("n", "<A-v>", ":vsplit<CR>")
 
@@ -239,8 +241,6 @@ keymap("n", "<C-]>", ":bnext<CR>")
 keymap("n", "<C-\\>", ":b#<CR>") -- switch to last buffer
 
 -- close current buffer
-keymap("n", "<A-u>", "<C-u>")
-keymap("n", "<A-d>", "<C-d>")
 keymap("n", "<C-u>", "<nop>")
 keymap("n", "<C-d>", ":bd!<CR>")
 -- keymap("n", "<C-S-d>", ":<C-U>bprevious <bar> bdelete #<CR>") -- and move to previous buffer
@@ -261,14 +261,12 @@ keymap({ "n", "i" }, "<C-S-s>", "<cmd>wa<CR>")
 keymap("n", "co", ":copen<CR>")
 keymap("n", "cw", ":cclose<CR>")
 keymap("n", "cc", ":call setqflist([])<CR>") -- clear list
-keymap("n", "<A-j>", ":cnext<CR>")
-keymap("n", "<A-k>", ":cprev<CR>")
+keymap("n", "]c", ":cnext<CR>")
+keymap("n", "[c", ":cprev<CR>")
 
 -- move visual block up/down
 keymap("x", "J", ":move '>+1<CR>gv-gv")
 keymap("x", "K", ":move '<-2<CR>gv-gv")
-keymap("x", "<A-j>", ":move '>+1<CR>gv-gv")
-keymap("x", "<A-k>", ":move '<-2<CR>gv-gv")
 
 -- multicursor replacing
 keymap("n", "<A-r>", function()
