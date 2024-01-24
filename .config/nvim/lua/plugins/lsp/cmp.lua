@@ -197,6 +197,43 @@ cmp.setup {
     },
 }
 
+-- lsp
+-- on attach
+-- local function on_attach(client, bufnr)
+--     -- disable tsserver document formatting
+--     if client.name == "tsserver" then
+--         client.server_capabilities.documentFormattingProvider = false
+--     else
+--         client.server_capabilities.documentFormattingProvider = true
+--     end
+-- end
+
+-- capabilities
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
+
+-- handlers
+-- local handlers = {
+--     ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+--         border = "none",
+--         close_events = { "CursorMoved", "InsertLeave", "BufHidden" },
+--         focusable = false,
+--         use_existing = true,
+--         silent = true,
+--     }),
+-- }
+
+-- attach lsp servers
+local lspconfig = require("lspconfig")
+local servers = require("plugins.lsp.servers")
+for server, config in pairs(servers) do
+    config.capabilities = capabilities
+    -- config.on_attach = on_attach
+    -- config.handlers = handlers
+
+    lspconfig[server].setup(config)
+end
+
 -- snippet
 luasnip.config.set_config({
     history = false,

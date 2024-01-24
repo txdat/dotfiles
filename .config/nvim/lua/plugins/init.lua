@@ -19,14 +19,6 @@ local plugins = {
     ------------------------------------
 
     -- colorscheme
-    -- {
-    --     "folke/tokyonight.nvim",
-    --     lazy = false,
-    --     priority = 1000,
-    --     config = function()
-    --         pcall(require, "plugins.colorscheme.tokyonight")
-    --     end
-    -- },
     {
         "bluz71/vim-moonfly-colors",
         lazy = false,
@@ -70,15 +62,6 @@ local plugins = {
         end
     },
 
-    -- colorizer
-    -- {
-    --     "NvChad/nvim-colorizer.lua",
-    --     event = "BufRead",
-    --     config = function()
-    --         pcall(require, "plugins.colorizer")
-    --     end
-    -- },
-
     -- commenting
     {
         "numToStr/Comment.nvim",
@@ -100,16 +83,6 @@ local plugins = {
             pcall(require, "plugins.autopairs")
         end
     },
-    -- html's tags
-    -- {
-    --     "windwp/nvim-ts-autotag",
-    --     -- event = "InsertEnter",
-    --     ft = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx",
-    --         "html" },
-    --     config = function()
-    --         pcall(require, "plugins.ts_autotag")
-    --     end
-    -- },
 
     -- surround selections
     {
@@ -121,17 +94,6 @@ local plugins = {
     },
 
     -- navigation
-    -- {
-    --     "ggandor/leap.nvim",
-    --     dependencies = {
-    --         "tpope/vim-repeat",
-    --         "ggandor/flit.nvim",
-    --     },
-    --     event = "BufRead",
-    --     config = function()
-    --         pcall(require, "plugins.leap")
-    --     end
-    -- },
     {
         "folke/flash.nvim",
         event = "BufRead",
@@ -222,28 +184,18 @@ local plugins = {
     -- lsp server: diagnostics, formatting
     {
         "neovim/nvim-lspconfig",
-        dependencies = {
-            "hrsh7th/cmp-nvim-lsp",
-            "stevearc/conform.nvim",
-        },
         event = "BufRead",
         config = function()
             pcall(require, "plugins.lsp")
         end,
     },
-    -- {
-    --     "folke/trouble.nvim",
-    --     dependencies = {
-    --         "nvim-tree/nvim-web-devicons",
-    --     },
-    --     keys = {
-    --         "<leader>tt",
-    --         "<leader>tc",
-    --     },
-    --     config = function()
-    --         pcall(require, "plugins.lsp.trouble")
-    --     end
-    -- },
+    {
+        "stevearc/conform.nvim",
+        event = "InsertEnter",
+        config = function()
+            pcall(require, "plugins.lsp.conform")
+        end,
+    },
 
     -- autocompletion
     {
@@ -296,18 +248,6 @@ local plugins = {
             pcall(require, "plugins.lsp.servers.typescript_tools")
         end
     },
-
-    -- -- markdown
-    -- {
-    --     "iamcco/markdown-preview.nvim",
-    --     build = function()
-    --         vim.fn["mkdp#util#install"]()
-    --     end,
-    --     ft = { "markdown" },
-    --     config = function()
-    --         pcall(require, "plugins.markdown_preview")
-    --     end
-    -- },
 
     -- latex
     {
