@@ -221,17 +221,19 @@ local plugins = {
     },
 
     -- debugging
-    {
-        "mfussenegger/nvim-dap",
-        -- dependencies = {
-        --     "rcarriga/nvim-dap-ui",
-        --     "theHamsta/nvim-dap-virtual-text",
-        -- },
-        keys = { "<F9>" },
-        config = function()
-            pcall(require, "plugins.dap")
-        end,
-    },
+    -- {
+    --     "mfussenegger/nvim-dap",
+    --     -- dependencies = {
+    --     --     "rcarriga/nvim-dap-ui",
+    --     --     "theHamsta/nvim-dap-virtual-text",
+    --     -- },
+    --     keys = { "<F9>" },
+    --     config = function()
+    --         pcall(require, "plugins.dap")
+    --         -- pcall(require, "plugins.dap.ui")
+    --         -- pcall(require, "plugins.dap.virtual_text")
+    --     end,
+    -- },
 
     ------------------------------------
     -- prog. langs
@@ -250,13 +252,13 @@ local plugins = {
     },
 
     -- latex
-    {
-        "lervag/vimtex",
-        ft = { "tex" },
-        config = function()
-            pcall(require, "plugins.vimtex")
-        end
-    },
+    -- {
+    --     "lervag/vimtex",
+    --     ft = { "tex" },
+    --     config = function()
+    --         pcall(require, "plugins.vimtex")
+    --     end
+    -- },
 }
 
 require("lazy").setup(plugins, {

@@ -45,6 +45,3 @@ end)
 keymap("n", "<leader>dl", function()
     dap.set_breakpoint(nil, nil, vim.fn.input("Log point message: "))
 end)
-
--- require("plugins.dap.ui")
--- require("plugins.dap.virtual_text")
