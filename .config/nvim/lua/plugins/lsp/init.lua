@@ -66,3 +66,37 @@ vim.api.nvim_create_autocmd("LspAttach", {
         end, opts)
     end
 })
+
+-- attach lsp's servers
+local lspconfig = require("lspconfig")
+
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
+-- local function on_attach(client, bufnr)
+--     -- disable tsserver document formatting
+--     if client.name == "tsserver" then
+--         client.server_capabilities.documentFormattingProvider = false
+--     else
+--         client.server_capabilities.documentFormattingProvider = true
+--     end
+-- end
+
+-- local handlers = {
+--     ["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+--         border = "none",
+--         close_events = { "CursorMoved", "InsertLeave", "BufHidden" },
+--         focusable = false,
+--         use_existing = true,
+--         silent = true,
+--     }),
+-- }
+
+local servers = require("plugins.lsp.servers")
+
+for server, config in pairs(servers) do
+    config.capabilities = capabilities
+    -- config.on_attach = on_attach
+    -- config.handlers = handlers
+
+    lspconfig[server].setup(config)
+end

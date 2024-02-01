@@ -4,22 +4,22 @@ M.lua_ls = {
     settings = {
         Lua = {
             diagnostics = {
-                enable = true,
                 globals = { "vim" },
             },
             runtime = {
                 version = "LuaJIT",
-                path = vim.split(package.path, ";"),
+                -- path = vim.split(package.path, ";"),
             },
             workspace = {
-                library = (function()
-                    local lib = {}
-                    for _, path in ipairs(vim.api.nvim_get_runtime_file("lua", true)) do
-                        lib[#lib + 1] = path:sub(1, -5)
-                    end
-                    return lib
-                end)(),
                 checkThirdParty = false,
+                library = {
+                    vim.env.VIMRUNTIME
+                    -- "${3rd}/luv/library"
+                    -- "${3rd}/busted/library",
+                }
+            },
+            completion = {
+                callSnippet = "Replace",
             },
             -- hint = { enable = true },
             telemetry = {
@@ -34,13 +34,13 @@ M.clangd = {
         "clangd",
         "--background-index",
         "--clang-tidy",
-        "--suggest-missing-includes",
-        "--completion-style=bundled",
-        "--cross-file-rename",
         "--header-insertion=iwyu",
+        "--completion-style=detailed",
+        "--function-arg-placeholders",
+        "--fallback-style=llvm",
     },
     settings = {
-        clangd = {
+        init_options = {
             usePlaceholders = true,
             completeUnimported = true,
             clangdFileStatus = true
@@ -49,7 +49,6 @@ M.clangd = {
 }
 
 M.rust_analyzer = {
-    cmd = { "rustup", "run", "stable", "rust-analyzer" },
     settings = {
         ["rust-analyzer"] = {
             imports = {
@@ -60,68 +59,56 @@ M.rust_analyzer = {
             },
             cargo = {
                 allFeatures = true,
-                buildScripts = {
-                    enable = true,
-                },
+                loadOutDirsFromCheck = true,
+                runBuildScripts = true,
+            },
+            -- Add clippy lints for Rust.
+            checkOnSave = {
+                allFeatures = true,
+                command = "clippy",
+                extraArgs = { "--no-deps" },
             },
             procMacro = {
                 enable = true,
-            },
-            checkOnSave = true,
-            check = {
-                command = "clippy",
-                extraArgs = { "--no-deps" },
+                ignored = {
+                    ["async-trait"] = { "async_trait" },
+                    ["napi-derive"] = { "napi" },
+                    ["async-recursion"] = { "async_recursion" },
+                },
             },
         },
     },
 }
 
 M.gopls = {
-    cmd = { "gopls", "serve" },
+    init_options = {
+        usePlaceholders = true,
+        completeUnimported = true,
+    },
     settings = {
         gopls = {
-            completeUnimported = true,
-            usePlaceholders = true,
-            staticcheck = true,
             analyses = {
                 unusedparams = true,
             },
+            -- semanticTokens = true,
+            staticcheck = true,
+            gofumpt = true,
         },
     },
 }
 
-M.pyright = {
-    settings = {
-        pyright = {
-            autoImportCompletion = true,
-        },
-        python = {
-            analysis = {
-                autoSearchPaths = true,
-                useLibraryCodeForTypes = true,
-                diagnosticMode = "workspace",
-                typeCheckingMode = "off"
-            }
-        }
-    },
-}
+M.pyright = {}
 
-M.hls = {
-    filetypes = { "haskell", "lhaskell", "cabal", "cabalproject" },
-    settings = {
-        haskell = {
-            formattingProvider = "fourmolu",
-            cabalFormattingProvider = "cabalfmt",
-            maxCompletions = 40,
-            checkProject = true,
-            checkParents = "CheckOnSave",
-        },
-    },
-}
+M.hls = {}
 
--- -- typescript-language-server
+-- typescript-language-server
 -- M.tsserver = {
 --     filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+--     settings = {
+--         completions = {
+--             completeFunctionCalls = true,
+--         },
+--     },
 -- }
 
 -- vscode-langservers-extracted

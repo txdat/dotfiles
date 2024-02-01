@@ -184,15 +184,13 @@ local plugins = {
     -- lsp server: diagnostics, formatting
     {
         "neovim/nvim-lspconfig",
+        dependencies = {
+            "hrsh7th/cmp-nvim-lsp",
+            "stevearc/conform.nvim",
+        },
         event = "BufRead",
         config = function()
             pcall(require, "plugins.lsp")
-        end,
-    },
-    {
-        "stevearc/conform.nvim",
-        event = "InsertEnter",
-        config = function()
             pcall(require, "plugins.lsp.conform")
         end,
     },
@@ -252,13 +250,13 @@ local plugins = {
     },
 
     -- latex
-    -- {
-    --     "lervag/vimtex",
-    --     ft = { "tex" },
-    --     config = function()
-    --         pcall(require, "plugins.vimtex")
-    --     end
-    -- },
+    {
+        "lervag/vimtex",
+        ft = { "tex" },
+        config = function()
+            pcall(require, "plugins.vimtex")
+        end
+    },
 }
 
 require("lazy").setup(plugins, {
@@ -268,9 +266,6 @@ require("lazy").setup(plugins, {
     -- lockfile = vim.fn.stdpath("data") .. "/lazy/lazy-lock.json",
     dev = {
         path = os.getenv("HOME") .. "/work/nvim", -- local plugins directory
-    },
-    git = {
-        timeout = 120, -- seconds
     },
     install = {
         colorscheme = { "moonfly" },

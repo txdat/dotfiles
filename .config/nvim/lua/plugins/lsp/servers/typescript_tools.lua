@@ -1,7 +1,8 @@
 require("typescript-tools").setup({
     settings = {
-        separate_diagnostic_server = true,
-        publish_diagnostic_on = "insert_leave",
         tsserver_plugins = { "@styled/typescript-styled-plugin" },
+        complete_function_calls = true,
+        code_lens = "off",
+        jsx_close_tag = { enable = true }, -- not compatible with nvim-ts-autotag
     },
 })
