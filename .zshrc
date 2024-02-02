@@ -112,7 +112,7 @@ extend_display () {
     scale=$(echo "scale=5;$width0/$width" | bc)
 
     if [[ $XDG_SESSION_TYPE == "wayland" ]]; then
-        # wayland
+        # TODO: wayland
     else
         # x11
         xrandr --output $display --scale 2x2 && xrandr --output $display --scale ${scale}x${scale} --$direction $display0 && xrandr --output $display0 --scale 0.9999x0.9999 && xrandr --output $display --set TearFree on
@@ -125,7 +125,7 @@ set_primary_display () {
     scale=$(echo "scale=5;3072/$width" | bc)
 
     if [[ $XDG_SESSION_TYPE == "wayland" ]]; then
-        # wayland
+        # TODO: wayland
     else
         # x11
         xrandr --output $display --scale 2x2 && xrandr --output $display --scale ${scale}x${scale} --set TearFree on
@@ -134,8 +134,8 @@ set_primary_display () {
 
 start_k3s () {
     # add kube-system's dns to resolv
-    dns=$(echo $(kubectl get svc -n kube-system | grep dns) | awk '{ print $3 }')
-    sudo sed -i "1s/^/nameserver ${dns} #k3s\n/" /etc/resolv.conf
+    # dns=$(echo $(kubectl get svc -n kube-system | grep dns) | awk '{ print $3 }')
+    # sudo sed -i "1s/^/nameserver ${dns} #k3s\n/" /etc/resolv.conf
 
     KUBE_SERVICES=(
         # 'docker.socket'
@@ -152,7 +152,7 @@ start_k3s () {
 
 stop_k3s () {
     # remove kube-system's dns in resolv
-    sudo sed -i "/#k3s$/d" /etc/resolv.conf
+    # sudo sed -i "/#k3s$/d" /etc/resolv.conf
 
     KUBE_SERVICES=(
         # 'docker.socket'

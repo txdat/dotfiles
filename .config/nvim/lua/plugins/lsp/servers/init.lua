@@ -106,7 +106,7 @@ M.hls = {}
 --     filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
 --     settings = {
 --         completions = {
---             completeFunctionCalls = true,
+--             completeFunctionCalls = false,
 --         },
 --     },
 -- }
