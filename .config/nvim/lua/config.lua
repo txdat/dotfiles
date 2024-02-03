@@ -95,12 +95,12 @@ opt.statuscolumn = "%s%=%{&nu?(&rnu&&v:relnum?v:relnum:v:lnum):''}%=%C%#IndentBl
 -- statusline
 function Statusline()
     return table.concat({
-        "%1* " .. string.format("<%s>", vim.api.nvim_get_mode().mode):upper(), -- The current mode
+        "%1* " .. string.format("[%s]", vim.api.nvim_get_mode().mode):upper(), -- The current mode
         "%2* %<%f%m%r%h%w",                                                    -- File path, modified, readonly, helpfile, preview
-        "%3* %l:%v %3p%%",                                                     -- Line:Col number, percentage of document
         "%=",                                                                  -- Right side
-        -- "%1* %{''.(&fenc!=''?&fenc:&enc).''}",                                 -- Encoding
-        -- "%2* (%{&ff})"                                                         -- FileFormat (dos/unix..)
+        "%1* %l:%v %3p%%",                                                     -- Line:Col number, percentage of document
+        -- "%2* %{''.(&fenc!=''?&fenc:&enc).''}",                                 -- Encoding
+        -- "%3* (%{&ff})"                                                         -- FileFormat (dos/unix..)
     })
 end
 

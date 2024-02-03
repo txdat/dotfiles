@@ -121,7 +121,7 @@ sudo pacman -S --noconfirm nvidia
 # rm -f ./Miniconda3-latest-Linux-x86_64.sh
 # conda update --all -y
 # conda config --set auto_activate_base false
-# pip install pynvim pyright black debugpy --upgrade
+# pip install pynvim pyright black ruff-lsp ruff debugpy --upgrade
 
 # ml/ds env
 # conda create -n mlds python=3.11

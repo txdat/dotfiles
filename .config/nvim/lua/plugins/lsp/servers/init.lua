@@ -98,6 +98,7 @@ M.gopls = {
 }
 
 M.pyright = {}
+-- M.ruff_lsp = {} -- TODO:
 
 M.hls = {}
 
