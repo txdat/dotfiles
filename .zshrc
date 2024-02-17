@@ -115,7 +115,7 @@ extend_display () {
         # TODO: wayland
     else
         # x11
-        xrandr --output $display --scale 2x2 && xrandr --output $display --scale ${scale}x${scale} --$direction $display0 && xrandr --output $display0 --scale 0.9999x0.9999 && xrandr --output $display --set TearFree on
+        xrandr --output $display --scale 2x2 && xrandr --output $display --$direction $display0 --scale ${scale}x${scale} --auto
     fi
 }
 
@@ -128,7 +128,7 @@ set_primary_display () {
         # TODO: wayland
     else
         # x11
-        xrandr --output $display --scale 2x2 && xrandr --output $display --scale ${scale}x${scale} --set TearFree on
+        xrandr --output $display --scale 2x2 && xrandr --output eDP --off --output $display --scale ${scale}x${scale} --auto --primary
     fi
 }
 

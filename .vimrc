@@ -226,6 +226,8 @@ nnoremap <silent> [c :cprev<CR>
 xnoremap <silent> J :move '>+1<CR>gv-gv
 xnoremap <silent> K :move '<-2<CR>gv-gv
 
+nnoremap <silent> <F12> :!g++ -g % && time ./a.out<CR>
+
 " ----------------------------------
 " colorscheme
 " ----------------------------------
