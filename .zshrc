@@ -77,7 +77,7 @@ export PATH="$HOME/.emacs.d/bin:$PATH"
 export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
 
 # haskell
-# export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
+export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 
 # java/scala
 export JAVA_HOME='/usr/lib/jvm/default'
