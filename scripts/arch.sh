@@ -1,21 +1,16 @@
 #!/bin/sh
 
 # install base packages
-sudo pacman -S --noconfirm curl wget axel git \
-                           lazygit git-delta \
-                           zsh tmux htop ranger neofetch \
-                           vi vim neovim lua-language-server \
-                           zip unzip p7zip ark \
-                           bat \
-                           xclip xdotool fzf fzy ripgrep fd jq bc less \
-                           fcitx5 fcitx5-bamboo fcitx5-mozc fcitx5-configtool fcitx5-qt fcitx5-gtk \
-                           xorg-xrandr \
-                           openssh \
-                           pacman-contrib \
-                           xf86-input-synaptics \
-                           xf86-video-amdgpu \
-                           amd-ucode \
-                           bluez bluez-utils
+sudo pacman -S --noconfirm curl wget axel \
+                        git lazygit git-delta \
+                        zsh tmux htop ranger neofetch \
+                        vi vim neovim lua-language-server \
+                        zip unzip ark \
+                        xclip fzf ripgrep fd jq bc bat \
+                        fcitx5 fcitx5-bamboo fcitx5-configtool fcitx5-qt fcitx5-gtk \
+                        xorg-xrandr openssh pacman-contrib amd-ucode \
+                        xf86-input-synaptics xf86-video-amdgpu \
+                        bluez bluez-utils
 
 sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra && \
 sudo fc-cache -vfs
@@ -63,31 +58,35 @@ rustup toolchain install stable && rustup default stable
 git clone https://aur.archlinux.org/paru .paru && cd .paru/ && makepkg -si && cd -
 
 # install essential applications
-sudo pacman -S --noconfirm dolphin alacritty firefox chromium \
-                           gwenview mpv spectacle \
-                           zathura zathura-pdf-mupdf okular calibre \
-                           dbeaver
-
-paru -S --noconfirm dropbox spotify anki \
-                    postman-bin mongodb-compass
+sudo pacman -S --noconfirm dolphin alacritty chromium gwenview spectacle mpv zathura zathura-pdf-mupdf okular calibre obsidian
+paru -S --noconfirm anki spotify
 
 # git config
-git config --global user.name "txdat" && \
-git config --global user.email "dattranx105@gmail.com" && \
+# git config --global user.name "txdat" && \
+# git config --global user.email "dattranx105@gmail.com" && \
 ssh-keygen
 
 # install essential development packages
-sudo pacman -S --noconfirm gcc gdb \
-                           clang llvm lldb lld \
-                           make cmake ccache ctags valgrind strace
-
-sudo pacman -S --noconfirm cblas openblas openmp openmpi lapack lapacke eigen tbb boost \
-                           ffmpeg4.4 libuv \
-                           gperftools gflags google-glog gtest protobuf \
-                           cuda cudnn nvidia-utils \
-                           opencv-cuda
-
+sudo pacman -S --noconfirm gcc gdb clang llvm lldb lld make cmake ccache ctags valgrind strace
+sudo pacman -S --noconfirm cblas openblas openmp openmpi lapack lapacke eigen tbb boost ffmpeg4.4 libuv gperftools gflags google-glog gtest protobuf cuda cudnn nvidia-utils opencv-cuda
 sudo pacman -S --noconfirm nvidia
+
+# zsh
+mkdir -p .zsh && \
+git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh/zsh-syntax-highlighting && \
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions && \
+git clone https://github.com/romkatv/powerlevel10k ~/.zsh/powerlevel10k && \
+chsh -s $(which zsh)
+
+# install fonts
+sudo cp -r ~/.dotfiles/fonts/jetbrains /usr/share/fonts && sudo fc-cache -vfs
+
+# fix emoji displaying
+sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /usr/share/fontconfig/conf.avail/75-noto-color-emoji.conf && \
+sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-emoji.conf
+
+# enable nvim's dap for c/c++/rust
+# echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
 
 # rust
 # rustup component add rust-src
@@ -121,7 +120,7 @@ sudo pacman -S --noconfirm nvidia
 # rm -f ./Miniconda3-latest-Linux-x86_64.sh
 # conda update --all -y
 # conda config --set auto_activate_base false
-# pip install pynvim pyright black ruff-lsp ruff debugpy --upgrade
+# pip install pynvim pyright black debugpy --upgrade
 
 # ml/ds env
 # conda create -n mlds python=3.11
@@ -137,20 +136,17 @@ sudo pacman -S --noconfirm nvidia
 # tlmgr install libertine
 # tlmgr install doublestroke
 
-# docker, k3s, ...
+# docker
 # sudo pacman -S --noconfirm docker docker-compose
 # sudo usermod -aG docker $USER
 # paru -S --noconfirm nvidia-container-runtime nvidia-container-toolkit
-# sudo pacman -S --noconfirm kubectl helm skaffold nfs-utils
+
+# k8s
+# sudo pacman -S --noconfirm kubectl helm terraform
+# sudo pacman -S --noconfirm skaffold nfs-utils
 # curl -sfL https://get.k3s.io | sh -
 # sudo mkdir -p /etc/docker && sudo ln -s ~/.dotfiles/k3s/docker/daemon.json /etc/docker/daemon.json
 # sudo mkdir -p /etc/containerd && sudo ln -s ~/.dotfiles/k3s/containerd/config.toml /etc/containerd/config.toml
-
-# zsh
-mkdir -p .zsh && \
-git clone https://github.com/zsh-users/zsh-syntax-highlighting ~/.zsh/zsh-syntax-highlighting && \
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions && \
-git clone https://github.com/romkatv/powerlevel10k ~/.zsh/powerlevel10k
 
 # doomemacs
 # sudo pacman -S --noconfirm emacs-nativecomp
@@ -158,12 +154,3 @@ git clone https://github.com/romkatv/powerlevel10k ~/.zsh/powerlevel10k
 # ln -s ~/.dotfiles/.doom.d ~/.doom.d
 # doom install
 
-# install fonts
-sudo cp -r ~/.dotfiles/fonts/jetbrains /usr/share/fonts && sudo fc-cache -vfs
-
-# fix emoji displaying
-sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /usr/share/fontconfig/conf.avail/75-noto-color-emoji.conf && \
-sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-emoji.conf
-
-# enable nvim's dap for c/c++/rust
-echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope

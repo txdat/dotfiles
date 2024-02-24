@@ -71,25 +71,25 @@ if [[ -n "$CONDA_HOME" ]]; then
 fi
 
 # emacs
-export PATH="$HOME/.emacs.d/bin:$PATH"
+#export PATH="$HOME/.emacs.d/bin:$PATH"
 
 # rust
 export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
 
 # haskell
-export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
+#export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
 
 # java/scala
-export JAVA_HOME='/usr/lib/jvm/default'
-export PATH=$JAVA_HOME/bin:$PATH
-export PATH=$HOME/.local/share/coursier/bin:$PATH
+#export JAVA_HOME='/usr/lib/jvm/default'
+#export PATH=$JAVA_HOME/bin:$PATH
+#export PATH=$HOME/.local/share/coursier/bin:$PATH
 
 # javascript
 # source /usr/share/nvm/init-nvm.sh
 
 # kubernetes (k3s)
 export KUBECONFIG=$HOME/.kube/config
-export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+#export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # aliases
@@ -132,40 +132,40 @@ set_primary_display () {
     fi
 }
 
-start_k3s () {
-    # add kube-system's dns to resolv
-    # dns=$(echo $(kubectl get svc -n kube-system | grep dns) | awk '{ print $3 }')
-    # sudo sed -i "1s/^/nameserver ${dns} #k3s\n/" /etc/resolv.conf
-
-    KUBE_SERVICES=(
-        # 'docker.socket'
-        # 'docker.service'
-        'containerd.service'
-        # 'nfs-server.service'
-        'k3s.service'
-    )
-    for svc in "${KUBE_SERVICES[@]}"
-    do
-        sudo systemctl start $svc
-    done
-}
-
-stop_k3s () {
-    # remove kube-system's dns in resolv
-    # sudo sed -i "/#k3s$/d" /etc/resolv.conf
-
-    KUBE_SERVICES=(
-        # 'docker.socket'
-        # 'docker.service'
-        'containerd.service'
-        # 'nfs-server.service'
-        'k3s.service'
-    )
-    for svc in "${KUBE_SERVICES[@]}"
-    do
-        sudo systemctl stop $svc
-    done
-}
+#start_k3s () {
+#    # add kube-system's dns to resolv
+#    # dns=$(echo $(kubectl get svc -n kube-system | grep dns) | awk '{ print $3 }')
+#    # sudo sed -i "1s/^/nameserver ${dns} #k3s\n/" /etc/resolv.conf
+#
+#    KUBE_SERVICES=(
+#        # 'docker.socket'
+#        # 'docker.service'
+#        'containerd.service'
+#        # 'nfs-server.service'
+#        'k3s.service'
+#    )
+#    for svc in "${KUBE_SERVICES[@]}"
+#    do
+#        sudo systemctl start $svc
+#    done
+#}
+#
+#stop_k3s () {
+#    # remove kube-system's dns in resolv
+#    # sudo sed -i "/#k3s$/d" /etc/resolv.conf
+#
+#    KUBE_SERVICES=(
+#        # 'docker.socket'
+#        # 'docker.service'
+#        'containerd.service'
+#        # 'nfs-server.service'
+#        'k3s.service'
+#    )
+#    for svc in "${KUBE_SERVICES[@]}"
+#    do
+#        sudo systemctl stop $svc
+#    done
+#}
 
 # update zsh and plugins
 update_zsh () {
