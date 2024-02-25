@@ -100,7 +100,7 @@ M.gopls = {
 M.pyright = {}
 -- M.ruff_lsp = {} -- TODO:
 
-M.hls = {}
+-- M.hls = {}
 
 -- typescript-language-server
 -- M.tsserver = {
