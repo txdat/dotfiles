@@ -101,6 +101,7 @@ vim.api.nvim_create_autocmd("VimResized", {
 local keymap = require("util").keymap
 
 keymap("n", "<leader>fh", ":FzfLua git_status<CR>")
+keymap("n", "<leader>fc", ":FzfLua git_bcommits<CR>")
 keymap("n", "<leader>ff", ":FzfLua files<CR>")
 keymap("n", "<leader>fg", ":FzfLua live_grep_glob<CR>")
 keymap("n", "<leader>fG", ":FzfLua live_grep_native<CR>")

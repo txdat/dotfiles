@@ -178,7 +178,10 @@ nnoremap <silent> q <nop>
 inoremap <silent> <F1> <nop>
 nnoremap <silent> <F1> :set wrap!<CR>
 
-nnoremap <silent> <F2> :setlocal spell! spell?<CR>
+nnoremap <silent> <F2> :set invpaste paste?<CR>
+set pastetoggle=<F2>
+
+nnoremap <silent> <F3> :setlocal spell! spell?<CR>
 " nnoremap <silent> <C-l> [s1z=<C-o>
 " inoremap <silent> <C-l> <C-g>u<ESC>[s1z=`]a<C-g>u
 
@@ -207,9 +210,6 @@ nnoremap <silent> <C-d> :bd!<CR>
 "nnoremap <silent> <C-S-d> :<C-U>bprevious <bar> bdelete #<CR>
 nnoremap <silent> <C-q> :qa!<CR>
 
-nnoremap <silent> <F3> :set invpaste paste?<CR>
-set pastetoggle=<F3>
-
 nnoremap <silent> <ESC> :nohl<CR>
 
 nnoremap <silent> <C-s> :w<CR>
@@ -223,8 +223,8 @@ nnoremap <silent> cc :call setqflist([])<CR>
 nnoremap <silent> ]c :cnext<CR>
 nnoremap <silent> [c :cprev<CR>
 
-xnoremap <silent> J :move '>+1<CR>gv-gv
-xnoremap <silent> K :move '<-2<CR>gv-gv
+" xnoremap <silent> J :move '>+1<CR>gv-gv
+" xnoremap <silent> K :move '<-2<CR>gv-gv
 
 nnoremap <silent> <F12> :!g++ -g % && time ./a.out<CR>
 

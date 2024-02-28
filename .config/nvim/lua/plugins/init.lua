@@ -245,7 +245,7 @@ local plugins = {
         },
         ft = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
         config = function()
-            pcall(require, "plugins.lsp.servers.typescript_tools")
+            pcall(require, "plugins.lsp.typescript_tools")
         end
     },
 

@@ -73,12 +73,6 @@ local lspconfig = require("lspconfig")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 -- local function on_attach(client, bufnr)
---     -- disable tsserver document formatting
---     if client.name == "tsserver" then
---         client.server_capabilities.documentFormattingProvider = false
---     else
---         client.server_capabilities.documentFormattingProvider = true
---     end
 -- end
 
 -- local handlers = {
@@ -91,9 +85,9 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 --     }),
 -- }
 
-local servers = require("plugins.lsp.servers")
+local servers_cfg = require("plugins.lsp.servers_cfg")
 
-for server, config in pairs(servers) do
+for server, config in pairs(servers_cfg) do
     config.capabilities = capabilities
     -- config.on_attach = on_attach
     -- config.handlers = handlers

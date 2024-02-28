@@ -38,12 +38,12 @@ require("nvim-treesitter.configs").setup {
     highlight = {
         enable = true,
         additional_vim_regex_highlighting = true,
-        -- disable = function(lang, buf)
-        --     local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-        --     if ok and stats and stats.size > 1048576 then -- skip large file (> 1MB)
-        --         return true
-        --     end
-        -- end
+        disable = function(lang, buf)
+            local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
+            if ok and stats and stats.size > (1 * 1024 * 1024) then -- skip large file (> 1MB)
+                return true
+            end
+        end
     },
     incremental_selection = {
         enable = true,

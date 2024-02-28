@@ -219,7 +219,11 @@ keymap("n", "q", "<nop>")
 keymap("i", "<F1>", "<nop>")
 keymap("n", "<F1>", ":set wrap!<CR>")              -- toggle wrapping
 
-keymap("n", "<F2>", ":setlocal spell! spell?<CR>") -- toggle spelling
+-- toggle auto-indenting for code paste
+keymap("n", "<F2>", ":set invpaste paste?<CR>")
+opt.pastetoggle = "<F2>"
+
+keymap("n", "<F3>", ":setlocal spell! spell?<CR>") -- toggle spelling
 -- keymap("n", "<C-l>", "[s1z=<C-o>")
 -- keymap("i", "<C-l>", "<C-g>u<ESC>[s1z=`]a<C-g>u")
 
@@ -251,10 +255,6 @@ keymap("n", "<C-d>", ":bd!<CR>")
 -- keymap("n", "<C-S-d>", ":<C-U>bprevious <bar> bdelete #<CR>") -- and move to previous buffer
 keymap("n", "<C-q>", ":qa!<CR>") -- close all buffers and exit
 
--- toggle auto-indenting for code paste
-keymap("n", "<F3>", ":set invpaste paste?<CR>")
-opt.pastetoggle = "<F3>"
-
 -- clear search highlighting
 keymap("n", "<ESC>", ":nohl<CR>")
 
@@ -270,8 +270,8 @@ keymap("n", "]c", ":cnext<CR>")
 keymap("n", "[c", ":cprev<CR>")
 
 -- move visual block up/down
-keymap("x", "J", ":move '>+1<CR>gv-gv")
-keymap("x", "K", ":move '<-2<CR>gv-gv")
+-- keymap("x", "J", ":move '>+1<CR>gv-gv")
+-- keymap("x", "K", ":move '<-2<CR>gv-gv")
 
 -- multicursor replacing
 keymap("n", "<A-r>", function()
