@@ -5,10 +5,10 @@
         "clangd",
         "--background-index",
         "--clang-tidy",
-        "--suggest-missing-includes",
-        "--completion-style=bundled",
-        "--cross-file-rename",
         "--header-insertion=iwyu",
+        "--completion-style=detailed",
+        "--function-arg-placeholders",
+        "--fallback-style=llvm"
       ],
       "url": "https://clang.llvm.org/extra/clangd/",
       "highlightingModeRegex": "^(C|ANSI C89|Objective-C)$"
@@ -18,35 +18,54 @@
       "highlightingModeRegex": "^(C\\+\\+|ISO C\\+\\+|Objective-C\\+\\+)$"
     },
     "rust": {
-      "command": ["rust-analyzer"],
+      "command": [
+        "rust-analyzer"
+      ],
       "path": [
         "%{ENV:CARGO_HOME}/bin",
         "%{ENV:HOME}/.cargo/bin",
         "%{ENV:USERPROFILE}/.cargo/bin"
       ],
-      "rootIndicationFileNames": ["Cargo.lock", "Cargo.toml"],
+      "rootIndicationFileNames": [
+        "Cargo.lock",
+        "Cargo.toml"
+      ],
       "url": "https://rust-analyzer.github.io",
       "highlightingModeRegex": "^Rust$"
     },
     "go": {
-      "command": ["gopls", "serve"],
+      "command": [
+        "gopls",
+        "serve"
+      ],
       "path": [
         "%{ENV:GOPATH}/bin",
         "%{ENV:HOME}/go/bin",
         "%{ENV:USERPROFILE}/go/bin"
       ],
-      "rootIndicationFileNames": ["go.mod"],
+      "rootIndicationFileNames": [
+        "go.mod"
+      ],
       "url": "golang.org/x/tools/gopls",
       "highlightingModeRegex": "^Go$"
     },
     "python": {
-      "command": ["pyright-langserver", "--stdio"],
+      "command": [
+        "pyright-langserver",
+        "--stdio"
+      ],
       "url": "https://github.com/python-lsp/python-lsp-server",
       "highlightingModeRegex": "^Python$"
     },
     "javascript": {
-      "command": ["typescript-language-server", "--stdio"],
-      "rootIndicationFileNames": ["package.json", "package-lock.json"],
+      "command": [
+        "typescript-language-server",
+        "--stdio"
+      ],
+      "rootIndicationFileNames": [
+        "package.json",
+        "package-lock.json"
+      ],
       "url": "https://github.com/theia-ide/typescript-language-server",
       "highlightingModeRegex": "^JavaScript.*$",
       "documentLanguageId": false
