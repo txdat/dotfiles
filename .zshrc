@@ -103,34 +103,34 @@ alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 
 alias k=kubectl
 
-extend_display () {
-    direction="${1:-same-as}"
-    display="${2:-DisplayPort-0}"
-    width="${3:-1920}"
-    display0="${4:-eDP}"
-    width0="${5:-3072}"
-    scale=$(echo "scale=5;$width0/$width" | bc)
-
-    if [[ $XDG_SESSION_TYPE == "wayland" ]]; then
-        # TODO: wayland
-    else
-        # x11
-        xrandr --output $display --scale 2x2 && xrandr --output $display --$direction $display0 --scale ${scale}x${scale} --auto
-    fi
-}
-
-set_primary_display () {
-    display="${1:-DisplayPort-0}"
-    width="${2:-1920}"
-    scale=$(echo "scale=5;3072/$width" | bc)
-
-    if [[ $XDG_SESSION_TYPE == "wayland" ]]; then
-        # TODO: wayland
-    else
-        # x11
-        xrandr --output $display --scale 2x2 && xrandr --output eDP --off --output $display --scale ${scale}x${scale} --auto --primary
-    fi
-}
+# extend_display () {
+#     direction="${1:-same-as}"
+#     display="${2:-DisplayPort-0}"
+#     width="${3:-1920}"
+#     display0="${4:-eDP}"
+#     width0="${5:-3072}"
+#     scale=$(echo "scale=5;$width0/$width" | bc)
+#
+#     if [[ $XDG_SESSION_TYPE == "wayland" ]]; then
+#         # TODO: wayland
+#     else
+#         # x11
+#         xrandr --output $display --scale 2x2 && xrandr --output $display --$direction $display0 --scale ${scale}x${scale} --auto
+#     fi
+# }
+#
+# set_primary_display () {
+#     display="${1:-DisplayPort-0}"
+#     width="${2:-1920}"
+#     scale=$(echo "scale=5;3072/$width" | bc)
+#
+#     if [[ $XDG_SESSION_TYPE == "wayland" ]]; then
+#         # TODO: wayland
+#     else
+#         # x11
+#         xrandr --output $display --scale 2x2 && xrandr --output eDP --off --output $display --scale ${scale}x${scale} --auto --primary
+#     fi
+# }
 
 #start_k3s () {
 #    # add kube-system's dns to resolv

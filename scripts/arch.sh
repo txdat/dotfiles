@@ -12,6 +12,9 @@ sudo pacman -S --noconfirm curl wget axel \
                         xf86-input-synaptics xf86-video-amdgpu \
                         bluez bluez-utils
 
+# wayland
+sudo pacman -S --noconfirm wl-clipboard
+
 sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra && \
 sudo fc-cache -vfs
 
@@ -42,10 +45,14 @@ Exec=/bin/sh -c 'while read -r trg; do case \$trg in linux) exit 0; esac; done; 
 EOL
 
 # set sddm high dpi
-sudo mkdir -p /etc/sddm.conf.d
-sudo tee -a /etc/sddm.conf.d/dpi.conf > /dev/null <<EOL
-[X11]
-ServerArguments=-nolisten tcp -dpi 160
+# sudo mkdir -p /etc/sddm.conf.d
+# sudo tee -a /etc/sddm.conf.d/dpi.conf > /dev/null <<EOL
+# [X11]
+# ServerArguments=-nolisten tcp -dpi 160
+# EOL
+sudo tee -a /etc/sddm.conf > /dev/null <<EOL
+[General]
+GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell, QT_SCALE_FACTOR=2
 EOL
 
 # install paru
