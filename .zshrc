@@ -43,7 +43,7 @@ source ~/.zsh/powerlevel10k/powerlevel10k.zsh-theme
 export FZF_DEFAULT_OPTS="
  --ansi --multi --no-separator
  --scrollbar='' --info=inline --height=100%
- --layout=reverse --border=none --pointer= --marker=▶
+ --layout=reverse --border=none --pointer=󰁕 --marker=▶
  --preview-window=hidden:noborder
  --bind=ctrl-p:toggle-preview,alt-p:toggle-preview-wrap
  --bind=alt-j:preview-page-down,alt-k:preview-page-up

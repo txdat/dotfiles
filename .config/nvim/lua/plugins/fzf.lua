@@ -21,7 +21,7 @@ require("fzf-lua").setup({
         ["--height"]       = "100%",
         ["--layout"]       = "reverse",
         ["--border"]       = "none",
-        ["--pointer"]      = "",
+        ["--pointer"]      = "󰁕",
         ["--marker"]       = "▶",
     },
     previewers = {
