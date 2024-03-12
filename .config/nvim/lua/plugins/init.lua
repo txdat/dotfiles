@@ -250,13 +250,13 @@ local plugins = {
     },
 
     -- latex
-    {
-        "lervag/vimtex",
-        ft = { "tex" },
-        config = function()
-            pcall(require, "plugins.vimtex")
-        end
-    },
+    -- {
+    --     "lervag/vimtex",
+    --     ft = { "tex" },
+    --     config = function()
+    --         pcall(require, "plugins.vimtex")
+    --     end
+    -- },
 }
 
 require("lazy").setup(plugins, {

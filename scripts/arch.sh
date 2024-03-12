@@ -6,14 +6,10 @@ sudo pacman -S --noconfirm curl wget axel \
                         zsh tmux htop ranger neofetch \
                         vi vim neovim lua-language-server \
                         zip unzip ark \
-                        xclip fzf ripgrep fd jq bc bat \
+                        wl-clipboard xclip fzf ripgrep fd jq bc bat \
                         fcitx5 fcitx5-bamboo fcitx5-configtool fcitx5-qt fcitx5-gtk \
                         xorg-xrandr openssh pacman-contrib amd-ucode \
-                        xf86-input-synaptics xf86-video-amdgpu \
                         bluez bluez-utils
-
-# wayland
-sudo pacman -S --noconfirm wl-clipboard
 
 sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra && \
 sudo fc-cache -vfs
@@ -100,7 +96,7 @@ sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-
 # rustup component add rust-analyzer
 
 # golang
-# sudo pacman -S --noconfirm go gopls delve
+# sudo pacman -S --noconfirm go gopls
 
 # zig
 # sudo pacman -S --noconfirm zig zls
@@ -127,7 +123,7 @@ sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-
 # rm -f ./Miniconda3-latest-Linux-x86_64.sh
 # conda update --all -y
 # conda config --set auto_activate_base false
-# pip install pynvim pyright black debugpy --upgrade
+# pip install pynvim pyright black --upgrade
 
 # ml/ds env
 # conda create -n mlds python=3.11
