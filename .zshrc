@@ -74,7 +74,7 @@ fi
 #export PATH="$HOME/.emacs.d/bin:$PATH"
 
 # rust
-export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
+export PATH="$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$HOME/.cargo/env:$PATH"
 
 # haskell
 #export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
@@ -93,13 +93,13 @@ export KUBECONFIG=$HOME/.kube/config
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # aliases
-alias syyu="sudo pacman -Syyu && paru -Syyu"
+#alias syyu="sudo pacman -Syyu && paru -Syyu"
 
 alias x2cb="xclip -sel c" # copy output to clipboard
 alias f2cb="xclip -sel c < " # copy from file to clipboard
 alias cb2f="xclip -sel c -o > " # copy from clipboard to file
 
-alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
+#alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 
 alias k=kubectl
 

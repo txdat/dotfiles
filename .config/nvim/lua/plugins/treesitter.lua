@@ -9,7 +9,7 @@ require("nvim-treesitter.configs").setup {
         "cuda",
         "dockerfile",
         "go",
-        "haskell",
+        -- "haskell",
         "hcl",
         "javascript",
         "json",

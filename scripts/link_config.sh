@@ -17,7 +17,6 @@ active_configs=(
     "fcitx5"
     "lazygit"
     "mpv"
-    "neofetch"
     "nvim"
     "ranger"
     "zathura"
