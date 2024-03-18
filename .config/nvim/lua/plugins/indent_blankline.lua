@@ -1,7 +1,7 @@
 local opt = vim.opt
 
 --opt.listchars:append("space:⋅")
-opt.listchars:append("eol:↴")
+--opt.listchars:append("eol:↴")
 
 -- local highlight = {
 --     "RainbowRed",

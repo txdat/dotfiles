@@ -64,8 +64,8 @@ set guicursor+=n-v-c:blinkon0
 set guicursor+=i:blinkon0
 set colorcolumn=80
 set ruler " show cursor position
-set listchars=eol:↴
-set list " show eol, ...
+" set listchars=eol:↴
+" set list " show eol, ...
 set cursorline
 set number " show line number
 set relativenumber " (-1,+1) line number
