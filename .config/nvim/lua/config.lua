@@ -47,7 +47,7 @@ opt.compatible = false
 -- opt.clipboard = "unnamed,unnamedplus" -- system"s clipboard
 opt.clipboard = "unnamedplus" -- system"s clipboard
 opt.timeout = true
-opt.timeoutlen = 300                  -- key mappings timeout
+opt.timeoutlen = 300          -- key mappings timeout
 opt.swapfile = false
 opt.backup = false
 opt.writebackup = false
@@ -218,7 +218,7 @@ keymap("n", "<A-q>", "q")
 keymap("n", "q", "<nop>")
 
 keymap("i", "<F1>", "<nop>")
-keymap("n", "<F1>", ":set wrap!<CR>")              -- toggle wrapping
+keymap("n", "<F1>", ":set wrap!<CR>") -- toggle wrapping
 
 -- toggle auto-indenting for code paste
 keymap("n", "<F2>", ":set invpaste paste?<CR>")
