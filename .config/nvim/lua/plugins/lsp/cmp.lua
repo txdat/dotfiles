@@ -67,9 +67,10 @@ local luasnip = require("luasnip")
 -- }
 
 local lspkind_menu = {
-    nvim_lsp = "LSP",
-    luasnip = "SNP",
-    buffer = "BUF",
+    nvim_lsp = "lsp",
+    luasnip = "snip",
+    buffer = "buf",
+    path = "fs",
 };
 
 cmp.setup {
@@ -84,6 +85,9 @@ cmp.setup {
     },
     view = {
         entries = { name = "native", selection_order = "near_cursor" },
+        docs = {
+            auto_open = false,
+        },
     },
     window = {
         completion = {
@@ -113,6 +117,13 @@ cmp.setup {
                 return cmp.close()
             end
             cmp.complete()
+        end,
+        ["<C-l>"] = function() -- toggle documentation window
+            if cmp.visible_docs() then
+                cmp.close_docs()
+            else
+                cmp.open_docs()
+            end
         end,
         ["<CR>"] = cmp.mapping.confirm {
             behavior = cmp.ConfirmBehavior.Replace,
@@ -171,10 +182,10 @@ cmp.setup {
     sorting = {
         priority_weight = 2,
         comparators = {
-            cmp.config.compare.offset,
             cmp.config.compare.exact,
-            cmp.config.compare.score,
+            cmp.config.compare.offset,
             cmp.config.compare.recently_used,
+            cmp.config.compare.score,
 
             -- cmp-under
             function(entry1, entry2)
@@ -189,6 +200,7 @@ cmp.setup {
                 end
             end,
 
+            -- cmp.config.compare.locality,
             -- cmp.config.compare.kind,
             -- cmp.config.compare.sort_text,
             -- cmp.config.compare.length,
