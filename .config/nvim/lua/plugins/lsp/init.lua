@@ -10,6 +10,9 @@ for type, icon in pairs(signs) do
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
+-- prevent LSP from overwriting treesitter color setting (< 100)
+vim.highlight.priorities.semantic_tokens = 90
+
 vim.diagnostic.config({
     update_in_insert = true,
     underline = false,
