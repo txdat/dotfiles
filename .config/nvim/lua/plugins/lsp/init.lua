@@ -10,26 +10,22 @@ for type, icon in pairs(signs) do
     vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
 end
 
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics,
-    {
-        update_in_insert = true,
-        underline = false,
-        severity_sort = true,
-        signs = {
-            severity_limit = 'Error',
-        },
-        virtual_text = {
-            -- prefix = "",
-            source = "if_many",
-            spacing = 5,
-            severity_limit = 'Error',
-        },
-    }
-)
-
--- lsp windows border
-require("lspconfig.ui.windows").default_options.border = "none"
+vim.diagnostic.config({
+    update_in_insert = true,
+    underline = false,
+    severity_sort = true,
+    signs = {
+        severity = { min = vim.diagnostic.severity.ERROR },
+    },
+    virtual_text = {
+        severity = { min = vim.diagnostic.severity.ERROR },
+        spacing = 5,
+    },
+    float = {
+        severity = { min = vim.diagnostic.severity.ERROR },
+        border = "none",
+    },
+})
 
 -- lsp servers config
 local keymap = require("util").keymap
@@ -69,6 +65,9 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 -- attach lsp's servers
 local lspconfig = require("lspconfig")
+
+-- lsp windows border
+require("lspconfig.ui.windows").default_options.border = "none"
 
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
