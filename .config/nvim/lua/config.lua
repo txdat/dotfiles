@@ -73,9 +73,9 @@ vim.g.maplocalleader = "\\"
 -----------------------------------------
 
 vim.opt.background = "dark"
+vim.opt.termguicolors = true             -- enable 24bits colors
 vim.opt.shortmess:append "sI"            -- disable nvim intro
 vim.opt.laststatus = 2                   -- set global statusline
-vim.opt.termguicolors = true             -- enable 24bits colors
 vim.opt.guicursor = "n-v-c:block-Cursor" -- using block cursor
 vim.opt.guicursor:append "i:block-iCursor"
 vim.opt.guicursor:append "n-v-c:blinkon0"

@@ -263,12 +263,6 @@ require("lazy").setup(plugins, {
     defaults = {
         lazy = true,
     },
-    -- lockfile = vim.fn.stdpath("data") .. "/lazy/lazy-lock.json",
-    dev = {
-        path = os.getenv("HOME") .. "/work/nvim", -- local plugins directory
-    },
-    install = {
-    },
     ui = {
         border = "none",
     },
@@ -276,6 +270,3 @@ require("lazy").setup(plugins, {
         enable = false,
     },
 })
-
-local lazy_view_config = require("lazy.view.config")
-lazy_view_config.keys.close = "<ESC>"
