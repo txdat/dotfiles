@@ -19,14 +19,14 @@ local plugins = {
     ------------------------------------
 
     -- colorscheme
-    -- {
-    --     "bluz71/vim-moonfly-colors",
-    --     lazy = false,
-    --     priority = 1000,
-    --     config = function()
-    --         pcall(require, "plugins.colorscheme.moonfly");
-    --     end
-    -- },
+    {
+        "bluz71/vim-moonfly-colors",
+        lazy = false,
+        priority = 1000,
+        config = function()
+            pcall(require, "plugins.colorscheme.moonfly");
+        end
+    },
 
     -- statusline
     -- {
@@ -103,14 +103,13 @@ local plugins = {
     -- },
 
     -- quickfix
-    {
-        "kevinhwang91/nvim-bqf",
-        lazy = false,
-        config = function()
-            pcall(require, "plugins.bqf")
-        end
-    },
-
+    -- {
+    --     "kevinhwang91/nvim-bqf",
+    --     lazy = false,
+    --     config = function()
+    --         pcall(require, "plugins.bqf")
+    --     end
+    -- },
 
     ------------------------------------
     -- file manager, finder, svc

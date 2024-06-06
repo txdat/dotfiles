@@ -206,9 +206,3 @@ autocmd("BufLeave", {
     pattern = "*",
     command = "stopinsert"
 })
-
------------------------------------------
--- colorscheme
------------------------------------------
-
-vim.cmd("colorscheme retrobox")
