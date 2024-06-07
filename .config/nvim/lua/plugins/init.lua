@@ -21,10 +21,12 @@ local plugins = {
     -- colorscheme
     {
         "bluz71/vim-moonfly-colors",
+        -- "miikanissi/modus-themes.nvim",
         lazy = false,
         priority = 1000,
         config = function()
             pcall(require, "plugins.colorscheme.moonfly");
+            -- pcall(require, "plugins.colorscheme.modus");
         end
     },
 

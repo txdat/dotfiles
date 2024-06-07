@@ -40,8 +40,9 @@ fpath=(~/.zsh/zsh-completions/src $fpath)
 # fzf
 export FZF_DEFAULT_OPTS="
  --ansi --multi --no-separator
- --scrollbar='' --info=inline --height=100%
- --layout=reverse --border=none --pointer=󰁕 --marker=▶
+ --scrollbar='' --info=inline-right --height=100%
+ --layout=reverse --border=none --highlight-line
+ --pointer=󰁕 --marker=▶
  --preview-window=hidden:noborder
  --bind=ctrl-p:toggle-preview,alt-w:toggle-preview-wrap
  --bind=alt-j:preview-page-down,alt-k:preview-page-up
