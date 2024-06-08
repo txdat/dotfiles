@@ -39,8 +39,8 @@ require("nvim-treesitter.configs").setup {
         enable = true,
         additional_vim_regex_highlighting = true,
         disable = function(lang, buf)
-            local ok, stats = pcall(vim.loop.fs_stat, vim.api.nvim_buf_get_name(buf))
-            if ok and stats and stats.size > (1 * 1024 * 1024) then -- skip large file (> 1MB)
+            local stats = vim.loop.fs_stat(vim.api.nvim_buf_get_name(buf))
+            if stats and stats.size > (1 * 1024 * 1024) then -- skip large file (> 1MB)
                 return true
             end
         end

@@ -25,8 +25,8 @@ local plugins = {
         lazy = false,
         priority = 1000,
         config = function()
-            pcall(require, "plugins.colorscheme.moonfly");
-            -- pcall(require, "plugins.colorscheme.modus");
+            require("plugins.colorscheme.moonfly");
+            -- require("plugins.colorscheme.modus");
         end
     },
 
@@ -38,7 +38,7 @@ local plugins = {
     --     },
     --     lazy = false,
     --     config = function()
-    --         pcall(require, "plugins.lualine")
+    --         require("plugins.lualine")
     --     end,
     -- },
 
@@ -47,7 +47,7 @@ local plugins = {
     --     "lukas-reineke/indent-blankline.nvim",
     --     event = "BufRead",
     --     config = function()
-    --         pcall(require, "plugins.indent_blankline")
+    --         require("plugins.indent_blankline")
     --     end
     -- },
 
@@ -60,7 +60,7 @@ local plugins = {
         build = ":TSUpdate",
         event = "BufRead",
         config = function()
-            pcall(require, "plugins.treesitter")
+            require("plugins.treesitter")
         end
     },
 
@@ -73,7 +73,7 @@ local plugins = {
     --     event = "InsertEnter",
     --     keys = { { "<A-/>", mode = { "n", "v" } } },
     --     config = function()
-    --         pcall(require, "plugins.comment")
+    --         require("plugins.comment")
     --     end
     -- },
 
@@ -82,7 +82,7 @@ local plugins = {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
         config = function()
-            pcall(require, "plugins.autopairs")
+            require("plugins.autopairs")
         end
     },
 
@@ -91,7 +91,7 @@ local plugins = {
     --     "kylechui/nvim-surround",
     --     event = "InsertEnter",
     --     config = function()
-    --         pcall(require, "plugins.surround")
+    --         require("plugins.surround")
     --     end,
     -- },
 
@@ -100,7 +100,7 @@ local plugins = {
     --     "folke/flash.nvim",
     --     event = "BufRead",
     --     config = function()
-    --         pcall(require, "plugins.flash")
+    --         require("plugins.flash")
     --     end
     -- },
 
@@ -109,7 +109,7 @@ local plugins = {
     --     "kevinhwang91/nvim-bqf",
     --     lazy = false,
     --     config = function()
-    --         pcall(require, "plugins.bqf")
+    --         require("plugins.bqf")
     --     end
     -- },
 
@@ -125,7 +125,7 @@ local plugins = {
         },
         keys = { "<C-e>" },
         config = function()
-            pcall(require, "plugins.oil")
+            require("plugins.oil")
         end
     },
 
@@ -147,7 +147,7 @@ local plugins = {
     --         "<leader>fh",
     --     },
     --     config = function()
-    --         pcall(require, "plugins.telescope")
+    --         require("plugins.telescope")
     --     end
     -- },
     {
@@ -165,7 +165,7 @@ local plugins = {
             "<leader>fs",
         },
         config = function()
-            pcall(require, "plugins.fzf")
+            require("plugins.fzf")
         end
     },
 
@@ -174,7 +174,7 @@ local plugins = {
         "lewis6991/gitsigns.nvim",
         event = "BufRead",
         config = function()
-            pcall(require, "plugins.gitsigns")
+            require("plugins.gitsigns")
         end
     },
 
@@ -191,8 +191,8 @@ local plugins = {
         },
         event = "BufRead",
         config = function()
-            pcall(require, "plugins.lsp")
-            pcall(require, "plugins.lsp.conform")
+            require("plugins.lsp")
+            require("plugins.lsp.conform")
         end,
     },
 
@@ -215,7 +215,7 @@ local plugins = {
         },
         event = "InsertEnter",
         config = function()
-            pcall(require, "plugins.lsp.cmp")
+            require("plugins.lsp.cmp")
         end,
     },
 
@@ -228,9 +228,9 @@ local plugins = {
     --     -- },
     --     keys = { "<F9>" },
     --     config = function()
-    --         pcall(require, "plugins.dap")
-    --         -- pcall(require, "plugins.dap.ui")
-    --         -- pcall(require, "plugins.dap.virtual_text")
+    --         require("plugins.dap")
+    --         -- require("plugins.dap.ui")
+    --         -- require("plugins.dap.virtual_text")
     --     end,
     -- },
 
@@ -246,7 +246,7 @@ local plugins = {
         },
         ft = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
         config = function()
-            pcall(require, "plugins.lsp.typescript_tools")
+            require("plugins.lsp.typescript_tools")
         end
     },
 
@@ -255,7 +255,7 @@ local plugins = {
     --     "lervag/vimtex",
     --     ft = { "tex" },
     --     config = function()
-    --         pcall(require, "plugins.vimtex")
+    --         require("plugins.vimtex")
     --     end
     -- },
 }

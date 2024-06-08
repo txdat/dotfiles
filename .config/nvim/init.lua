@@ -1,4 +1,4 @@
 vim.loader.enable()
 
-pcall(require, "config")
-pcall(require, "plugins")
+require("config")
+require("plugins")
