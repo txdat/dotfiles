@@ -1,5 +1,5 @@
 require("modus-themes").setup({
-    style = "modus_vivendi",
+    style = "auto",
     variant = "default",
     transparent = false,
     dim_inactive = false,
@@ -12,4 +12,4 @@ require("modus-themes").setup({
     }
 })
 
-vim.cmd("colorscheme modus_vivendi")
+vim.cmd("colorscheme modus")
