@@ -2,7 +2,7 @@
 export EDITOR="vim --clean"
 
 function _git_branch() {
-    git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/[\1]/p'
+    git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/(\1)/p'
 }
 
 setopt PROMPT_SUBST
@@ -24,18 +24,13 @@ setopt share_history          # share command history data
 autoload -Uz compinit && compinit
 autoload -Uz bashcompinit && bashcompinit
 
-# completion
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
+# fpath=(~/.zsh/zsh-completions/src $fpath)
 
 bindkey '^I'   complete-word       # tab          | complete
 bindkey '^[[Z' autosuggest-accept  # shift + tab  | autosuggest
 bindkey -v '^?' backward-delete-char
-
-# syntax highlighting
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
-# completions
-fpath=(~/.zsh/zsh-completions/src $fpath)
 
 # fzf
 export FZF_DEFAULT_OPTS="
@@ -78,7 +73,7 @@ fi
 export PATH="$HOME/.cargo/env:$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
 
 # go
-export PATH="$HOME/go/bin:$PATH"
+#export PATH="$HOME/go/bin:$PATH"
 
 # haskell
 #export PATH="$HOME/.cabal/bin:$HOME/.ghcup/bin:$PATH"
@@ -175,7 +170,11 @@ alias k=kubectl
 update_zsh () {
     dir=$(pwd)
 
-    ZSH_PLUGINS=('zsh-syntax-highlighting' 'zsh-autosuggestions' 'zsh-completions')
+    ZSH_PLUGINS=(
+        'zsh-syntax-highlighting'
+        'zsh-autosuggestions'
+        # 'zsh-completions'
+    )
     for plg in "${ZSH_PLUGINS[@]}"
     do
         cd ~/.zsh/$plg && git pull
