@@ -76,7 +76,7 @@ require("fzf-lua").setup({
     },
     lsp = {
         symbols = {
-            symbol_style = 3,
+            symbol_style = 3, -- kind only
         },
         code_actions = {
             previewer = "codeaction_native"
@@ -84,7 +84,14 @@ require("fzf-lua").setup({
     },
     diagnostics = {
         cwd_only = true,
-        severity_only = "error", -- error only
+        -- severity_only = "error", -- error only
+        severity_limit = "warning",
+        signs = {
+            ["Error"] = { text = "", texthl = "DiagnosticError" },
+            ["Warn"]  = { text = "", texthl = "DiagnosticWarn" },
+            ["Info"]  = { text = "", texthl = "DiagnosticInfo" },
+            ["Hint"]  = { text = "", texthl = "DiagnosticHint" },
+        },
     },
     keymap = {
         fzf = {

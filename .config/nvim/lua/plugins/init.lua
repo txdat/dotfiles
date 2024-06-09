@@ -265,8 +265,8 @@ require("lazy").setup(plugins, {
         lazy = true,
     },
     ui = {
+        size = { width = 1, height = 1 },
         border = "none",
-        backdrop = 0,
     },
     performance = {
         rtp = {
