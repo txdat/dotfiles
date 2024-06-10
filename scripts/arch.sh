@@ -116,7 +116,7 @@ sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-
 
 # javascript, typescript
 # sudo pacman -S --noconfirm nodejs npm yarn
-# sudo npm install -g typescript typescript-language-server vscode-langservers-extracted typescript-styled-plugin prettier @fsouza/prettierd neovim demergi
+# sudo npm install -g typescript typescript-language-server vscode-langservers-extracted prettier @fsouza/prettierd neovim demergi
 # paru -S --noconfirm nvm
 
 # java, scala

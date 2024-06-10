@@ -11,7 +11,7 @@ for type, icon in pairs(signs) do
 end
 
 -- prevent LSP from overwriting treesitter color setting (< 100)
-vim.highlight.priorities.semantic_tokens = 90
+vim.highlight.priorities.semantic_tokens = 0
 
 vim.diagnostic.config({
     update_in_insert = true,

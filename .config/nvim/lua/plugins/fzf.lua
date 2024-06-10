@@ -54,7 +54,7 @@ require("fzf-lua").setup({
     files = {
         path_shorten = false,
         cmd          = fdCmd,
-        formatter    = "path.filename_first",
+        -- formatter    = "path.filename_first",
     },
     grep = {
         prompt       = "Grep❯ ",
