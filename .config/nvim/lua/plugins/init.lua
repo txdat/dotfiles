@@ -87,13 +87,13 @@ local plugins = {
     },
 
     -- surround selections
-    -- {
-    --     "kylechui/nvim-surround",
-    --     event = "InsertEnter",
-    --     config = function()
-    --         require("plugins.surround")
-    --     end,
-    -- },
+    {
+        "kylechui/nvim-surround",
+        event = "InsertEnter",
+        config = function()
+            require("plugins.surround")
+        end,
+    },
 
     -- navigation
     -- {

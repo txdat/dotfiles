@@ -71,7 +71,7 @@ local lspkind_menu = {
     path = "fs",
 };
 
-cmp.setup {
+cmp.setup({
     completion = {
         completeopt = "menu,menuone,noinsert,noselect",
     },
@@ -195,7 +195,7 @@ cmp.setup {
             -- cmp.config.compare.order,
         },
     },
-}
+})
 
 -- autopairs
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")

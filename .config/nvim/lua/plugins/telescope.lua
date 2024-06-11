@@ -21,7 +21,7 @@ function custom_actions.multi_select(prompt_bufnr)
     end
 end
 
-telescope.setup {
+telescope.setup({
     defaults = {
         preview = {
             hide_on_startup = true,
@@ -195,7 +195,7 @@ telescope.setup {
         --     override_file_sorter = true,
         -- },
     }
-}
+})
 
 telescope.load_extension("file_browser")
 telescope.load_extension("ui-select")

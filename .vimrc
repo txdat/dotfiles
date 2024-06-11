@@ -260,6 +260,7 @@ call plug#begin()
 
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
 
 " fzf{{{
 Plug 'junegunn/fzf.vim'

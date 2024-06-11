@@ -1,7 +1,7 @@
 vim.opt.smartindent = false
 
 ---@diagnostic disable-next-line: missing-fields
-require("nvim-treesitter.configs").setup {
+require("nvim-treesitter.configs").setup({
     ensure_installed = {
         "c",
         "cmake",
@@ -122,4 +122,4 @@ require("nvim-treesitter.configs").setup {
     --     --     border = "none",
     --     -- },
     -- },
-}
+})

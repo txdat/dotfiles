@@ -73,7 +73,7 @@ local lspkind_menu = {
     path = "fs",
 };
 
-cmp.setup {
+cmp.setup({
     completion = {
         completeopt = "menu,menuone,noinsert,noselect",
     },
@@ -207,7 +207,7 @@ cmp.setup {
             -- cmp.config.compare.order,
         },
     },
-}
+})
 
 -- snippet
 luasnip.config.set_config({
