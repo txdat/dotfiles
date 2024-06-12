@@ -68,6 +68,8 @@ keymap("n", "[q", ":cprev<CR>")
 keymap("v", "//", "\"fy/\\V<C-R>f<CR>")
 -- paste yanked text to terminal (ie. fzf)
 keymap("t", "<C-r>", [['<C-\><C-N>"'.nr2char(getchar()).'pi']], { expr = true })
+-- enhance search with <space> as "whatever"
+-- keymap("c", "<C-r><space>", [[getcmdtype() =~ '[/?]' ? '.\{-}' : "<space>"]], { expr = true })
 
 -- move visual block up/down
 -- keymap("x", "J", ":move '>+1<CR>gv-gv")

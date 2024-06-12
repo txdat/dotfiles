@@ -212,6 +212,7 @@ local plugins = {
             --         -- "rafamadriz/friendly-snippets",
             --     },
             -- },
+            "windwp/nvim-autopairs",
         },
         event = "InsertEnter",
         config = function()

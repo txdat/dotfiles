@@ -165,11 +165,9 @@ cmp.setup({
                     for _, win in ipairs(vim.api.nvim_list_wins()) do
                         local buf = vim.api.nvim_win_get_buf(win);
                         -- local byte_size = vim.api.nvim_buf_get_offset(buf, vim.api.nvim_buf_line_count(buf))
-                        -- if byte_size > 5242880 then -- skip large buffer (> 5MB)
-                        --     goto continue
-                        -- end
+                        -- if byte_size <= 5242880 then -- skip large buffer (> 5MB)
                         bufs[buf] = true
-                        -- ::continue::
+                        -- end
                     end
                     return vim.tbl_keys(bufs)
                 end

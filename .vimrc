@@ -247,7 +247,9 @@ nnoremap <silent> ]q :cnext<CR>
 nnoremap <silent> [q :cprev<CR>
 
 vnoremap <silent> // y/\V<C-R>=escape(@",'/\')<CR><CR>
-tnoremap <silent> <expr> <C-r> '<C-\><C-N>"'.nr2char(getchar()).'pi' " TODO
+" TODO
+tnoremap <expr> <C-r> '<C-\><C-N>"'.nr2char(getchar()).'pi'
+"cnoremap <expr> <C-r><space> getcmdtype() =~ '[/?]' ? '.\{-}' : "<space>"
 
 " xnoremap <silent> J :move '>+1<CR>gv-gv
 " xnoremap <silent> K :move '<-2<CR>gv-gv
