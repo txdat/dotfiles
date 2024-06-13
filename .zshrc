@@ -1,6 +1,7 @@
 #export TERM="xterm-256color"
 export EDITOR="vim --clean"
 
+# set prompt
 function _git_branch() {
     git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/(\1)/p'
 }
@@ -12,25 +13,35 @@ export PROMPT='%F{green}%n@%m%f %F{blue}%~%f %F{white}$(_git_branch)%f %# '
 HISTFILE=~/.zsh_history
 HISTSIZE=1000
 SAVEHIST=1000
-setopt extended_history       # record timestamp of command in HISTFILE
-setopt hist_expire_dups_first # delete duplicates first when HISTFILE size exceeds HISTSIZE
-setopt hist_ignore_dups       # ignore duplicated commands history list
-setopt hist_ignore_space      # ignore commands that start with space
-setopt hist_verify            # show command with history expansion to user before running it
-setopt inc_append_history     # add commands to HISTFILE in order of execution
-setopt share_history          # share command history data
+setopt append_history
+setopt extended_history
+setopt hist_expire_dups_first
+setopt hist_find_no_dups
+setopt hist_ignore_dups
+setopt hist_ignore_space
+setopt hist_verify
+# setopt inc_append_history
+setopt share_history
 
 # completion
-autoload -Uz compinit && compinit
-autoload -Uz bashcompinit && bashcompinit
-
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 # fpath=(~/.zsh/zsh-completions/src $fpath)
 
-bindkey '^I'   complete-word       # tab          | complete
-bindkey '^[[Z' autosuggest-accept  # shift + tab  | autosuggest
-bindkey -v '^?' backward-delete-char
+autoload -Uz compinit && compinit
+# autoload -Uz bashcompinit && bashcompinit
+
+zstyle ':completion:*' matcher-list "m:{a-z}={A-Z}"
+zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
+
+# highlighting
+source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+
+# keybindings
+bindkey '^P' history-search-backward
+bindkey '^N' history-search-forward
+bindkey '^I' complete-word       # tab | complete
+bindkey '^[[Z' autosuggest-accept  # shift + tab | autosuggest
+bindkey -v '^?' backward-delete-char # backspace in vi mode
 
 # fzf
 export FZF_DEFAULT_OPTS="
@@ -86,13 +97,15 @@ export PATH="$HOME/.cargo/env:$HOME/.rustup/toolchains/stable-x86_64-unknown-lin
 # javascript
 # source /usr/share/nvm/init-nvm.sh
 
-# kubernetes (k3s)
+# kubernetes
 export KUBECONFIG=$HOME/.kube/config
-#export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+#export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 # aliases
-alias syyu="sudo pacman -Syyu && paru -Syyu && flatpak update"
+alias ls="ls --color"
+
+alias sysu="sudo pacman -Syyu && paru -Syyu && flatpak update"
 
 alias x2cb="xclip -sel c" # copy output to clipboard
 alias f2cb="xclip -sel c < " # copy from file to clipboard
@@ -166,14 +179,14 @@ alias k=kubectl
 #    done
 #}
 
-# update zsh and plugins
+# update zsh's plugins
 update_zsh () {
     dir=$(pwd)
 
     ZSH_PLUGINS=(
         'zsh-syntax-highlighting'
         'zsh-autosuggestions'
-        # 'zsh-completions'
+        'zsh-completions'
     )
     for plg in "${ZSH_PLUGINS[@]}"
     do
