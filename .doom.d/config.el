@@ -65,7 +65,7 @@
 ;; accept. For example:
 ;;
 
-(setq font-family "Mapple Mono SC NF"
+(setq font-family "Maple Mono NF CN"
       font-size 22)
 ;; (if (equal (display-pixel-width) 3072)
 ;;  (setq font-size 22) ; hidpi

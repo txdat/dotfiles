@@ -86,11 +86,11 @@ builtin_box_drawing = true
 size = 8
 
 [font.bold]
-family = "Maple Mono SC NF"
+family = "Maple Mono NF CN"
 style = "Bold"
 
 [font.bold_italic]
-family = "Maple Mono SC NF"
+family = "Maple Mono NF CN"
 style = "Bold Italic"
 
 [font.glyph_offset]
@@ -98,11 +98,11 @@ x = 0
 y = 0
 
 [font.italic]
-family = "Maple Mono SC NF"
+family = "Maple Mono NF CN"
 style = "Italic"
 
 [font.normal]
-family = "Maple Mono SC NF"
+family = "Maple Mono NF CN"
 style = "Regular"
 
 [font.offset]

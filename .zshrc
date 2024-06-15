@@ -11,8 +11,8 @@ export PROMPT='%F{green}%n@%m%f %F{blue}%~%f %F{white}$(_git_branch)%f %# '
 
 # history
 HISTFILE=~/.zsh_history
-HISTSIZE=1000
-SAVEHIST=1000
+HISTSIZE=3000
+SAVEHIST=3000
 setopt append_history
 setopt extended_history
 setopt hist_expire_dups_first
@@ -45,13 +45,19 @@ bindkey -v '^?' backward-delete-char # backspace in vi mode
 
 # fzf
 export FZF_DEFAULT_OPTS="
- --ansi --multi --no-separator
- --scrollbar='' --info=inline-right --height=100%
- --layout=reverse --border=none --highlight-line
- --pointer=󰁕 --marker=▶
+ --ansi
+ --multi
+ --no-separator
+ --scrollbar=''
+ --info=inline-right
+ --height=100%
+ --layout=reverse
+ --border=none
+ --highlight-line
+ --pointer=󰁕
+ --marker=▶
  --preview-window=hidden:noborder
- --bind=ctrl-p:toggle-preview,alt-w:toggle-preview-wrap
- --bind=alt-j:preview-page-down,alt-k:preview-page-up
+ --bind=ctrl-p:toggle-preview,alt-w:toggle-preview-wrap,alt-j:preview-page-down,alt-k:preview-page-up
 "
 
 # alias _fd="fd --color=always --hidden --follow --exclude .git "

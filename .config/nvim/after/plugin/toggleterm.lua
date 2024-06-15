@@ -17,7 +17,7 @@ local function TerminalOpen()
     if fn.bufexists(terminal_buffer) == 0 then
         api.nvim_command("new lua_terminal")
         api.nvim_command("wincmd J")
-        api.nvim_command("resize " .. terminal_window_size())
+        -- api.nvim_command("resize " .. terminal_window_size())
         terminal_job_id = fn.termopen(os.getenv("SHELL"), {
             detach = 1
         })
@@ -29,7 +29,7 @@ local function TerminalOpen()
         if fn.win_gotoid(terminal_window) == 0 then
             api.nvim_command("sp")
             api.nvim_command("wincmd J")
-            api.nvim_command("resize " .. terminal_window_size())
+            -- api.nvim_command("resize " .. terminal_window_size())
             api.nvim_command("buffer Terminal 1")
             terminal_window = fn.win_getid()
         end
