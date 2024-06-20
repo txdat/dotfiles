@@ -7,6 +7,7 @@
 - `network.IDN_show_punycode=true`
 - `toolkit.legacyUserProfileCustomizations.stylesheets=true`
 - `extensions.pocket.enabled=false`
+- `network.http.http3.enable=false`
 
 # scripts
 
