@@ -3,11 +3,11 @@ export EDITOR="vim --clean"
 
 # set prompt
 function _git_branch() {
-    git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/(\1)/p'
+    git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/(\1) /p'
 }
 
 setopt PROMPT_SUBST
-export PROMPT='%F{green}%n@%m%f %F{blue}%~%f %F{white}$(_git_branch)%f %# '
+export PROMPT='%F{green}%n@%m%f %F{blue}%~%f%F{white} $(_git_branch)%f❯ '
 
 # history
 HISTFILE=~/.zsh_history
@@ -37,10 +37,12 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # keybindings
-bindkey '^P' history-search-backward
-bindkey '^N' history-search-forward
-bindkey '^I' complete-word       # tab | complete
-bindkey '^[[Z' autosuggest-accept  # shift + tab | autosuggest
+# bindkey '^P' history-search-backward
+# bindkey '^N' history-search-forward
+bindkey '^[[A' history-search-backward # up
+bindkey '^[[B' history-search-forward # down
+bindkey '^I' complete-word # tab | complete
+bindkey '^[[Z' autosuggest-accept # shift + tab | autosuggest
 bindkey -v '^?' backward-delete-char # backspace in vi mode
 
 # fzf

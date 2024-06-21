@@ -170,3 +170,5 @@ sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-
 # ln -s ~/.dotfiles/.doom.d ~/.doom.d
 # doom install
 
+# openssl-1.1 - download from https://archlinux.org/packages/core/x86_64/openssl-1.1/ and run command below
+# sudo pacman -U --overwrite '/usr/lib/*' Downloads/openssl-1.1*
