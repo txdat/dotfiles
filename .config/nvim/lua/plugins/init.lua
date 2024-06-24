@@ -265,6 +265,9 @@ require("lazy").setup(plugins, {
     defaults = {
         lazy = true,
     },
+    install = {
+        colorscheme = { "moonfly" },
+    },
     ui = {
         size = { width = 1, height = 1 },
         border = "none",

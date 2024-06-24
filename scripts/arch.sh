@@ -4,7 +4,7 @@
 sudo pacman -S --noconfirm curl wget axel \
                         git lazygit git-delta \
                         zsh fish tmux htop ranger neofetch \
-                        vi vim neovim lua-language-server tree-sitter-cli \
+                        vi vim neovim lua-language-server luarocks tree-sitter-cli \
                         zip unzip ark \
                         wl-clipboard xclip fzf ripgrep fd jq yq bc bat \
                         fcitx5 fcitx5-bamboo fcitx5-configtool fcitx5-qt fcitx5-gtk \
