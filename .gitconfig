@@ -5,6 +5,9 @@
 [core]
     pager = delta
 
+[credential]
+    helper = cache
+
 [interactive]
     diffFilter = delta --color-only
 
@@ -12,7 +15,9 @@
     conflictstyle = diff3
 
 [diff]
+    algorithm = patience
     colorMoved = default
+    compactionHeuristic = true
 
 [delta]
     true-color = always

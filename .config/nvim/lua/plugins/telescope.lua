@@ -23,53 +23,45 @@ end
 
 telescope.setup({
     defaults = {
-        preview = {
-            hide_on_startup = true,
-        },
-        vimgrep_arguments = {
-            "rg",
-            "--hidden",
-            "--color=always",
-            "--no-heading",
-            "--with-filename",
-            "--line-number",
-            "--column",
-            "--smart-case",
-            "--max-columns=4096",
-        },
-        file_ignore_patterns = { "^.git/" },
-        prompt_prefix = " ",
-        selection_caret = "󰁕 ",
-        path_display = { "truncate" },
-        winblend = 0,
-        color_devicons = true,
+        sorting_strategy = "ascending",
         layout_strategy = "horizontal",
         layout_config = {
             horizontal = {
-                prompt_position = "bottom",
-                preview_width = 0.6,
-                results_width = 0.8,
+                prompt_position = "top",
+                preview_width = 0.5,
+                width = 0.999,
+                height = 0.999,
             },
-            vertical = {
-                mirror = false,
-            },
-            width = 0.9,
-            height = 0.8,
-            preview_cutoff = 120,
         },
-        border = true,
+        winblend = 0,
+        prompt_prefix = " ",
+        selection_caret = "󰁕 ",
+        border = false,
         -- borderchars = {
         --     { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
         --     prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },
         --     results = { "─", "│", "─", "│", "├", "┤", "┘", "└" },
         --     preview = { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
         -- },
+        path_display = { "truncate" },
+        preview = {
+            hide_on_startup = true,
+        },
+        vimgrep_arguments = {
+            "rg",
+            "--color=always",
+            "--hidden",
+            "--follow",
+            "--no-heading",
+            "--with-filename",
+            "--line-number",
+            "--column",
+            "--smart-case",
+            "-g '!{.git}/*'"
+        },
         set_env = { ["COLORTERM"] = "truecolor" }, -- default = nil,
-        file_previewer = previewers.vim_buffer_cat.new,
-        grep_previewer = previewers.vim_buffer_vimgrep.new,
-        qflist_previewer = previewers.vim_buffer_qflist.new,
-        -- Developer configurations: Not meant for general override
-        buffer_previewer_maker = previewers.buffer_previewer_maker,
+        color_devicons = true,
+        file_ignore_patterns = { "^.git/" },
         mappings = {
             i = {
                 ["<C-p>"] = action_layout.toggle_preview,
@@ -115,7 +107,7 @@ telescope.setup({
     },
     pickers = {
         find_files = {
-            -- hidden = true, -- show hidden files
+            hidden = true, -- show hidden files
             -- theme = "ivy",
         },
         live_grep = {
@@ -124,14 +116,19 @@ telescope.setup({
         buffers = {
             -- theme = "ivy",
         },
+        git_files = {
+            -- theme = "ivy",
+        },
+        file_browser = {
+            -- theme = "ivy",
+        },
     },
     extentions = {
         file_browser = {
-            grouped = true,
+            grouped = true, -- directories then files
             files = false,
             auto_depth = true,
             hidden = { file_browser = true, folder_browser = true },
-            hide_parent_dir = true,
             collapse_dirs = true,
             quiet = true,
             hijack_netrw = true, -- disable hijack_netrw
@@ -166,10 +163,7 @@ telescope.setup({
         },
         ["ui-select"] = {
             require("telescope.themes").get_dropdown {
-                width = 1.0,
-                previewer = false,
-                prompt_title = false,
-                border = true,
+                border = false,
                 -- borderchars = {
                 --     { "─", "│", "─", "│", "┌", "┐", "┘", "└" },
                 --     prompt = { "─", "│", " ", "│", "┌", "┐", "│", "│" },

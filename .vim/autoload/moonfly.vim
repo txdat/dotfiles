@@ -253,7 +253,7 @@ function! moonfly#Style() abort
     endif
     highlight! link Ignore MoonflySky
     exec 'highlight Underlined guifg=' . s:emerald . ' gui=none'
-    exec 'highlight QuickFixLine guibg=' . s:grey23
+    exec 'highlight QuickFixLine guibg=' . s:grey15
     highlight! link Delimiter MoonflyWhite
     highlight! link qfFileName MoonflyEmerald
 
@@ -671,6 +671,19 @@ function! moonfly#Style() abort
     "-----------------------------------------------------------------------
     " Plugin styling
     "-----------------------------------------------------------------------
+
+    " Coc
+    highlight! link CocSemTypeBuiltin MoonflyCranberry
+    highlight! link CocSemTypeClass MoonflyEmerald
+    highlight! link CocSemTypeEnumMember MoonflyTurquoise
+    highlight! link CocSemTypeNamespace MoonflyTurquoise
+    highlight! link CocSemTypeParameter MoonflyOrchid
+    highlight! link CocSemTypeProperty MoonflyLavender
+    highlight! link CocSemTypeRegexp MoonflyTurquoise
+    highlight! link CocSemTypeStruct MoonflyEmerald
+    highlight! link CocSemTypeTypeParameter MoonflyOrchid
+    highlight! link CocUnusedHighlight MoonflyGrey70
+    exec 'highlight CocInlayHint guibg=' . s:grey11 . ' guifg=' . s:grey58
 
     " Git commits
     highlight! link gitCommitBranch MoonflySky

@@ -62,7 +62,8 @@ vim.opt.mouse = "a" -- enable mouse support
 vim.opt.errorbells = false
 vim.opt.belloff = "all"
 vim.opt.modelines = 2
-vim.opt.wildmode = "longest,list"
+vim.opt.wildmode = "list:longest,list:full"
+vim.opt.wildignore:append({ ".git" })
 vim.g.mapleader = " "
 vim.g.maplocalleader = "\\"
 
@@ -99,9 +100,11 @@ vim.opt.statuscolumn = "%s%=%{&nu?(&rnu&&v:relnum?v:relnum:v:lnum):''}%=%C%#Inde
 
 -- statusline
 function Statusline()
+    local git_branch = vim.fn.system("git branch --show-current 2> /dev/null | tr -d '\n'")
     return table.concat({
         "%1* " .. string.format("[%s]", vim.api.nvim_get_mode().mode):upper(), -- The current mode
-        "%2* %<%f%m%r%h%w",                                                    -- File path, modified, readonly, helpfile, preview
+        "%2* " .. git_branch,                                                  -- Git branch
+        "%3* %<%f%m%r%h%w",                                                    -- File path, modified, readonly, helpfile, preview
         "%=",                                                                  -- Right side
         "%1* %l:%v %3p%%",                                                     -- Line:Col number, percentage of document
         -- "%2* %{''.(&fenc!=''?&fenc:&enc).''}",                                 -- Encoding
@@ -141,6 +144,7 @@ vim.opt.hlsearch = true   -- highlight search result
 vim.opt.incsearch = true  -- show first match when start typing
 vim.opt.ignorecase = true -- ignore case sensitive when searching
 vim.opt.smartcase = true  -- ignore lowercase for the whole pattern
+-- vim.opt.inccommand = "split" -- preview while sub
 
 -----------------------------------------
 -- cpu, memory

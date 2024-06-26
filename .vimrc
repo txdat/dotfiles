@@ -59,7 +59,8 @@ set noerrorbells
 set belloff=all
 set bs=2 " backspacing in insert mode
 set modelines=2
-set wildmode=longest,list
+set wildmode=list:longest,list:full
+set wildignore+=.git
 set shortmess=I " disable vim intro
 set laststatus=2 " always show statusline
 set guicursor=n-v-c:block-Cursor " using block cursor
@@ -125,10 +126,16 @@ set updatetime=100 " milli-seconds to wait for trigger an event (keymap)
 " statusline
 " ----------------------------------
 
+augroup Statusline
+    autocmd!
+    autocmd WinEnter,BufEnter * let b:git_branch = system("git branch --show-current 2> /dev/null | tr -d '\n'")
+augroup END
+
 " set noshowmode
 set statusline=
 set statusline+=%1*\ [%{toupper(mode())}]\  " The current mode
-set statusline+=%2*\ %<%f%m%r%h%w\          " File path, modified, readonly, helpfile, preview
+set statusline+=%2*\ %{b:git_branch}        " Git branch
+set statusline+=%3*\ %<%f%m%r%h%w\          " File path, modified, readonly, helpfile, preview
 set statusline+=%=                          " Right Side
 set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of document
 " set statusline+=%2*\ %{''.(&fenc!=''?&fenc:&enc).''}     " Encoding
@@ -192,21 +199,18 @@ endfunction
 
 " keymaps{{{
 
-" nnoremap <silent> <ESC> <nop>
-" inoremap <silent> jj <ESC>
-
 nnoremap <silent> <A-q> q
 nnoremap <silent> q <nop>
 
 inoremap <silent> <F1> <nop>
 nnoremap <silent> <F1> :set wrap!<CR>
 
-nnoremap <silent> <F2> :set invpaste paste?<CR>
-"set pastetoggle=<F2>
+nnoremap <silent> <F3> :set invpaste paste?<CR>
+"set pastetoggle=<F3>
 
-nnoremap <silent> <F3> :setlocal spell! spell?<CR>
-" nnoremap <silent> <C-l> [s1z=<C-o>
-" inoremap <silent> <C-l> <C-g>u<ESC>[s1z=`]a<C-g>u
+"nnoremap <silent> <F3> :setlocal spell! spell?<CR>
+"nnoremap <silent> <C-l> [s1z=<C-o>
+"inoremap <silent> <C-l> <C-g>u<ESC>[s1z=`]a<C-g>u
 
 nnoremap <silent> DD "_dd
 
@@ -246,13 +250,20 @@ nnoremap <silent> qc :call setqflist([])<CR>
 nnoremap <silent> ]q :cnext<CR>
 nnoremap <silent> [q :cprev<CR>
 
-vnoremap <silent> // y/\V<C-R>=escape(@",'/\')<CR><CR>
+"vnoremap <silent> // y/\V<C-R>=escape(@",'/\')<CR><CR>
 " TODO
 tnoremap <expr> <C-r> '<C-\><C-N>"'.nr2char(getchar()).'pi'
 "cnoremap <expr> <C-r><space> getcmdtype() =~ '[/?]' ? '.\{-}' : "<space>"
 
-" xnoremap <silent> J :move '>+1<CR>gv-gv
-" xnoremap <silent> K :move '<-2<CR>gv-gv
+"vnoremap <silent> J :move '>+1<CR>gv=gv
+"vnoremap <silent> K :move '<-2<CR>gv=gv
+
+nnoremap <silent> <F2> :%s/<C-r><C-w>//g<Left><Left>
+
+"nnoremap <silent> <C-j> :resize -2<CR>
+"nnoremap <silent> <C-k> :resize +2<CR>
+"nnoremap <silent> <C-h> :vertical resize -2<CR>
+"nnoremap <silent> <C-l> :vertical resize +2<CR>
 
 nnoremap <silent> <F12> :!g++ -g % && ./a.out<CR>
 "}}}
@@ -262,7 +273,7 @@ call plug#begin()
 
 Plug 'jiangmiao/auto-pairs'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
+"Plug 'tpope/vim-surround'
 
 " fzf{{{
 Plug 'junegunn/fzf.vim'
