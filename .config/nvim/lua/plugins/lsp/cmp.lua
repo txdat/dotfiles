@@ -142,6 +142,11 @@ cmp.setup({
             end
         end, { "i", "s" }),
     }),
+    snippet = {
+        expand = function(args)
+            vim.snippet.expand(args.body)
+        end,
+    },
     sources = {
         { name = "nvim_lsp", keyword_length = 2, priority = 10 },
         {

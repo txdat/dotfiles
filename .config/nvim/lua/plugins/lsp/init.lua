@@ -51,7 +51,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         -- keymap("n", "ga", function()
         --     require("fzf-lua").lsp_code_actions()
         -- end, opts)
-        -- keymap("n", "gf", diag.open_float, opts)
+        keymap("n", "gf", diag.open_float, opts)
         -- keymap("n", "[d", diag.goto_prev, opts)
         -- keymap("n", "]d", diag.goto_next, opts)
         keymap("n", "[e", function()

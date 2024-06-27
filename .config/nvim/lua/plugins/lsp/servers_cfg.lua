@@ -80,22 +80,22 @@ M.rust_analyzer = {
     },
 }
 
-M.gopls = {
-    init_options = {
-        usePlaceholders = true,
-        completeUnimported = true,
-    },
-    settings = {
-        gopls = {
-            analyses = {
-                unusedparams = true,
-            },
-            -- semanticTokens = true,
-            staticcheck = true,
-            gofumpt = true,
-        },
-    },
-}
+-- M.gopls = {
+--     init_options = {
+--         usePlaceholders = true,
+--         completeUnimported = true,
+--     },
+--     settings = {
+--         gopls = {
+--             analyses = {
+--                 unusedparams = true,
+--             },
+--             -- semanticTokens = true,
+--             staticcheck = true,
+--             gofumpt = true,
+--         },
+--     },
+-- }
 
 M.pyright = {}
 -- M.ruff_lsp = {} -- TODO:

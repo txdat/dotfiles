@@ -76,6 +76,7 @@ set number " show line number
 set relativenumber " (-1,+1) line number
 set showmatch " highlight matching parenthesis
 set foldmethod=marker " enable folding
+set signcolumn=auto
 set splitright " vertical split to the right
 set splitbelow " horizontal split to the bottom
 
@@ -312,6 +313,33 @@ command! -bang -nargs=* Rg call fzf#vim#grep(
 nnoremap <silent> <leader>ff :Files<CR>
 nnoremap <silent> <leader>fg :Rg<CR>
 nnoremap <silent> <leader>fb :Buffers<CR>
+"}}}
+
+" coc{{{
+Plug 'neoclide/coc.nvim', {'branch': 'master', 'do': 'npm ci'}
+
+inoremap <silent><expr> <TAB>
+      \ coc#pum#visible() ? coc#pum#next(1) :
+      \ CheckBackspace() ? "\<Tab>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" <c-space> to trigger completion
+inoremap <silent><expr> <c-@> coc#refresh()
+
+"nmap <silent> [d <Plug>(coc-diagnostic-prev)
+"nmap <silent> ]d <Plug>(coc-diagnostic-next)
+nmap <silent> [e <Plug>(coc-diagnostic-prev-error)
+nmap <silent> ]e <Plug>(coc-diagnostic-next-error)
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gt <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+nmap <silent> gn <Plug>(coc-rename)
+xmap <silent> ga <Plug>(coc-codeaction-selected)
+nmap <silent> ga <Plug>(coc-codeaction-selected)
+nmap <silent> <C-i> <Plug>(coc-format)
 "}}}
 
 call plug#end()
