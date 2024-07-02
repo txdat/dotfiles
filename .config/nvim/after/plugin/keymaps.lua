@@ -72,8 +72,8 @@ keymap("t", "<C-r>", [['<C-\><C-N>"'.nr2char(getchar()).'pi']], { expr = true })
 -- keymap("v", "J", ":move '>+1<CR>gv=gv")
 -- keymap("v", "K", ":move '<-2<CR>gv=gv")
 
--- replace word under cursor
-keymap("n", "<F2>", ":%s/<C-r><C-w>//g<Left><Left>")
+-- replace yanked text
+keymap("n", "<F2>", ':%s/<C-r>"//g<Left><Left>')
 
 -- multicursor replacing
 keymap("n", "<A-r>", function()
