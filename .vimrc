@@ -269,10 +269,14 @@ nnoremap <silent> <F12> :!g++ -g % && ./a.out<CR>
 "}}}
 
 " plugins{{{
+
+packadd! editorconfig
+packadd! comment
+
 call plug#begin()
 
 Plug 'jiangmiao/auto-pairs'
-Plug 'tpope/vim-commentary'
+"Plug 'tpope/vim-commentary'
 "Plug 'tpope/vim-surround'
 
 " fzf{{{
