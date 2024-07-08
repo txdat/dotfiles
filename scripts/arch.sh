@@ -117,7 +117,7 @@ sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-
 # javascript, typescript
 # sudo pacman -S --noconfirm nodejs npm yarn
 # sudo npm install -g typescript typescript-language-server vscode-langservers-extracted prettier @fsouza/prettierd neovim demergi
-# paru -S --noconfirm nvm
+# curl -fsSL https://fnm.vercel.app/install | bash
 
 # java, scala
 # sudo pacman -S --noconfirm jdk17-openjdk maven sbt

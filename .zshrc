@@ -102,8 +102,10 @@ export PATH="$HOME/.cargo/env:$HOME/.rustup/toolchains/stable-x86_64-unknown-lin
 #export PATH=$JAVA_HOME/bin:$PATH
 #export PATH=$HOME/.local/share/coursier/bin:$PATH
 
-# javascript
-# source /usr/share/nvm/init-nvm.sh
+# javascript/typescript
+# fnm
+export PATH="$HOME/.local/share/fnm:$PATH"
+eval "`fnm env`"
 
 # kubernetes
 export KUBECONFIG=$HOME/.kube/config
