@@ -1,5 +1,5 @@
 " Background and foreground
-let s:black     = '#080808'
+let s:black     = '#000000'
 let s:white     = '#c6c6c6'
 " Variations of charcoal-grey
 let s:grey0     = '#323437'
