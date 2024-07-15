@@ -146,8 +146,10 @@ set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of doc
 " colorscheme
 " ----------------------------------
 
+set termguicolors
 filetype plugin indent on
-colorscheme moonfly
+colorscheme habamax
+set background="dark"
 
 " ----------------------------------
 " autocommands
@@ -313,6 +315,8 @@ command! -bang -nargs=* Rg call fzf#vim#grep(
   \   fzf#vim#with_preview(),
   \   <bang>0)
 
+nnoremap <silent> <leader>fs :GFiles?<CR>
+nnoremap <silent> <leader>fc :BCommits<CR>
 nnoremap <silent> <leader>ff :Files<CR>
 nnoremap <silent> <leader>fg :Rg<CR>
 nnoremap <silent> <leader>fb :Buffers<CR>

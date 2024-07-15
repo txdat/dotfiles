@@ -1,37 +1,31 @@
 {
-    "suggest.noselect": true,
-    "codeLens.enable": false,
-    "inlayHint.enable": false,
-    "signature.enable": false,
-    "dialog.rounded": false,
-    "diagnostic.level": "error",
-    "diagnostic.virtualText": true,
-    "diagnostic.virtualTextCurrentLineOnly": false,
-    "diagnostic.errorSign": "",
-    "diagnostic.warningSign": "",
-    "diagnostic.infoSign": "",
-    "diagnostic.hintSign": "",
-    "languageserver": {
-        "clangd": {
-            "command": "clangd",
-            "args": [
-                "--background-index",
-                "--clang-tidy",
-                "--header-insertion=iwyu",
-                "--completion-style=detailed",
-                "--function-arg-placeholders",
-                "--fallback-style=llvm"
-            ],
-            "rootPatterns": [
-                "compile_flags.txt",
-                "compile_commands.json"
-            ],
-            "filetypes": [
-                "c",
-                "cc",
-                "cpp",
-                "c++"
-            ]
-        }
+  "coc.preferences.promptInput": false,
+  "coc.preferences.useQuickfixForLocations": true,
+  "suggest.noselect": true,
+  "codeLens.enable": false,
+  "inlayHint.enable": false,
+  "signature.enable": false,
+  "dialog.rounded": false,
+  "diagnostic.level": "error",
+  "diagnostic.virtualText": true,
+  "diagnostic.virtualTextCurrentLineOnly": false,
+  "diagnostic.errorSign": "",
+  "diagnostic.warningSign": "",
+  "diagnostic.infoSign": "",
+  "diagnostic.hintSign": "",
+  "languageserver": {
+    "clangd": {
+      "command": "clangd",
+      "args": [
+        "--background-index",
+        "--clang-tidy",
+        "--header-insertion=iwyu",
+        "--completion-style=detailed",
+        "--function-arg-placeholders",
+        "--fallback-style=llvm"
+      ],
+      "rootPatterns": ["compile_flags.txt", "compile_commands.json"],
+      "filetypes": ["c", "cc", "cpp", "c++"]
     }
+  }
 }

@@ -103,14 +103,14 @@ M.pyright = {}
 -- M.hls = {}
 
 -- typescript-language-server
--- M.tsserver = {
---     filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
---     settings = {
---         completions = {
---             completeFunctionCalls = false,
---         },
---     },
--- }
+M.tsserver = {
+    filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+    settings = {
+        completions = {
+            completeFunctionCalls = false,
+        },
+    },
+}
 
 -- vscode-langservers-extracted
 M.eslint = {

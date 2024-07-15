@@ -168,6 +168,17 @@ vim.g.loaded_ruby_provider = 0
 vim.g.python3_host_prog = require("util").system_cmd("which python3")
 
 -----------------------------------------
+-- colorscheme
+-----------------------------------------
+
+vim.opt.termguicolors = true
+vim.api.nvim_command([[
+    filetype plugin indent on
+    colorscheme habamax
+]])
+vim.opt.background = "dark"
+
+-----------------------------------------
 -- autocommand functions
 -----------------------------------------
 
