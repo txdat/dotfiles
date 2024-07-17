@@ -129,9 +129,9 @@ vim.opt.cindent = true
 vim.opt.smartindent = true
 vim.opt.smarttab = true
 vim.opt.expandtab = true -- use spaces instead of tab
-vim.opt.tabstop = 4      -- 1 tab = 4 spaces
-vim.opt.softtabstop = 0
-vim.opt.shiftwidth = 4   -- shifts 4 spaces when using tab
+vim.opt.tabstop = 2      -- 1 tab = 2 spaces
+vim.opt.softtabstop = 2
+vim.opt.shiftwidth = 2   -- shifts 2 spaces when using tab
 vim.opt.shiftround = true
 vim.opt.linebreak = true -- wrap on word boundary
 vim.opt.textwidth = 0

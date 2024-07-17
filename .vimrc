@@ -96,9 +96,9 @@ set cindent
 set smartindent
 set smarttab
 set expandtab " use spaces instead of tab
-set tabstop=4 " 1 tab = 4 spaces
-set softtabstop=0
-set shiftwidth=4 " shifts 4 spaces when using tab
+set tabstop=2 " 1 tab = 2 spaces
+set softtabstop=2
+set shiftwidth=2 " shifts 2 spaces when using tab
 set shiftround
 set linebreak " wrap on word boundary
 set textwidth=0
@@ -276,10 +276,6 @@ packadd! editorconfig
 packadd! comment
 
 call plug#begin()
-
-Plug 'jiangmiao/auto-pairs'
-"Plug 'tpope/vim-commentary'
-"Plug 'tpope/vim-surround'
 
 " fzf{{{
 Plug 'junegunn/fzf.vim'
