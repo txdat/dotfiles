@@ -2,7 +2,7 @@
 draw_bold_text_with_bright_colors = false
 
 [colors.primary]
-background = "#1c1c1c" # habamax
+background = "#000000"
 
 [cursor]
 unfocused_hollow = true

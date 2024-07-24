@@ -266,7 +266,7 @@ require("lazy").setup(plugins, {
         lazy = true,
     },
     install = {
-        colorscheme = { "habamax" },
+        colorscheme = { "nod" },
     },
     ui = {
         size = { width = 1, height = 1 },

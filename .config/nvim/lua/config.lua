@@ -86,7 +86,7 @@ vim.opt.guicursor:append "i:blinkon0"
 -- vim.opt.colorcolumn = "80"
 -- vim.opt.ruler = true  -- show cursor position
 vim.opt.list = true           -- show eol, ...
-vim.opt.cursorline = true
+-- vim.opt.cursorline = true
 vim.opt.number = true         -- show line number
 vim.opt.relativenumber = true -- (-1,+1) line number
 vim.opt.showmatch = true      -- highlight matching parenthesis
@@ -174,7 +174,7 @@ vim.g.python3_host_prog = require("util").system_cmd("which python3")
 vim.opt.termguicolors = true
 vim.api.nvim_command([[
     filetype plugin indent on
-    colorscheme habamax
+    colorscheme nod
 ]])
 vim.opt.background = "dark"
 

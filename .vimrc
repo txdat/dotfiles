@@ -71,7 +71,7 @@ set guicursor+=i:blinkon0
 set ruler " show cursor position
 " set listchars=eol:↴
 " set list " show eol, ...
-set cursorline
+" set cursorline
 set number " show line number
 set relativenumber " (-1,+1) line number
 set showmatch " highlight matching parenthesis
@@ -148,7 +148,7 @@ set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of doc
 
 set termguicolors
 filetype plugin indent on
-colorscheme habamax
+colorscheme nod
 set background="dark"
 
 " ----------------------------------
