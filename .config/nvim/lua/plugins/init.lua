@@ -19,16 +19,16 @@ local plugins = {
     ------------------------------------
 
     -- colorscheme
-    -- {
-    --     "bluz71/vim-moonfly-colors",
-    --     -- "miikanissi/modus-themes.nvim",
-    --     lazy = false,
-    --     priority = 1000,
-    --     config = function()
-    --         require("plugins.colorscheme.moonfly");
-    --         -- require("plugins.colorscheme.modus");
-    --     end
-    -- },
+    {
+        "bluz71/vim-moonfly-colors",
+        -- "miikanissi/modus-themes.nvim",
+        lazy = false,
+        priority = 1000,
+        config = function()
+            require("plugins.colorscheme.moonfly");
+            -- require("plugins.colorscheme.modus");
+        end
+    },
 
     -- statusline
     -- {
@@ -240,16 +240,16 @@ local plugins = {
     ------------------------------------
 
     -- typescript
-    -- {
-    --     "pmizio/typescript-tools.nvim",
-    --     dependencies = {
-    --         "nvim-lua/plenary.nvim",
-    --     },
-    --     ft = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
-    --     config = function()
-    --         require("plugins.lsp.typescript_tools")
-    --     end
-    -- },
+    {
+        "pmizio/typescript-tools.nvim",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        ft = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+        config = function()
+            require("plugins.lsp.typescript_tools")
+        end
+    },
 
     -- latex
     -- {
@@ -266,7 +266,7 @@ require("lazy").setup(plugins, {
         lazy = true,
     },
     install = {
-        colorscheme = { "nod" },
+        colorscheme = { "moonfly" },
     },
     ui = {
         size = { width = 1, height = 1 },

@@ -171,12 +171,12 @@ vim.g.python3_host_prog = require("util").system_cmd("which python3")
 -- colorscheme
 -----------------------------------------
 
-vim.opt.termguicolors = true
-vim.api.nvim_command([[
-    filetype plugin indent on
-    colorscheme nod
-]])
-vim.opt.background = "dark"
+-- vim.opt.termguicolors = true
+-- vim.api.nvim_command([[
+--     filetype plugin indent on
+--     colorscheme elflord
+-- ]])
+-- vim.opt.background = "dark"
 
 -----------------------------------------
 -- autocommand functions
