@@ -146,10 +146,8 @@ set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of doc
 " colorscheme
 " ----------------------------------
 
-set termguicolors
 filetype plugin indent on
-colorscheme torte
-set background="dark"
+colorscheme moonfly
 
 " ----------------------------------
 " autocommands
