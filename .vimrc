@@ -245,11 +245,11 @@ inoremap <silent> <C-s> <cmd>w<CR>
 "inoremap <silent> <C-s> <C-c>:w<CR>
 "nnoremap <silent> <C-S-s> :wa<CR>
 
-nnoremap <silent> qo :copen<CR>
-nnoremap <silent> qq :cclose<CR>
-nnoremap <silent> qc :call setqflist([])<CR>
-nnoremap <silent> ]q :cnext<CR>
-nnoremap <silent> [q :cprev<CR>
+nnoremap <silent> co :copen<CR>
+nnoremap <silent> cq :cclose<CR>
+nnoremap <silent> cc :call setqflist([])<CR>
+nnoremap <silent> ]c :cnext<CR>
+nnoremap <silent> [c :cprev<CR>
 
 "vnoremap <silent> // y/\V<C-R>=escape(@",'/\')<CR><CR>
 "tnoremap <expr> <C-r> '<C-\><C-N>"'.nr2char(getchar()).'pi'

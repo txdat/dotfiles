@@ -55,11 +55,11 @@ keymap({ "n", "i" }, "<C-s>", "<cmd>w<CR>")
 -- keymap({ "n", "i" }, "<C-S-s>", "<cmd>wa<CR>")
 
 -- quickfix list
-keymap("n", "qo", ":copen<CR>")
-keymap("n", "qq", ":cclose<CR>")
-keymap("n", "qc", ":call setqflist([])<CR>") -- clear list
-keymap("n", "]q", ":cnext<CR>")
-keymap("n", "[q", ":cprev<CR>")
+keymap("n", "co", ":copen<CR>")
+keymap("n", "cq", ":cclose<CR>")
+keymap("n", "cc", ":call setqflist([])<CR>") -- clear list
+keymap("n", "]c", ":cnext<CR>")
+keymap("n", "[c", ":cprev<CR>")
 
 -- search yanked text
 -- keymap("v", "//", "\"fy/\\V<C-R>f<CR>")
