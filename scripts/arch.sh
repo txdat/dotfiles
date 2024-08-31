@@ -106,9 +106,9 @@ sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-
 # sudo pacman -S --noconfirm zig zls
 
 # javascript, typescript
-# sudo pacman -S --noconfirm nodejs npm yarn
-# sudo npm install -g typescript typescript-language-server vscode-langservers-extracted prettier @fsouza/prettierd neovim demergi
 # curl -fsSL https://fnm.vercel.app/install | bash
+# fnm use --install-if-missing 20
+# npm install -g typescript typescript-language-server vscode-langservers-extracted prettier @fsouza/prettierd neovim demergi
 
 # java, scala
 # sudo pacman -S --noconfirm jdk17-openjdk maven sbt
@@ -130,7 +130,7 @@ sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-
 # pip install pynvim pyright black ansible awscli --upgrade
 
 # for ML/DS
-# conda create -n mlds python=3.11
+# conda create -n mlds python=3.12
 # pip install numpy scipy cython numba pandas matplotlib seaborn scikit-learn xgboost catboost lightgbm statsmodels treelite treelite_runtime opencv-python opencv-contrib-python jupyterlab --upgrade
 # pip install torch torchvision pytorch-lightning transformers triton taichi --upgrade
 # pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
