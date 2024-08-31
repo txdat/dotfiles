@@ -7,7 +7,7 @@ sudo pacman -S --noconfirm curl wget axel \
                            vi vim neovim lua-language-server luarocks tree-sitter-cli \
                            zip unzip ark \
                            wl-clipboard xclip fzf ripgrep fd jq yq bc bat \
-                           fcitx5 fcitx5-bamboo fcitx5-configtool fcitx5-qt fcitx5-gtk \
+                           fcitx5 fcitx5-unikey fcitx5-configtool fcitx5-qt fcitx5-gtk \
                            openssh pacman-contrib amd-ucode \
                            bluez bluez-utils \
                            xdg-desktop-portal-gtk \

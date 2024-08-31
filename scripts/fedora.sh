@@ -19,7 +19,7 @@ sudo dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld
 
 # base packages
 sudo dnf copr enable atim/lazygit -y
-sudo dnf install -y axel git lazygit git-delta zsh tmux ranger openssh xclip fzf ripgrep fd-find jq bat vim neovim alacritty chromium zathura zathura-pdf-mupdf mpv
+sudo dnf install -y axel git lazygit git-delta zsh tmux ranger openssh xclip fzf ripgrep fd-find jq bat vim neovim alacritty chromium zathura zathura-pdf-mupdf mpv fcitx5 fcitx5-configtool fcitx5-qt fcitx5-gtk fcitx5-unikey
 
 # flatpak applications
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
