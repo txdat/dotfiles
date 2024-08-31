@@ -104,8 +104,11 @@ export PATH="$HOME/.cargo/env:$HOME/.rustup/toolchains/stable-x86_64-unknown-lin
 
 # javascript/typescript
 # fnm
-export PATH="$HOME/.local/share/fnm:$PATH"
-eval "`fnm env`"
+FNM_PATH="$HOME/.local/share/fnm"
+if [ -d "$FNM_PATH" ]; then
+  export PATH="$FNM_PATH:$PATH"
+  eval "`fnm env`"
+fi
 
 # kubernetes
 export KUBECONFIG=$HOME/.kube/config
@@ -115,7 +118,8 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 # aliases
 alias ls="ls --color"
 
-alias sysu="sudo pacman -Syyu && paru -Syyu && flatpak update"
+#alias sysu="sudo pacman -Syyu && paru -Syyu && flatpak update"
+alias sysu="sudo dnf update && flatpak update"
 
 alias x2cb="xclip -sel c" # copy output to clipboard
 alias f2cb="xclip -sel c < " # copy from file to clipboard

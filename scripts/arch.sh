@@ -2,16 +2,16 @@
 
 # install base packages
 sudo pacman -S --noconfirm curl wget axel \
-                        git lazygit git-delta \
-                        zsh fish tmux htop ranger neofetch \
-                        vi vim neovim lua-language-server luarocks tree-sitter-cli \
-                        zip unzip ark \
-                        wl-clipboard xclip fzf ripgrep fd jq yq bc bat \
-                        fcitx5 fcitx5-bamboo fcitx5-configtool fcitx5-qt fcitx5-gtk \
-                        openssh pacman-contrib amd-ucode \
-                        bluez bluez-utils \
-                        xdg-desktop-portal-gtk \
-                        # xorg-xrandr
+                           git lazygit git-delta \
+                           zsh fish tmux htop ranger neofetch \
+                           vi vim neovim lua-language-server luarocks tree-sitter-cli \
+                           zip unzip ark \
+                           wl-clipboard xclip fzf ripgrep fd jq yq bc bat \
+                           fcitx5 fcitx5-bamboo fcitx5-configtool fcitx5-qt fcitx5-gtk \
+                           openssh pacman-contrib amd-ucode \
+                           bluez bluez-utils \
+                           xdg-desktop-portal-gtk \
+                           # xorg-xrandr
 
 sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra && \
 sudo fc-cache -vfs
@@ -53,36 +53,24 @@ sudo tee -a /etc/sddm.conf > /dev/null <<EOL
 GreeterEnvironment=QT_WAYLAND_SHELL_INTEGRATION=layer-shell, QT_SCALE_FACTOR=2
 EOL
 
-# install paru
+# compile paru for AUR
 sudo pacman -S --noconfirm rustup
-
-# install rust toolchain
 rustup toolchain install stable && rustup default stable
-
-# compile paru
 git clone --depth=1 https://aur.archlinux.org/paru .paru && cd .paru/ && makepkg -si && cd -
 
 # install essential applications
 sudo pacman -S --noconfirm dolphin alacritty chromium gwenview spectacle mpv zathura zathura-pdf-mupdf okular konsole libreoffice-still
 
+# install nvidia driver
+# sudo pacman -S --noconfirm nvidia nvidia-utils
+
+# install flatpak applications
+flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
 flatpak install flathub net.ankiweb.Anki
 flatpak install flathub com.dropbox.Client
 flatpak install flathub com.spotify.Client
 flatpak install flathub com.calibre_ebook.calibre
 flatpak install flathub md.obsidian.Obsidian
-flatpak install flathub rest.insomnia.Insomnia
-flatpak install flathub io.dbeaver.DBeaverCommunity
-flatpak install flathub com.mongodb.Compass
-
-# git config
-# git config --global user.name "txdat" && \
-# git config --global user.email "dattranx105@gmail.com" && \
-# ssh-keygen
-
-# install essential development packages
-sudo pacman -S --noconfirm gcc gdb clang llvm lldb lld make cmake ccache ctags valgrind strace
-sudo pacman -S --noconfirm cblas openblas openmp openmpi lapack lapacke eigen tbb boost ffmpeg4.4 libuv gperftools gflags google-glog gtest protobuf cuda cudnn nvidia-utils opencv-cuda
-sudo pacman -S --noconfirm nvidia
 
 # zsh
 mkdir -p .zsh && \
@@ -94,15 +82,18 @@ chsh -s $(which zsh)
 # fish
 # chsh -s $(which fish)
 
-# install fonts
-sudo cp -r ~/.dotfiles/fonts/* /usr/share/fonts && sudo fc-cache -vfs
-
 # fix emoji displaying
 sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /usr/share/fontconfig/conf.avail/75-noto-color-emoji.conf && \
 sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-emoji.conf
 
 # enable nvim's dap for c/c++/rust
 # echo 0 | sudo tee /proc/sys/kernel/yama/ptrace_scope
+
+# c/c++
+# sudo pacman -S --noconfirm gcc gdb clang llvm lldb lld make cmake ccache ctags valgrind strace
+# sudo pacman -S --noconfirm cblas openblas openmp openmpi lapack lapacke eigen tbb boost ffmpeg4.4 libuv gperftools gflags google-glog gtest protobuf
+# cuda development
+# sudo pacman -S --noconfirm cuda cudnn opencv-cuda
 
 # rust
 # rustup component add rust-src
@@ -136,9 +127,9 @@ sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-
 # rm -f ./Miniconda3-latest-Linux-x86_64.sh
 # conda update --all -y
 # conda config --set auto_activate_base false
-# pip install pynvim pyright black ansible --upgrade
+# pip install pynvim pyright black ansible awscli --upgrade
 
-# ml/ds env
+# for ML/DS
 # conda create -n mlds python=3.11
 # pip install numpy scipy cython numba pandas matplotlib seaborn scikit-learn xgboost catboost lightgbm statsmodels treelite treelite_runtime opencv-python opencv-contrib-python jupyterlab --upgrade
 # pip install torch torchvision pytorch-lightning transformers triton taichi --upgrade
