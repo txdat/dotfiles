@@ -123,3 +123,5 @@ require("nvim-treesitter.configs").setup({
     --     -- },
     -- },
 })
+
+require("ts-comments.config").setup()
