@@ -186,6 +186,7 @@ cmp.setup({
       cmp.config.compare.exact,
       cmp.config.compare.score,
       cmp.config.compare.recently_used,
+      cmp.config.compare.kind,
 
       -- cmp-under
       function(entry1, entry2)
@@ -201,7 +202,6 @@ cmp.setup({
       end,
 
       -- cmp.config.compare.locality,
-      -- cmp.config.compare.kind,
       -- cmp.config.compare.sort_text,
       -- cmp.config.compare.length,
       -- cmp.config.compare.order,

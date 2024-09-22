@@ -1,5 +1,5 @@
 #export TERM="xterm-256color"
-export EDITOR="vim"
+export EDITOR="vim --clean"
 
 # set prompt
 function _git_branch() {

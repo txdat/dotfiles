@@ -6,6 +6,7 @@ require("fzf-lua").setup({
     "max-perf",
     winopts = {
         border = "none",
+        backdrop = 0, -- opaque
         fullscreen = true,
         preview = {
             default = "bat_native",
@@ -14,13 +15,14 @@ require("fzf-lua").setup({
             border = "noborder",
             layout = "horizontal",
             scrollbar = false,
+            title = false,
         },
     },
     fzf_opts = {
         ["--ansi"]           = "",
         ["--multi"]          = "",
         ["--no-separator"]   = "",
-        ["--scrollbar"]      = "''",
+        ["--scrollbar"]      = "",
         ["--info"]           = "inline-right",
         ["--height"]         = "100%",
         ["--layout"]         = "reverse",
@@ -75,6 +77,7 @@ require("fzf-lua").setup({
         no_header_i = true,
     },
     lsp = {
+        -- cwd_only = true,
         symbols = {
             symbol_style = 3, -- kind only
         },
@@ -84,8 +87,8 @@ require("fzf-lua").setup({
     },
     diagnostics = {
         cwd_only = true,
-        -- severity_only = "error", -- error only
-        severity_limit = "warning",
+        severity_only = "error",
+        -- severity_limit = "warning",
         signs = {
             ["Error"] = { text = "", texthl = "DiagnosticError" },
             ["Warn"]  = { text = "", texthl = "DiagnosticWarn" },
@@ -95,11 +98,11 @@ require("fzf-lua").setup({
     },
     keymap = {
         fzf = {
+            ["ctrl-a"] = "toggle-all",
             ["ctrl-p"] = "toggle-preview",
             ["alt-w"] = "toggle-preview-wrap",
             ["alt-j"] = "preview-page-down",
             ["alt-k"] = "preview-page-up",
-            ["alt-a"] = "toggle-all",
         },
     },
 })
