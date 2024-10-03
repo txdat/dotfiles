@@ -146,10 +146,10 @@ set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of doc
 " colorscheme
 " ----------------------------------
 
-set termguicolors
-filetype plugin indent on
-colorscheme moonfly
+" set termguicolors
+" filetype plugin indent on
 " set background="dark"
+colorscheme moonfly
 
 " ----------------------------------
 " autocommands
@@ -282,7 +282,8 @@ Plug 'junegunn/fzf.vim'
 
 let g:fzf_vim = {}
 "let g:fzf_vim.command_prefix = 'Fzf'
-let g:fzf_layout = { 'window': { 'width': 1.0, 'height': 1.0, 'relative': v:true } }
+"let g:fzf_layout = { 'window': { 'width': 1.0, 'height': 1.0, 'relative': v:true } }
+let g:fzf_layout = { 'down': '100%' }
 
 " overwrite fzf's functions
 command! -bang -nargs=* Files call fzf#run(fzf#wrap(
