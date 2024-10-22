@@ -149,7 +149,7 @@ set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of doc
 " set termguicolors
 " filetype plugin indent on
 " set background="dark"
-colorscheme moonfly
+colorscheme nod
 
 " ----------------------------------
 " autocommands
@@ -284,6 +284,18 @@ let g:fzf_vim = {}
 "let g:fzf_vim.command_prefix = 'Fzf'
 "let g:fzf_layout = { 'window': { 'width': 1.0, 'height': 1.0, 'relative': v:true } }
 let g:fzf_layout = { 'down': '100%' }
+
+function! s:build_quickfix_list(lines)
+  call setqflist(map(copy(a:lines), '{ "filename": v:val }'))
+  copen
+  cc
+endfunction
+
+let g:fzf_action = {
+  \ 'ctrl-q': function('s:build_quickfix_list'),
+  \ 'ctrl-t': 'tab split',
+  \ 'ctrl-x': 'split',
+  \ 'ctrl-v': 'vsplit' }
 
 " overwrite fzf's functions
 command! -bang -nargs=* Files call fzf#run(fzf#wrap(
