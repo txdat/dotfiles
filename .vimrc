@@ -146,10 +146,15 @@ set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of doc
 " colorscheme
 " ----------------------------------
 
-" set termguicolors
-" filetype plugin indent on
+set termguicolors
+filetype plugin indent on
+colorscheme koehler
+hi Normal guibg=#000000 guifg=#c6c6c6
+hi LineNr guibg=bg
+hi foldcolumn guibg=bg
+hi Folded guibg=bg
+hi VertSplit guibg=bg guifg=bg
 " set background="dark"
-colorscheme nod
 
 " ----------------------------------
 " autocommands
@@ -277,6 +282,8 @@ packadd! comment
 
 call plug#begin()
 
+Plug 'tpope/vim-surround'
+
 " fzf{{{
 Plug 'junegunn/fzf.vim'
 
@@ -306,7 +313,7 @@ command! -bang -nargs=* Files call fzf#run(fzf#wrap(
         \ --follow
         \ --exclude .git
         \ '.shellescape(<q-args>),
-  \   fzf#vim#with_preview(),
+  \   fzf#vim#with_preview({'options': '--preview "bat --color=always --style=numbers,changes {}"'}),
   \   <bang>0))
 
 command! -bang -nargs=* Rg call fzf#vim#grep(
@@ -321,7 +328,7 @@ command! -bang -nargs=* Rg call fzf#vim#grep(
         \ --smart-case
         \ --glob "!.git/*"
         \ '.shellescape(<q-args>),
-  \   fzf#vim#with_preview(),
+  \   fzf#vim#with_preview({'options': '--preview "bat --color=always --style=numbers,changes {}"'}),
   \   <bang>0)
 
 nnoremap <silent> <leader>fs :GFiles?<CR>

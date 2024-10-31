@@ -171,12 +171,16 @@ vim.g.python3_host_prog = require("util").system_cmd("which python3")
 -- colorscheme
 -----------------------------------------
 
--- vim.api.nvim_command([[
---     set termguicolors
---     filetype plugin indent on
---     colorscheme vim
---     " set background="dark"
--- ]])
+vim.api.nvim_command([[
+set termguicolors
+filetype plugin indent on
+colorscheme koehler
+hi Normal guibg=#000000 guifg=#c6c6c6
+hi LineNr guibg=bg
+hi foldcolumn guibg=bg
+hi Folded guibg=bg
+hi VertSplit guibg=bg guifg=bg
+]])
 
 -----------------------------------------
 -- autocommand functions

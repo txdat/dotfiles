@@ -19,16 +19,16 @@ local plugins = {
     ------------------------------------
 
     -- colorscheme
-    {
-        "bluz71/vim-moonfly-colors",
-        -- "miikanissi/modus-themes.nvim",
-        lazy = false,
-        priority = 1000,
-        config = function()
-            require("plugins.colorscheme.moonfly");
-            -- require("plugins.colorscheme.modus");
-        end
-    },
+    -- {
+    --     "bluz71/vim-moonfly-colors",
+    --     -- "miikanissi/modus-themes.nvim",
+    --     lazy = false,
+    --     priority = 1000,
+    --     config = function()
+    --         require("plugins.colorscheme.moonfly");
+    --         -- require("plugins.colorscheme.modus");
+    --     end
+    -- },
 
     -- statusline
     -- {
@@ -87,14 +87,14 @@ local plugins = {
         end
     },
 
-    -- surround selections
-    -- {
-    --     "kylechui/nvim-surround",
-    --     event = "InsertEnter",
-    --     config = function()
-    --         require("plugins.surround")
-    --     end,
-    -- },
+    -- surrounding
+    {
+        "kylechui/nvim-surround",
+        event = "InsertEnter",
+        config = function()
+            require("plugins.surround")
+        end,
+    },
 
     -- navigation
     -- {
@@ -267,7 +267,7 @@ require("lazy").setup(plugins, {
         lazy = true,
     },
     install = {
-        colorscheme = { "moonfly" },
+        colorscheme = { "koehler" },
     },
     ui = {
         size = { width = 1, height = 1 },
