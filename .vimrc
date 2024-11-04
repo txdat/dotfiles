@@ -148,11 +148,8 @@ set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of doc
 
 set termguicolors
 filetype plugin indent on
-colorscheme koehler
+colorscheme habamax
 hi Normal guibg=#000000 guifg=#c6c6c6
-hi LineNr guibg=bg
-hi foldcolumn guibg=bg
-hi Folded guibg=bg
 hi VertSplit guibg=bg guifg=bg
 " set background="dark"
 
