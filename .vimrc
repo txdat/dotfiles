@@ -148,9 +148,12 @@ set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of doc
 
 set termguicolors
 filetype plugin indent on
-colorscheme habamax
-hi Normal guibg=#000000 guifg=#c6c6c6
-hi VertSplit guibg=bg guifg=bg
+colorscheme seoul256
+hi Normal guibg=#000000 guifg=#cccccc
+hi VertSplit guibg=NONE guifg=NONE
+hi LineNr guibg=NONE
+hi SignColumn guibg=NONE
+hi FoldColumn guibg=NONE
 " set background="dark"
 
 " ----------------------------------

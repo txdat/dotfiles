@@ -3,7 +3,7 @@ draw_bold_text_with_bright_colors = false
 
 [colors.primary]
 background = "#000000"
-foreground = "#c6c6c6"
+foreground = "#cccccc"
 
 [cursor]
 unfocused_hollow = true

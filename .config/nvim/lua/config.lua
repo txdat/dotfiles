@@ -174,9 +174,12 @@ vim.g.python3_host_prog = require("util").system_cmd("which python3")
 vim.api.nvim_command([[
 set termguicolors
 filetype plugin indent on
-colorscheme habamax
-hi Normal guibg=#000000 guifg=#c6c6c6
-hi VertSplit guibg=bg guifg=bg
+colorscheme seoul256
+hi Normal guibg=#000000 guifg=#cccccc
+hi VertSplit guibg=NONE guifg=NONE
+hi LineNr guibg=NONE
+hi SignColumn guibg=NONE
+hi FoldColumn guibg=NONE
 ]])
 
 -----------------------------------------

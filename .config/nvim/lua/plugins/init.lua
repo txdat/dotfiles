@@ -241,16 +241,16 @@ local plugins = {
     ------------------------------------
 
     -- typescript
-    {
-        "pmizio/typescript-tools.nvim",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
-        ft = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
-        config = function()
-            require("plugins.lsp.typescript_tools")
-        end
-    },
+    -- {
+    --     "pmizio/typescript-tools.nvim",
+    --     dependencies = {
+    --         "nvim-lua/plenary.nvim",
+    --     },
+    --     ft = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
+    --     config = function()
+    --         require("plugins.lsp.typescript_tools")
+    --     end
+    -- },
 
     -- latex
     -- {
