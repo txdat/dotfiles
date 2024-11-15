@@ -32,8 +32,8 @@ keymap("n", "<C-t>", ":Term<CR>")  -- open terminal
 -- keymap("t", "<Esc>", "<C-\\><C-n>") -- exit without closing
 
 -- switch tabs
-keymap("n", "[t", "gT")
-keymap("n", "]t", "gt")
+keymap("n", "[t", ":tabprevious<CR>")
+keymap("n", "]t", ":tabnext<CR>")
 keymap("n", "\\t", ":tablast<CR>")
 
 -- switch buffers

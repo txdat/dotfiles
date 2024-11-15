@@ -9,7 +9,6 @@ ln -s ~/.dotfiles/.vimrc ~/.vimrc
 ln -s ~/.dotfiles/.vim ~/.vim
 ln -s ~/.dotfiles/.zshrc ~/.zshrc
 ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
-ln -s ~/.vim/colors ~/.config/nvim/colors
 
 active_configs=(
     "alacritty"
@@ -19,7 +18,6 @@ active_configs=(
     "mpv"
     "nvim"
     "ranger"
-    "zathura"
 )
 
 rm -rf ~/.config/fcitx5

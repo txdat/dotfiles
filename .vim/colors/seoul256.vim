@@ -441,3 +441,10 @@ if s:colors_name != g:colors_name || s:background == s:style
 else
   let &background = s:background
 endif
+
+" customization
+hi Normal guibg=#000000 guifg=#cccccc
+hi VertSplit guibg=NONE guifg=NONE
+hi LineNr guibg=NONE
+hi SignColumn guibg=NONE
+hi FoldColumn guibg=NONE

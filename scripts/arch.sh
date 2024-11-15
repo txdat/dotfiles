@@ -2,16 +2,14 @@
 
 # install base packages
 sudo pacman -S --noconfirm curl wget axel \
-                           git lazygit git-delta difftastic \
-                           zsh fish tmux htop ranger neofetch \
-                           vi vim neovim lua-language-server luarocks tree-sitter-cli \
+                           git lazygit git-delta \
+                           zsh tmux htop ranger \
+                           vi vim neovim \
                            zip unzip ark \
-                           wl-clipboard xclip fzf ripgrep fd jq yq bc bat \
+                           xclip fzf ripgrep fd jq bat \
                            fcitx5 fcitx5-unikey fcitx5-configtool fcitx5-qt fcitx5-gtk \
                            openssh pacman-contrib amd-ucode \
-                           bluez bluez-utils \
-                           xdg-desktop-portal-gtk \
-                           # xorg-xrandr
+                           bluez bluez-utils
 
 sudo pacman -S --noconfirm noto-fonts noto-fonts-cjk noto-fonts-emoji noto-fonts-extra && \
 sudo fc-cache -vfs
@@ -22,25 +20,25 @@ sudo systemctl enable fstrim.timer
 sudo systemctl enable paccache.timer
 sudo systemctl enable bluetooth.service
 
-# nvidia's hook
-sudo mkdir -p /etc/pacman.d/hooks
-sudo tee -a /etc/pacman.d/hooks/nvidia.hook > /dev/null <<EOL
-[Trigger]
-Operation=Install
-Operation=Upgrade
-Operation=Remove
-Type=Package
-Target=nvidia
-Target=linux
-# Change the linux part above and in the Exec line if a different kernel is used
-
-[Action]
-Description=Update NVIDIA module in initcpio
-Depends=mkinitcpio
-When=PostTransaction
-NeedsTargets
-Exec=/bin/sh -c 'while read -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
-EOL
+# # nvidia's hook
+# sudo mkdir -p /etc/pacman.d/hooks
+# sudo tee -a /etc/pacman.d/hooks/nvidia.hook > /dev/null <<EOL
+# [Trigger]
+# Operation=Install
+# Operation=Upgrade
+# Operation=Remove
+# Type=Package
+# Target=nvidia
+# Target=linux
+# # Change the linux part above and in the Exec line if a different kernel is used
+#
+# [Action]
+# Description=Update NVIDIA module in initcpio
+# Depends=mkinitcpio
+# When=PostTransaction
+# NeedsTargets
+# Exec=/bin/sh -c 'while read -r trg; do case \$trg in linux) exit 0; esac; done; /usr/bin/mkinitcpio -P'
+# EOL
 
 # set sddm high dpi
 # sudo mkdir -p /etc/sddm.conf.d
@@ -59,18 +57,13 @@ rustup toolchain install stable && rustup default stable
 git clone --depth=1 https://aur.archlinux.org/paru .paru && cd .paru/ && makepkg -si && cd -
 
 # install essential applications
-sudo pacman -S --noconfirm dolphin alacritty chromium gwenview spectacle mpv zathura zathura-pdf-mupdf okular konsole libreoffice-still
+sudo pacman -S --noconfirm dolphin alacritty chromium gwenview spectacle mpv okular libreoffice-still
 
 # install nvidia driver
 # sudo pacman -S --noconfirm nvidia nvidia-utils
 
 # install flatpak applications
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-flatpak install flathub net.ankiweb.Anki
-flatpak install flathub com.dropbox.Client
-flatpak install flathub com.spotify.Client
-flatpak install flathub com.calibre_ebook.calibre
-flatpak install flathub md.obsidian.Obsidian
 
 # zsh
 mkdir -p .zsh && \
@@ -92,7 +85,6 @@ sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-
 # c/c++
 # sudo pacman -S --noconfirm gcc gdb clang llvm lldb lld make cmake ccache ctags valgrind strace
 # sudo pacman -S --noconfirm cblas openblas openmp openmpi lapack lapacke eigen tbb boost ffmpeg4.4 libuv gperftools gflags google-glog gtest protobuf
-# cuda development
 # sudo pacman -S --noconfirm cuda cudnn opencv-cuda
 
 # rust
@@ -102,12 +94,9 @@ sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-
 # golang
 # sudo pacman -S --noconfirm go gopls
 
-# zig
-# sudo pacman -S --noconfirm zig zls
-
 # javascript, typescript
 # curl -fsSL https://fnm.vercel.app/install | bash
-# fnm use --install-if-missing 20
+# fnm use --install-if-missing 22
 # npm install -g typescript typescript-language-server vscode-langservers-extracted prettier @fsouza/prettierd neovim demergi
 
 # java, scala
@@ -146,12 +135,14 @@ sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-
 # docker
 # sudo pacman -S --noconfirm docker docker-compose
 # sudo usermod -aG docker $USER
-# paru -S --noconfirm nvidia-container-runtime nvidia-container-toolkit
 
 # k8s
 # sudo pacman -S --noconfirm kubectl helm terraform
-# sudo pacman -S --noconfirm skaffold nfs-utils
 # curl -sfL https://get.k3s.io | sh -
+# paru -S --noconfirm google-cloud-cli google-cloud-cli-gke-gcloud-auth-plugin aws-cli-v2
+
+# docker/k8s nvidia runtime
+# paru -S --noconfirm nvidia-container-runtime nvidia-container-toolkit
 # sudo mkdir -p /etc/docker && sudo ln -s ~/.dotfiles/k3s/docker/daemon.json /etc/docker/daemon.json
 # sudo mkdir -p /etc/containerd && sudo ln -s ~/.dotfiles/k3s/containerd/config.toml /etc/containerd/config.toml
 

@@ -232,8 +232,8 @@ nnoremap <silent> <A-v> :vsplit<CR>
 nnoremap <silent> <C-t> :term<CR>
 "tnoremap <silent> <Esc> <C-\><C-n>
 
-nnoremap <silent> [t :gT<CR>
-nnoremap <silent> ]t :gt<CR>
+nnoremap <silent> [t :tabprevious<CR>
+nnoremap <silent> ]t :tabnext<CR>
 nnoremap <silent> \t :tablast<CR>
 
 nnoremap <silent> [b :bprevious<CR>

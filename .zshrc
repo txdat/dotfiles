@@ -118,8 +118,8 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 # aliases
 alias ls="ls --color"
 
-#alias sysu="sudo pacman -Syyu && paru -Syyu && flatpak update"
-alias sysu="sudo dnf update && flatpak update"
+alias sysu="sudo pacman -Syyu && paru -Syyu && flatpak update"
+# alias sysu="sudo dnf update && flatpak update"
 
 alias x2cb="xclip -sel c" # copy output to clipboard
 alias f2cb="xclip -sel c < " # copy from file to clipboard

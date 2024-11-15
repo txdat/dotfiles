@@ -175,11 +175,6 @@ vim.api.nvim_command([[
 set termguicolors
 filetype plugin indent on
 colorscheme seoul256
-hi Normal guibg=#000000 guifg=#cccccc
-hi VertSplit guibg=NONE guifg=NONE
-hi LineNr guibg=NONE
-hi SignColumn guibg=NONE
-hi FoldColumn guibg=NONE
 ]])
 
 -----------------------------------------
