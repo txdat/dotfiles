@@ -160,21 +160,21 @@ hi FoldColumn guibg=NONE
 " autocommands
 " ----------------------------------
 
-" highlight on yank (selected copy)
-function s:matchdelete(match, win)
-    silent! call matchdelete(a:match, a:win)
-endfunction
-
-function! s:FlashYankedText()
-    let match = matchadd('Visual',".\\%>'\\[\\_.*\\%<']..")
-    let win = win_getid()
-    call timer_start(500, {-> s:matchdelete(match, win)})
-endfunction
-
-augroup YankHighlight
-    autocmd!
-    autocmd TextYankPost * if v:event.operator == 'y' | call s:FlashYankedText() | endif
-augroup END
+" " highlight on yank (selected copy)
+" function s:matchdelete(match, win)
+"     silent! call matchdelete(a:match, a:win)
+" endfunction
+"
+" function! s:FlashYankedText()
+"     let match = matchadd('Visual',".\\%>'\\[\\_.*\\%<']..")
+"     let win = win_getid()
+"     call timer_start(500, {-> s:matchdelete(match, win)})
+" endfunction
+"
+" augroup YankHighlight
+"     autocmd!
+"     autocmd TextYankPost * if v:event.operator == 'y' | call s:FlashYankedText() | endif
+" augroup END
 
 " remove whitespace on save
 autocmd BufWritePre * :%s/\\s\\+$//e

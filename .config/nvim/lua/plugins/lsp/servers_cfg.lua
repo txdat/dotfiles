@@ -102,12 +102,15 @@ M.pyright = {}
 -- M.hls = {}
 
 -- typescript-language-server
-M.tsserver = {
+M.ts_ls = {
   filetypes = { "javascript", "javascriptreact", "javascript.jsx", "typescript", "typescriptreact", "typescript.tsx" },
   settings = {
     completions = {
       completeFunctionCalls = false,
     },
+    exclude = {
+      "node_modules"
+    }
   },
 }
 

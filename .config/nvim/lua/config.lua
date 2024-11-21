@@ -182,13 +182,13 @@ colorscheme seoul256
 -----------------------------------------
 
 -- highlight on yank (selected copy)
-augroup("YankHighlight", { clear = true })
-autocmd("TextYankPost", {
-    group = "YankHighlight",
-    callback = function()
-        vim.highlight.on_yank({ higroup = "IncSearch", timeout = "500" })
-    end
-})
+-- augroup("YankHighlight", { clear = true })
+-- autocmd("TextYankPost", {
+--     group = "YankHighlight",
+--     callback = function()
+--         vim.highlight.on_yank({ higroup = "IncSearch", timeout = "500" })
+--     end
+-- })
 
 -- remove whitespace on save
 autocmd("BufWritePre", {
