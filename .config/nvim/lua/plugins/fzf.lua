@@ -65,6 +65,8 @@ require("fzf-lua").setup({
         rg_glob      = true,
         no_header    = true,
         no_header_i  = true,
+        -- glob_flag      = "--iglob", -- case insensitive globs
+        glob_separator = "%s%-%-", -- query separator pattern (lua): ' --'
     },
     lines = {
         previewer = false,

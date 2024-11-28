@@ -75,7 +75,7 @@ set ruler " show cursor position
 set number " show line number
 set relativenumber " (-1,+1) line number
 set showmatch " highlight matching parenthesis
-set foldmethod=marker " enable folding
+" set foldmethod=marker " enable folding
 set signcolumn=auto
 set splitright " vertical split to the right
 set splitbelow " horizontal split to the bottom
@@ -149,11 +149,6 @@ set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of doc
 set termguicolors
 filetype plugin indent on
 colorscheme seoul256
-hi Normal guibg=#000000 guifg=#cccccc
-hi VertSplit guibg=NONE guifg=NONE
-hi LineNr guibg=NONE
-hi SignColumn guibg=NONE
-hi FoldColumn guibg=NONE
 " set background="dark"
 
 " ----------------------------------
@@ -265,7 +260,13 @@ nnoremap <silent> [c :cprev<CR>
 "vnoremap <silent> J :move '>+1<CR>gv=gv
 "vnoremap <silent> K :move '<-2<CR>gv=gv
 
-nnoremap <silent> <F2> :%s/<C-r>"//g<Left><Left>
+" nnoremap <silent> <F2> :%s/<C-r>"//g<Left><Left>
+nnoremap <silent> <F2> :%s/\<<C-r><C-w>\>//g<Left><Left>
+
+" duplicate a line and comment out the first line
+nnoremap <silent> yc yy<cmd>normal gcc<CR>p
+
+nnoremap <silent> <C-c> ciw
 
 "nnoremap <silent> <C-j> :resize -2<CR>
 "nnoremap <silent> <C-k> :resize +2<CR>
@@ -282,7 +283,7 @@ packadd! comment
 
 call plug#begin()
 
-Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-surround'
 
 " fzf{{{
 Plug 'junegunn/fzf.vim'
@@ -368,6 +369,17 @@ nmap <silent> gn <Plug>(coc-rename)
 xmap <silent> ga <Plug>(coc-codeaction-selected)
 nmap <silent> ga <Plug>(coc-codeaction-selected)
 nmap <silent> <C-i> <Plug>(coc-format)
+
+let g:coc_global_extensions = [
+  \ 'coc-pairs',
+  \ 'coc-json',
+  \ 'coc-yaml',
+  \ 'coc-clangd',
+  \ 'coc-pyright',
+  \ 'coc-tsserver',
+  \ 'coc-eslint',
+  \ 'coc-prettier',
+  \ ]
 "}}}
 
 call plug#end()
