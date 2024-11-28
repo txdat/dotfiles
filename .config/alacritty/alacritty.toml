@@ -133,7 +133,7 @@ decorations = "full"
 dynamic_title = true
 opacity = 1.0
 startup_mode = "Windowed"
-title = "Alacritty"
+title = "Terminal"
 
 [window.padding]
 x = 5

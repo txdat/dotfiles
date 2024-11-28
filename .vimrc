@@ -265,7 +265,13 @@ nnoremap <silent> [c :cprev<CR>
 "vnoremap <silent> J :move '>+1<CR>gv=gv
 "vnoremap <silent> K :move '<-2<CR>gv=gv
 
-nnoremap <silent> <F2> :%s/<C-r>"//g<Left><Left>
+" nnoremap <silent> <F2> :%s/<C-r>"//g<Left><Left>
+nnoremap <silent> <F2> :%s/\<<C-r><C-w>\>//g<Left><Left>
+
+" duplicate a line and comment out the first line
+nnoremap <silent> yc yy<cmd>normal gcc<CR>p
+
+nnoremap <silent> <C-c> ciw
 
 "nnoremap <silent> <C-j> :resize -2<CR>
 "nnoremap <silent> <C-k> :resize +2<CR>
@@ -282,7 +288,7 @@ packadd! comment
 
 call plug#begin()
 
-Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-surround'
 
 " fzf{{{
 Plug 'junegunn/fzf.vim'
@@ -368,6 +374,16 @@ nmap <silent> gn <Plug>(coc-rename)
 xmap <silent> ga <Plug>(coc-codeaction-selected)
 nmap <silent> ga <Plug>(coc-codeaction-selected)
 nmap <silent> <C-i> <Plug>(coc-format)
+
+let g:coc_global_extensions = [
+  \ 'coc-pairs',
+  \ 'coc-json',
+  \ 'coc-clangd',
+  \ 'coc-pyright',
+  \ 'coc-tsserver',
+  \ 'coc-eslint',
+  \ 'coc-prettier',
+  \ ]
 "}}}
 
 call plug#end()

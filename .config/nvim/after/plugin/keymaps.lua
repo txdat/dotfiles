@@ -19,7 +19,7 @@ keymap("n", "<F1>", ":set wrap!<CR>") -- toggle wrapping
 -- keymap("n", "<C-l>", "[s1z=<C-o>")
 -- keymap("i", "<C-l>", "<C-g>u<ESC>[s1z=`]a<C-g>u")
 
-keymap("n", "DD", '"_dd') -- delete
+keymap("n", "DD", '"_dd') -- delete without saving to register
 
 keymap("n", "H", "^")
 keymap("n", "L", "$")
@@ -73,7 +73,8 @@ keymap("t", "<C-r>", [['<C-\><C-N>"'.nr2char(getchar()).'pi']], { expr = true })
 -- keymap("v", "K", ":move '<-2<CR>gv=gv")
 
 -- replace yanked text
-keymap("n", "<F2>", ':%s/<C-r>"//g<Left><Left>')
+-- keymap("n", "<F2>", ':%s/<C-r>"//g<Left><Left>')
+keymap("n", "<F2>", ':%s/<C-r><C-w>//g<Left><Left>')
 
 -- multicursor replacing
 keymap("n", "<A-r>", function()
@@ -82,6 +83,11 @@ keymap("n", "<A-r>", function()
     vim.api.nvim_feedkeys("ciw", "n", false)
 end)
 keymap("v", "<A-r>", [[y/\V<C-R>=escape(@",'/\')<CR><CR>Ncgn]])
+
+-- duplicate a line and comment out the first line
+keymap("n", "yc", "yy<cmd>normal gcc<CR>p")
+
+keymap("n", "<C-c>", "ciw")
 
 -- resize pane
 -- keymap("n", "<C-j>", ":resize -2<CR>")
