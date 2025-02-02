@@ -174,7 +174,8 @@ vim.g.python3_host_prog = require("util").system_cmd("which python3")
 vim.api.nvim_command([[
 set termguicolors
 filetype plugin indent on
-colorscheme seoul256
+syntax on
+colorscheme monokai
 ]])
 
 -----------------------------------------
