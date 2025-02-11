@@ -69,6 +69,7 @@ set guicursor+=n-v-c:blinkon0
 set guicursor+=i:blinkon0
 " set colorcolumn=80
 set ruler " show cursor position
+set fillchars+=vert:\ 
 " set listchars=eol:↴
 " set list " show eol, ...
 " set cursorline

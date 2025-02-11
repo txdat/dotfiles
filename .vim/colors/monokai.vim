@@ -283,19 +283,20 @@ endif
 " coc
 " ---
 
-hi! link CocErrorSign Error
+" hi! link CocErrorSign Error
+call s:h("CocErrorSign",            { "fg": s:red })
 call s:h("CocErrorHighlight",       { "fg": s:red, "format": "undercurl" })
 call s:h("CocErrorFloat",           { "fg": s:purered, "bg": s:lightblack3 })
 
-call s:h("CocWarningSign",          { "fg": s:orange, "bg": s:lightblack })
+call s:h("CocWarningSign",          { "fg": s:orange })
 call s:h("CocWarningHighlight",     { "fg": s:orange, "format": "undercurl" })
 call s:h("CocWarningFloat",         { "fg": s:orange, "bg": s:lightblack3 })
 
-call s:h("CocInfoSign",             { "fg": s:orange, "bg": s:lightblack3 })
+call s:h("CocInfoSign",             { "fg": s:orange })
 call s:h("CocInfoHighlight",        { "fg": s:orange, "format": "undercurl" })
 call s:h("CocInfoFloat",            { "fg": s:aqua, "bg": s:lightblack3 })
 
-call s:h("CocHintSign",             { "fg": s:orange, "bg": s:lightblack3 })
+call s:h("CocHintSign",             { "fg": s:orange })
 call s:h("CocHintHighlight",        { "fg": s:orange, "format": "undercurl" })
 call s:h("CocHintFloat",            { "fg": s:aqua, "bg": s:lightblack3 })
 
@@ -516,7 +517,7 @@ endif
 
 " customization
 hi Normal guibg=#000000 guifg=#cccccc
-hi VertSplit guibg=NONE guifg=NONE
-hi LineNr guibg=NONE
-hi SignColumn guibg=NONE
-hi FoldColumn guibg=NONE
+hi VertSplit guibg=NONE ctermbg=NONE
+hi LineNr guibg=NONE ctermbg=NONE
+hi SignColumn guibg=NONE ctermbg=NONE
+hi FoldColumn guibg=NONE ctermbg=NONE
