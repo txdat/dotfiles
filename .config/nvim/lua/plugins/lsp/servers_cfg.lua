@@ -32,12 +32,14 @@ local M = {}
 M.clangd = {
   cmd = {
     "clangd",
+    "-log=error",
+    "--limit-results=500",
     "--background-index",
     "--clang-tidy",
     "--header-insertion=iwyu",
     "--completion-style=detailed",
     "--function-arg-placeholders",
-    "--fallback-style=llvm",
+    "--fallback-style=llvm"
   },
   settings = {
     init_options = {

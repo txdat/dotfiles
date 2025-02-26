@@ -18,6 +18,8 @@
     "coc-clangd": {
       "command": "clangd",
       "args": [
+        "-log=error",
+        "--limit-results=500",
         "--background-index",
         "--clang-tidy",
         "--header-insertion=iwyu",

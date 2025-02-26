@@ -150,7 +150,7 @@ set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of doc
 set termguicolors
 filetype plugin indent on
 syntax on
-colorscheme monokai
+colorscheme nord
 " set background="dark"
 
 " ----------------------------------

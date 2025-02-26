@@ -67,7 +67,7 @@ export FZF_DEFAULT_OPTS="
 # alias _fzf="fzf --preview 'bat --color=always {}'"
 
 # conda
-CONDA_HOME="$HOME/.miniconda"
+# CONDA_HOME="$HOME/.miniconda"
 
 if [[ -n "$CONDA_HOME" ]]; then
     __conda_setup="$('$CONDA_HOME/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -209,3 +209,13 @@ update_zsh () {
 
     cd $dir
 }
+
+delete_gitlab_terminated_pods () {
+  for pod in $(kubectl get pod -n gitlab | grep Terminating | awk '{print $1;}')
+  do
+    kubectl delete pod -n gitlab --force --grace-period=0 $pod
+  done
+}
+
+export AWS=arn:aws:eks:ap-northeast-1:633454557521:cluster/mmenu-eks-karpenter
+export GKE=gke_mmenu-api-prod_asia-southeast1_k8s-cluster
