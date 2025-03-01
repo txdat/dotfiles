@@ -120,7 +120,7 @@ sudo ln -s ~/.dotfiles/75-noto-color-emoji.conf /etc/fonts/conf.d/75-noto-color-
 
 # for ML/DS
 # conda create -n mlds python=3.12
-# pip install numpy scipy cython numba pandas matplotlib seaborn scikit-learn xgboost catboost lightgbm statsmodels treelite treelite_runtime opencv-python opencv-contrib-python jupyterlab --upgrade
+# pip install numpy scipy cython numba pandas matplotlib seaborn scikit-learn xgboost catboost lightgbm statsmodels treelite treelite_runtime opencv-contrib-python opencv-python jupyterlab --upgrade
 # pip install torch torchvision pytorch-lightning transformers triton taichi --upgrade
 # pip install --upgrade "jax[cuda]" -f https://storage.googleapis.com/jax-releases/jax_cuda_releases.html
 

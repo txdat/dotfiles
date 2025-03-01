@@ -67,7 +67,7 @@ export FZF_DEFAULT_OPTS="
 # alias _fzf="fzf --preview 'bat --color=always {}'"
 
 # conda
-# CONDA_HOME="$HOME/.miniconda"
+CONDA_HOME="$HOME/.miniconda"
 
 if [[ -n "$CONDA_HOME" ]]; then
     __conda_setup="$('$CONDA_HOME/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
@@ -84,6 +84,8 @@ if [[ -n "$CONDA_HOME" ]]; then
 
     export PATH="$CONDA_HOME/bin:$PATH"
 fi
+
+export QT_QPA_PLATFORM=xcb
 
 # emacs
 #export PATH="$HOME/.emacs.d/bin:$PATH"
@@ -114,6 +116,8 @@ fi
 export KUBECONFIG=$HOME/.kube/config
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 #export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
+
+[ -f ~/.env ] && source ~/.env
 
 # aliases
 alias ls="ls --color"
@@ -216,6 +220,3 @@ delete_gitlab_terminated_pods () {
     kubectl delete pod -n gitlab --force --grace-period=0 $pod
   done
 }
-
-export AWS=arn:aws:eks:ap-northeast-1:633454557521:cluster/mmenu-eks-karpenter
-export GKE=gke_mmenu-api-prod_asia-southeast1_k8s-cluster
