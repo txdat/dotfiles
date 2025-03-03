@@ -190,7 +190,7 @@ local plugins = {
             "hrsh7th/cmp-nvim-lsp",
             "stevearc/conform.nvim",
         },
-        event = "BufRead",
+        event = "BufReadPre",
         config = function()
             require("plugins.lsp")
             require("plugins.lsp.conform")
@@ -241,16 +241,16 @@ local plugins = {
     ------------------------------------
 
     -- typescript
-    {
-        "pmizio/typescript-tools.nvim",
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
-        ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-        config = function()
-            require("plugins.lsp.typescript_tools")
-        end
-    },
+    -- {
+    --     "pmizio/typescript-tools.nvim",
+    --     dependencies = {
+    --         "nvim-lua/plenary.nvim",
+    --     },
+    --     ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+    --     config = function()
+    --         require("plugins.lsp.typescript_tools")
+    --     end
+    -- },
 
     -- latex
     -- {

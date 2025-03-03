@@ -104,17 +104,17 @@ M.pyright = {}
 -- M.hls = {}
 
 -- typescript-language-server
--- M.ts_ls = {
---   filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
---   settings = {
---     completions = {
---       completeFunctionCalls = false,
---     },
---     exclude = {
---       "node_modules"
---     }
---   },
--- }
+M.ts_ls = {
+  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+  settings = {
+    completions = {
+      completeFunctionCalls = false,
+    },
+    exclude = {
+      "node_modules"
+    }
+  },
+}
 
 -- vscode-langservers-extracted
 M.eslint = {
