@@ -214,9 +214,9 @@ update_zsh () {
     cd $dir
 }
 
-delete_gitlab_terminated_pods () {
-  for pod in $(kubectl get pod -n gitlab | grep Terminating | awk '{print $1;}')
+delete_terminated_pods () {
+  for pod in $(kubectl get pod -n ${1} | grep Terminating | awk '{print $1;}')
   do
-    kubectl delete pod -n gitlab --force --grace-period=0 $pod
+    kubectl delete pod -n ${1} --force --grace-period=0 $pod
   done
 }

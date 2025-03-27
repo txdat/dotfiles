@@ -188,12 +188,18 @@ local plugins = {
         "neovim/nvim-lspconfig",
         dependencies = {
             "hrsh7th/cmp-nvim-lsp",
-            "stevearc/conform.nvim",
         },
         event = "BufReadPre",
         config = function()
             require("plugins.lsp")
-            require("plugins.lsp.conform")
+        end,
+    },
+
+    {
+        "stevearc/conform.nvim",
+        event = "BufRead",
+        config = function()
+            require("plugins.conform")
         end,
     },
 
@@ -217,7 +223,7 @@ local plugins = {
         },
         event = "InsertEnter",
         config = function()
-            require("plugins.lsp.cmp")
+            require("plugins.cmp")
         end,
     },
 
@@ -248,7 +254,7 @@ local plugins = {
     --     },
     --     ft = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
     --     config = function()
-    --         require("plugins.lsp.typescript_tools")
+    --         require("plugins.typescript_tools")
     --     end
     -- },
 

@@ -87,9 +87,9 @@ local capabilities = require("cmp_nvim_lsp").default_capabilities()
 --     }),
 -- }
 
-local servers_cfg = require("plugins.lsp.servers_cfg")
+local lsp_servers = require("plugins.lsp.servers")
 
-for server, config in pairs(servers_cfg) do
+for server, config in pairs(lsp_servers) do
     config.capabilities = capabilities
     -- config.on_attach = on_attach
     -- config.handlers = handlers
