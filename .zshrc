@@ -121,17 +121,15 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 
 # aliases
 alias ls="ls --color"
-
+alias lz="lazygit"
+alias k=kubectl
 alias sysu="sudo pacman -Syyu && paru -Syyu && flatpak update"
 # alias sysu="sudo dnf update && flatpak update"
-
-alias x2cb="xclip -sel c" # copy output to clipboard
-alias f2cb="xclip -sel c < " # copy from file to clipboard
-alias cb2f="xclip -sel c -o > " # copy from clipboard to file
+alias x2cb="xclip -sel c" # copy stdout to clipboard
+alias f2cb="xclip -sel c < " # copy data from file to clipboard
+alias cb2f="xclip -sel c -o > " # copy data from clipboard to file
 
 #alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
-
-alias k=kubectl
 
 # extend_display () {
 #     direction="${1:-same-as}"

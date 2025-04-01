@@ -1,15 +1,3 @@
--- custom diagnostic signs
-local signs = {
-    Error = " ",
-    Warn  = " ",
-    Info  = " ",
-    Hint  = " ",
-}
-for type, icon in pairs(signs) do
-    local hl = "DiagnosticSign" .. type
-    vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-end
-
 -- prevent LSP from overwriting treesitter color setting (< 100)
 vim.highlight.priorities.semantic_tokens = 0
 
@@ -19,6 +7,18 @@ vim.diagnostic.config({
     severity_sort = true,
     signs = {
         severity = { min = vim.diagnostic.severity.ERROR },
+        text = {
+          [vim.diagnostic.severity.ERROR] = " ",
+          [vim.diagnostic.severity.WARN]  = " ",
+          [vim.diagnostic.severity.INFO]  = " ",
+          [vim.diagnostic.severity.HINT]  = " ",
+        },
+        linehl = {
+          -- [vim.diagnostic.severity.ERROR] = "Error",
+          -- [vim.diagnostic.severity.WARN]  = "Warn",
+          -- [vim.diagnostic.severity.INFO]  = "Info",
+          -- [vim.diagnostic.severity.HINT]  = "Hint",
+        },
     },
     virtual_text = {
         severity = { min = vim.diagnostic.severity.ERROR },
@@ -39,10 +39,10 @@ vim.api.nvim_create_autocmd("LspAttach", {
         local diag = vim.diagnostic
         local opts = { buffer = args.buf }
 
-        keymap("n", "gh", lspbuf.hover, opts)
+        keymap("n", "gk", lspbuf.hover, opts)
         keymap("n", "gn", lspbuf.rename, opts)
         keymap("n", "gd", lspbuf.definition, opts)
-        keymap("n", "gdc", lspbuf.declaration, opts)
+        -- keymap("n", "gc", lspbuf.declaration, opts)
         keymap("n", "gt", lspbuf.type_definition, opts)
         keymap("n", "gs", lspbuf.signature_help, opts)
         keymap("n", "gi", lspbuf.implementation, opts)
@@ -51,7 +51,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
         -- keymap("n", "ga", function()
         --     require("fzf-lua").lsp_code_actions()
         -- end, opts)
-        keymap("n", "gf", diag.open_float, opts)
+        -- keymap("n", "gf", diag.open_float, opts)
         -- keymap("n", "[d", diag.goto_prev, opts)
         -- keymap("n", "]d", diag.goto_next, opts)
         keymap("n", "[e", function()

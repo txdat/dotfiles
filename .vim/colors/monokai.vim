@@ -8,20 +8,6 @@
 " Initialization
 " --------------
 
-if !has("gui_running") && &t_Co < 256
-  finish
-endif
-
-if ! exists("g:monokai_gui_italic")
-    let g:monokai_gui_italic = 0
-endif
-
-if ! exists("g:monokai_term_italic")
-    let g:monokai_term_italic = 0
-endif
-
-let g:monokai_termcolors = 256 " does not support 16 color term right now.
-
 set background=dark
 hi clear
 
@@ -38,23 +24,8 @@ function! s:h(group, style)
     let s:ctermformat = a:style.format
     let s:guiformat = a:style.format
   endif
-  if g:monokai_term_italic == 0
-    let s:ctermformat = substitute(s:ctermformat, ",italic", "", "")
-    let s:ctermformat = substitute(s:ctermformat, "italic,", "", "")
-    let s:ctermformat = substitute(s:ctermformat, "italic", "", "")
-  endif
-  if g:monokai_gui_italic == 0
-    let s:guiformat = substitute(s:guiformat, ",italic", "", "")
-    let s:guiformat = substitute(s:guiformat, "italic,", "", "")
-    let s:guiformat = substitute(s:guiformat, "italic", "", "")
-  endif
-  if g:monokai_termcolors == 16
-    let l:ctermfg = (has_key(a:style, "fg") ? a:style.fg.cterm16 : "NONE")
-    let l:ctermbg = (has_key(a:style, "bg") ? a:style.bg.cterm16 : "NONE")
-  else
-    let l:ctermfg = (has_key(a:style, "fg") ? a:style.fg.cterm : "NONE")
-    let l:ctermbg = (has_key(a:style, "bg") ? a:style.bg.cterm : "NONE")
-  end
+  let l:ctermfg = (has_key(a:style, "fg") ? a:style.fg.cterm : "NONE")
+  let l:ctermbg = (has_key(a:style, "bg") ? a:style.bg.cterm : "NONE")
   execute "highlight" a:group
     \ "guifg="   (has_key(a:style, "fg")      ? a:style.fg.gui   : "NONE")
     \ "guibg="   (has_key(a:style, "bg")      ? a:style.bg.gui   : "NONE")
@@ -82,32 +53,32 @@ let s:br_grey     = { "gui": "#a1a29c", "cterm": "243" }
 let s:grey        = { "gui": "#8F908A", "cterm": "243" }
 let s:lightgrey   = { "gui": "#575b61", "cterm": "237" }
 let s:darkgrey    = { "gui": "#64645e", "cterm": "239" }
-let s:warmgrey    = { "gui": "#75715E", "cterm": "59" }
+let s:warmgrey    = { "gui": "#75715E", "cterm": "59"  }
 
 let s:pink        = { "gui": "#F92772", "cterm": "197" }
 let s:green       = { "gui": "#A6E22D", "cterm": "148" }
-let s:aqua        = { "gui": "#66d9ef", "cterm": "81" }
+let s:aqua        = { "gui": "#66d9ef", "cterm": "81"  }
 let s:yellow      = { "gui": "#E6DB74", "cterm": "186" }
 let s:orange      = { "gui": "#FD9720", "cterm": "208" }
 let s:purple      = { "gui": "#ae81ff", "cterm": "141" }
 let s:red         = { "gui": "#e73c50", "cterm": "196" }
-let s:purered     = { "gui": "#ff0000", "cterm": "52" }
-let s:darkred     = { "gui": "#5f0000", "cterm": "52" }
+let s:purered     = { "gui": "#ff0000", "cterm": "52"  }
+let s:darkred     = { "gui": "#5f0000", "cterm": "52"  }
 
 let s:addfg       = { "gui": "#d7ffaf", "cterm": "193" }
-let s:addbg       = { "gui": "#5f875f", "cterm": "65" }
+let s:addbg       = { "gui": "#5f875f", "cterm": "65"  }
 let s:delfg       = { "gui": "#ff8b8b", "cterm": "210" }
 let s:delbg       = { "gui": "#f75f5f", "cterm": "124" }
 let s:changefg    = { "gui": "#d7d7ff", "cterm": "189" }
-let s:changebg    = { "gui": "#5f5f87", "cterm": "60" }
+let s:changebg    = { "gui": "#5f5f87", "cterm": "60"  }
 
 let s:cyan        = { "gui": "#A1EFE4", "cterm": "159" }
 let s:br_green    = { "gui": "#9EC400", "cterm": "148" }
 let s:br_yellow   = { "gui": "#E7C547", "cterm": "221" }
 let s:br_blue     = { "gui": "#7AA6DA", "cterm": "110" }
 let s:br_purple   = { "gui": "#B77EE0", "cterm": "140" }
-let s:br_cyan     = { "gui": "#54CED6", "cterm": "80" }
-let s:br_white    = { "gui": "#FFFFFF", "cterm": "16" }
+let s:br_cyan     = { "gui": "#54CED6", "cterm": "80"  }
+let s:br_white    = { "gui": "#FFFFFF", "cterm": "16"  }
 
 " Highlighting
 " ------------
@@ -122,11 +93,11 @@ call s:h("CursorLine",    {                     "bg": s:lightblack2 })
 call s:h("NonText",       { "fg": s:lightgrey })
 call s:h("Visual",        {                     "bg": s:lightgrey })
 call s:h("Search",        { "fg": s:black,      "bg": s:yellow })
-call s:h("MatchParen",    { "fg": s:purple,                           "format": "bold" })
+call s:h("MatchParen",    { "fg": s:purple,                               "format": "bold" })
 call s:h("Question",      { "fg": s:yellow })
 call s:h("ModeMsg",       { "fg": s:yellow })
 call s:h("MoreMsg",       { "fg": s:yellow })
-call s:h("ErrorMsg",      { "fg": s:black,      "bg": s:red,          "format": "standout" })
+call s:h("ErrorMsg",      { "fg": s:black,      "bg": s:red,              "format": "standout" })
 call s:h("WarningMsg",    { "fg": s:red })
 call s:h("VertSplit",     { "fg": s:darkgrey })
 call s:h("WinSeparator",  { "fg": s:darkgrey,   "bg": s:darkblack })
@@ -138,18 +109,8 @@ call s:h("SignColumn",    { })
 call s:h("StatusLine",    { "fg": s:black,      "bg": s:lightgrey })
 call s:h("StatusLineNC",  { "fg": s:lightgrey,  "bg": s:darkblack })
 call s:h("TabLine",       { "fg": s:lightgrey,  "bg": s:lightblack })
-call s:h("TabLineSel",    { "fg": s:darkblack,  "bg": s:warmgrey,     "format": "bold" })
+call s:h("TabLineSel",    { "fg": s:darkblack,  "bg": s:warmgrey,         "format": "bold" })
 call s:h("TabLineFill",   { "bg": s:lightblack })
-call s:h("User1",         { "fg": s:yellow,     "bg": s:lightgrey,    "format": "bold" })
-call s:h("User2",         { "fg": s:orange,     "bg": s:lightgrey,    "format": "bold" })
-call s:h("User3",         { "fg": s:purple,     "bg": s:lightgrey,    "format": "bold" })
-call s:h("User4",         { "fg": s:aqua,       "bg": s:lightgrey,    "format": "bold" })
-
-" spell
-call s:h("SpellBad",      { "fg": s:red,                              "format": "undercurl" })
-call s:h("SpellCap",      { "fg": s:purple,                           "format": "underline" })
-call s:h("SpellRare",     { "fg": s:aqua,                             "format": "underline" })
-call s:h("SpellLocal",    { "fg": s:pink,                             "format": "underline" })
 
 " misc
 call s:h("SpecialKey",    { "fg": s:pink })
@@ -215,72 +176,31 @@ call s:h("SpecialComment",{ "fg": s:aqua })
 call s:h("Tag",           { "fg": s:pink })
 "        Debug"
 
-call s:h("Todo",          { "fg": s:orange,   "format": "bold,italic" })
-call s:h("Comment",       { "fg": s:warmgrey, "format": "italic" })
+call s:h("Todo",          { "fg": s:orange,                       "format": "bold" })
+call s:h("Comment",       { "fg": s:warmgrey })
 
 call s:h("Underlined",    { "fg": s:green })
 call s:h("Ignore",        {})
-call s:h("Error",         { "fg": s:purered, "bg": s:lightblack3 })
-
-" TreeSitter
-" Refer to `:h treesitter-highlight-groups`
-" ----------
-
-if has('nvim')
-call s:h("@variable.builtin",             { "fg": s:purple })
-call s:h("@variable.parameter",           { "fg": s:orange })
-call s:h("@variable.parameter.builtin",   { "fg": s:orange })
-"call s:h("@variable.member",              { "fg": s:yellow })
-
-call s:h("@constant",               { "fg": s:orange })
-call s:h("@constant.builtin",       { "fg": s:aqua })
-
-call s:h("@string.regexp",          { "fg": s:yellow })
-
-call s:h("@character.special",      { "fg": s:purple })
-
-call s:h("@type",                   { "fg": s:aqua, "format": "italic" })
-call s:h("@type.builtin",           { "fg": s:aqua })
-
-call s:h("@attribute",              { "fg": s:purple })
-call s:h("@attribute.builtin",      { "fg": s:purple })
-
-call s:h("@function",               { "fg": s:white })
-call s:h("@function.call",          { "fg": s:green })
-call s:h("@function.method",        { "fg": s:green })
-call s:h("@function.method.call",   { "fg": s:green })
-call s:h("@constructor",            { "fg": s:aqua, "format": "italic" })
-
-call s:h("@keyword",                { "fg": s:pink })
-
-call s:h("@punctuation.delimiter",  { "fg": s:white })
-call s:h("@punctuation.bracket",    { "fg": s:white })
-call s:h("@punctuation.special",    { "fg": s:purple })
-
-call s:h("@tag",                    { "fg": s:pink })
-call s:h("@tag.builtin",            { "fg": s:pink })
-call s:h("@tag.attribute",          { "fg": s:green })
-call s:h("@tag.delimiter",          { "fg": s:white })
-endif
+call s:h("Error",         { "fg": s:purered,  "bg": s:lightblack3 })
 
 " coc
 " ---
 
 call s:h("CocErrorSign",            { "fg": s:red })
-call s:h("CocErrorHighlight",       { "fg": s:red, "format": "undercurl" })
-call s:h("CocErrorFloat",           { "fg": s:purered, "bg": s:lightblack3 })
+call s:h("CocErrorHighlight",       { "fg": s:red })
+call s:h("CocErrorFloat",           { "fg": s:purered,  "bg": s:lightblack3 })
 
 call s:h("CocWarningSign",          { "fg": s:orange })
-call s:h("CocWarningHighlight",     { "fg": s:orange, "format": "undercurl" })
-call s:h("CocWarningFloat",         { "fg": s:orange, "bg": s:lightblack3 })
+call s:h("CocWarningHighlight",     { "fg": s:orange })
+call s:h("CocWarningFloat",         { "fg": s:orange,   "bg": s:lightblack3 })
 
 call s:h("CocInfoSign",             { "fg": s:orange })
-call s:h("CocInfoHighlight",        { "fg": s:orange, "format": "undercurl" })
-call s:h("CocInfoFloat",            { "fg": s:aqua, "bg": s:lightblack3 })
+call s:h("CocInfoHighlight",        { "fg": s:orange })
+call s:h("CocInfoFloat",            { "fg": s:aqua,     "bg": s:lightblack3 })
 
 call s:h("CocHintSign",             { "fg": s:orange })
-call s:h("CocHintHighlight",        { "fg": s:orange, "format": "undercurl" })
-call s:h("CocHintFloat",            { "fg": s:aqua, "bg": s:lightblack3 })
+call s:h("CocHintHighlight",        { "fg": s:orange })
+call s:h("CocHintFloat",            { "fg": s:aqua,     "bg": s:lightblack3 })
 
 " Terminal Colors
 " ---------------

@@ -1,30 +1,9 @@
 local highlight = vim.api.nvim_set_hl
 
--- highlight(0, 'CmpItemAbbrDeprecated', { bg = 'NONE', strikethrough = true, fg = '#949494' })
--- highlight(0, 'CmpItemAbbrMatch', { bg = 'NONE', fg = '#80a0ff' }) -- blue
--- highlight(0, 'CmpItemAbbrMatchFuzzy', { link = 'CmpIntemAbbrMatch' })
--- highlight(0, 'CmpItemKindVariable', { bg = 'NONE', fg = '#36c692' }) -- emerald
--- highlight(0, 'CmpItemKindInterface', { link = 'CmpItemKindVariable' })
--- highlight(0, 'CmpItemKindText', { link = 'CmpItemKindVariable' })
--- highlight(0, 'CmpItemKindFunction', { bg = 'NONE', fg = '#cf87e8' }) -- violet
--- highlight(0, 'CmpItemKindMethod', { link = 'CmpItemKindFunction' })
--- highlight(0, 'CmpItemKindKeyword', { bg = 'NONE', fg = '#c6c6c6' }) -- front
--- highlight(0, 'CmpItemKindProperty', { link = 'CmpItemKindKeyword' })
--- highlight(0, 'CmpItemKindUnit', { link = 'CmpItemKindKeyword' })
-
 highlight(0, "CmpGhostText", { link = "Comment", default = true })
 
 local cmp = require("cmp")
-
--- disable window's scroll
--- local cmp_window = require("cmp.utils.window")
---
--- cmp_window.info_ = cmp_window.info
--- cmp_window.info = function(self)
---     local info = self:info_()
---     info.scrollable = false
---     return info
--- end
+local use_luasnip, luasnip = pcall(require, "luasnip")
 
 -- -- lspkind on cmp's menu
 -- local lspkind_icons = {
@@ -69,11 +48,12 @@ local lspkind_menu = {
   nvim_lsp = "lsp",
   buffer = "buf",
   path = "fs",
+  luasnip = "snp",
 };
 
 cmp.setup({
   completion = {
-    completeopt = "menuone,fuzzy,noinsert,noselect",
+    completeopt = "menuone,noinsert,noselect",
   },
   performance = {
     max_view_entries = 20,
@@ -84,8 +64,9 @@ cmp.setup({
     disallow_fuzzy_matching = true,
     disallow_fullfuzzy_matching = true,
     disallow_partial_fuzzy_matching = true,
+    disallow_symbol_nonprefix_matching = true,
     disallow_partial_matching = false,
-    disallow_prefix_unmatching = true,
+    disallow_prefix_unmatching = false,
   },
   experimental = {
     ghost_text = { hl_group = "CmpGhostText" }
@@ -125,7 +106,7 @@ cmp.setup({
       end
       cmp.complete()
     end,
-    ["<C-l>"] = function() -- toggle documentation window
+    ["<C-p>"] = function() -- toggle documentation window
       if cmp.visible_docs() then
         cmp.close_docs()
       else
@@ -139,6 +120,8 @@ cmp.setup({
     ["<Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
+      elseif use_luasnip and luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
       else
         fallback()
       end
@@ -146,6 +129,8 @@ cmp.setup({
     ["<S-Tab>"] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_prev_item()
+      elseif use_luasnip and luasnip.jumpable(-1) then
+        luasnip.jump(-1)
       else
         fallback()
       end
@@ -153,7 +138,11 @@ cmp.setup({
   }),
   snippet = {
     expand = function(args)
-      vim.snippet.expand(args.body)
+      if use_luasnip then
+        luasnip.lsp_expand(args.body)
+      else
+        vim.snippet.expand(args.body)
+      end
     end,
   },
   sources = {
@@ -176,6 +165,7 @@ cmp.setup({
         end
       }
     },
+    { name = "luasnip",  keyword_length = 2, priority = 7 },
     { name = "path",     keyword_length = 3, priority = 5 },
     -- { name = "nvim_lsp_signature_help" },
   },
@@ -215,3 +205,14 @@ cmp.event:on(
   "confirm_done",
   cmp_autopairs.on_confirm_done()
 )
+
+-- snippet
+if use_luasnip then
+  luasnip.config.set_config({
+    history = false,
+    update_events = "TextChanged,TextChangedI",
+    delete_check_events = "TextChanged",
+  })
+
+  require("luasnip.loaders.from_vscode").lazy_load()
+end

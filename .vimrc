@@ -51,7 +51,7 @@ set timeoutlen=300 " key mappings timeout
 set noswapfile
 set nobackup
 set nowritebackup
-set completeopt=menuone,fuzzy,noinsert,noselect " insert mode
+set completeopt=menuone,noinsert,noselect " insert mode
 set encoding=utf-8
 set fileencoding=utf-8
 set mouse=a " enable mouse support
