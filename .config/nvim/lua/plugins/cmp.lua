@@ -1,7 +1,3 @@
-local highlight = vim.api.nvim_set_hl
-
-highlight(0, "CmpGhostText", { link = "Comment", default = true })
-
 local cmp = require("cmp")
 local use_luasnip, luasnip = pcall(require, "luasnip")
 
@@ -47,7 +43,7 @@ local use_luasnip, luasnip = pcall(require, "luasnip")
 local lspkind_menu = {
   nvim_lsp = "lsp",
   buffer = "buf",
-  path = "fs",
+  path = " fs",
   luasnip = "snp",
 };
 
@@ -200,11 +196,13 @@ cmp.setup({
 })
 
 -- autopairs
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-cmp.event:on(
-  "confirm_done",
-  cmp_autopairs.on_confirm_done()
-)
+local use_autopairs, cmp_autopairs = pcall(require, "nvim-autopairs.completion.cmp")
+if use_autopairs then
+  cmp.event:on(
+    "confirm_done",
+    cmp_autopairs.on_confirm_done()
+  )
+end
 
 -- snippet
 if use_luasnip then

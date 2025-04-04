@@ -1,5 +1,3 @@
-vim.opt.smartindent = false
-
 ---@diagnostic disable-next-line: missing-fields
 require("nvim-treesitter.configs").setup({
     ensure_installed = {
@@ -124,4 +122,7 @@ require("nvim-treesitter.configs").setup({
     -- },
 })
 
-require("ts-comments.config").setup()
+local use_tsc, tsc = pcall(require, "ts-comments.config")
+if use_tsc then
+  tsc.setup()
+end

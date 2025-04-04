@@ -94,7 +94,7 @@ let maplocalleader='\'
 
 set autoindent
 set cindent
-set smartindent
+" set smartindent
 set smarttab
 set expandtab " use spaces instead of tab
 set tabstop=2 " 1 tab = 2 spaces
@@ -331,7 +331,7 @@ command! -bang -nargs=* Rg call fzf#vim#grep(
         \ --smart-case
         \ --glob "!.git/*"
         \ '.shellescape(<q-args>),
-  \   fzf#vim#with_preview({'options': '--preview "bat --color=always --style=numbers,changes {}"'}),
+  \   fzf#vim#with_preview({'options': '--preview "bat --color=always --style=numbers,changes {}" --delimiter : --nth 4..'}),
   \   <bang>0)
 
 nnoremap <silent> <leader>fs :GFiles?<CR>

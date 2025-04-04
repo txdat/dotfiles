@@ -126,7 +126,7 @@ vim.api.nvim_exec([[
 
 vim.opt.autoindent = true
 vim.opt.cindent = true
-vim.opt.smartindent = true
+vim.opt.smartindent = false
 vim.opt.smarttab = true
 vim.opt.expandtab = true -- use spaces instead of tab
 vim.opt.tabstop = 2      -- 1 tab = 2 spaces
