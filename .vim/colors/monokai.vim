@@ -8,7 +8,6 @@
 " Initialization
 " --------------
 
-set background=dark
 hi clear
 
 if exists("syntax_on")
@@ -183,65 +182,4 @@ call s:h("Underlined",    { "fg": s:green })
 call s:h("Ignore",        {})
 call s:h("Error",         { "fg": s:purered,  "bg": s:lightblack3 })
 
-" coc
-" ---
-
-call s:h("CocErrorSign",            { "fg": s:red })
-call s:h("CocErrorHighlight",       { "fg": s:red })
-call s:h("CocErrorFloat",           { "fg": s:purered,  "bg": s:lightblack3 })
-
-call s:h("CocWarningSign",          { "fg": s:orange })
-call s:h("CocWarningHighlight",     { "fg": s:orange })
-call s:h("CocWarningFloat",         { "fg": s:orange,   "bg": s:lightblack3 })
-
-call s:h("CocInfoSign",             { "fg": s:orange })
-call s:h("CocInfoHighlight",        { "fg": s:orange })
-call s:h("CocInfoFloat",            { "fg": s:aqua,     "bg": s:lightblack3 })
-
-call s:h("CocHintSign",             { "fg": s:orange })
-call s:h("CocHintHighlight",        { "fg": s:orange })
-call s:h("CocHintFloat",            { "fg": s:aqua,     "bg": s:lightblack3 })
-
-" cmp
-" ---
-
-call s:h("CmpGhostText", { "fg": s:warmgrey })
-
-" Terminal Colors
-" ---------------
-if has('nvim')
-  let g:terminal_color_0  = s:black.gui
-  let g:terminal_color_1  = s:red.gui
-  let g:terminal_color_2  = s:green.gui
-  let g:terminal_color_3  = s:yellow.gui
-  let g:terminal_color_4  = s:aqua.gui
-  let g:terminal_color_5  = s:purple.gui
-  let g:terminal_color_6  = s:cyan.gui
-  let g:terminal_color_7  = s:white.gui
-  let g:terminal_color_8  = s:darkgrey.gui
-  let g:terminal_color_9  = s:pink.gui
-  let g:terminal_color_10 = s:br_green.gui
-  let g:terminal_color_11 = s:br_yellow.gui
-  let g:terminal_color_12 = s:br_blue.gui
-  let g:terminal_color_13 = s:br_purple.gui
-  let g:terminal_color_14 = s:br_cyan.gui
-  let g:terminal_color_15 = s:br_white.gui
-else
-  let g:terminal_ansi_colors = [
-        \ s:black.gui,
-        \ s:red.gui,
-        \ s:green.gui,
-        \ s:yellow.gui,
-        \ s:aqua.gui,
-        \ s:purple.gui,
-        \ s:cyan.gui,
-        \ s:white.gui,
-        \ s:darkgrey.gui,
-        \ s:pink.gui,
-        \ s:br_green.gui,
-        \ s:br_yellow.gui,
-        \ s:br_blue.gui,
-        \ s:br_purple.gui,
-        \ s:br_cyan.gui,
-        \ s:br_white.gui]
-endif
+set background=dark

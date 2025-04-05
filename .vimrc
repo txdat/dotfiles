@@ -69,7 +69,7 @@ set guicursor+=n-v-c:blinkon0
 set guicursor+=i:blinkon0
 " set colorcolumn=80
 set ruler " show cursor position
-set fillchars+=vert:\ 
+set fillchars+=vert:\
 " set listchars=eol:↴
 " set list " show eol, ...
 " set cursorline
@@ -150,7 +150,7 @@ set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of doc
 set termguicolors
 filetype plugin indent on
 syntax on
-colorscheme monokai
+colorscheme modus
 " set background="dark"
 
 " ----------------------------------

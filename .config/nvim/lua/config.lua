@@ -175,7 +175,7 @@ vim.api.nvim_command([[
 set termguicolors
 filetype plugin indent on
 syntax on
-colorscheme monokai
+colorscheme modus
 ]])
 
 -----------------------------------------

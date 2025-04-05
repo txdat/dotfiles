@@ -65,7 +65,7 @@ cmp.setup({
     disallow_prefix_unmatching = false,
   },
   experimental = {
-    ghost_text = { hl_group = "CmpGhostText" }
+    ghost_text = { hl_group = "Comment" }
   },
   view = {
     entries = { name = "native", selection_order = "near_cursor" },
