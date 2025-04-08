@@ -40,7 +40,7 @@ endfunction
 let s:bg_main = { "gui": "#000000" }
 let s:bg_dim = { "gui": "#1e1e1e" }
 let s:bg_alt = { "gui": "#0f0f0f" }
-let s:fg_main = { "gui": "#bdbdbd" }
+let s:fg_main = { "gui": "#f8f8f0" }
 let s:fg_dim = { "gui": "#989898" }
 let s:fg_alt = { "gui": "#c6daff" }
 let s:border = { "gui": "#646464" }
@@ -192,7 +192,7 @@ call s:h("LineNr", { "fg": s:fg_main, "bg": s:bg_dim }) " Line number for `:numb
 call s:h("LineNrAbove", { "fg": s:fg_dim, "bg": s:bg_dim }) " Line number above the cursor line.
 call s:h("LineNrBelow", { "fg": s:fg_dim, "bg": s:bg_dim }) " Line number below the cursor line.
 call s:h("CursorLineNr", { "fg": s:fg_active, "bg": s:bg_active, "format": "bold" }) " Like LineNr when `cursorline` or `relativenumber` is set for the cursor line.
-call s:h("SignColumn", { "fg": s:fg_dim, "bg": s:bg_main }) " Column where |signs| are displayed.
+call s:h("SignColumn", { "fg": s:fg_dim, "bg": s:bg_sidebar }) " Column where |signs| are displayed.
 call s:h("SignColumnSB", { "fg": s:fg_dim, "bg": s:bg_sidebar }) " Column where |signs| are displayed in the sidebar.
 call s:h("CursorLine", { "bg": s:bg_hl_line }) " Screen-line at the cursor, when `cursorline` is set.  Low-priority if foreground (ctermfg OR guifg) is not set.
 call s:h("CursorColumn", { "bg": s:bg_hl_line }) " Screen-column at the cursor, when `cursorcolumn` is set.
@@ -233,7 +233,8 @@ call s:h("MatchParen", { "fg": s:fg_main, "bg": s:bg_paren_match }) " The charac
 call s:h("ModeMsg", { "fg": s:fg_dim, "format": "bold" }) " `showmode` message (e.g., `" INSERT " `).
 call s:h("MsgArea", { "fg": s:fg_main }) " Area for messages and cmdline.
 call s:h("MoreMsg", { "fg": s:blue }) " The |more-prompt|.
-call s:h("VertSplit", { "fg": s:border }) " The column separating vertically split windows.
+" call s:h("VertSplit", { "fg": s:border }) " The column separating vertically split windows.
+call s:h("VertSplit", { "fg": s:bg_main }) " The column separating vertically split windows. - no split
 call s:h("WinSeparator", { "fg": s:border, "format": "bold" }) " The column separating vertically split windows.
 call s:h("DiffAdd", { "fg": s:fg_added, "bg": s:bg_added }) " Diff mode: Added line |diff.txt|.
 call s:h("DiffDelete", { "fg": s:fg_removed, "bg": s:bg_removed }) " Diff mode: Deleted line |diff.txt|.
@@ -516,6 +517,12 @@ endif
 
 " Plugins
 " -------
+
+" Coc
+call s:h("CocErrorSign", { "fg": s:error, "bg": s:bg_sidebar })
+call s:h("CocWarningSign", { "fg": s:warning, "bg": s:bg_sidebar })
+call s:h("CocInfoSign", { "fg": s:info, "bg": s:bg_sidebar })
+call s:h("CocHintSign", { "fg": s:hint, "bg": s:bg_sidebar })
 
 if has("nvim")
   " Lazy

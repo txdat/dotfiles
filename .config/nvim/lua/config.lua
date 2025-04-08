@@ -171,11 +171,23 @@ vim.g.python3_host_prog = require("util").system_cmd("which python3")
 -- colorscheme
 -----------------------------------------
 
+---@diagnostic disable-next-line: deprecated
+vim.api.nvim_exec([[
+augroup Monokai
+    autocmd ColorScheme unokai highlight Normal guifg=#f8f8f0 guibg=#000000
+    autocmd ColorScheme unokai highlight NormalFloat guifg=#f8f8f0 guibg=#26292c
+    autocmd ColorScheme unokai highlight VertSplit guibg=NONE
+    autocmd ColorScheme unokai highlight Identifier ctermfg=12 guifg=#f8f8f0
+    autocmd ColorScheme unokai highlight PreProc guifg=#a6e22e
+    autocmd ColorScheme unokai highlight Structure guifg=#66d9ef
+augroup END
+]], false)
+
 vim.api.nvim_command([[
 set termguicolors
 filetype plugin indent on
 syntax on
-colorscheme modus
+colorscheme unokai
 ]])
 
 -----------------------------------------
@@ -197,7 +209,7 @@ autocmd("BufWritePre", {
     -- command = ":%s/\\s\\+$//e"
     callback = function()
         local view = vim.fn.winsaveview()
-        vim.cmd [[%s:\s\+$::e]]
+        vim.cmd [[%s:\\s\\+$::e]]
         vim.fn.winrestview(view)
     end
 })

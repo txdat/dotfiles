@@ -39,7 +39,7 @@ endfunction
 " --------
 
 let s:black0 = { "gui": "#000000" }
-let s:white0 = { "gui": "#bdbdbd" }
+let s:white0 = { "gui": "#f8f8f0" }
 
 let s:white       = { "gui": "#E8E8E3" }
 let s:white2      = { "gui": "#d8d8d3" }

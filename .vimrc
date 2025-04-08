@@ -69,7 +69,7 @@ set guicursor+=n-v-c:blinkon0
 set guicursor+=i:blinkon0
 " set colorcolumn=80
 set ruler " show cursor position
-set fillchars+=vert:\
+set fillchars+=vert:\ 
 " set listchars=eol:↴
 " set list " show eol, ...
 " set cursorline
@@ -147,11 +147,19 @@ set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of doc
 " colorscheme
 " ----------------------------------
 
+augroup Monokai
+    autocmd ColorScheme unokai highlight Normal guifg=#f8f8f0 guibg=#000000
+    autocmd ColorScheme unokai highlight NormalFloat guifg=#f8f8f0 guibg=#26292c
+    autocmd ColorScheme unokai highlight VertSplit guibg=NONE
+    autocmd ColorScheme unokai highlight Identifier ctermfg=12 guifg=#f8f8f0
+    autocmd ColorScheme unokai highlight PreProc guifg=#a6e22e
+    autocmd ColorScheme unokai highlight Structure guifg=#66d9ef
+augroup END
+
 set termguicolors
 filetype plugin indent on
 syntax on
-colorscheme modus
-" set background="dark"
+colorscheme unokai
 
 " ----------------------------------
 " autocommands
@@ -382,6 +390,11 @@ let g:coc_global_extensions = [
   \ 'coc-eslint',
   \ 'coc-prettier',
   \ ]
+
+hi! CocErrorSign guifg=#d75f5f
+hi! CocErrorHighlight guifg=#d75f5f
+hi! CocWarningSign guifg=#ffaf5f
+hi! CocWarningHighlight guifg=#ffaf5f
 "}}}
 
 call plug#end()
