@@ -2,8 +2,7 @@ local api = vim.api
 
 -- quickfix replace
 api.nvim_create_user_command("QfReplace", function(opts)
-    api.nvim_command(string.format("cfdo %%s/%s/%s/%s", opts.fargs[1], opts.fargs[2], opts.fargs[3] or "c | up"))
-    api.nvim_command("cfdo update")
+    api.nvim_command(string.format("cfdo %%s/%s/%s/%s | update", opts.fargs[1], opts.fargs[2], opts.fargs[3] or "g"))
 end, { nargs = "*" })
 
 -- set tab to 2 spaces

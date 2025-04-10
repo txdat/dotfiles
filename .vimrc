@@ -204,8 +204,7 @@ command! -nargs=1 SetIndent execute printf("set tabstop=%s softtabstop=%s shiftw
 
 command! -nargs=+ QfReplace call QfReplace(<f-args>)
 function! QfReplace(...)
-    execute printf('cfdo %%s/%s/%s/%s', a:1, a:2, get(a:,3,'c | up'))
-    execute 'cfdo update'
+    execute printf('cfdo %%s/%s/%s/%s | update', a:1, a:2, get(a:,3,'g'))
 endfunction
 
 "}}}
