@@ -161,7 +161,7 @@ cmp.setup({
         end
       }
     },
-    { name = "luasnip",  keyword_length = 2, priority = 7 },
+    { name = "luasnip",  keyword_length = 2, priority = 8 },
     { name = "path",     keyword_length = 3, priority = 5 },
     -- { name = "nvim_lsp_signature_help" },
   },

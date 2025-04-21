@@ -174,13 +174,18 @@ vim.g.python3_host_prog = require("util").system_cmd("which python3")
 ---@diagnostic disable-next-line: deprecated
 vim.api.nvim_exec([[
 augroup Monokai
-    autocmd ColorScheme unokai highlight Normal guifg=#f8f8f0 guibg=#000000
-    autocmd ColorScheme unokai highlight NormalFloat guifg=#f8f8f0 guibg=#26292c
-    autocmd ColorScheme unokai highlight VertSplit guibg=NONE
-    autocmd ColorScheme unokai highlight Identifier ctermfg=12 guifg=#f8f8f0
-    autocmd ColorScheme unokai highlight PreProc guifg=#a6e22e
-    autocmd ColorScheme unokai highlight Structure guifg=#66d9ef
+    autocmd!
+    autocmd Colorscheme unokai call s:SetHighlights()
 augroup END
+
+function! s:SetHighlights()
+    highlight Normal guifg=#f8f8f0 guibg=#000000
+    highlight NormalFloat guifg=#f8f8f0 guibg=#26292c
+    highlight VertSplit guibg=NONE
+    highlight Identifier ctermfg=12 guifg=#f8f8f0
+    highlight PreProc guifg=#a6e22e
+    highlight Structure guifg=#66d9ef
+endfunction
 ]], false)
 
 vim.api.nvim_command([[
