@@ -58,6 +58,7 @@ local plugins = {
             -- "nvim-treesitter/nvim-treesitter-textobjects",
             -- "folke/ts-comments.nvim",
         },
+        branch = "master",
         build = ":TSUpdate",
         event = "BufRead",
         config = function()

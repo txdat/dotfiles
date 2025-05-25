@@ -85,7 +85,7 @@ vim.opt.guicursor:append "n-v-c:blinkon0"
 vim.opt.guicursor:append "i:blinkon0"
 -- vim.opt.colorcolumn = "80"
 -- vim.opt.ruler = true  -- show cursor position
-vim.opt.list = true           -- show eol, ...
+vim.opt.list = false          -- show eol, ...
 -- vim.opt.cursorline = true
 vim.opt.number = true         -- show line number
 vim.opt.relativenumber = true -- (-1,+1) line number
