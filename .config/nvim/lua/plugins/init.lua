@@ -60,7 +60,7 @@ local plugins = {
         },
         branch = "master",
         build = ":TSUpdate",
-        event = "BufRead",
+        lazy = false,
         config = function()
             require("plugins.treesitter")
         end
