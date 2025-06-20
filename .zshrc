@@ -114,8 +114,6 @@ fi
 
 # kubernetes
 export KUBECONFIG=$HOME/.kube/config
-export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-#export PATH="${KREW_ROOT:-$HOME/.krew}/bin:$PATH"
 
 [ -f ~/.env ] && source ~/.env
 
@@ -123,77 +121,15 @@ export USE_GKE_GCLOUD_AUTH_PLUGIN=True
 alias ls="ls --color"
 alias lz="lazygit"
 alias k=kubectl
-alias sysu="sudo pacman -Syyu && paru -Syyu && flatpak update"
+alias sysu="sudo \
+  pacman -Syyu --ignore linux --ignore linux-firmware --ignore nvidia --ignore nvidia-utils && \
+  paru -Syyu --ignore linux --ignore linux-firmware --ignore nvidia --ignore nvidia-utils && \
+  flatpak update"
 # alias sysu="sudo dnf update && flatpak update"
 alias x2cb="xclip -sel c" # copy stdout to clipboard
 alias f2cb="xclip -sel c < " # copy data from file to clipboard
 alias cb2f="xclip -sel c -o > " # copy data from clipboard to file
-
 #alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
-
-# extend_display () {
-#     direction="${1:-same-as}"
-#     display="${2:-DisplayPort-0}"
-#     width="${3:-1920}"
-#     display0="${4:-eDP}"
-#     width0="${5:-3072}"
-#     scale=$(echo "scale=5;$width0/$width" | bc)
-#
-#     if [[ $XDG_SESSION_TYPE == "wayland" ]]; then
-#         # TODO: wayland
-#     else
-#         # x11
-#         xrandr --output $display --scale 2x2 && xrandr --output $display --$direction $display0 --scale ${scale}x${scale} --auto
-#     fi
-# }
-#
-# set_primary_display () {
-#     display="${1:-DisplayPort-0}"
-#     width="${2:-1920}"
-#     scale=$(echo "scale=5;3072/$width" | bc)
-#
-#     if [[ $XDG_SESSION_TYPE == "wayland" ]]; then
-#         # TODO: wayland
-#     else
-#         # x11
-#         xrandr --output $display --scale 2x2 && xrandr --output eDP --off --output $display --scale ${scale}x${scale} --auto --primary
-#     fi
-# }
-
-#start_k3s () {
-#    # add kube-system's dns to resolv
-#    # dns=$(echo $(kubectl get svc -n kube-system | grep dns) | awk '{ print $3 }')
-#    # sudo sed -i "1s/^/nameserver ${dns} #k3s\n/" /etc/resolv.conf
-#
-#    KUBE_SERVICES=(
-#        # 'docker.socket'
-#        # 'docker.service'
-#        'containerd.service'
-#        # 'nfs-server.service'
-#        'k3s.service'
-#    )
-#    for svc in "${KUBE_SERVICES[@]}"
-#    do
-#        sudo systemctl start $svc
-#    done
-#}
-#
-#stop_k3s () {
-#    # remove kube-system's dns in resolv
-#    # sudo sed -i "/#k3s$/d" /etc/resolv.conf
-#
-#    KUBE_SERVICES=(
-#        # 'docker.socket'
-#        # 'docker.service'
-#        'containerd.service'
-#        # 'nfs-server.service'
-#        'k3s.service'
-#    )
-#    for svc in "${KUBE_SERVICES[@]}"
-#    do
-#        sudo systemctl stop $svc
-#    done
-#}
 
 # update zsh's plugins
 update_zsh () {
@@ -212,9 +148,10 @@ update_zsh () {
     cd $dir
 }
 
-delete_terminated_pods () {
-  for pod in $(kubectl get pod -n ${1} | grep Terminating | awk '{print $1;}')
-  do
-    kubectl delete pod -n ${1} --force --grace-period=0 $pod
-  done
-}
+# Gcloud
+export PATH="$HOME/.google-cloud-sdk/bin:$PATH"
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '$HOME/.google-cloud-sdk/path.zsh.inc' ]; then . '$HOME/.google-cloud-sdk/path.zsh.inc'; fi
+# The next line enables shell command completion for gcloud.
+if [ -f '$HOME/.google-cloud-sdk/completion.zsh.inc' ]; then . '$HOME/.google-cloud-sdk/completion.zsh.inc'; fi

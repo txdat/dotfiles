@@ -172,13 +172,13 @@ local plugins = {
     },
 
     -- svc
-    {
-        "lewis6991/gitsigns.nvim",
-        event = "BufRead",
-        config = function()
-            require("plugins.gitsigns")
-        end
-    },
+    -- {
+    --     "lewis6991/gitsigns.nvim",
+    --     event = "BufRead",
+    --     config = function()
+    --         require("plugins.gitsigns")
+    --     end
+    -- },
 
     ------------------------------------
     -- autocompletion, debugging
