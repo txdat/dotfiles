@@ -72,8 +72,8 @@ require("nvim-treesitter.configs").setup({
     --             ["aC"] = "@call.outer",
     --             ["ic"] = "@class.inner",
     --             ["ac"] = "@class.outer",
-    --             -- ["im"] = "@comment.inner",
-    --             -- ["am"] = "@comment.outer",
+    --             ["im"] = "@comment.inner",
+    --             ["am"] = "@comment.outer",
     --             ["id"] = "@conditional.inner",
     --             ["ad"] = "@conditional.outer",
     --             ["if"] = "@function.inner",
@@ -89,10 +89,10 @@ require("nvim-treesitter.configs").setup({
     --     swap = {
     --         enable = true,
     --         swap_next = {
-    --             ["xp"] = "@parameter.inner",
+    --             ["xn"] = "@parameter.inner",
     --         },
     --         swap_previous = {
-    --             ["xP"] = "@parameter.inner",
+    --             ["xp"] = "@parameter.inner",
     --         },
     --     },
     --     move = {

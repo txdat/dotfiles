@@ -1,9 +1,9 @@
 #!/bin/sh
 
-sudo rm -rf /root/.vimrc && sudo ln -s ~/.dotfiles/.vimrc /root/.vimrc
-sudo rm -rf /root/.vim && sudo ln -s ~/.dotfiles/.vim /root/.vim
+rm -f ~/.gitconfig
+rm -rf ~/.config/fcitx5
 
-rm -f ~/.gitconfig && ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
+ln -s ~/.dotfiles/.gitconfig ~/.gitconfig
 ln -s ~/.dotfiles/.xprofile ~/.xprofile
 ln -s ~/.dotfiles/.vimrc ~/.vimrc
 ln -s ~/.dotfiles/.vim ~/.vim
@@ -19,8 +19,6 @@ active_configs=(
     "nvim"
     "ranger"
 )
-
-rm -rf ~/.config/fcitx5
 
 for cfg in "${active_configs[@]}"
 do

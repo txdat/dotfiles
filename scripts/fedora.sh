@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# remove bloatwares
+# remove bloatwares (KDE)
 sudo dnf remove -y kmines akregator kmail krdc krfb neochat dragon kaddressbook korganizer mediawriter konversation elisa-player filelight kamoso kcalc kde-partitionmanager kfind kcharselect kmahjongg kmouth kgpg kmousetool kpat skanpage kolourpaint
 
 sudo dnf update -y
@@ -19,15 +19,10 @@ sudo dnf swap mesa-vdpau-drivers mesa-vdpau-drivers-freeworld
 
 # base packages
 sudo dnf copr enable atim/lazygit -y
-sudo dnf install -y axel git lazygit git-delta difftastic zsh tmux ranger openssh xclip fzf ripgrep fd-find jq bat vim neovim alacritty chromium zathura zathura-pdf-mupdf mpv fcitx5 fcitx5-configtool fcitx5-qt fcitx5-gtk fcitx5-unikey
+sudo dnf install -y git lazygit git-delta zsh tmux ranger openssh xclip fzf ripgrep fd-find jq bat vim neovim alacritty chromium mpv fcitx5 fcitx5-configtool fcitx5-qt fcitx5-gtk fcitx5-unikey
 
 # flatpak applications
 flatpak remote-add --if-not-exists flathub https://dl.flathub.org/repo/flathub.flatpakrepo
-flatpak install flathub net.ankiweb.Anki
-flatpak install flathub com.dropbox.Client
-flatpak install flathub com.spotify.Client
-flatpak install flathub com.calibre_ebook.calibre
-flatpak install flathub md.obsidian.Obsidian
 
 # zsh
 mkdir -p .zsh && \
@@ -37,21 +32,21 @@ git clone --depth=1 https://github.com/zsh-users/zsh-completions ~/.zsh/zsh-comp
 chsh -s $(which zsh)
 
 # c/c++
-# sudo dnf install -y gcc gcc-c++ gdb make cmake ccache valgrind strace clang llvm lldb lld clang-tools-extra openblas openmpi lapack eigen3-devel boost
+# sudo dnf install -y gcc gcc-c++ gdb make cmake ccache valgrind strace clang llvm lldb lld clang-tools-extra openblas openmpi eigen3-devel
 
 # javascript, typescript
 # curl -fsSL https://fnm.vercel.app/install | bash
-# fnm use --install-if-missing 20
-# npm install -g typescript typescript-language-server vscode-langservers-extracted prettier @fsouza/prettierd neovim demergi
+# fnm use --install-if-missing 22
+# npm install -g typescript typescript-language-server vscode-langservers-extracted prettier @fsouza/prettierd neovim
 
 # python
-# axel -n 8 https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
+# curl -O https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 # chmod a+x ./Miniconda3-latest-Linux-x86_64.sh
 # ./Miniconda3-latest-Linux-x86_64.sh
 # rm -f ./Miniconda3-latest-Linux-x86_64.sh
 # conda update --all -y
 # conda config --set auto_activate_base false
-# pip install pynvim pyright black ansible awscli --upgrade
+# pip install pynvim pyright black awscli --upgrade
 
 # docker
 # sudo dnf config-manager --add-repo https://download.docker.com/linux/fedora/docker-ce.repo
