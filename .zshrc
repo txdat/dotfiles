@@ -119,12 +119,11 @@ export KUBECONFIG=$HOME/.kube/config
 
 # aliases
 alias ls="ls --color"
-alias lz="lazygit"
+alias lg="lazygit"
 alias k=kubectl
-alias sysu="sudo \
-  pacman -Syyu --ignore linux --ignore linux-firmware --ignore nvidia --ignore nvidia-utils && \
-  paru -Syyu --ignore linux --ignore linux-firmware --ignore nvidia --ignore nvidia-utils && \
-  flatpak update"
+alias node="TZ=UTC node"
+alias jest="TZ=UTC NODE_ENV=test ./node_modules/.bin/jest"
+# alias sysu="sudo pacman -Syyu && paru -Syyu && flatpak update"
 # alias sysu="sudo dnf update && flatpak update"
 alias x2cb="xclip -sel c" # copy stdout to clipboard
 alias f2cb="xclip -sel c < " # copy data from file to clipboard
@@ -146,6 +145,11 @@ update_zsh () {
     done
 
     cd $dir
+}
+
+sysu () {
+  ignore_packages="nvidia,nvidia-utils,linux,linux-firmware,$(pacman -Qq | grep '^linux-firmware-' | tr '\n' ',' | sed 's/,$//'),systemd,$(pacman -Qq | grep '^systemd-' | tr '\n' ',' | sed 's/,$//'),cuda,cudnn,opencv-cuda,opencl-nvidia"
+  sudo pacman -Syyu --ignore $ignore_packages && paru -Syyu --ignore $ignore_packages && flatpak update
 }
 
 # Gcloud

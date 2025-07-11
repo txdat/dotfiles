@@ -286,8 +286,6 @@ nnoremap <silent> <C-c> ciw
 "nnoremap <silent> <C-k> :resize +2<CR>
 "nnoremap <silent> <C-h> :vertical resize -2<CR>
 "nnoremap <silent> <C-l> :vertical resize +2<CR>
-
-nnoremap <silent> <F12> :!g++ -g % && ./a.out<CR>
 "}}}
 
 " plugins{{{
@@ -390,6 +388,7 @@ let g:coc_global_extensions = [
   \ 'coc-yaml',
   \ 'coc-clangd',
   \ 'coc-pyright',
+  \ 'coc-go',
   \ 'coc-tsserver',
   \ 'coc-eslint',
   \ 'coc-prettier',
