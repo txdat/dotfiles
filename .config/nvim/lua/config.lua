@@ -180,7 +180,7 @@ augroup END
 
 function! s:SetHighlights()
     highlight Normal guifg=#f8f8f0 guibg=#000000
-    highlight NormalFloat guifg=#f8f8f0 guibg=#26292c
+    highlight NormalFloat guifg=#f8f8f0 guibg=#111111
     highlight VertSplit guibg=NONE
     highlight Identifier ctermfg=12 guifg=#f8f8f0
     highlight PreProc guifg=#a6e22e

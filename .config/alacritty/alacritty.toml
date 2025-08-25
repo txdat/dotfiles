@@ -5,35 +5,27 @@ draw_bold_text_with_bright_colors = false
 background = "#000000"
 foreground = "#f8f8f0"
 
-# # Normal colors
-# [colors.normal]
-# black     = '0x000000'
-# red       = '0xff5f59'
-# green     = '0x44bc44'
-# yellow    = '0xd0bc00'
-# blue      = '0x2fafff'
-# magenta   = '0xfeacd0'
-# cyan      = '0x00d3d0'
-# white     = '0xf8f8f0'
+# Normal Colours
+[colors.normal]
+black   = '#1a1a1a'
+red     = '#f4005f'
+green   = '#98e024'
+yellow  = '#fa8419'
+blue    = '#9d65ff'
+magenta = '#f4005f'
+cyan    = '#58d1eb'
+white   = '#c4c5b5'
 
-# # Bright colors
-# [colors.bright]
-# black     = '0x1e1e1e'
-# red       = '0xff5f5f'
-# green     = '0x44df44'
-# yellow    = '0xefef00'
-# blue      = '0x338fff'
-# magenta   = '0xff66ff'
-# cyan      = '0x00eff0'
-# white     = '0x989898'
-
-# [[colors.indexed_colors]]
-# index     = 16
-# color     = '0xfec43f'
-
-# [[colors.indexed_colors]]
-# index     = 17
-# color     = '0xff9580'
+# Bright Colours
+[colors.bright]
+black   = '#625e4c'
+red     = '#f4005f'
+green   = '#98e024'
+yellow  = '#e0d561'
+blue    = '#9d65ff'
+magenta = '#f4005f'
+cyan    = '#58d1eb'
+white   = '#f6f6ef'
 
 [cursor]
 unfocused_hollow = true
