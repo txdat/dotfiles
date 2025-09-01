@@ -388,7 +388,6 @@ let g:coc_global_extensions = [
   \ 'coc-yaml',
   \ 'coc-clangd',
   \ 'coc-pyright',
-  \ 'coc-go',
   \ 'coc-tsserver',
   \ 'coc-eslint',
   \ 'coc-prettier',

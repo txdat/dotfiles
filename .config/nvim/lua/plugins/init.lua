@@ -52,13 +52,22 @@ local plugins = {
     -- },
 
     -- syntax
+    -- {
+    --     "nvim-treesitter/nvim-treesitter",
+    --     dependencies = {
+    --         -- "nvim-treesitter/nvim-treesitter-textobjects",
+    --         -- "folke/ts-comments.nvim",
+    --     },
+    --     branch = "master",
+    --     build = ":TSUpdate",
+    --     lazy = false,
+    --     config = function()
+    --         require("plugins.treesitter_master")
+    --     end
+    -- },
     {
         "nvim-treesitter/nvim-treesitter",
-        dependencies = {
-            -- "nvim-treesitter/nvim-treesitter-textobjects",
-            -- "folke/ts-comments.nvim",
-        },
-        branch = "master",
+        branch = "main",
         build = ":TSUpdate",
         lazy = false,
         config = function()
