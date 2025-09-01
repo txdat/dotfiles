@@ -41,13 +41,6 @@ M.clangd = {
     "--function-arg-placeholders",
     "--fallback-style=llvm"
   },
-  settings = {
-    init_options = {
-      usePlaceholders = true,
-      completeUnimported = true,
-      clangdFileStatus = true
-    },
-  },
 }
 
 -- M.rust_analyzer = {
@@ -82,51 +75,36 @@ M.clangd = {
 --   },
 -- }
 
-M.gopls = {
-  init_options = {
-    usePlaceholders = true,
-    completeUnimported = true,
-  },
-  settings = {
-    gopls = {
-      analyses = {
-        unusedparams = true,
-      },
-      -- semanticTokens = true,
-      staticcheck = true,
-      gofumpt = true,
-    },
-  },
+-- M.gopls = {
+--   init_options = {
+--     usePlaceholders = true,
+--     completeUnimported = true,
+--   },
+--   settings = {
+--     gopls = {
+--       analyses = {
+--         unusedparams = true,
+--       },
+--       -- semanticTokens = true,
+--       staticcheck = true,
+--       gofumpt = true,
+--     },
+--   },
+-- }
+
+M.pyright = {
 }
 
-M.pyright = {}
-
--- M.hls = {}
-
 -- typescript-language-server
-M.ts_ls = {
-  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-  settings = {
-    completions = {
-      completeFunctionCalls = false,
-    },
-    exclude = {
-      "node_modules"
-    }
-  },
+-- M.ts_ls = {
+-- }
+
+-- vtsls
+M.vtsls = {
 }
 
 -- vscode-langservers-extracted
 M.eslint = {
-  filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
-  settings = {
-    workingDirectories = { mode = "auto" },
-    experimental = {
-      useFlatConfig = false,
-    }
-  }
 }
-
--- M.texlab = {}
 
 return M
