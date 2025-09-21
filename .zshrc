@@ -121,14 +121,18 @@ export KUBECONFIG=$HOME/.kube/config
 alias ls="ls --color"
 alias lg="lazygit"
 alias k=kubectl
-alias node="TZ=UTC node"
-alias jest="TZ=UTC NODE_ENV=test ./node_modules/.bin/jest"
 # alias sysu="sudo pacman -Syyu && paru -Syyu && flatpak update"
 # alias sysu="sudo dnf update && flatpak update"
 alias x2cb="xclip -sel c" # copy stdout to clipboard
 alias f2cb="xclip -sel c < " # copy data from file to clipboard
 alias cb2f="xclip -sel c -o > " # copy data from clipboard to file
 #alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
+
+alias gemini-flash="GEMINI_MODEL=gemini-2.5-flash gemini"
+
+alias npm="TZ=UTC npm"
+alias node="TZ=UTC node"
+alias jest="TZ=UTC NODE_ENV=test ./node_modules/.bin/jest"
 
 # update zsh's plugins
 update_zsh () {

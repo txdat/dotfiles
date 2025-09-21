@@ -194,16 +194,16 @@ local plugins = {
     ------------------------------------
 
     -- lsp server: diagnostics, formatting
-    {
-        "neovim/nvim-lspconfig",
-        dependencies = {
-            "hrsh7th/cmp-nvim-lsp",
-        },
-        event = "BufReadPre",
-        config = function()
-            require("plugins.lsp")
-        end,
-    },
+    -- {
+    --     "neovim/nvim-lspconfig",
+    --     dependencies = {
+    --         "hrsh7th/cmp-nvim-lsp",
+    --     },
+    --     event = "BufReadPre",
+    --     config = function()
+    --         require("plugins.lsp")
+    --     end,
+    -- },
 
     {
         "stevearc/conform.nvim",

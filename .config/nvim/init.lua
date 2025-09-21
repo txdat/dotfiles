@@ -1,4 +1,5 @@
 vim.loader.enable()
 
-require("config")
+require("core")
+require("lsp")
 require("plugins")
