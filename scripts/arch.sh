@@ -85,7 +85,7 @@ chsh -s $(which zsh)
 # javascript, typescript
 # curl -fsSL https://fnm.vercel.app/install | bash
 # fnm use --install-if-missing 22
-# npm install -g typescript typescript-language-server vscode-langservers-extracted prettier @fsouza/prettierd neovim
+# npm install -g typescript ts-node typescript-language-server @vtsls/language-server  vscode-langservers-extracted prettier @fsouza/prettierd neovim
 
 # java
 # sudo pacman -S --noconfirm jdk-openjdk
