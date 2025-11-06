@@ -3,7 +3,7 @@ local rgCmd =
 "rg --color=always --hidden --follow --no-heading --with-filename --line-number --column --smart-case -g '!{.git}/*'"
 
 require("fzf-lua").setup({
-    "max-perf",
+    { "max-perf", "hide" },
     winopts = {
         border = "none",
         backdrop = 0, -- opaque
@@ -59,8 +59,8 @@ require("fzf-lua").setup({
         -- formatter    = "path.filename_first",
     },
     grep = {
-        prompt       = "Grep❯ ",
-        input_prompt = "Grep❯ ",
+        prompt       = "Rg❯ ",
+        input_prompt = "Rg❯ ",
         cmd          = rgCmd,
         rg_glob      = true,
         no_header    = true,

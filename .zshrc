@@ -87,6 +87,8 @@ fi
 
 export QT_QPA_PLATFORM=xcb
 
+export PATH="$HOME/.local/bin:$PATH"
+
 # emacs
 #export PATH="$HOME/.emacs.d/bin:$PATH"
 
@@ -139,6 +141,10 @@ alias qwen-flash="OPENAI_MODEL=qwen3-coder-flash qwen"
 alias npm="TZ=UTC npm"
 alias node="TZ=UTC node"
 alias jest="TZ=UTC NODE_ENV=test ./node_modules/.bin/jest"
+
+catxy () {
+    awk "NR >= $2 && NR <= $3" $1
+}
 
 # update zsh's plugins
 update_zsh () {

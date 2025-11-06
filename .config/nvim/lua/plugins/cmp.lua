@@ -42,7 +42,7 @@ local use_luasnip, luasnip = pcall(require, "luasnip")
 
 local lspkind_menu = {
   nvim_lsp = "lsp",
-  buffer = "buf",
+  buffer = "bf",
   path = " fs",
   luasnip = "snp",
 };

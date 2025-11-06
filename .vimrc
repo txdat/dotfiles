@@ -136,12 +136,12 @@ augroup END
 " set noshowmode
 set statusline=
 set statusline+=%1*\ [%{toupper(mode())}]\  " The current mode
-set statusline+=%2*\ %{b:git_branch}        " Git branch
-set statusline+=%3*\ %<%f%m%r%h%w\          " File path, modified, readonly, helpfile, preview
+set statusline+=%2*\ %<%f%m%r%h%w\          " File path, modified, readonly, helpfile, preview
 set statusline+=%=                          " Right Side
-set statusline+=%1*\ %l:%v\ %3p%%           " Line:Col number, percentage of document
-" set statusline+=%2*\ %{''.(&fenc!=''?&fenc:&enc).''}     " Encoding
-" set statusline+=%3*\ (%{&ff})                            " FileFormat (dos/unix..)
+set statusline+=%1*\ %{b:git_branch}        " Git branch
+set statusline+=%2*\ \ %l:%v\ %3p%%         " Line:Col number, percentage of document
+" set statusline+=%3*\ %{''.(&fenc!=''?&fenc:&enc).''}     " Encoding
+" set statusline+=%4*\ (%{&ff})                            " FileFormat (dos/unix..)
 
 " ----------------------------------
 " colorscheme
@@ -385,7 +385,6 @@ nmap <silent> <C-i> <Plug>(coc-format)
 let g:coc_global_extensions = [
   \ 'coc-pairs',
   \ 'coc-json',
-  \ 'coc-yaml',
   \ 'coc-clangd',
   \ 'coc-pyright',
   \ 'coc-tsserver',

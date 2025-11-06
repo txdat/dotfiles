@@ -103,12 +103,12 @@ function Statusline()
     local git_branch = vim.fn.system("git branch --show-current 2> /dev/null | tr -d '\n'")
     return table.concat({
         "%1* " .. string.format("[%s]", vim.api.nvim_get_mode().mode):upper(), -- The current mode
-        "%2* " .. git_branch,                                                  -- Git branch
-        "%3* %<%f%m%r%h%w",                                                    -- File path, modified, readonly, helpfile, preview
+        "%2* %<%f%m%r%h%w",                                                    -- File path, modified, readonly, helpfile, preview
         "%=",                                                                  -- Right side
-        "%1* %l:%v %3p%%",                                                     -- Line:Col number, percentage of document
-        -- "%2* %{''.(&fenc!=''?&fenc:&enc).''}",                                 -- Encoding
-        -- "%3* (%{&ff})"                                                         -- FileFormat (dos/unix..)
+        "%1* " .. git_branch,                                                  -- Git branch
+        "%2*  %l:%v %3p%%",                                                    -- Line:Col number, percentage of document
+        -- "%3* %{''.(&fenc!=''?&fenc:&enc).''}",                                 -- Encoding
+        -- "%4* (%{&ff})"                                                         -- FileFormat (dos/unix..)
     })
 end
 

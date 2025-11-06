@@ -106,6 +106,11 @@ local capabilities = {
       }
     },
   },
+  workspace = {
+    didChangeWatchedFiles = {
+      dynamicRegistration = true
+    }
+  }
 }
 
 vim.lsp.config("clangd", {
@@ -192,6 +197,7 @@ vim.lsp.config("eslint", {
 vim.lsp.enable({
   "clangd",
   "pyright",
+  "gopls",
   "vtsls",
   "eslint",
 })
