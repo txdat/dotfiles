@@ -5,7 +5,7 @@
 [core]
     pager = delta
 	gitproxy = 
-	autocrlf = false
+	autocrlf = true
 
 [credential]
     helper = cache

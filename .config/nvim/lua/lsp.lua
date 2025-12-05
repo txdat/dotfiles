@@ -129,6 +129,29 @@ vim.lsp.config("clangd", {
   capabilities = capabilities,
 })
 
+vim.lsp.config("rust_analyzer", {
+  cmd = { 'rust-analyzer' },
+  filetypes = { 'rust' },
+  settings = {
+    ['rust-analyzer'] = {
+      lens = {
+        debug = { enable = true },
+        enable = true,
+        implementations = { enable = true },
+        references = {
+          adt = { enable = true },
+          enumVariant = { enable = true },
+          method = { enable = true },
+          trait = { enable = true },
+        },
+        run = { enable = true },
+        updateTest = { enable = true },
+      },
+    },
+  },
+  capabilities = capabilities,
+})
+
 vim.lsp.config("pyright", {
   cmd = { 'pyright-langserver', '--stdio' },
   filetypes = { 'python' },
@@ -196,8 +219,8 @@ vim.lsp.config("eslint", {
 
 vim.lsp.enable({
   "clangd",
+  "rust_analyzer",
   "pyright",
-  "gopls",
   "vtsls",
   "eslint",
 })

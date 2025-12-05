@@ -385,7 +385,9 @@ nmap <silent> <C-i> <Plug>(coc-format)
 let g:coc_global_extensions = [
   \ 'coc-pairs',
   \ 'coc-json',
+  \ 'coc-yaml',
   \ 'coc-clangd',
+  \ 'coc-rust-analyzer',
   \ 'coc-pyright',
   \ 'coc-tsserver',
   \ 'coc-eslint',
