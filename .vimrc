@@ -153,10 +153,10 @@ augroup Monokai
 augroup END
 
 function! s:SetHighlights()
-    highlight Normal guifg=#f8f8f0 guibg=#000000
-    highlight NormalFloat guifg=#f8f8f0 guibg=#111111
+    highlight Normal guifg=#eee8d5 guibg=#000000
+    highlight NormalFloat guifg=#eee8d5 guibg=#111111
     highlight VertSplit guibg=NONE
-    highlight Identifier ctermfg=12 guifg=#f8f8f0
+    highlight Identifier ctermfg=12 guifg=#eee8d5
     highlight PreProc guifg=#a6e22e
     highlight Structure guifg=#66d9ef
 endfunction

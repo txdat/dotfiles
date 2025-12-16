@@ -131,12 +131,12 @@ alias cb2f="xclip -sel c -o > " # copy data from clipboard to file
 #alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 
 # AI
+alias gemini-flash="GEMINI_MODEL=gemini-3-flash-preview gemini"
 alias gemini-pro="GEMINI_MODEL=gemini-3-pro-preview gemini"
-alias gemini-flash="GEMINI_MODEL=gemini-2.5-flash gemini"
 alias claude-haiku="ANTHROPIC_MODEL=claude-haiku-4-5 claude"
 alias claude-sonnet="ANTHROPIC_MODEL=claude-sonnet-4-5 claude"
-alias qwen-plus="OPENAI_MODEL=qwen3-coder-plus qwen"
 alias qwen-flash="OPENAI_MODEL=qwen3-coder-flash qwen"
+alias qwen-plus="OPENAI_MODEL=qwen3-coder-plus qwen"
 
 alias npm="TZ=UTC npm"
 alias node="TZ=UTC node"
