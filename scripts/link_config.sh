@@ -11,6 +11,7 @@ ln -s ~/.dotfiles/.zshrc ~/.zshrc
 ln -s ~/.dotfiles/.tmux.conf ~/.tmux.conf
 
 active_configs=(
+    "foot"
     "alacritty"
     "bat"
     "fcitx5"
