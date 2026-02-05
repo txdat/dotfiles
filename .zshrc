@@ -164,7 +164,7 @@ update_zsh () {
 }
 
 sysu () {
-  ignore_packages="nvidia,nvidia-utils,linux,linux-firmware,$(pacman -Qq | grep '^linux-firmware-' | tr '\n' ',' | sed 's/,$//'),systemd,$(pacman -Qq | grep '^systemd-' | tr '\n' ',' | sed 's/,$//'),cuda,cudnn,opencv-cuda,opencl-nvidia"
+  ignore_packages="nvidia,nvidia-open,nvidia-utils,linux,linux-firmware,$(pacman -Qq | grep '^linux-firmware-' | tr '\n' ',' | sed 's/,$//'),systemd,$(pacman -Qq | grep '^systemd-' | tr '\n' ',' | sed 's/,$//'),cuda,cudnn,opencv-cuda,opencl-nvidia"
   sudo pacman -Syyu --ignore $ignore_packages && paru -Syyu --ignore $ignore_packages && flatpak update
 }
 
