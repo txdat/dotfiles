@@ -132,11 +132,10 @@ alias cb2f="xclip -sel c -o > " # copy data from clipboard to file
 
 # AI
 alias gemini-flash="GEMINI_MODEL=gemini-3-flash-preview gemini"
-alias gemini-pro="GEMINI_MODEL=gemini-3-pro-preview gemini"
+alias gemini-pro="GEMINI_MODEL=gemini-3.1-pro-preview gemini"
 alias claude-haiku="ANTHROPIC_MODEL=claude-haiku-4-5 claude"
-alias claude-sonnet="ANTHROPIC_MODEL=claude-sonnet-4-5 claude"
-alias qwen-flash="OPENAI_MODEL=qwen3-coder-flash qwen"
-alias qwen-plus="OPENAI_MODEL=qwen3-coder-plus qwen"
+alias claude-sonnet="ANTHROPIC_MODEL=claude-sonnet-4-6 claude"
+alias claude-opus="ANTHROPIC_MODEL=claude-opus-4-6 claude"
 
 alias npm="TZ=UTC npm"
 alias node="TZ=UTC node"
@@ -164,7 +163,18 @@ update_zsh () {
 }
 
 sysu () {
-  ignore_packages="nvidia,nvidia-open,nvidia-utils,linux,linux-firmware,$(pacman -Qq | grep '^linux-firmware-' | tr '\n' ',' | sed 's/,$//'),systemd,$(pacman -Qq | grep '^systemd-' | tr '\n' ',' | sed 's/,$//'),cuda,cudnn,opencv-cuda,opencl-nvidia"
+  packages=(
+    'linux'
+    'systemd'
+    'nvidia'
+    'cuda'
+    'cudnn'
+  )
+  ignore_packages=""
+  for pkg in "${packages[@]}"
+  do
+    ignore_packages+="$(pacman -Qq | grep $pkg | tr '\n' ',' | sed 's/,$//'),"
+  done
   sudo pacman -Syyu --ignore $ignore_packages && paru -Syyu --ignore $ignore_packages && flatpak update
 }
 
