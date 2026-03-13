@@ -4,6 +4,7 @@ description: "Use for business features and regular development. For: breaking d
 model: sonnet
 color: pink
 memory: user
+effort: high
 ---
 
 You are Feature Planner, translating requirements into implementation strategies **within existing architecture**.

@@ -121,7 +121,7 @@ export KUBECONFIG=$HOME/.kube/config
 
 # aliases
 alias ls="ls --color"
-alias lg="lazygit"
+alias gg="lazygit"
 alias k=kubectl
 # alias sysu="sudo pacman -Syyu && paru -Syyu && flatpak update"
 # alias sysu="sudo dnf update && flatpak update"
@@ -129,13 +129,6 @@ alias x2cb="xclip -sel c" # copy stdout to clipboard
 alias f2cb="xclip -sel c < " # copy data from file to clipboard
 alias cb2f="xclip -sel c -o > " # copy data from clipboard to file
 #alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
-
-# AI
-alias gemini-flash="GEMINI_MODEL=gemini-3-flash-preview gemini"
-alias gemini-pro="GEMINI_MODEL=gemini-3.1-pro-preview gemini"
-alias claude-haiku="ANTHROPIC_MODEL=claude-haiku-4-5 claude"
-alias claude-sonnet="ANTHROPIC_MODEL=claude-sonnet-4-6 claude"
-alias claude-opus="ANTHROPIC_MODEL=claude-opus-4-6 claude"
 
 alias npm="TZ=UTC npm"
 alias node="TZ=UTC node"
