@@ -121,7 +121,7 @@ export KUBECONFIG=$HOME/.kube/config
 
 # aliases
 alias ls="ls --color"
-alias gg="lazygit"
+alias lz="lazygit"
 alias k=kubectl
 # alias sysu="sudo pacman -Syyu && paru -Syyu && flatpak update"
 # alias sysu="sudo dnf update && flatpak update"

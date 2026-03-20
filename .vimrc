@@ -209,6 +209,13 @@ function! QfReplace(...)
     execute printf('cfdo %%s/%s/%s/%s | update', a:1, a:2, get(a:,3,'g'))
 endfunction
 
+" ----------------------------------
+" file type
+" ----------------------------------
+
+" Set filetype to helm for any yaml file inside a 'templates' folder
+autocmd BufRead,BufNewFile */templates/*.yaml,*/templates/*.tpl set filetype=helm
+
 "}}}
 
 " keymaps{{{
