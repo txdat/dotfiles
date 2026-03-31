@@ -391,7 +391,6 @@ let g:coc_global_extensions = [
   \ 'coc-json',
   \ 'coc-yaml',
   \ 'coc-clangd',
-  \ 'coc-rust-analyzer',
   \ 'coc-pyright',
   \ 'coc-tsserver',
   \ 'coc-eslint',

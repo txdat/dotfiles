@@ -117,6 +117,8 @@ fi
 # kubernetes
 export KUBECONFIG=$HOME/.kube/config
 
+export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+
 [ -f ~/.env ] && source ~/.env
 
 # aliases

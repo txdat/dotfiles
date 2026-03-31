@@ -50,77 +50,184 @@ else
 fi
 ```
 
-### 2. GKE Metrics (via `kubectl`)
+### 2. GKE Metrics
 
-**Node resource pressure:**
+> **CRITICAL: `kubectl top` shows CURRENT state only — do NOT use it for weekly/period reports.**
+> For any report covering a time range, always use GCP Monitoring REST API (see below).
+> `kubectl top` and `kubectl get pods` are only useful for real-time snapshots.
+
+**Node CPU & Memory — historical (GCP Monitoring REST API):**
 ```bash
-# Use kubectl top for live node usage
-kubectl top nodes --no-headers
+ACCESS_TOKEN=$(gcloud auth print-access-token 2>/dev/null)
+BASE="https://monitoring.googleapis.com/v3/projects/$GCP_PROJECT/timeSeries"
+# START/END must be ISO8601 UTC, e.g. START="2026-03-24T00:00:00Z" END="2026-03-30T23:59:59Z"
+# For weekly avg: use alignmentPeriod=604800s (1 week) with ALIGN_MEAN → 1 data point per node = weekly avg
+# For hourly max: use alignmentPeriod=3600s with ALIGN_MAX
 
-# Node conditions (Ready/MemoryPressure/DiskPressure/PIDPressure)
-kubectl get nodes -o json | \
-  python3 -c "
-import json, sys
-nodes = json.load(sys.stdin)['items']
-for n in nodes:
-  name = n['metadata']['name']
-  for c in n['status']['conditions']:
-    if c['type'] in ['Ready','MemoryPressure','DiskPressure','PIDPressure']:
-      print(f\"{name}  {c['type']}={c['status']}\")
-"
-```
-
-**Pod/Container resource usage:**
-```bash
-# CPU & memory per container vs limits
-kubectl top pods -A --no-headers
-
-# OOMKilled / CrashLoopBackOff containers
-kubectl get pods -A -o json | \
-  python3 -c "
+echo "=== Node CPU (weekly avg per node) ==="
+curl -s -H "Authorization: Bearer $ACCESS_TOKEN" \
+  "$BASE?filter=metric.type%3D%22kubernetes.io/node/cpu/allocatable_utilization%22%20AND%20resource.labels.cluster_name%3D%22$CLUSTER_NAME%22&interval.startTime=$START&interval.endTime=$END&aggregation.alignmentPeriod=604800s&aggregation.perSeriesAligner=ALIGN_MEAN" \
+| python3 -c "
 import json, sys
 data = json.load(sys.stdin)
-for pod in data['items']:
-  ns = pod['metadata']['namespace']
-  name = pod['metadata']['name']
-  for cs in pod['status'].get('containerStatuses', []):
-    restarts = cs.get('restartCount', 0)
-    state = cs.get('state', {})
-    waiting = state.get('waiting', {})
-    reason = waiting.get('reason', '')
-    if restarts > 3 or reason in ['CrashLoopBackOff','OOMKilled']:
-      print(f\"{ns}/{name}  container={cs['name']}  restarts={restarts}  reason={reason}\")
+results = []
+for t in data.get('timeSeries', []):
+  node = t['resource']['labels'].get('node_name', 'unknown').split('-')[-1]
+  pts = [p['value'].get('doubleValue', 0) for p in t.get('points', [])]
+  avg = sum(pts)/len(pts)*100 if pts else 0
+  results.append((node, avg))
+
+for node, avg in sorted(results, key=lambda x: -x[1]):
+  flag = '✖ CRIT' if avg > 90 else '⚠ WARN' if avg > 70 else 'OK'
+  if avg > 50:
+    print(f'  {node:10s} avg={avg:5.1f}%  {flag}')
+print(f'Total nodes seen: {len(results)}  |  Nodes avg>70%: {sum(1 for _,a in results if a>70)}')
 "
 
-# HPA status
-kubectl get hpa -A -o json | \
-  python3 -c "
+echo "=== Node Memory (weekly avg per node) ==="
+curl -s -H "Authorization: Bearer $ACCESS_TOKEN" \
+  "$BASE?filter=metric.type%3D%22kubernetes.io/node/memory/allocatable_utilization%22%20AND%20resource.labels.cluster_name%3D%22$CLUSTER_NAME%22&interval.startTime=$START&interval.endTime=$END&aggregation.alignmentPeriod=604800s&aggregation.perSeriesAligner=ALIGN_MEAN" \
+| python3 -c "
 import json, sys
 data = json.load(sys.stdin)
-for h in data['items']:
-  ns = h['metadata']['namespace']
-  name = h['metadata']['name']
-  cur = h['status'].get('currentReplicas', 0)
-  desired = h['status'].get('desiredReplicas', 0)
-  mx = h['spec'].get('maxReplicas', 0)
-  print(f\"{ns}/{name}  current={cur}  desired={desired}  max={mx}\")
+results = []
+for t in data.get('timeSeries', []):
+  node = t['resource']['labels'].get('node_name', 'unknown').split('-')[-1]
+  pts = [p['value'].get('doubleValue', 0) for p in t.get('points', [])]
+  avg = sum(pts)/len(pts)*100 if pts else 0
+  results.append((node, avg))
+
+high = [(n, a) for n, a in results if a >= 70]
+print(f'Memory high-water (max avg): {max(results, key=lambda x: x[1])}')
+print(f'Nodes avg memory >= 80%: {[n for n,a in results if a >= 80]}')
+for node, avg in sorted(high, key=lambda x: -x[1]):
+  flag = '✖ CRIT' if avg > 90 else '⚠ WARN'
+  print(f'  {node:10s} avg={avg:5.1f}%  {flag}')
 "
 ```
 
-**Ingress / Load Balancer (Cloud Logging — `gcloud monitoring read` is not available):**
+**Node conditions (Ready / pressure flags) — current state only:**
 ```bash
-# Count 5xx errors from Cloud Logging over the report period (e.g. last 7 days)
-gcloud logging read \
-  'resource.type="http_load_balancer" httpRequest.status>=500' \
-  --project="$GCP_PROJECT" \
-  --freshness="7d" \
-  --format="value(httpRequest.status)" \
-  --limit=1000 2>/dev/null | wc -l
-# Note: --limit=1000 means the count is a lower-bound if many 5xx occurred.
-# For p95 latency use the per-URL latency section (step 5) with --url-latency flag.
+kubectl get nodes -o custom-columns="NAME:.metadata.name,STATUS:.status.conditions[-1].type,READY:.status.conditions[-1].status" --no-headers 2>/dev/null
 ```
 
-> **Note:** `gcloud monitoring read` / `gcloud monitoring metrics-descriptors` are **not available** in this environment. Use the GCP Monitoring REST API (step 3 Redis) or Cloud Logging instead.
+**Pod restarts — historical delta (GCP Monitoring REST API):**
+```bash
+# ALIGN_DELTA over the full period gives restarts added within that window (not cumulative).
+# Do NOT use kubectl get pods restartCount for period reports — it is cumulative since pod creation.
+
+echo "=== Pod restarts (period delta) ==="
+curl -s -H "Authorization: Bearer $ACCESS_TOKEN" \
+  "$BASE?filter=metric.type%3D%22kubernetes.io/container/restart_count%22%20AND%20resource.labels.cluster_name%3D%22$CLUSTER_NAME%22%20AND%20resource.labels.namespace_name%3D%22mmenu-prod%22&interval.startTime=$START&interval.endTime=$END&aggregation.alignmentPeriod=604800s&aggregation.perSeriesAligner=ALIGN_DELTA" \
+| python3 -c "
+import json, sys
+data = json.load(sys.stdin)
+results = []
+for t in data.get('timeSeries', []):
+  pod = t['resource']['labels'].get('pod_name', '')
+  container = t['resource']['labels'].get('container_name', '')
+  total = 0
+  for p in t.get('points', []):
+    v = p.get('value', {})
+    total += int(v.get('int64Value', v.get('doubleValue', 0) or 0))
+  if total > 3:
+    results.append((total, pod, container))
+
+results.sort(reverse=True)
+for total, pod, container in results:
+  status = '✖ CRIT' if total > 10 else '⚠ WARN'
+  print(f'  {status} | restarts={total:3d} | {pod} | {container}')
+"
+```
+
+**HPA status — current state (kubectl):**
+```bash
+# For current ratios. Use --sort-by or -o custom-columns to avoid JSON boolean parsing issues.
+kubectl get hpa -n mmenu-prod \
+  -o custom-columns="NAME:.metadata.name,CURRENT:.status.currentReplicas,MAX:.spec.maxReplicas" \
+  --no-headers 2>/dev/null | awk '{
+    ratio = ($2/$3)*100
+    flag = (ratio > 80) ? "⚠ WARN" : "OK"
+    printf "  %-40s current=%3d / max=%3d  ratio=%5.1f%%  %s\n", $1, $2, $3, ratio, flag
+  }'
+```
+
+**Ingress / Load Balancer — 5xx error rate (GCP Monitoring REST API):**
+```bash
+# NEVER use Cloud Logging --limit sampling for error rates.
+# Cloud Logging --limit=N caps results and gives a misleading percentage
+# (e.g. --limit=1000 out of millions of requests → fake 20% rate).
+# Always use loadbalancing.googleapis.com/https/request_count from Monitoring API.
+
+echo "=== 5xx error rate (daily, from Monitoring API) ==="
+# 5xx counts
+curl -s -H "Authorization: Bearer $ACCESS_TOKEN" \
+  "$BASE?filter=metric.type%3D%22loadbalancing.googleapis.com%2Fhttps%2Frequest_count%22%20AND%20metric.labels.response_code_class%3D%22500%22&interval.startTime=$START&interval.endTime=$END&aggregation.alignmentPeriod=86400s&aggregation.perSeriesAligner=ALIGN_SUM&aggregation.crossSeriesReducer=REDUCE_SUM" \
+| python3 -c "
+import json, sys
+from collections import defaultdict
+data = json.load(sys.stdin)
+by_day = defaultdict(int)
+for t in data.get('timeSeries', []):
+  for p in t.get('points', []):
+    v = p['value']
+    val = int(v.get('int64Value', v.get('doubleValue', 0) or 0))
+    ts = p['interval']['startTime'][:10]
+    by_day[ts] += val
+total = sum(by_day.values())
+for ts in sorted(by_day):
+  print(f'  5xx {ts}: {by_day[ts]:,}')
+print(f'  5xx TOTAL: {total:,}')
+" > /tmp/5xx_data.txt
+
+# Total request counts
+curl -s -H "Authorization: Bearer $ACCESS_TOKEN" \
+  "$BASE?filter=metric.type%3D%22loadbalancing.googleapis.com%2Fhttps%2Frequest_count%22&interval.startTime=$START&interval.endTime=$END&aggregation.alignmentPeriod=86400s&aggregation.perSeriesAligner=ALIGN_SUM&aggregation.crossSeriesReducer=REDUCE_SUM" \
+| python3 -c "
+import json, sys
+from collections import defaultdict
+data = json.load(sys.stdin)
+by_day = defaultdict(int)
+for t in data.get('timeSeries', []):
+  for p in t.get('points', []):
+    v = p['value']
+    val = int(v.get('int64Value', v.get('doubleValue', 0) or 0))
+    ts = p['interval']['startTime'][:10]
+    by_day[ts] += val
+total = sum(by_day.values())
+for ts in sorted(by_day):
+  print(f'  tot {ts}: {by_day[ts]:,}')
+print(f'  tot TOTAL: {total:,}')
+" > /tmp/total_data.txt
+
+# Compute rates
+python3 -c "
+import re
+fivex = {}
+total = {}
+for line in open('/tmp/5xx_data.txt'):
+  m = re.match(r'  5xx\s+(\S+):\s+([\d,]+)', line)
+  if m: fivex[m.group(1)] = int(m.group(2).replace(',',''))
+for line in open('/tmp/total_data.txt'):
+  m = re.match(r'  tot\s+(\S+):\s+([\d,]+)', line)
+  if m: total[m.group(1)] = int(m.group(2).replace(',',''))
+for day in sorted(total):
+  t = total[day]; e = fivex.get(day, 0)
+  rate = e/t*100 if t else 0
+  flag = ' ✖ CRIT' if rate > 5 else ' ⚠ WARN' if rate > 1 else ''
+  print(f'  {day}: {e:,} / {t:,} = {rate:.4f}%{flag}')
+tot5 = sum(fivex.values()); totall = sum(total.values())
+print(f'  WEEKLY: {tot5:,} / {totall:,} = {tot5/totall*100:.4f}%')
+"
+
+# For spike investigation: break down a specific day by hour
+# SPIKE_DAY="2026-03-28"
+# curl -s -H "Authorization: Bearer $ACCESS_TOKEN" \
+#   "$BASE?filter=metric.type%3D%22loadbalancing.googleapis.com%2Fhttps%2Frequest_count%22%20AND%20metric.labels.response_code_class%3D%22500%22&interval.startTime=${SPIKE_DAY}T00:00:00Z&interval.endTime=${SPIKE_DAY}T23:59:59Z&aggregation.alignmentPeriod=3600s&aggregation.perSeriesAligner=ALIGN_SUM&aggregation.crossSeriesReducer=REDUCE_SUM" \
+# | python3 -c "..."
+```
+
+> **Note:** `gcloud monitoring read` / `gcloud monitoring metrics-descriptors` are **not available** in this environment. Use the GCP Monitoring REST API or Cloud Logging instead.
 
 ### 3. Memorystore (Redis) Metrics
 
@@ -133,16 +240,13 @@ gcloud redis instances list --project="$GCP_PROJECT" --region="$REDIS_REGION" \
   --format="table(name,memorySizeGb,state,currentLocationId)" 2>/dev/null
 # Set REDIS_INSTANCE to the instance name found above
 
+# Use value() format to avoid JSON boolean parsing issues (gcloud JSON uses lowercase true/false
+# which is valid JSON, but piping into a python3 heredoc can cause NameError on 'true').
+# Prefer --format="value(...)" for simple fields.
 gcloud redis instances describe "$REDIS_INSTANCE" \
   --region="$REDIS_REGION" \
   --project="$GCP_PROJECT" \
-  --format="json" 2>/dev/null | python3 -c "
-import json, sys
-d = json.load(sys.stdin)
-print('memorySizeGb:', d.get('memorySizeGb'))
-print('maxMemoryPolicy:', d.get('redisConfigs', {}).get('maxmemory-policy', 'N/A'))
-print('redisVersion:', d.get('redisVersion'))
-"
+  --format="value(memorySizeGb,redisVersion,state)" 2>/dev/null
 
 # Use GCP Monitoring REST API (requires gcloud auth)
 ACCESS_TOKEN=$(gcloud auth print-access-token 2>/dev/null)
