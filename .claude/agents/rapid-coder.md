@@ -4,7 +4,7 @@ description: "Fast executor for planned features. STRICTLY follows plans from fe
 model: haiku
 color: blue
 memory: user
-effort: low
+effort: normal
 ---
 
 ## Role
