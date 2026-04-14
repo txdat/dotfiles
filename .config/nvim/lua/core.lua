@@ -95,9 +95,10 @@ vim.opt.showmatch = true      -- highlight matching parenthesis
 vim.opt.splitright = true     -- vertical split to the right
 vim.opt.splitbelow = true     -- horizontal split to the bottom
 vim.opt.signcolumn = "auto"
-vim.opt.fillchars = [[eob: ,fold: ,foldopen:-,foldsep:│,foldclose:+,vert: ]]
+vim.opt.fillchars = [[diff: ,eob: ,fold: ,foldopen:-,foldsep:│,foldclose:+,vert: ]]
 vim.opt.foldcolumn = "1"
 vim.opt.statuscolumn = "%s%=%{&nu?(&rnu&&v:relnum?v:relnum:v:lnum):''}%=%C%#IndentBlankLineChar"
+vim.opt.diffopt = "internal,closeoff,indent-heuristic,linematch:60,iwhiteall"
 
 -- statusline
 function Statusline()
