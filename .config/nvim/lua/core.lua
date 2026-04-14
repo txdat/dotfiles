@@ -55,7 +55,8 @@ vim.opt.timeoutlen = 300 -- key mappings timeout
 vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.writebackup = false
-vim.opt.completeopt = "menuone,noinsert,noselect" -- insert mode
+-- vim.opt.autocomplete = true -- nvim-0.12
+vim.opt.completeopt = "menuone,noinsert,noselect,nearest" -- insert mode
 vim.opt.encoding = "utf-8"
 vim.opt.fileencoding = "utf-8"
 vim.opt.mouse = "a" -- enable mouse support
@@ -182,6 +183,8 @@ function! s:SetHighlights()
     highlight Normal guifg=#eee8d5 guibg=#000000
     highlight NormalFloat guifg=#eee8d5 guibg=#111111
     highlight VertSplit guibg=NONE
+    highlight StatusLine guifg=#eee8d5 guibg=#111111
+    highlight StatusLineNC guifg=#eee8d5 guibg=#000000
 endfunction
 ]], false)
 

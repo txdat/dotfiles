@@ -156,6 +156,8 @@ function! s:SetHighlights()
     highlight Normal guifg=#eee8d5 guibg=#000000
     highlight NormalFloat guifg=#eee8d5 guibg=#111111
     highlight VertSplit guibg=NONE
+    highlight StatusLine guifg=#eee8d5 guibg=#111111
+    highlight StatusLineNC guifg=#eee8d5 guibg=#000000
 endfunction
 
 set termguicolors

@@ -2,4 +2,4 @@ vim.loader.enable()
 
 require("core")
 require("lsp")
-require("plugins")
+require("lazy_plugin")
