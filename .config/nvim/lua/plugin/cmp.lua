@@ -49,7 +49,7 @@ local lspkind_menu = {
 
 cmp.setup({
   completion = {
-    completeopt = "menuone,noinsert,noselect",
+    completeopt = "menuone,noinsert,noselect,nearest",
   },
   performance = {
     max_view_entries = 20,

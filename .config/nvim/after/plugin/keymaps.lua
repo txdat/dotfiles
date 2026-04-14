@@ -1,7 +1,3 @@
------------------------------------------
--- keymaps
------------------------------------------
-
 local keymap = require("util").keymap
 
 -- remap recoding
