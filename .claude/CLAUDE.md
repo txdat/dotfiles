@@ -49,6 +49,11 @@ Lint, targeted tests, build — confirm the output. No success claims without ev
 **Run code review only after ALL tasks for a PR are complete.**
 One review at the end, not after each individual task.
 
+
+## Simple Questions — Respond Directly
+**For simple questions (definitions, yes/no, short factual answers), respond immediately without extended analysis.**
+Do not over-reason or over-explain. Match response depth to question complexity.
+
 ## Complex Problems — Sequential Thinking
 **For complex problems, follow a sequential thinking process:**
 - Break the problem into manageable steps
@@ -56,3 +61,7 @@ One review at the end, not after each individual task.
 - Branch into alternative reasoning paths when needed
 - Adjust the number of steps dynamically
 - Generate and verify solution hypotheses before acting
+
+## Anti-Over-Engineering — Simplify Before Presenting or Acting
+**After thinking through a plan or code changes, simplify before presenting or acting.**
+Remove unnecessary layers, abstractions, steps, or options that don't directly serve the requirement. Ensure code changes are minimal and traceable to the request. Prefer the simplest solution that fully solves the problem.
