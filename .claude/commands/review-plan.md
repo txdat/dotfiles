@@ -57,7 +57,13 @@ Evaluate the plan across these dimensions:
 - Are test types (unit/integration/e2e) appropriate for each step's invariant?
 - Are any steps in the checklist untested?
 
-### 2.7 Ambiguities
+### 2.7 TDD Compliance (blocking)
+- Does the checklist have a `### Test Steps` section with at least one entry?
+- Are all Test Steps listed **before** all Implementation Steps?
+- Does every Implementation Step reference a corresponding Test Step?
+- If any of the above are missing: this is a blocking issue — propose the missing test steps, written in the same sequential format (`### Test Steps` first, then `### Implementation Steps`).
+
+### 2.8 Ambiguities
 - Are there undefined terms, missing constraints, or edge cases not addressed?
 - Would a developer reading this plan need to make assumptions not captured here?
 

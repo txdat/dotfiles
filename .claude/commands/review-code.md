@@ -47,11 +47,13 @@ git log main..HEAD --oneline  # commits on this branch
 - If concurrent access is possible, is it handled (locks, versioning, idempotency)?
 - For financial/ledger code: BigDecimal only, RoundingMode explicit, double-entry balanced?
 
-### 3.4 Tests
-- Is there a test for every checklist step?
+### 3.4 Tests & TDD Compliance
+- Is there a test for every Implementation Step in the plan?
 - Do tests assert invariants, not just "it ran without exception"?
 - Are test names descriptive: `should_<expected>_when_<condition>`?
 - No test depends on execution order or shared mutable state?
+- **TDD order** (check `git log --oneline`): were test files committed before their corresponding implementation files? If implementation commits precede test commits, flag as a blocking issue.
+- **RED confirmation**: do the tests actually cover failure paths — or do they only pass because the implementation is already in place? Spot-check by reading the test assertions against the implementation.
 
 ### 3.5 Scope Creep
 - Are there changes NOT in the approved plan?
@@ -83,6 +85,10 @@ Format:
 
 ### ⚠️ Non-blocking Issues  (should fix, not required)
 - File:Line — <issue> — <suggestion>
+
+### 🧪 TDD Check
+- Tests committed before implementation: YES / NO / PARTIAL
+- All Implementation Steps covered by tests: YES / NO (list gaps)
 
 ### 🔍 Scope Check
 - In-plan changes: <list>

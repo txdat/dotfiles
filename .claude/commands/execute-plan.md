@@ -35,8 +35,11 @@ Update status in the plan file to `in-progress`.
 
 ## Step 1: Locate Next Step
 
-Find the first unchecked item `- [ ]` in the Implementation Checklist.
-Print: "Implementing Step N: <description>"
+Determine the current phase:
+- If any Test Steps are unchecked → Phase 1 (RED). Find the first unchecked Test Step.
+  Print: "🔴 Writing Test N: <description>"
+- If all Test Steps are `[x]` and any Implementation Steps are unchecked → Phase 2 (GREEN). Find the first unchecked Implementation Step.
+  Print: "🟢 Implementing Step N: <description>"
 
 ---
 
@@ -49,20 +52,34 @@ Follow these rules strictly:
 - No placeholder implementations — if something can't be done, say so, don't write `// TODO`
 - No silent scope expansion — if you discover needed work outside the plan, STOP (see Step 4)
 
-**Per-step implementation loop**
-1. Implement the step
-2. Run only the tests directly related to this step — not the full suite:
+**TDD two-phase execution**
+
+Execute all `### Test Steps` before any `### Implementation Steps`.
+
+**Phase 1 — Write Tests (RED)**
+
+For each unchecked Test Step (in order):
+1. Write the test — do not write any implementation code yet
+2. Run the test and confirm it **fails** (RED). If it passes without implementation, the test is wrong — fix it before marking done.
+3. Mark the Test Step as `[x]`
+4. Print: "🔴 Test N written and failing: <what it verifies>"
+
+Once all Test Steps are `[x]`, move to Phase 2.
+
+**Phase 2 — Implement (GREEN)**
+
+For each unchecked Implementation Step (in order):
+1. Implement only enough to make the corresponding test(s) pass — no extra logic
+2. Run the related test(s):
    - Java/Maven: `mvn test -pl <module> -am -q -Dtest=<TestClass>`
    - Go: `go test ./<affected_package>/...`
    - Python: `pytest <affected_path> -q`
    - TypeScript: `npm test -- --testPathPattern=<affected_file_or_describe>`
-   
-   Infer the affected test scope from the files changed in this step.
-   Do NOT run the full test suite unless the user explicitly says `/execute-plan --full-test` or asks for it.
 3. If tests fail → fix before moving on. Do NOT skip or mark step complete with failing tests.
-4. Mark step as `[x]` in `the plan file`
-5. Print a one-line summary: "✅ Step N done: <what was done>"
-6. Move to Step 1 and repeat
+4. Mark the Implementation Step as `[x]`
+5. Print: "✅ Step N done: <what was implemented>"
+
+Do NOT run the full test suite unless the user explicitly says `/execute-plan --full-test` or asks for it.
 
 ---
 

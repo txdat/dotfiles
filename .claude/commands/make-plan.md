@@ -2,7 +2,7 @@
 
 ## Purpose
 Transform a raw requirement into a clear, verified, actionable plan before any code is written.
-This command produces the single source of truth that /code will follow.
+This command produces the single source of truth that /execute-plan will follow.
 
 ---
 
@@ -39,7 +39,7 @@ Question checklist:
 - Definition of done: How do we know this is complete and correct?
 
 Wait for answers before proceeding.
-If any answer reveals new ambiguity, ask one follow-up round maximum.
+If any answer reveals new ambiguity, ask follow-up rounds — two follow-up rounds maximum.
 
 ---
 
@@ -69,13 +69,16 @@ Status: planning
 - [ ] <risk>: <mitigation>
 
 ## Implementation Checklist
-- [ ] Step 1: <verb> <what> — <why>
-- [ ] Step 2: ...
-- [ ] Step 3: ...
 
-## Test Strategy
-- Step 1 → <unit/integration/e2e> — verifies <invariant>
-- ...
+### Test Steps (written before any implementation)
+- [ ] Test 1: Write failing test for <what> — verifies <invariant>
+- [ ] Test 2: Write failing test for <what> — verifies <invariant>
+- [ ] ...
+
+### Implementation Steps (implement to make tests pass)
+- [ ] Step 1: Implement <what> — makes Test 1 pass
+- [ ] Step 2: Implement <what> — makes Test 2 pass
+- [ ] ...
 
 ## Out of Scope (explicit)
 - ...
@@ -95,7 +98,8 @@ After writing the plan, self-review it:
 1. Can any two steps be merged without losing clarity? Merge them.
 2. Is any step ambiguous about its done state? Rewrite it.
 3. Are there steps that are pure boilerplate with no decisions? Remove or inline them.
-4. Is the test strategy missing coverage for any risk flag? Add it.
+4. Does every Implementation Step have a corresponding Test Step written before it? If not, add the missing test steps.
+5. Are all Test Steps listed before all Implementation Steps? If not, reorder them.
 
 Then present the simplified plan to the user.
 
@@ -106,6 +110,12 @@ Then present the simplified plan to the user.
 Ask: "Does this plan look correct? Any changes before I save it?"
 
 Apply any user edits.
+
+**TDD gate** — before saving as `approved`, verify:
+- The checklist has a non-empty `### Test Steps` section
+- Every Implementation Step references a Test Step
+If either check fails, add the missing test steps and ask the user to confirm again.
+
 Update status to: `approved`
 Write final plan to the filename determined in Step 1.
 Print: "Plan saved to <plansDir>/<filename>. Run /execute-plan <filename> to begin implementation."
