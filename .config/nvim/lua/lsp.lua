@@ -129,29 +129,29 @@ vim.lsp.config("clangd", {
   capabilities = capabilities,
 })
 
-vim.lsp.config("rust_analyzer", {
-  cmd = { 'rust-analyzer' },
-  filetypes = { 'rust' },
-  settings = {
-    ['rust-analyzer'] = {
-      imports = {
-          granularity = {
-              group = "module",
-          },
-          prefix = "self",
-      },
-      cargo = {
-          buildScripts = {
-              enable = true,
-          },
-      },
-      procMacro = {
-          enable = true
-      },
-    },
-  },
-  capabilities = capabilities,
-})
+-- vim.lsp.config("rust_analyzer", {
+--   cmd = { 'rust-analyzer' },
+--   filetypes = { 'rust' },
+--   settings = {
+--     ['rust-analyzer'] = {
+--       imports = {
+--           granularity = {
+--               group = "module",
+--           },
+--           prefix = "self",
+--       },
+--       cargo = {
+--           buildScripts = {
+--               enable = true,
+--           },
+--       },
+--       procMacro = {
+--           enable = true
+--       },
+--     },
+--   },
+--   capabilities = capabilities,
+-- })
 
 vim.lsp.config("pyright", {
   cmd = { 'pyright-langserver', '--stdio' },
@@ -220,7 +220,7 @@ vim.lsp.config("eslint", {
 
 vim.lsp.enable({
   "clangd",
-  "rust_analyzer",
+  -- "rust_analyzer",
   "pyright",
   "vtsls",
   "eslint",
