@@ -121,7 +121,9 @@ export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
 export CLAUDE_CODE_DISABLE_1M_CONTEXT=1
 export CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
+export CLAUDE_CODE_ENABLE_TELEMETRY=0
 export CLAUDE_CODE_SUBAGENT_MODEL="sonnet"
+export CLAUDE_CODE_EFFORT_LEVEL="high"
 
 [ -f ~/.env ] && source ~/.env
 
@@ -129,16 +131,16 @@ export CLAUDE_CODE_SUBAGENT_MODEL="sonnet"
 alias ls="ls --color"
 alias lz="lazygit"
 alias k=kubectl
-# alias sysu="sudo pacman -Syyu && paru -Syyu && flatpak update"
-# alias sysu="sudo dnf update && flatpak update"
 alias x2cb="xclip -sel c" # copy stdout to clipboard
 alias f2cb="xclip -sel c < " # copy data from file to clipboard
 alias cb2f="xclip -sel c -o > " # copy data from clipboard to file
-#alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
+alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 
 alias npm="TZ=UTC npm"
 alias node="TZ=UTC node"
 alias jest="TZ=UTC NODE_ENV=test ./node_modules/.bin/jest"
+
+alias claude-opus="claude --model=claude-opus-4-5-20251101"
 
 catxy () {
     awk "NR >= $2 && NR <= $3" $1
