@@ -47,6 +47,23 @@ Examples:
 - "Do NOT use Redis for idempotency — consistency gap caused phantom duplicates under load"
 - "Do NOT wrap domain events in Spring @Transactional — breaks port isolation"
 
+### 💡 Concepts (language, framework, database, architecture)
+Named concepts — from programming languages, frameworks, databases, or system design — that were applied or learned this session. Capture these so future sessions can reference them by name rather than re-explaining from scratch.
+
+Sub-categories:
+- **Language/Framework**: Java virtual threads, Spring lifecycle hooks, Python asyncio patterns, etc.
+- **Database**: PostgreSQL MVCC, index-only scans, advisory locks, partition pruning, etc.
+- **Architecture**: SAGA pattern, hexagonal architecture, outbox pattern, CQRS, event sourcing, etc.
+
+Ask: "Was a named concept applied here that I should have on record — even if I already knew it?"
+
+Each concept entry must include a brief description (1–5 lines) covering: what it is, when to use it, and any key constraint or trade-off observed this session.
+
+Examples:
+- **SAGA (choreography)**: A distributed transaction pattern where each service publishes events and reacts to others' events to complete or compensate. No central coordinator. Use when services must stay decoupled. Trade-off: harder to trace the overall flow.
+- **Hexagonal architecture**: Isolates the domain from frameworks and infrastructure. Ports define interfaces; adapters implement them. Domain layer has zero framework imports — enforced at compile time.
+- **PostgreSQL advisory locks**: Session-scoped named locks for distributed mutual exclusion. Acquired with `pg_try_advisory_lock(key)`. Released on session close or explicit unlock. Lighter than table locks; no automatic rollback on transaction end.
+
 ### 🔧 Command Improvements (workflow gaps)
 Did any /command feel incomplete, unclear, or missing for this session?
 Note what would have helped.
@@ -79,6 +96,9 @@ Show the user the full extraction:
 - ...
 
 ### ⛔ Anti-patterns → <repo>/CLAUDE.md
+- ...
+
+### 💡 Concepts → <repo>/CLAUDE.md
 - ...
 
 ### 🔧 Command Improvements (noted only, not written)
@@ -131,6 +151,7 @@ Written to <repo>/CLAUDE.md:
   + <N> facts
   + <N> patterns  
   + <N> anti-patterns
+  + <N> concepts
 
 Written to ~/.claude/CLAUDE.md:
   + <N> generic patterns
