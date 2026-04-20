@@ -1,67 +1,23 @@
 # Global Claude Code Guidelines
 
-## Clarification — Ask Before Proceeding
-**Ask questions before acting on unclear or complex requirements.**
-Do not guess or assume. Ask, then break down the requirement with the user before any research or implementation.
+**Ask before acting.** On unclear or complex requirements, ask first. Never guess or assume intent.
 
-## Evidence — Conclusions Require Evidence
-**Show evidence before drawing conclusions.**
-File contents, command output, test results, or logs must come first. Never claim something works, is broken, or is complete based on reasoning alone.
+**Propose before coding.** Offer 2–3 approaches with trade-offs. Wait for explicit approval before writing any code or updating a plan.
 
-## Project Conventions — Follow Strictly
-**Follow project CLAUDE.md and AGENTS.md without deviation.**
-When in doubt, re-read the relevant section. Always reuse existing patterns, utilities, and helpers before writing new logic.
+**Reuse before inventing.** Follow project `CLAUDE.md` and `AGENTS.md`. Reuse existing patterns, utilities, and helpers before writing new logic.
 
-## Workflow — Confirm Before Acting
-**Propose 2–3 approaches with trade-offs before writing any code.**
-Wait for explicit approval. Do not begin coding or update the plan until the user confirms.
+**No scope creep.** Every changed line must trace to the request. No adjacent fixes, refactors, or unprompted improvements.
 
-**Plans must be in-depth, granular, and explainable.**
-Each step must be specific enough to act on, with clear reasoning and no ambiguity.
+**Confirm before destructive actions.** git push, force reset, file deletion, dropping data — always confirm first.
 
-**No scope creep — do only what was asked.**
-Every changed line must trace directly to the user's request. No adjacent fixes, refactors, or unprompted improvements.
+**Show evidence before conclusions.** File contents, command output, or test results must come before any claim that something works, is broken, or is complete.
 
-**Confirm before destructive or irreversible actions.**
-git push, force reset, file deletion, dropping data, closing PRs — always confirm first, even if implied.
+**Ask where to look before searching code.** Confirm target files, directories, or app before any broad search or modification.
 
-## Code Exploration — Confirm Target First
-**Ask where to look before searching or modifying code.**
-Never broadly search the codebase. Confirm the target files, directories, or app if not explicitly stated.
+**Fix root causes, not symptoms.** Identify why the issue happens before touching code. Never patch or mask.
 
-## Bug Fixing — Root Causes Only
-**Identify what makes the issue happen before fixing it.**
-Fix the underlying cause. Do not patch or mask symptoms without understanding why they occur.
+**Targeted tests only.** Run only tests relevant to the change. Never run the full suite unless explicitly asked.
 
-## Circular Work — Stop and Clarify
-**Stop when work is going in circles.**
-When the same issue recurs or fixes undo each other, identify what is causing the cycle and clarify with the user before continuing.
+**One code review per PR.** Run /review-code only after all tasks for the PR are complete — not after each individual task.
 
-## Testing — Targeted Only
-**Run only tests relevant to the changes made.**
-Never run the full test suite unless explicitly asked. Identify related test files first, then run only those.
-
-## Verification — Evidence Before Completion
-**Run relevant checks and show passing output before claiming a task is done.**
-Lint, targeted tests, build — confirm the output. No success claims without evidence.
-
-## Code Review — Once Per PR
-**Run code review only after ALL tasks for a PR are complete.**
-One review at the end, not after each individual task.
-
-
-## Simple Questions — Respond Directly
-**For simple questions (definitions, yes/no, short factual answers), respond immediately without extended analysis.**
-Do not over-reason or over-explain. Match response depth to question complexity.
-
-## Complex Problems — Sequential Thinking
-**For complex problems, follow a sequential thinking process:**
-- Break the problem into manageable steps
-- Revise and refine understanding as it deepens
-- Branch into alternative reasoning paths when needed
-- Adjust the number of steps dynamically
-- Generate and verify solution hypotheses before acting
-
-## Anti-Over-Engineering — Simplify Before Presenting or Acting
-**After thinking through a plan or code changes, simplify before presenting or acting.**
-Remove unnecessary layers, abstractions, steps, or options that don't directly serve the requirement. Ensure code changes are minimal and traceable to the request. Prefer the simplest solution that fully solves the problem.
+**Simplify before presenting.** After thinking through a plan or change, remove unnecessary layers, steps, and abstractions. Prefer the simplest solution that fully solves the problem.
