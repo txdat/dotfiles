@@ -1,3 +1,7 @@
+---
+effort: high
+---
+
 # /make-plan — Requirement Analysis & Plan Creation
 
 ## Purpose

@@ -1,8 +1,12 @@
-# /debug — Structured Debug Mode
+---
+model: sonnet
+effort: high
+---
+
+# /fix-bug — Structured Bug Fix
 
 ## Purpose
-Enter a focused debugging session. Systematic hypothesis-driven diagnosis — 
-not random trial and error.
+Fix a bug end-to-end: diagnose systematically, identify root cause, apply minimal fix, add regression test.
 
 ---
 
@@ -104,19 +108,19 @@ Write or update a test that would have caught this bug:
 
 ---
 
-## Step 8: Debug Report
+## Step 8: Fix Report
 
 Resolve plans directory: read `plansDirectory` from project `CLAUDE.md`. If not set, default to `plans/`. Use this as `<plansDir>` throughout.
 
 Resolve the active plan file: find the `.md` in `<plansDir>` with status `in-progress` or `implemented`. If none found, skip the append and note it to the user.
 
-Append to that plan file under `## Debug Sessions`:
+Append to that plan file under `## Bug Fixes`:
 
 ```
-### Debug: <date> — <symptom summary>
+### Fix: <date> — <symptom summary>
 Root cause: <one line>
 Fix: <file:line — what changed>
 Regression test: <test name added>
 ```
 
-Print: "Debug session complete. Run /review-code to verify the fix before /pr."
+Print: "Bug fix complete. Run /review-code to verify the fix before /create-pr."

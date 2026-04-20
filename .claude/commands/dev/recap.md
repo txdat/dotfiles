@@ -1,3 +1,8 @@
+---
+model: sonnet
+effort: low
+---
+
 # /recap — Session Insights & Memory Capture
 
 ## Purpose

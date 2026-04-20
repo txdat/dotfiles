@@ -1,3 +1,8 @@
+---
+model: sonnet
+effort: medium
+---
+
 # /review-code — Code Change Review
 
 ## Purpose
@@ -80,7 +85,7 @@ Format:
 ### ✅ What's Good
 - ...
 
-### ❌ Blocking Issues  (must fix before /pr)
+### ❌ Blocking Issues  (must fix before /create-pr)
 - File:Line — <issue> — <why it matters> — <suggested fix>
 
 ### ⚠️ Non-blocking Issues  (should fix, not required)
@@ -102,6 +107,6 @@ PASS | PASS WITH NOTES | REWORK REQUIRED
 
 ## Step 5: Next Steps
 
-- If PASS or PASS WITH NOTES → "Run /pr when ready."
-- If REWORK REQUIRED → list the exact blocking issues. Do not proceed to /pr.
+- If PASS or PASS WITH NOTES → "Run /create-pr when ready."
+- If REWORK REQUIRED → list the exact blocking issues. Do not proceed to /create-pr.
 - Offer to fix blocking issues inline: "Should I fix the blocking issues now?"

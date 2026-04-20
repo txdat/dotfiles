@@ -1,3 +1,8 @@
+---
+model: sonnet
+effort: medium
+---
+
 # /execute-plan — Implement the Approved Plan
 
 ## Purpose
@@ -96,7 +101,7 @@ When all checklist items are `[x]`:
   Build: ✅ / ❌
   Status: implemented
   
-  Next: run /review-code to check the changes, then /pr to create the pull request.
+  Next: run /review-code to check the changes, then /create-pr to create the pull request.
   ```
 
 ---

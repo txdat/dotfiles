@@ -1,4 +1,9 @@
-# /pr — Create Pull Request
+---
+model: haiku
+effort: low
+---
+
+# /create-pr — Create Pull Request
 
 ## Purpose
 Checkout to a properly named branch and create a well-structured PR with clear WHAT and HOW sections.
@@ -128,7 +133,7 @@ gh pr create \
   --draft
 ```
 
-Default: always `--draft` unless user passes `/pr ready` as argument.
+Default: always `--draft` unless user passes `/create-pr ready` as argument.
 
 After creation:
 - Print the PR URL

@@ -48,13 +48,13 @@ Or resume from a specific step:
 
 ---
 
-## 4. Debug a failure mid-execution
+## 4. Fix a bug mid-execution
 
 ```
-/debug JWT token validation returns 401 on valid tokens
+/fix-bug JWT token validation returns 401 on valid tokens
 ```
 
-Structured root-cause analysis before any fix is applied.
+Diagnoses root cause, applies minimal fix, and adds a regression test.
 
 ---
 
@@ -71,7 +71,7 @@ Reviews all changes on the branch against the plan and coding standards.
 ## 6. Create the pull request
 
 ```
-/pr
+/create-pr
 ```
 
 Pushes the branch and opens a PR with a generated summary.

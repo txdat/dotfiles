@@ -1,3 +1,7 @@
+---
+effort: high
+---
+
 # /review-plan — Review and Improve an Existing Plan
 
 ## Purpose
