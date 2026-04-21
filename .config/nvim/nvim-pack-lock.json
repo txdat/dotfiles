@@ -12,12 +12,8 @@
       "rev": "c642487086dbd9a93160e1679a1327be111cbc25",
       "src": "https://github.com/hrsh7th/cmp-path"
     },
-    "conform.nvim": {
-      "rev": "086a40dc7ed8242c03be9f47fbcee68699cc2395",
-      "src": "https://github.com/stevearc/conform.nvim"
-    },
     "fzf-lua": {
-      "rev": "834246377489f9a1e6d4df570a7874a48c644b56",
+      "rev": "fcabe3cb7cfa6bd5148ffac0188997196401937d",
       "src": "https://github.com/ibhagwan/fzf-lua"
     },
     "nvim-autopairs": {

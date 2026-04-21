@@ -1,7 +1,3 @@
-local fdCmd = "fd --type f --color=always --hidden --follow --exclude .git" -- file only
-local rgCmd =
-"rg --color=always --hidden --follow --no-heading --with-filename --line-number --column --smart-case -g '!{.git}/*'"
-
 require("fzf-lua").setup({
     { "max-perf", "hide" },
     winopts = {
@@ -55,13 +51,13 @@ require("fzf-lua").setup({
     },
     files = {
         path_shorten = false,
-        cmd          = fdCmd,
+        cmd          = "fd --type f --color=always --hidden --follow --exclude .git",
         -- formatter    = "path.filename_first",
     },
     grep = {
-        prompt       = "Rg❯ ",
-        input_prompt = "Rg❯ ",
-        cmd          = rgCmd,
+        prompt       = "❯ ",
+        input_prompt = "❯ ",
+        cmd          = "rg --color=always --hidden --follow --no-heading --with-filename --line-number --column --smart-case -g '!{.git}/*'",
         rg_glob      = true,
         no_header    = true,
         no_header_i  = true,
@@ -111,8 +107,12 @@ require("fzf-lua").setup({
 
 -- Redraw Fzf-if window is resized
 vim.api.nvim_create_autocmd("VimResized", {
-    pattern = "*",
-    command = "lua require('fzf-lua').redraw()"
+    group = vim.api.nvim_create_augroup("FzfFixResize", { clear = true }),
+    callback = function()
+      if vim.bo.buftype == "terminal" and string.find(vim.api.nvim_buf_get_name(0), "fzf") then
+        vim.cmd("redraw!")
+      end
+    end
 })
 
 local keymap = require("util").keymap
