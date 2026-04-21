@@ -4,23 +4,30 @@ effort: high
 
 # /review-plan — Review and Improve an Existing Plan
 
-Resolve `plansDirectory` from project `CLAUDE.md` (default: `plans/`). Find plan from $ARGUMENTS (full/partial name) or auto-discover by status `planning`/`approved`. If multiple, ask. If none, stop.
+Do NOT write any code.
+
+Plans directory: `docs/plans/`. Find plan from $ARGUMENTS (full/partial name) or auto-discover by status `planning`/`approved`. If multiple, ask. If none, stop. If the plan references unfamiliar codebase areas, suggest running `/dev:explore` on them first.
 
 Read the plan plus project `CLAUDE.md` and `~/.claude/CLAUDE.md`.
 
 ---
 
-Review across: requirement clarity, scope completeness, design decision justification (alternatives considered), risk coverage with actionable mitigations, step ordering and granularity (5–10 steps, each verifiable), test coverage per risk.
+Review:
+- **Requirement**: clear problem statement, measurable definition of done
+- **Scope**: in/out explicitly defined, no hidden assumptions
+- **Design decisions**: alternatives considered, reasoning stated
+- **Risks**: each has an actionable mitigation
+- **Steps**: dependency-ordered; target 5–10; each verifiable. If steps exceed 10, flag `❌` blocking — propose a split.
 
-**Ambiguities**: undefined terms, missing constraints, edge cases not addressed, assumptions a developer would have to make.
+Flag ambiguities: undefined terms, missing constraints, unaddressed edge cases, unstated assumptions. If unresolvable from the plan, ask — one follow-up round maximum.
 
-**TDD compliance (blocking)**: checklist must have a non-empty `### Test Steps` section; all Test Steps listed before Implementation Steps; every Implementation Step references a Test Step. Missing TDD structure is always a `❌` blocking issue — propose the missing test steps.
-
-If ambiguity cannot be resolved from the plan, ask clarifying questions grouped by concern. One follow-up round maximum.
+**TDD compliance (blocking)**: non-empty `### Test Steps`; all Test Steps before Implementation Steps; every Implementation Step references a Test Step. Missing TDD structure is always `❌` — propose the missing test steps. Validate Test Step content by plan type:
+- *Feature/fix*: each Test Step must describe a new failing test
+- *Refactor*: each Test Step must describe coverage verification or characterization tests that pass before and after
 
 ---
 
-Produce report:
+Produce:
 
 ```
 ## Plan Review: <filename>
@@ -35,6 +42,4 @@ Produce report:
 Ask: "Apply these changes?" Apply approved edits in place.
 
 If status was `planning` and all blocking issues resolved → set `approved`.
-Print: "Plan updated. Run /execute-plan to begin."
-
-Do NOT write any code.
+Print: "Plan updated. Run /dev:execute-plan to begin."

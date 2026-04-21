@@ -5,7 +5,7 @@ effort: low
 
 # /create-pr — Create Pull Request
 
-Resolve `plansDirectory` from project `CLAUDE.md` (default: `plans/`). Find active plan (status `implemented`/`reviewed`). If none, warn and ask to confirm. Read it plus `CLAUDE.md` for PR checklist.
+Plans directory: `docs/plans/`. Find active plan (status `implemented`/`reviewed`). If none, warn and ask to confirm. Read it plus `CLAUDE.md` for PR checklist.
 
 If on `main`/`master`, create branch: `<type>/<slug>` — types: `feat`, `fix`, `refactor`, `chore`, `migration`, `hotfix`; slug from plan name, max 5 words.
 
@@ -30,6 +30,6 @@ Generate PR description from the plan and `git diff main`:
 gh pr create --title "..." --body "..." --draft
 ```
 
-Default: `--draft`. Pass `/create-pr ready` to open directly.
+Default: `--draft`. Pass `/dev:create-pr ready` to open directly.
 
-Print PR URL. Update plan status to `pr-created` with URL. Print: "Run /recap before closing the session."
+Print PR URL. Update plan status to `pr-created` with URL. Print: "Run /dev:recap before closing the session."

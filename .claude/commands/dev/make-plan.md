@@ -4,23 +4,20 @@ effort: high
 
 # /make-plan — Requirement Analysis & Plan Creation
 
-Resolve `plansDirectory` from project `CLAUDE.md` (default: `plans/`). Warn and ask if an `approved` or `in-progress` plan already exists.
+Plans directory: `docs/plans/`. Warn and ask if an `approved` or `in-progress` plan already exists. If the codebase area is unfamiliar, suggest running `/dev:explore` first.
 
-Filename: `<plansDir>/<basename $PWD>_<yyyy-mm-dd>_<slug>.md` — slug from $ARGUMENTS, max 4 words, hyphenated.
+Filename: `docs/plans/<basename $PWD>_<yyyy-mm-dd>_<type>_<slug>.md` — slug from $ARGUMENTS, max 5 words, hyphenated.
 
 Read project `CLAUDE.md` and `~/.claude/CLAUDE.md` before proceeding. Do NOT write any code.
 
----
-
 Ask clarifying questions grouped by concern (scope, boundaries, constraints, edge cases, definition of done). Up to 3 rounds maximum.
-
----
 
 Write the plan in this exact structure:
 
 ```
 # Task: <name>
 Status: planning
+Type: feature | fix | refactor
 
 ## Requirement
 <one paragraph — what problem is being solved and why>
@@ -38,20 +35,24 @@ Status: planning
 ## Implementation Checklist
 
 ### Test Steps (written before any implementation)
-- [ ] Test 1: Write failing test for <what> — verifies <invariant>
+For feature/fix: failing tests that verify new behavior.
+For refactor: coverage/characterization tests that pass before AND after.
+- [ ] Test 1: <write failing test for <what> | verify coverage for <area>> — verifies <invariant>
 
 ### Implementation Steps (implement to make tests pass)
 - [ ] Step 1: Implement <what> — makes Test 1 pass
 
 ## Out of Scope (explicit)
+Items considered during planning but deliberately excluded — future sessions must not re-litigate these.
+- <item>: <why excluded>
 ```
 
-Checklist rules: each step = one verifiable unit of work; steps ordered by dependency (nothing in step N requires step N+1); 5–10 total steps; Test Steps before Implementation Steps.
+Checklist rules: each step = one verifiable unit of work; dependency-ordered (step N never requires step N+1); target 5–10 total steps; Test Steps before Implementation Steps. If steps exceed 10, stop — propose a split before continuing.
 
-Self-review: merge redundant steps, ensure every Implementation Step has a corresponding Test Step.
+Merge redundant steps. Ensure every Implementation Step has a corresponding Test Step.
 
-Present to user. Apply edits.
+Present to user. Ask: "Apply these changes?" Apply approved edits in place.
 
-**TDD gate**: do not save as `approved` unless `### Test Steps` is non-empty and every Implementation Step references a Test Step. Add missing test steps and re-confirm if needed.
+**TDD gate**: do not set status `approved` unless `### Test Steps` is non-empty and every Implementation Step references a Test Step. Add missing test steps and re-confirm if needed.
 
-Save to filename. Print: "Plan saved to `<path>`. Run /execute-plan to begin."
+Save to filename. Print: "Plan saved to `<path>`. Run /dev:execute-plan to begin."

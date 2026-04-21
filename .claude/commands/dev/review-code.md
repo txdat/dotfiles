@@ -1,11 +1,11 @@
 ---
 model: sonnet
-effort: medium
+effort: high
 ---
 
 # /review-code — Code Change Review
 
-Resolve `plansDirectory` from project `CLAUDE.md` (default: `plans/`). Find active plan (status `in-progress`/`implemented`/`reviewed`). Read it plus `CLAUDE.md`. If no plan found, ask user for intent.
+Plans directory: `docs/plans/`. Find active plan (status `in-progress`/`implemented`/`reviewed`). Read it plus `CLAUDE.md`. If no plan found, ask user for intent.
 
 Run: `git diff main --stat`, `git diff main`, `git log main..HEAD --oneline`.
 
@@ -23,7 +23,7 @@ Produce:
 
 ### Summary
 ### ✅ What's Good
-### ❌ Blocking Issues (must fix before /create-pr)
+### ❌ Blocking Issues (must fix before /dev:create-pr)
 - File:Line — <issue> — <why it matters> — <fix>
 ### ⚠️ Non-blocking Issues
 ### 🧪 TDD Check
@@ -35,4 +35,4 @@ Produce:
 ### Verdict: PASS | PASS WITH NOTES | REWORK REQUIRED
 ```
 
-If REWORK REQUIRED, offer to fix blocking issues inline.
+If REWORK REQUIRED, offer to fix blocking issues inline. If PASS or PASS WITH NOTES, update plan status to `reviewed`.

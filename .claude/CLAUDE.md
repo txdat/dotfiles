@@ -14,6 +14,8 @@
 
 **Ask where to look before searching code.** Confirm target files, directories, or app before any broad search or modification.
 
+**Prefer LSP over Grep for code navigation.** Use LSP (`definition`, `references`, `hover`, `implementation`) when possible. Fall back to Grep/Glob only when LSP is unavailable or insufficient.
+
 **Fix root causes, not symptoms.** Identify why the issue happens before touching code. Never patch or mask.
 
 **Targeted tests only.** Run only tests relevant to the change. Never run the full suite unless explicitly asked.
@@ -21,3 +23,5 @@
 **One code review per PR.** Run /review-code only after all tasks for the PR are complete — not after each individual task.
 
 **Simplify before presenting.** After thinking through a plan or change, remove unnecessary layers, steps, and abstractions. Prefer the simplest solution that fully solves the problem.
+
+**Surface insights explicitly.** Show a brief `> **Insight:**` block only when: choosing between two reasonable options, catching a likely mistake, or noticing something that contradicts the stated requirement. Skip it otherwise.
