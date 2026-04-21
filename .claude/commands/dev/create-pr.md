@@ -25,6 +25,7 @@ Generate PR description from the plan and `git diff main`:
 - **HOW**: implementation approach, key design decisions, correctness strategy, what's out of scope
 - **Testing**: tests added, invariants verified, manual steps if any
 - **Checklist**: from `CLAUDE.md`, or default (tests pass · no debug artifacts · no secrets · migrations backward-compatible)
+- **Closes**: if plan has `Issue: #N`, append `Closes #N` to PR body
 
 ```bash
 gh pr create --title "..." --body "..." --draft

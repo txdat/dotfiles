@@ -19,6 +19,10 @@ Review:
 - **Risks**: each has an actionable mitigation
 - **Steps**: dependency-ordered; target 5–10; each verifiable. If steps exceed 10, flag `❌` blocking — propose a split.
 
+If split accepted:
+  - Create a new plan file for each sub-plan
+  - If parent plan has `Issue:` set, ask: "Create sub-issues?" If yes: `gh issue create --title "..." --body "Part of #N"` for each sub-plan; update its `Issue:` field
+
 Flag ambiguities: undefined terms, missing constraints, unaddressed edge cases, unstated assumptions. If unresolvable from the plan, ask — one follow-up round maximum.
 
 **TDD compliance (blocking)**: non-empty `### Test Steps`; all Test Steps before Implementation Steps; every Implementation Step references a Test Step. Missing TDD structure is always `❌` — propose the missing test steps. Validate Test Step content by plan type:

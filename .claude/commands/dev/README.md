@@ -6,13 +6,13 @@ A realistic end-to-end workflow using all commands.
 
 ---
 
-## 0. Explore the codebase (optional)
+## 0. Create a standalone issue (optional)
 
 ```
-/dev:explore JWT authentication flow
+/dev:create-issue Add JWT authentication to the login endpoint
 ```
 
-Maps entry points, data flow, and gotchas in the target area. Run this before planning when the codebase area is unfamiliar.
+For issues not tied to a plan — bugs, spikes, discussions. Plan-linked issues are created automatically by `/dev:make-plan`.
 
 ---
 
@@ -22,7 +22,7 @@ Maps entry points, data flow, and gotchas in the target area. Run this before pl
 /dev:make-plan add JWT authentication to the login endpoint
 ```
 
-Saves to `docs/plans/auth-service_2026-04-17_add-jwt-authentication.md`
+Saves to `docs/plans/auth-service_2026-04-17_feature_add-jwt-authentication.md`
 
 ---
 
@@ -47,7 +47,7 @@ Auto-discovers the single approved plan and runs all steps.
 Or target it explicitly:
 
 ```
-/dev:execute-plan auth-service_2026-04-17_add-jwt-authentication.md
+/dev:execute-plan auth-service_2026-04-17_feature_add-jwt-authentication.md
 ```
 
 Or resume from a specific step:

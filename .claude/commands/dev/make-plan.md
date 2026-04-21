@@ -18,6 +18,7 @@ Write the plan in this exact structure:
 # Task: <name>
 Status: planning
 Type: feature | fix | refactor
+Issue: #N
 
 ## Requirement
 <one paragraph — what problem is being solved and why>
@@ -37,7 +38,7 @@ Type: feature | fix | refactor
 ### Test Steps (written before any implementation)
 For feature/fix: failing tests that verify new behavior.
 For refactor: coverage/characterization tests that pass before AND after.
-- [ ] Test 1: <write failing test for <what> | verify coverage for <area>> — verifies <invariant>
+- [ ] Test 1: <what is tested> — verifies <invariant>
 
 ### Implementation Steps (implement to make tests pass)
 - [ ] Step 1: Implement <what> — makes Test 1 pass
@@ -55,4 +56,10 @@ Present to user. Ask: "Apply these changes?" Apply approved edits in place.
 
 **TDD gate**: do not set status `approved` unless `### Test Steps` is non-empty and every Implementation Step references a Test Step. Add missing test steps and re-confirm if needed.
 
-Save to filename. Print: "Plan saved to `<path>`. Run /dev:execute-plan to begin."
+Save to filename. Ask: "Create a GitHub issue for this plan?" If yes:
+```bash
+gh issue create --title "<Task name>" --body "<Requirement paragraph>"
+```
+Update the `Issue:` field in the saved plan with the created issue number.
+
+Print: "Plan saved to `<path>`. Run /dev:execute-plan to begin."
