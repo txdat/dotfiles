@@ -7,22 +7,22 @@ effort: low
 
 Plans directory: `docs/plans/`. Recaps directory: `docs/recaps/`. Find active plan (status `in-progress`/`implemented`/`reviewed`/`pr-created`). Read it. Run `git diff main --stat` and `git log main..HEAD --oneline`. Ask: "Anything specific to capture?"
 
----
+Extract insights across 4 categories. Apply the test question to classify each:
 
-Extract insights across 5 categories:
+- **📌 Facts**: "We decided X and won't revisit it." — one-time project decision, not reusable (e.g. "we use UUIDs for all PKs").
+- **🔁 Patterns**: "This worked — reuse it next time." — non-obvious technique that succeeded; phrase as an actionable imperative (e.g. "Always wrap DB calls in a retry decorator").
+- **⛔ Anti-patterns**: "This burned us — avoid it." — approach that failed or caused a bug; phrase as "Do NOT..." (e.g. "Do NOT call `time.Now()` inside a transaction").
+- **💡 Concepts**: "I now understand what X is and when it applies." — named technical concept; include: what it is, when to use, key trade-off (1–5 lines).
 
-- **📌 Facts**: permanent project decisions future sessions must not re-litigate
-- **🔁 Patterns**: reusable non-obvious implementation approaches
-- **⛔ Anti-patterns**: things that failed or caused bugs — "Do NOT..."
-- **💡 Concepts**: named concepts applied (language/framework/database/architecture). Each entry: what it is, when to use it, key trade-off (1–5 lines).
-- **🔧 Command Improvements**: any `/command` that felt incomplete, unclear, or missing — note what would have helped. Not written to files, noted only.
+When in doubt:
+- **Fact vs Pattern**: Fact = decision (non-reusable); Pattern = technique (reusable across similar situations).
+- **Pattern vs Concept**: Pattern is an actionable rule ("do X when Y"); Concept explains what something IS.
+- **Pattern vs Anti-pattern**: did the approach succeed or fail?
 
 Route each insight:
-- Project-specific → `<repo>/CLAUDE.md`
-- Generic engineering → `~/.claude/CLAUDE.md`
-- New reusable workflow → `~/.claude/commands/dev/<name>.md`
-
----
+- **Patterns / Anti-patterns** → `<repo>/CLAUDE.md` only — do NOT write to `~/.claude/CLAUDE.md`
+- **Facts / Concepts** → recap file only — do NOT write to any CLAUDE.md
+- **Command Improvements** (any `/dev:command` that felt incomplete or missing) → if it warrants a new command, create `~/.claude/commands/dev/<name>.md`; otherwise noted only
 
 Present full extraction to user. Ask: "Does this look right?" Apply edits before writing.
 
