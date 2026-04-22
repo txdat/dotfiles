@@ -10,8 +10,6 @@ Plans directory: `docs/plans/`. Find plan from $ARGUMENTS (full/partial name) or
 
 Read the plan plus project `CLAUDE.md` and `~/.claude/CLAUDE.md`.
 
----
-
 Review:
 - **Requirement**: clear problem statement, measurable definition of done
 - **Scope**: in/out explicitly defined, no hidden assumptions
@@ -19,9 +17,7 @@ Review:
 - **Risks**: each has an actionable mitigation
 - **Steps**: dependency-ordered; target 5–10; each verifiable. If steps exceed 10, flag `❌` blocking — propose a split.
 
-If split accepted:
-  - Create a new plan file for each sub-plan
-  - If parent plan has `Issue:` set, ask: "Create sub-issues?" If yes: `gh issue create --title "..." --body "Part of #N"` for each sub-plan; update its `Issue:` field
+**If split accepted**: create a new plan file for each sub-plan. If parent plan has `Issue:` set, ask: "Create sub-issues?" If yes: `gh issue create --title "..." --body "Part of #N"` for each sub-plan; update its `Issue:` field.
 
 Flag ambiguities: undefined terms, missing constraints, unaddressed edge cases, unstated assumptions. If unresolvable from the plan, ask — one follow-up round maximum.
 
@@ -29,21 +25,13 @@ Flag ambiguities: undefined terms, missing constraints, unaddressed edge cases, 
 - *Feature/fix*: each Test Step must describe a new failing test
 - *Refactor*: each Test Step must describe coverage verification or characterization tests that pass before and after
 
----
+Produce the full review internally, then show a brief:
+- Verdict: READY | NEEDS CHANGES
+- ❌ Blocking issues: N (list titles only)
+- ⚠️ Suggestions: N (list titles only)
+- `<plan path>`
 
-Produce:
-
-```
-## Plan Review: <filename>
-
-### ✅ What's solid
-### ❌ Issues (must fix before execution)
-- Section — <issue> — <suggested fix>
-### ⚠️ Suggestions (recommended, not blocking)
-### Verdict: READY | NEEDS CHANGES
-```
-
-Ask: "Apply these changes?" Apply approved edits in place.
+Ask: "Apply these changes?" Apply approved edits in place (full details used internally to drive edits).
 
 If status was `planning` and all blocking issues resolved → set `approved`.
 Print: "Plan updated. Run /dev:execute-plan to begin."

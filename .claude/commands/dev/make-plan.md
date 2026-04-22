@@ -6,7 +6,7 @@ effort: high
 
 Plans directory: `docs/plans/`. Warn and ask if an `approved` or `in-progress` plan already exists. If the codebase area is unfamiliar, suggest running `/dev:explore` first.
 
-Filename: `docs/plans/<basename $PWD>_<yyyy-mm-dd>_<type>_<slug>.md` — slug from $ARGUMENTS, max 5 words, hyphenated.
+Filename: `docs/plans/<basename $PWD>_<yyyy-mm-dd>_<type>_<slug>.md` — slug from $ARGUMENTS, max 5 words, hyphenated. Determine `<type>`: `feature` (new capability), `fix` (bug), `refactor` (structural change, no behavior change).
 
 Read project `CLAUDE.md` and `~/.claude/CLAUDE.md` before proceeding. Do NOT write any code.
 
@@ -17,8 +17,8 @@ Write the plan in this exact structure:
 ```
 # Task: <name>
 Status: planning
-Type: feature | fix | refactor
-Issue: #N
+Type: <type>
+Issue:
 
 ## Requirement
 <one paragraph — what problem is being solved and why>
@@ -52,11 +52,18 @@ Checklist rules: each step = one verifiable unit of work; dependency-ordered (st
 
 Merge redundant steps. Ensure every Implementation Step has a corresponding Test Step.
 
-Present to user. Ask: "Apply these changes?" Apply approved edits in place.
+**TDD gate**: before saving, validate that `### Test Steps` is non-empty and every Implementation Step references a Test Step. If not, add the missing test steps and re-confirm before saving.
 
-**TDD gate**: do not set status `approved` unless `### Test Steps` is non-empty and every Implementation Step references a Test Step. Add missing test steps and re-confirm if needed.
+Save draft to filename. Show a brief:
+- Task name, Type
+- Requirement: <1-line summary>
+- Test Steps: N | Implementation Steps: N
+- Risk Flags: N
+- `<path>`
 
-Save to filename. Ask: "Create a GitHub issue for this plan?" If yes:
+Ask: "Apply these changes?" Apply approved edits in place.
+
+Ask: "Create a GitHub issue for this plan?" If yes:
 ```bash
 gh issue create --title "<Task name>" --body "<Requirement paragraph>"
 ```

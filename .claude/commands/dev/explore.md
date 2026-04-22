@@ -9,9 +9,7 @@ Target from $ARGUMENTS (feature, module, file, or question) or ask. Read `CLAUDE
 
 Goal: produce a structured findings summary to inform planning or debugging. Do NOT modify any files.
 
----
-
-Use LSP (`definition`, `references`, `hover`, `implementation`) as primary navigation. Fall back to Grep/Glob to locate entry points.
+Use Grep/Glob to locate entry points, then LSP (`definition`, `references`, `hover`, `implementation`) to navigate from them.
 
 Explore:
 - **Entry points**: where the feature/flow starts (handlers, commands, event listeners)
@@ -19,8 +17,6 @@ Explore:
 - **Data flow**: how data moves through the system (input → transform → output)
 - **Patterns**: naming conventions, error handling, testing approach in this area
 - **Gotchas**: non-obvious constraints, TODOs, known issues, workarounds
-
----
 
 Produce:
 

@@ -8,8 +8,6 @@ Target from $ARGUMENTS (file, function, or module) or ask. Read target code plus
 
 Do NOT add features, fix bugs, or change behavior. Scope: simplification only.
 
----
-
 Analyze for:
 - **Dead code**: unused variables, unreachable branches, commented-out blocks
 - **Redundant logic**: duplicated conditions, re-computed values, unnecessary wrappers
@@ -22,8 +20,6 @@ For each finding, state:
 - The simpler form
 
 Present all findings before editing. Ask: "Apply all / pick / skip?"
-
----
 
 Apply approved changes. Run targeted tests to confirm behavior is unchanged. If any test fails, revert that change and report.
 
