@@ -132,9 +132,9 @@ export CLAUDE_CODE_SUBAGENT_MODEL="sonnet"
 alias ls="ls --color"
 alias lz="lazygit"
 alias k=kubectl
-alias x2cb="xclip -sel c" # copy stdout to clipboard
-alias f2cb="xclip -sel c < " # copy data from file to clipboard
-alias cb2f="xclip -sel c -o > " # copy data from clipboard to file
+alias _2x="xclip -sel c" # copy stdout to clipboard
+alias f2x="xclip -sel c < " # copy data from file to clipboard
+alias x2f="xclip -sel c -o > " # copy data from clipboard to file
 alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 
 alias npm="TZ=UTC npm"
@@ -143,12 +143,25 @@ alias jest="TZ=UTC NODE_ENV=test ./node_modules/.bin/jest"
 
 alias claude-opus="claude --model=claude-opus-4-5-20251101"
 
-catxy () {
-    awk "NR >= $2 && NR <= $3" $1
+_cat() {
+    # Check if we have exactly 2 arguments and the 2nd argument contains a colon
+    if [[ $# -eq 2 && "$2" == *:* ]]; then
+        local file="$1"
+        local range="$2"
+        # Split the range (e.g., 10:20) into start and end variables
+        local start="${range%:*}"
+        local end="${range#*:}"
+        # Use sed for a concise way to print the range
+        # -n suppresses output, 'p' prints the specific lines
+        sed -n "${start},${end}p" "$file"
+    else
+        # Fall back to the original system cat command
+        command cat "$@"
+    fi
 }
 
 # update zsh's plugins
-update_zsh () {
+_update_zsh () {
     dir=$(pwd)
 
     ZSH_PLUGINS=(
@@ -164,7 +177,8 @@ update_zsh () {
     cd $dir
 }
 
-sysu () {
+# update system's packages
+_update_packages () {
   packages=(
     'linux'
     'systemd'
@@ -177,7 +191,8 @@ sysu () {
   do
     ignore_packages+="$(pacman -Qq | grep $pkg | tr '\n' ',' | sed 's/,$//'),"
   done
-  sudo pacman -Syyu --ignore $ignore_packages && paru -Syyu --ignore $ignore_packages && flatpak update
+  sudo pacman -Syyu --ignore $ignore_packages && paru -Syyu --ignore $ignore_packages
+  flatpak update
 }
 
 # Gcloud
