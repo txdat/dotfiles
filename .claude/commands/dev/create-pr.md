@@ -6,7 +6,7 @@ model: haiku
 
 Plans directory: `docs/plans/`. Find active plan (status `implemented`/`reviewed`). If none, warn and ask to confirm. Read it plus `CLAUDE.md` for PR checklist.
 
-If on `main`/`master`, create branch: `<type>/<slug>` — types: `feat`, `fix`, `refactor`, `chore`, `migration`, `hotfix`; slug from plan name, max 5 words.
+If on `main`/`master`/protected branch, create branch: `<type>/<slug>` — types: `feat`, `fix`, `refactor`, `chore`, `migration`, `hotfix`; slug from plan name, max 5 words.
 
 Pre-flight checks:
 ```bash

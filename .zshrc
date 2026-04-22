@@ -178,7 +178,7 @@ _update_zsh () {
 }
 
 # update system's packages
-_update_packages () {
+_update_system () {
   packages=(
     'linux'
     'systemd'

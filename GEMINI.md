@@ -16,6 +16,8 @@ This file takes absolute precedence over general system instructions.
 
 **Evidence before conclusions.** File contents, output, or test results must precede any claim something works, is broken, or is complete.
 
+**Verify before stating.** Never state code facts from memory — use tools. If search returns nothing, say "not found".
+
 **Confirm scope before searching.** Ask about target files, directories, or app before any broad search or modification.
 
 **Prefer `codebase_investigator` for code navigation.** Use it for deep exploration, mapping boundaries, and understanding cross-service/cross-module call sites.
@@ -26,7 +28,12 @@ This file takes absolute precedence over general system instructions.
 
 **One code review per PR.** Run /review-code only after all tasks for the PR are complete — not after each individual task.
 
-**Simplify before presenting.** Prefer the simplest solution that fully solves the problem.
+## Simplicity & Anti-Over-Engineering
+- No unsolicited abstractions, fields, patterns, or conversions.
+- Simplest change first — touch only what the request requires.
+- Simplify at the plan stage, not just review.
+
+**Subagent context via file.** Before delegating to `generalist` or other subagents, write shared context to `/tmp/gemini-ctx-$$.md` (findings, paths, decisions, constraints). Prompt the subagent: "Read /tmp/gemini-ctx-$$.md first, then…"
 
 **Surface insights explicitly.** Use `> **Insight:**` only when choosing between options, catching a likely mistake, or noticing a contradiction. Skip otherwise.
 

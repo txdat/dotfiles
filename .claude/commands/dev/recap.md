@@ -1,6 +1,6 @@
 ---
 model: sonnet
-effort: low
+effort: medium
 ---
 
 # /recap — Session Insights & Memory Capture

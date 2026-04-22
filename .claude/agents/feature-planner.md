@@ -1,7 +1,6 @@
 ---
 name: feature-planner
 description: "Use for business features and regular development. For: breaking down features, API design, implementation strategies, refactoring. Do NOT use if feature changes system architecture (use architecture-strategist instead)."
-model: sonnet
 color: pink
 memory: user
 effort: high

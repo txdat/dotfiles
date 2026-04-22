@@ -2,14 +2,17 @@
 
 Target from input or ask. Read target + `GEMINI.md`. Do NOT add features, fix bugs, or change behavior. Simplification only.
 
-**Analyze for:**
-- **Dead Code**: unused variables, unreachable branches.
-- **Redundant Logic**: duplicated conditions, re-computed values.
-- **Premature Abstractions**: interfaces/classes with one implementation.
-- **Over-engineering**: patterns that don't earn their complexity.
+## Parallel Analysis
+If single file → analyze directly.
 
-**Steps:**
-1. State findings: what, where (`file:line`), why, simpler form.
-2. Present findings before editing. Ask: "Apply all / pick / skip?".
-3. Apply approved changes. Run targeted tests.
-4. Revert any change causing test failure. Report status.
+Otherwise, write shared context to `/tmp/gemini-ctx-$$.md`:
+```
+Standards: <key points from GEMINI.md>
+Scope: simplification only — no features, no bug fixes, no behavior changes
+```
+Spawn parallel `generalist` tasks — one per file. Prompt: "Read /tmp/gemini-ctx-$$.md first. Analyze <file>. Find: dead code (unused vars, unreachable branches, commented code) · redundant logic (duplicate conditions, re-computed values, unnecessary wrappers) · premature abstractions (one-impl interfaces, single-use helpers) · over-engineering (patterns that don't earn their complexity). Per finding: file:line, why it simplifies, simpler form."
+
+## Apply
+Aggregate findings. Present before editing. Ask: "Apply all / pick / skip?".
+Apply approved changes. Run targeted tests — if any fail, revert that change and report.
+Print: what was simplified, lines removed, test status.

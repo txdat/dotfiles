@@ -2,15 +2,25 @@
 
 Find active plan. Read it + `GEMINI.md`. Run `git diff main --stat`, `git diff main`, `git log main..HEAD --oneline`.
 
-**Criteria:**
-- **Correctness**: matches plan, checklist done, edge cases handled, no silent exceptions.
-- **Architecture**: follows `GEMINI.md` layers, no leaked frameworks.
-- **Data**: parameterized queries, scoped transactions, handled concurrency.
-- **TDD**: tests before impl (check `git log`), failure paths covered, names `should_<expected>_when_<condition>`.
-- **Scope**: flag out-of-plan changes.
-- **Hygiene**: no debug logs, commented code, unlinked TODOs, secrets.
+## Parallel Analysis
+If diff <50 lines → review sequentially.
 
-**Output:**
+Otherwise, write shared context to `/tmp/gemini-ctx-$$.md`:
+```
+Plan: <path>
+Standards: <key points from GEMINI.md>
+Diff: <git diff main output>
+Log: <git log main..HEAD --oneline output>
+```
+Spawn parallel `generalist` tasks for independent review dimensions:
+**A — Correctness + TDD**: matches plan, checklist done, edge cases, silent exceptions. Tests before impl, failure paths covered, naming.
+**B — Architecture + Data**: follows `GEMINI.md` layers, no leaked frameworks. Parameterized queries, scoped transactions, concurrency.
+**C — Scope + Hygiene**: flag out-of-plan changes. No debug logs, commented code, unlinked TODOs, secrets.
+
+Prompt each: "Read /tmp/gemini-ctx-$$.md first. Review: <assigned dimensions explicitly>. Report: blocking issues (File:Line — issue — why — fix), non-blocking issues, positives."
+
+## Output
+Aggregate findings:
 ```markdown
 ## Code Review Report
 ### Summary
