@@ -1,4 +1,4 @@
-# Workflow: /execute-plan — Implement the Approved Plan
+# Workflow: /execute-plan — Implement the Approved Plan 🔴🟢🔵
 
 Plans directory: `docs/plans/`. Find plan by status `approved`/`in-progress`.
 

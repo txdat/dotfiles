@@ -10,7 +10,7 @@ Find active plan (status `implemented`/`reviewed`).
    - **WHAT**: 3–6 bullets of observable behavior changes.
    - **HOW**: implementation approach and design decisions.
    - **Testing**: tests added and invariants verified.
-   - **Closes**: link to the related issue.
+   - **Closes**: if plan has `Issue:` set (e.g. `Issue: 42`), append `Closes #42` to PR body.
 4. **Execute**:
    ```bash
    gh pr create --title "..." --body "..." --draft

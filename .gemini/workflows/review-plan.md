@@ -19,4 +19,5 @@ Find plan by status `planning`/`approved`. Read the plan plus project `GEMINI.md
 ### ⚠️ Suggestions
 ### Verdict: READY | NEEDS CHANGES
 ```
-Apply approved edits in place. If status was `planning` and blocking issues are resolved → set `approved`.
+Produce the full review internally, then show a brief of Verdict, blocking issues, and suggestions. Ask: "Apply these changes?". Apply approved edits in place (full details used internally to drive edits). If status was `planning` and all blocking issues resolved → set `approved`.
+d`.

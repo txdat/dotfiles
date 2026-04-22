@@ -1,16 +1,18 @@
 # Workflow: /recap — Session Insights & Memory Capture
 
-Find active plan. Read it. Extract insights across 4 categories:
+Find active plan. Read it. Run `git diff main --stat` and `git log main..HEAD --oneline`. Ask: "Anything specific to capture?"
 
-- **📌 Facts**: "We decided X and won't revisit it." — one-time project decision, not reusable (e.g. "we use UUIDs for all PKs").
-- **🔁 Patterns**: "This worked — reuse it next time." — non-obvious technique that succeeded; phrase as an actionable imperative (e.g. "Always wrap DB calls in a retry decorator").
-- **⛔ Anti-patterns**: "This burned us — avoid it." — approach that failed or caused a bug; phrase as "Do NOT..." (e.g. "Do NOT call `time.Now()` inside a transaction").
-- **💡 Concepts**: "I now understand what X is and when it applies." — named technical concept; include: what it is, when to use, key trade-off (1–5 lines).
+Extract insights across 4 categories:
+- **📌 Facts**: "We decided X and won't revisit it." (One-time decision, not reusable).
+- **🔁 Patterns**: "This worked — reuse it." (Non-obvious technique, actionable imperative).
+- **⛔ Anti-patterns**: "This burned us — avoid it." (Failed approach, phrase "Do NOT...").
+- **💡 Concepts**: "I understand X and when it applies." (Named concept, trade-off).
 
 **Routing:**
-- **Patterns / Anti-patterns** → Append to `GEMINI.md` only.
-- **Facts / Concepts** → Use the `save_memory` tool with `scope: 'project'` to persist these facts natively, AND save them to the recap file.
+- **Patterns/Anti-patterns** → Append to `GEMINI.md` only.
+- **Facts/Concepts** → Use `save_memory` tool (scope: `project`) AND save to recap file.
+- **Command Improvements** → Note in recap.
 
 **Output:**
-Save recap summary to `docs/recaps/<basename $PWD>_<yyyy-mm-dd>.md` with: task name, insights written, plan path.
+Save recap to `docs/recaps/<basename $PWD>_<yyyy-mm-dd>.md`: task name, PR URL, insights, plan path.
 Update plan status to `archived`.

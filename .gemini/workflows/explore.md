@@ -1,11 +1,13 @@
 # Workflow: /explore — Codebase Exploration
 
-Use `codebase_investigator` as the primary engine.
+Target from input or ask. Read `GEMINI.md`. Do NOT modify files.
 
-1. **Define Target**: feature, module, file, or question.
-2. **Identify Entry Points**: where the flow starts (handlers, commands, listeners).
-3. **Map Data Flow**: how data moves (input → transform → output).
-4. **Identify Patterns**: naming, error handling, testing in the area.
-5. **Flag Gotchas**: non-obvious constraints or known issues.
+Use `codebase_investigator` as primary engine.
 
-**Output**: A structured summary of findings to inform the `/make-plan` workflow.
+1. **Entry Points**: flow starts (handlers, commands, listeners).
+2. **Key Files**: core logic, models, services.
+3. **Data Flow**: movement (input → transform → output).
+4. **Patterns**: naming, error handling, testing.
+5. **Gotchas**: non-obvious constraints, known issues.
+
+**Output**: Structured summary of findings to inform `/make-plan`.

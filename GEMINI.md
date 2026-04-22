@@ -2,27 +2,33 @@
 
 This file takes absolute precedence over general system instructions.
 
-**Ask before acting.** On unclear or complex requirements, ask first. Never guess or assume intent.
+**Responses: direct, tight, terse, professional — no fluff.** No preamble, no filler transitions, no pleasantries. Fragments are fine. Technical terms exact. Code unchanged.
+
+**Ask before acting** on unclear or complex requirements. Never guess intent.
 
 **Propose before coding.** Offer 2–3 approaches with trade-offs. Wait for explicit approval before writing any code or updating a plan.
 
-**Reuse before inventing.** Follow this `GEMINI.md` and reuse existing patterns, utilities, and helpers before writing new logic.
+**Reuse before inventing.** Follow project `GEMINI.md`. Reuse existing patterns before writing new logic.
 
 **No scope creep.** Every changed line must trace to the request. No adjacent fixes, refactors, or unprompted improvements.
 
 **Confirm before destructive actions.** git push, force reset, file deletion, dropping data — always confirm first.
 
-**Show evidence before conclusions.** File contents, command output, or test results must come before any claim that something works, is broken, or is complete.
+**Evidence before conclusions.** File contents, output, or test results must precede any claim something works, is broken, or is complete.
 
-**Ask where to look before searching code.** Confirm target files, directories, or app before any broad search or modification.
+**Confirm scope before searching.** Ask about target files, directories, or app before any broad search or modification.
 
 **Prefer `codebase_investigator` for code navigation.** Use it for deep exploration, mapping boundaries, and understanding cross-service/cross-module call sites.
 
-**Fix root causes, not symptoms.** Identify why the issue happens before touching code. Never patch or mask.
+**Fix root causes, not symptoms.** Identify why before touching code. Never patch or mask.
 
 **Targeted tests only.** Run only tests relevant to the change. Never run the full suite unless explicitly asked.
 
-**Simplify before presenting.** After thinking through a plan or change, remove unnecessary layers, steps, and abstractions. Prefer the simplest solution that fully solves the problem.
+**One code review per PR.** Run /review-code only after all tasks for the PR are complete — not after each individual task.
+
+**Simplify before presenting.** Prefer the simplest solution that fully solves the problem.
+
+**Surface insights explicitly.** Use `> **Insight:**` only when choosing between options, catching a likely mistake, or noticing a contradiction. Skip otherwise.
 
 ---
 
@@ -32,6 +38,7 @@ This file takes absolute precedence over general system instructions.
 
 Refer to `.gemini/workflows/` for detailed SOPs (Standard Operating Procedures) for common tasks:
 - `make-plan.md`: Requirement analysis and plan creation (Consider using `enter_plan_mode` for complex tasks).
+- `make-infra-plan.md`: Infrastructure Plan Creation.
 - `review-plan.md`: Review and improve existing plans.
 - `execute-plan.md`: Implementing approved plans using TDD (Red-Green-Refactor).
 - `fix-bug.md`: Structured bug diagnosis and resolution.

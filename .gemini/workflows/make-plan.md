@@ -50,3 +50,5 @@ Issue: #N
 
 **TDD Gate:**
 Do not set status `approved` unless `### Test Steps` is non-empty and every Implementation Step references a Test Step. Add missing test steps and re-confirm if needed.
+
+**Draft Brief**: Show a brief of the plan before saving (Task name, Type, Requirement 1-line summary, counts for steps/risks). Ask "Apply these changes?". Apply approved edits in place. Ask "Create a GitHub issue for this plan?". If yes, run `gh issue create` and update `Issue:` field.
