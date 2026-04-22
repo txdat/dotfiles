@@ -1,6 +1,5 @@
 ---
 model: haiku
-effort: low
 ---
 
 # /create-pr — Create Pull Request

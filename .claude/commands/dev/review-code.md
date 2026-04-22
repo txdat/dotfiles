@@ -9,15 +9,34 @@ Plans directory: `docs/plans/`. Find active plan (status `in-progress`/`implemen
 
 Run: `git diff main --stat`, `git diff main`, `git log main..HEAD --oneline`.
 
-Review:
-- **Correctness**: implementation matches plan, all checklist steps done, edge cases handled, no silent exception swallowing
-- **Architecture**: follows `CLAUDE.md` layering, no framework dependencies leaking into domain
-- **Data**: queries parameterized, transactions scoped correctly, concurrency handled (locks/versioning/idempotency)
-- **TDD**: test commits before impl commits (check `git log`), tests cover failure paths, names `should_<expected>_when_<condition>`
-- **Scope**: flag any changes not in the approved plan
-- **Hygiene**: no debug logs, commented-out code, unlinked TODOs, or secrets
+If diff <50 lines → review sequentially on the main agent, skip spawning.
 
-Produce:
+Otherwise, write shared context to `/tmp/claude-ctx-$$.md`:
+```
+Plan: <path>
+Standards: <key points from CLAUDE.md>
+Diff: <git diff main output>
+Log: <git log main..HEAD --oneline output>
+```
+
+Spawn parallel `code-quality-auditor` subagents:
+
+**Subagent A — Correctness + TDD**
+- Correctness: implementation matches plan, all checklist steps done, edge cases handled, no silent exception swallowing
+- TDD: test commits before impl commits (check log), tests cover failure paths, names `should_<expected>_when_<condition>`
+
+**Subagent B — Architecture + Data**
+- Architecture: follows `CLAUDE.md` layering, no framework dependencies leaking into domain
+- Data: queries parameterized, transactions scoped correctly, concurrency handled (locks/versioning/idempotency)
+
+**Subagent C — Scope + Hygiene**
+- Scope: flag any changes not in the approved plan
+- Hygiene: no debug logs, commented-out code, unlinked TODOs, or secrets
+
+Each subagent prompt: "Read /tmp/claude-ctx-$$.md first. Review: <assigned dimensions listed explicitly>. Report: blocking issues (File:Line — issue — why — fix), non-blocking issues, positives."
+
+Aggregate:
+
 ```
 ## Code Review Report
 

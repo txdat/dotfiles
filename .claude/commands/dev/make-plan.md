@@ -50,7 +50,7 @@ Items considered during planning but deliberately excluded — future sessions m
 
 Checklist rules: each step = one verifiable unit of work; dependency-ordered (step N never requires step N+1); target 5–10 total steps; Test Steps before Implementation Steps. If steps exceed 10, stop — propose a split before continuing.
 
-Merge redundant steps. Ensure every Implementation Step has a corresponding Test Step.
+Merge redundant steps; every Implementation Step must reference a Test Step.
 
 **TDD gate**: before saving, validate that `### Test Steps` is non-empty and every Implementation Step references a Test Step. If not, add the missing test steps and re-confirm before saving.
 

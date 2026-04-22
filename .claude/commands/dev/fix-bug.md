@@ -11,20 +11,41 @@ Collect from $ARGUMENTS or ask: symptom, expected behavior, reproduction steps, 
 
 Run `git log --oneline -20` and `git diff main --stat` to identify regressions vs never-worked bugs.
 
-Generate 3–5 hypotheses ranked by probability. Present them before investigating. Test highest-probability first. For each: CONFIRMED → fix now; ELIMINATED → next hypothesis; INCONCLUSIVE → one retry then move on. Mark any debug logging with `// DEBUG`.
+## Hypothesis Investigation
 
-State root cause before touching code:
+Generate 3–5 hypotheses ranked by probability.
+
+If ≤2 hypotheses → investigate sequentially on main agent, skip spawning.
+
+Otherwise, write shared context to `/tmp/claude-ctx-$$.md`:
+```
+Symptom: <description>
+Expected: <behavior>
+Stack trace: <if available>
+Git context: <log + diff stat>
+Hypotheses: <ranked list>
+```
+
+Spawn parallel `code-explorer` subagents. Each prompt: "Read /tmp/claude-ctx-$$.md first. Investigate hypothesis: <N — description>. Find supporting or contradicting evidence. Verdict: CONFIRMED / ELIMINATED / INCONCLUSIVE. If CONFIRMED: exact file:line, why it causes the symptom."
+
+Main agent selects the first CONFIRMED hypothesis. If none confirmed, retry INCONCLUSIVE hypotheses sequentially.
+
+## Root Cause
+
+State before touching code:
 ```
 Root Cause: <specific line/condition/assumption>
 Why it manifests as: <link to symptom>
 Why it was missed: <test gap or wrong assumption>
 ```
 
-If `diagnose` was in $ARGUMENTS: stop here. Print the root cause block and ask: "Proceed with fix?" Do NOT touch code.
+If `diagnose` in $ARGUMENTS: stop here. Ask: "Proceed with fix?" Do NOT touch code.
 
-Apply minimal fix — root cause only, no refactoring, no new behavior. Run the reproduction case + affected module tests. Remove all `// DEBUG` logging.
+## Fix
 
-Write a new regression test: `should_not_<bad behavior>_when_<condition>`. Verify it fails on unfixed code and passes after the fix. Also update any existing tests broken by the behavior change.
+Apply minimal fix — root cause only, no refactoring, no new behavior. Mark any debug logging `// DEBUG`. Run reproduction case + affected module tests. Remove all `// DEBUG`.
+
+Write regression test: `should_not_<bad behavior>_when_<condition>`. Verify fails on unfixed code, passes after fix. Update any existing tests broken by the change.
 
 Plans directory: `docs/plans/`. Find active plan (status `in-progress`/`implemented`). If found, append under `## Bug Fixes`:
 ```

@@ -7,7 +7,7 @@ effort: low
 
 Plans directory: `docs/plans/`. Recaps directory: `docs/recaps/`. Find active plan (status `in-progress`/`implemented`/`reviewed`/`pr-created`). Read it. Run `git diff main --stat` and `git log main..HEAD --oneline`. Ask: "Anything specific to capture?"
 
-Extract insights across 4 categories. Apply the test question to classify each:
+Extract insights across 4 categories. Classify each:
 
 - **📌 Facts**: "We decided X and won't revisit it." — one-time project decision, not reusable (e.g. "we use UUIDs for all PKs").
 - **🔁 Patterns**: "This worked — reuse it next time." — non-obvious technique that succeeded; phrase as an actionable imperative (e.g. "Always wrap DB calls in a retry decorator").

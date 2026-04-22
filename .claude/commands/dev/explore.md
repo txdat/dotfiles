@@ -1,24 +1,29 @@
 ---
 model: haiku
-effort: medium
 ---
 
 # /explore — Codebase Exploration
 
 Target from $ARGUMENTS (feature, module, file, or question) or ask. Read `CLAUDE.md` and `~/.claude/CLAUDE.md`.
 
-Goal: produce a structured findings summary to inform planning or debugging. Do NOT modify any files.
+Goal: structured findings summary to inform planning or debugging. Do NOT modify any files.
 
-Use Grep/Glob to locate entry points, then LSP (`definition`, `references`, `hover`, `implementation`) to navigate from them.
+## Area Decomposition
 
-Explore:
-- **Entry points**: where the feature/flow starts (handlers, commands, event listeners)
-- **Key files**: core logic, models, services touched by the target area
-- **Data flow**: how data moves through the system (input → transform → output)
-- **Patterns**: naming conventions, error handling, testing approach in this area
-- **Gotchas**: non-obvious constraints, TODOs, known issues, workarounds
+Identify distinct codebase areas the target spans (e.g. auth layer, API handlers, DB models).
 
-Produce:
+If single area → explore directly without spawning.
+
+Otherwise, write shared context to `/tmp/claude-ctx-$$.md`:
+```
+Target: <feature/module/question>
+Stack: <detected stack>
+Standards: <key points from CLAUDE.md>
+```
+
+Spawn parallel `code-explorer` subagents — one per area. Each prompt: "Read /tmp/claude-ctx-$$.md first. Explore area: <name>. Use Grep/Glob to locate entry points, then LSP (`definition`, `references`, `hover`, `implementation`) to navigate. Report: entry points (file:line), key files, data flow, patterns, gotchas, open questions."
+
+## Output
 
 ```
 ## Exploration: <target>
@@ -30,7 +35,7 @@ Produce:
 - `file` — <what it owns>
 
 ### Data Flow
-<brief description>
+<input → transform → output>
 
 ### Patterns in This Area
 - <pattern>: <where it's used>
@@ -39,7 +44,7 @@ Produce:
 - <non-obvious constraint or known issue>
 
 ### Open Questions
-- <anything unclear that needs clarification before planning>
+- <anything unclear before planning>
 ```
 
 Print: "Exploration complete. Run /dev:make-plan to begin planning."
