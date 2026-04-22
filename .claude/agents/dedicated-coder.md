@@ -2,7 +2,7 @@
 name: dedicated-coder
 description: "Accurate executor for important/difficult tasks. Inherits rapid-coder's discipline (follows plans strictly, copies patterns, no reinventing) but prioritizes accuracy over speed. Use for: complex features, critical business logic, security-sensitive code, edge-case-heavy implementations."
 model: sonnet
-color: purple
+color: blue
 memory: user
 effort: normal
 ---

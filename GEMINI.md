@@ -44,15 +44,17 @@ Refer to `.gemini/workflows/` for detailed SOPs (Standard Operating Procedures) 
 
 ---
 
-## Agent Mapping (Claude -> Gemini)
+## Agent Mapping (Claude -> Gemini Personas)
 
-If instructions refer to Claude-specific agents, use these Gemini equivalents:
+In Gemini CLI, Claude "Agents" are implemented as **Skills**. You can adopt a specific persona by asking me to "activate the [persona-name] skill" (which calls the `activate_skill` tool).
 
-| Claude Agent | Gemini CLI Tool / Workflow |
-|--------------|---------------------------|
-| **code-explorer** | `codebase_investigator` tool & `.gemini/workflows/explore.md` |
-| **feature-planner** | `.gemini/workflows/make-plan.md` & `.gemini/workflows/review-plan.md` |
-| **architecture-strategist** | `.gemini/workflows/make-plan.md` (with deep architectural focus) |
-| **dedicated-coder** | `.gemini/workflows/execute-plan.md` (high precision) |
-| **rapid-coder** | `.gemini/workflows/execute-plan.md` (fast execution) |
-| **code-quality-auditor** | `.gemini/workflows/review-code.md` |
+| Claude Agent | Gemini Persona (Skill) | Primary Workflow |
+|--------------|------------------------|------------------|
+| **code-explorer** | N/A (Use `codebase_investigator` tool) | `.gemini/workflows/explore.md` |
+| **feature-planner** | `feature-planner` | `.gemini/workflows/make-plan.md` |
+| **architecture-strategist** | `architecture-strategist` | `.gemini/workflows/make-plan.md` |
+| **dedicated-coder** | `dedicated-coder` | `.gemini/workflows/execute-plan.md` |
+| **rapid-coder** | `rapid-coder` | `.gemini/workflows/execute-plan.md` |
+| **code-quality-auditor** | `code-quality-auditor` | `.gemini/workflows/review-code.md` |
+
+**Note:** Once a skill is activated, its specialized mandates take precedence over general instructions for the duration of the task.

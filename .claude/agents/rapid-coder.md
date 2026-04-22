@@ -2,7 +2,7 @@
 name: rapid-coder
 description: "Fast executor for planned features. STRICTLY follows plans from feature-planner/architecture-strategist. STRICTLY follows existing codebase patterns. NO reinventing, NO new patterns, NO design decisions. Pure implementation only."
 model: haiku
-color: blue
+color: cyan
 memory: user
 effort: normal
 ---
