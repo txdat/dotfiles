@@ -1,23 +1,22 @@
-# Workflow: /make-plan — Requirement Analysis & Plan Creation
+# Workflow: /make-plan — Plan Creation & Approval
 
-Plans directory: `docs/plans/`. Warn and ask if an `approved` or `in-progress` plan already exists. If the codebase area is unfamiliar, use `codebase_investigator` first.
+Plans directory: `docs/plans/`. Warn if plan exists. Suggest `/explore` if area unfamiliar.
 
-Filename: `docs/plans/<basename $PWD>_<yyyy-mm-dd>_<type>_<slug>.md` — slug from input, max 5 words, hyphenated.
+Filename: `docs/plans/<basename $PWD>_<yyyy-mm-dd>_<type>_<slug>.md` — slug max 5 words. Type: `feature`, `fix`, `refactor`.
+Read `GEMINI.md`. Do NOT write code.
 
-**Rules:**
-- Read project `GEMINI.md` before proceeding.
-- Do NOT write any code.
-- Ask clarifying questions grouped by concern (scope, boundaries, constraints, edge cases, definition of done). Up to 3 rounds maximum.
+## Phase 1 — Draft
+Ask clarifying questions (scope, boundaries, constraints, edge cases, done). Max 3 rounds.
 
-**Structure:**
-```markdown
+Structure:
+```
 # Task: <name>
 Status: planning
-Type: feature | fix | refactor
-Issue: #N
+Type: <type>
+Issue:
 
 ## Requirement
-<one paragraph — what problem is being solved and why>
+<one paragraph — problem & why>
 
 ## Scope
 ### In scope
@@ -40,15 +39,16 @@ Issue: #N
 ## Out of Scope (explicit)
 - <item>: <why excluded>
 ```
+Rules: Verifiable unit per step. Dependency-ordered. 5–10 steps total. Test Steps before Implementation Steps. Propose split if >10. Merge redundant steps. Every Implementation Step must reference a Test Step.
 
-**Checklist Rules:**
-- Each step = one verifiable unit of work.
-- Dependency-ordered (step N never requires step N+1).
-- Target 5–10 total steps.
-- Test Steps before Implementation Steps.
-- Every Implementation Step must reference a Test Step.
+**TDD gate**: Validate `### Test Steps` non-empty & references exist before saving. Add missing, re-confirm.
 
-**TDD Gate:**
-Do not set status `approved` unless `### Test Steps` is non-empty and every Implementation Step references a Test Step. Add missing test steps and re-confirm if needed.
+Save draft. Show brief (Task, Type, Requirement, Step/Risk counts). Ask "Apply these changes?". Apply approved edits in place. Ask "Create a GitHub issue?". If yes: `gh issue create`, update `Issue:` field.
 
-**Draft Brief**: Show a brief of the plan before saving (Task name, Type, Requirement 1-line summary, counts for steps/risks). Ask "Apply these changes?". Apply approved edits in place. Ask "Create a GitHub issue for this plan?". If yes, run `gh issue create` and update `Issue:` field.
+## Phase 2 — Review & Approve
+Review saved plan for clarity, explicit scope, considered alternatives, actionable mitigations, verifiable steps.
+Flag ambiguities. Unresolvable → ask (1 round max).
+**TDD compliance (blocking)**: Validate new failing test (feature/fix) or passing coverage test (refactor). Propose missing.
+
+Show brief: Verdict (READY | NEEDS CHANGES), blocking count, suggestion count, `<plan path>`.
+Ask "Apply these changes?". Apply fixes. Set `Status: approved`. Print "Plan approved at `<path>`".

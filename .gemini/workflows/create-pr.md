@@ -1,18 +1,27 @@
 # Workflow: /create-pr — Create Pull Request
 
-Find active plan (status `implemented`/`reviewed`).
+Find active plan (status `implemented`/`reviewed`). If none, warn/ask. Read `GEMINI.md`.
 
-1. **Pre-flight Checks**:
-   - Check for debug artifacts (e.g., `console.log`, `// DEBUG`).
-   - Check for conflict markers.
-2. **Stage and Commit**: `<type>(<scope>): <imperative summary>`.
-3. **Generate Description**:
-   - **WHAT**: 3–6 bullets of observable behavior changes.
-   - **HOW**: implementation approach and design decisions.
-   - **Testing**: tests added and invariants verified.
-   - **Closes**: if plan has `Issue:` set (e.g. `Issue: 42`), append `Closes #42` to PR body.
-4. **Execute**:
-   ```bash
-   gh pr create --title "..." --body "..." --draft
-   ```
-5. **Report**: Print PR URL and update plan status to `pr-created`.
+If on `main`/`master`/protected, create branch: `<type>/<slug>` (types: `feat`, `fix`, `refactor`, `chore`, `migration`, `hotfix`; slug max 5 words from plan).
+
+## Pre-flight checks:
+```bash
+git diff main | grep -nE "System\.out|console\.log|print\(|// DEBUG"
+git diff main | grep -nE "^[<>]{7}|^={7}"
+```
+Stage/commit uncommitted: `<type>(<scope>): <imperative summary>`.
+
+## Generate PR description:
+- **Title**: `<type>(<scope>): <summary < 72 chars>`
+- **WHAT**: 3–6 bullets observable behavior changes (not file names).
+- **HOW**: implementation approach, design decisions, correctness strategy, out of scope.
+- **Testing**: tests added, invariants verified, manual steps.
+- **Checklist**: from `GEMINI.md` or default (tests pass · no debug artifacts · no secrets · migrations backward-compatible).
+- **Closes**: if plan has `Issue:` set (e.g. `Issue: 42`), append `Closes #42` to body.
+
+Execute:
+```bash
+gh pr create --title "..." --body "..." --draft
+```
+Default: `--draft`. Pass `ready` to open directly.
+Print PR URL. Update plan status `pr-created` with URL. Print "Run /recap before closing session."

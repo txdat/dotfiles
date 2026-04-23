@@ -1,23 +1,25 @@
 # Workflow: /review-plan — Review and Improve an Existing Plan
 
-Find plan by status `planning`/`approved`. Read the plan plus project `GEMINI.md`.
+Do NOT write code.
+Plans directory: `docs/plans/`. Find plan. Suggest `/explore` if area unfamiliar.
+Read plan + `GEMINI.md`.
 
-**Review Criteria:**
-- **Requirement**: clear problem statement and definition of done.
-- **Scope**: in/out explicitly defined.
-- **Design Decisions**: alternatives considered and reasoning stated.
-- **Risks**: actionable mitigation for each.
-- **Steps**: dependency-ordered; each verifiable.
-- **TDD Compliance (blocking)**: non-empty `### Test Steps`; all Test Steps before Implementation Steps.
+Review:
+- **Requirement**: clear, measurable done.
+- **Scope**: explicit in/out, no hidden assumptions.
+- **Design decisions**: alternatives, reasoning.
+- **Risks**: actionable mitigations.
+- **Steps**: dependency-ordered, verifiable. If >10 steps, flag `❌` blocking — propose split.
+  - **Split accepted**: create new plan files. Ask to create sub-issues (`gh issue create --title "..." --body "Part of #N"`).
+- **TDD compliance (blocking)**: `### Test Steps` non-empty; Test Steps before Implementation Steps; references exist. Missing = `❌` blocking. Validate: `feature/fix` = new failing test; `refactor` = passing coverage test.
 
-**Output**:
-```markdown
-## Plan Review: <filename>
+Flag ambiguities. Unresolvable → ask (1 round max).
 
-### ✅ What's solid
-### ❌ Issues (must fix before execution)
-### ⚠️ Suggestions
-### Verdict: READY | NEEDS CHANGES
-```
-Produce the full review internally, then show a brief of Verdict, blocking issues, and suggestions. Ask: "Apply these changes?". Apply approved edits in place (full details used internally to drive edits). If status was `planning` and all blocking issues resolved → set `approved`.
-d`.
+Show brief:
+- Verdict: READY | NEEDS CHANGES
+- ❌ Blocking: N (titles only)
+- ⚠️ Suggestions: N (titles only)
+- `<plan path>`
+
+Ask: "Apply these changes?". Apply approved edits in place.
+If status `planning` and blocking resolved → set `approved`. Print "Plan updated. Run /execute-plan to begin."

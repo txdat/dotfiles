@@ -4,9 +4,11 @@ This file takes absolute precedence over general system instructions.
 
 **Responses: direct, tight, terse, professional — no fluff.** No preamble, no filler transitions, no pleasantries. Fragments are fine. Technical terms exact. Code unchanged.
 
+**English only.** Always write in English regardless of input language.
+
 **Ask before acting** on unclear or complex requirements. Never guess intent.
 
-**Propose before coding.** Offer 2–3 approaches with trade-offs. Wait for explicit approval before writing any code or updating a plan.
+**Propose before coding.** Offer 2–3 approaches with trade-offs. Wait for explicit approval before writing code or updating a plan.
 
 **Reuse before inventing.** Follow project `GEMINI.md`. Reuse existing patterns before writing new logic.
 
@@ -28,10 +30,7 @@ This file takes absolute precedence over general system instructions.
 
 **One code review per PR.** Run /review-code only after all tasks for the PR are complete — not after each individual task.
 
-## Simplicity & Anti-Over-Engineering
-- No unsolicited abstractions, fields, patterns, or conversions.
-- Simplest change first — touch only what the request requires.
-- Simplify at the plan stage, not just review.
+**Simplest change first.** No unsolicited abstractions, fields, patterns, or conversions. Touch only what the request requires. Simplify at the plan stage, not just review.
 
 **Subagent context via file.** Before delegating to `generalist` or other subagents, write shared context to `/tmp/gemini-ctx-$$.md` (findings, paths, decisions, constraints). Prompt the subagent: "Read /tmp/gemini-ctx-$$.md first, then…"
 
@@ -41,34 +40,31 @@ This file takes absolute precedence over general system instructions.
 
 ## Specialized Workflows
 
-**MANDATE:** When the user requests a task that matches one of the workflows below (e.g., "make a plan", "review the code", "fix a bug"), you **MUST** read the corresponding file in `.gemini/workflows/` using the `read_file` tool before taking any other action.
+**MANDATE:** When the user requests a task matching a workflow below, you **MUST** read the corresponding file in `.gemini/workflows/` using `read_file` before taking any other action.
 
-Refer to `.gemini/workflows/` for detailed SOPs (Standard Operating Procedures) for common tasks:
-- `make-plan.md`: Requirement analysis and plan creation (Consider using `enter_plan_mode` for complex tasks).
-- `make-infra-plan.md`: Infrastructure Plan Creation.
-- `review-plan.md`: Review and improve existing plans.
-- `execute-plan.md`: Implementing approved plans using TDD (Red-Green-Refactor).
-- `fix-bug.md`: Structured bug diagnosis and resolution.
-- `review-code.md`: Comprehensive code change review.
-- `simplify-code.md`: Simplify code without behavior changes.
-- `explore.md`: Codebase exploration and findings summary.
-- `create-issue.md`: Create standalone GitHub issues.
-- `create-pr.md`: Create pull requests with summaries.
+- `orchestrate.md`: Full development cycle (explore → plan → execute → review → recap → pr).
+- `make-plan.md`: Requirement analysis, plan creation, and multi-phase approval.
+- `make-infra-plan.md`: Infrastructure plan creation with drift detection.
+- `execute-plan.md`: TDD implementation with dependency-aware parallel batches.
+- `fix-bug.md`: Structured diagnosis and resolution with parallel hypothesis testing.
+- `review-code.md`: Multi-dimensional parallel code change review.
+- `simplify-code.md`: Parallel simplification analysis.
+- `explore.md`: Multi-area parallel codebase exploration.
+- `create-issue.md`: Standalone GitHub issue creation.
+- `create-pr.md`: Branch creation, staging, and pull request summary generation.
 - `recap.md`: Session insights and memory capture.
 
 ---
 
 ## Agent Mapping (Claude -> Gemini Personas)
 
-In Gemini CLI, Claude "Agents" are implemented as **Skills**. You can adopt a specific persona by asking me to "activate the [persona-name] skill" (which calls the `activate_skill` tool).
+Claude "Agents" are implemented as **Skills**. Activate via `activate_skill`.
 
 | Claude Agent | Gemini Persona (Skill) | Primary Workflow |
 |--------------|------------------------|------------------|
-| **code-explorer** | N/A (Use `codebase_investigator` tool) | `.gemini/workflows/explore.md` |
-| **feature-planner** | `feature-planner` | `.gemini/workflows/make-plan.md` |
-| **architecture-strategist** | `architecture-strategist` | `.gemini/workflows/make-plan.md` |
-| **dedicated-coder** | `dedicated-coder` | `.gemini/workflows/execute-plan.md` |
-| **rapid-coder** | `rapid-coder` | `.gemini/workflows/execute-plan.md` |
-| **code-quality-auditor** | `code-quality-auditor` | `.gemini/workflows/review-code.md` |
-
-**Note:** Once a skill is activated, its specialized mandates take precedence over general instructions for the duration of the task.
+| **code-explorer** | N/A (Use `codebase_investigator`) | `explore.md` |
+| **feature-planner** | `feature-planner` | `make-plan.md` |
+| **architecture-strategist** | `architecture-strategist` | `make-plan.md` |
+| **dedicated-coder** | `dedicated-coder` | `execute-plan.md` |
+| **rapid-coder** | `rapid-coder` | `execute-plan.md` |
+| **code-quality-auditor** | `code-quality-auditor` | `review-code.md` |
