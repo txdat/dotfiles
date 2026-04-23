@@ -5,7 +5,7 @@ effort: high
 
 # /review-code — Code Change Review
 
-Plans directory: `docs/plans/`. Find active plan (status `in-progress`/`implemented`/`reviewed`). Read it plus `CLAUDE.md`. If no plan found, ask user for intent.
+Plans directory: `docs/plans/`. Find active plan (status `in-progress`/`implemented`/`reviewed`). Read it plus `CLAUDE.md`. If no plan found, ask for review scope.
 
 Run: `git diff main --stat`, `git diff main`, `git log main..HEAD --oneline`.
 

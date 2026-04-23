@@ -47,4 +47,4 @@ Spawn parallel `code-explorer` subagents — one per area. Each prompt: "Read /t
 - <anything unclear before planning>
 ```
 
-Print: "Exploration complete. Run /dev:make-plan to begin planning."
+Print: "Exploration complete."

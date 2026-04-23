@@ -1,97 +1,113 @@
 # Claude Code Commands
 
-A realistic end-to-end workflow using all commands.
-
-**Scenario**: Adding JWT authentication to a service called `auth-service`
+Two ways to work: **orchestrated** (one command, full cycle) or **step-by-step** (manual control).
 
 ---
 
-## 0. Create a standalone issue (optional)
+## Orchestrated — full cycle
+
+```
+/dev:orchestrate Add JWT authentication to the login endpoint
+```
+
+Runs: **explore → plan → execute → review → recap → pr**
+
+Pauses at each phase for confirmation. Resume from any step:
+
+```
+/dev:orchestrate add-jwt from execute
+```
+
+---
+
+## Step-by-step
+
+**Scenario**: Adding JWT authentication to `auth-service`
+
+### 0. Standalone issue (optional)
 
 ```
 /dev:create-issue Add JWT authentication to the login endpoint
 ```
 
-For issues not tied to a plan — bugs, spikes, discussions. Plan-linked issues are created automatically by `/dev:make-plan`.
+For issues not tied to a plan. Plan-linked issues are created inside `/dev:make-plan`.
 
----
+### 1. Explore
 
-## 1. Create the plan
+```
+/dev:explore auth-service login flow
+```
+
+Maps entry points, data flow, patterns, and gotchas before planning.
+
+### 2. Plan + approve
 
 ```
 /dev:make-plan add JWT authentication to the login endpoint
 ```
 
+Drafts the plan, validates TDD structure, reviews for gaps, and outputs `Status: approved` in one pass.
+
 Saves to `docs/plans/auth-service_2026-04-17_feature_add-jwt-authentication.md`
 
----
-
-## 2. Review the plan
-
-```
-/dev:review-plan
-```
-
-Reviews the saved plan for gaps, ambiguities, and missing risk coverage. Applies approved improvements in place and promotes status to `approved` if all blocking issues are resolved.
-
----
-
-## 3. Execute the plan
+### 3. Execute
 
 ```
 /dev:execute-plan
 ```
 
-Auto-discovers the single approved plan and runs all steps.
+Auto-discovers the approved plan and runs all steps (TDD RED→GREEN→BLUE).
 
-Or target it explicitly:
-
-```
-/dev:execute-plan auth-service_2026-04-17_feature_add-jwt-authentication.md
-```
-
-Or resume from a specific step:
+Resume from a specific step:
 
 ```
 /dev:execute-plan add-jwt from 3
 ```
 
----
-
-## 4. Fix a bug mid-execution
+### 4. Fix a bug mid-execution (optional)
 
 ```
 /dev:fix-bug JWT token validation returns 401 on valid tokens
 ```
 
-Diagnoses root cause, applies minimal fix, and adds a regression test.
+Diagnoses root cause, applies minimal fix, adds regression test.
 
----
-
-## 5. Review the changes
+### 5. Review code
 
 ```
 /dev:review-code
 ```
 
-Reviews all changes on the branch against the plan and coding standards.
+Reviews branch changes against the plan and coding standards.
 
----
-
-## 6. Create the pull request
-
-```
-/dev:create-pr
-```
-
-Pushes the branch and opens a PR with a generated summary.
-
----
-
-## 7. Capture session notes
+### 6. Recap
 
 ```
 /dev:recap
 ```
 
-Summarizes decisions made, scope changes discovered, and anything worth remembering for the next session.
+Extracts insights, writes patterns/anti-patterns to `CLAUDE.md`, saves recap file.
+
+### 7. Create PR
+
+```
+/dev:create-pr
+```
+
+Stages, commits, and opens a draft PR with generated summary.
+
+To open directly (not draft):
+
+```
+/dev:create-pr ready
+```
+
+---
+
+## Review existing plan
+
+For hand-written or interrupted plans not yet approved:
+
+```
+/dev:review-plan
+```

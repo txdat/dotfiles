@@ -21,14 +21,14 @@ Review:
 
 Flag ambiguities: undefined terms, missing constraints, unaddressed edge cases, unstated assumptions. If unresolvable from the plan, ask — one follow-up round maximum.
 
-**TDD compliance (blocking)**: non-empty `### Test Steps`; all Test Steps before Implementation Steps; every Implementation Step references a Test Step. Missing TDD structure is always `❌` — propose the missing test steps. Validate Test Step content by plan type:
-- *Feature/fix*: each Test Step must describe a new failing test
-- *Refactor*: each Test Step must describe coverage verification or characterization tests that pass before and after
+**TDD compliance (blocking)**: non-empty `### Test Steps`; Test Steps before Implementation Steps; every Implementation Step references a Test Step. Missing TDD structure is `❌` blocking — propose missing test steps. Validate content by type:
+- *Feature/fix*: each Test Step describes a new failing test
+- *Refactor*: each Test Step describes coverage/characterization tests that pass before and after
 
-Produce the full review internally, then show a brief:
+Show brief:
 - Verdict: READY | NEEDS CHANGES
-- ❌ Blocking issues: N (list titles only)
-- ⚠️ Suggestions: N (list titles only)
+- ❌ Blocking: N (titles only)
+- ⚠️ Suggestions: N (titles only)
 - `<plan path>`
 
 Ask: "Apply these changes?" Apply approved edits in place (full details used internally to drive edits).

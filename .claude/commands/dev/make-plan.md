@@ -2,13 +2,15 @@
 effort: high
 ---
 
-# /make-plan — Requirement Analysis & Plan Creation
+# /make-plan — Plan Creation & Approval
 
 Plans directory: `docs/plans/`. Warn and ask if an `approved` or `in-progress` plan already exists. If the codebase area is unfamiliar, suggest running `/dev:explore` first.
 
 Filename: `docs/plans/<basename $PWD>_<yyyy-mm-dd>_<type>_<slug>.md` — slug from $ARGUMENTS, max 5 words, hyphenated. Determine `<type>`: `feature` (new capability), `fix` (bug), `refactor` (structural change, no behavior change).
 
 Read project `CLAUDE.md` and `~/.claude/CLAUDE.md` before proceeding. Do NOT write any code.
+
+## Phase 1 — Draft
 
 Ask clarifying questions grouped by concern (scope, boundaries, constraints, edge cases, definition of done). Up to 3 rounds maximum.
 
@@ -52,9 +54,9 @@ Checklist rules: each step = one verifiable unit of work; dependency-ordered (st
 
 Merge redundant steps; every Implementation Step must reference a Test Step.
 
-**TDD gate**: before saving, validate that `### Test Steps` is non-empty and every Implementation Step references a Test Step. If not, add the missing test steps and re-confirm before saving.
+**TDD gate**: validate `### Test Steps` non-empty and every Implementation Step references a Test Step before saving. Add missing test steps if needed, re-confirm before saving.
 
-Save draft to filename. Show a brief:
+Save draft. Show brief:
 - Task name, Type
 - Requirement: <1-line summary>
 - Test Steps: N | Implementation Steps: N
@@ -67,6 +69,28 @@ Ask: "Create a GitHub issue for this plan?" If yes:
 ```bash
 gh issue create --title "<Task name>" --body "<Requirement paragraph>"
 ```
-Update the `Issue:` field in the saved plan with the created issue number.
+Update `Issue:` field with created issue number.
 
-Print: "Plan saved to `<path>`. Run /dev:execute-plan to begin."
+## Phase 2 — Review & Approve
+
+Review the saved plan:
+- **Requirement**: clear problem statement, measurable definition of done
+- **Scope**: in/out explicit, no hidden assumptions
+- **Design decisions**: alternatives considered, reasoning stated
+- **Risks**: each has actionable mitigation
+- **Steps**: dependency-ordered; each verifiable
+
+Flag ambiguities: undefined terms, missing constraints, unaddressed edge cases. If unresolvable, ask — one round maximum.
+
+**TDD compliance (blocking)** — validate content by type:
+- *Feature/fix*: each Test Step describes a new failing test
+- *Refactor*: each Test Step describes coverage/characterization tests that pass before and after
+
+Show:
+- Verdict: READY | NEEDS CHANGES
+- ❌ Blocking: N (titles only)
+- ⚠️ Suggestions: N (titles only)
+
+Ask: "Apply these changes?" Apply approved fixes. Set `Status: approved`.
+
+Print: "Plan approved at `<path>`."

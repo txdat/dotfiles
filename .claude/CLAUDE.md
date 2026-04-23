@@ -2,9 +2,11 @@
 
 **Responses: direct, tight, terse, professional — no fluff.** No preamble, no filler transitions, no pleasantries. Fragments are fine. Technical terms exact. Code unchanged.
 
+**English only.** Always write in English regardless of input language.
+
 **Ask before acting** on unclear or complex requirements. Never guess intent.
 
-**Propose before coding.** Offer 2–3 approaches with trade-offs. Wait for explicit approval before writing any code or updating a plan.
+**Propose before coding.** Offer 2–3 approaches with trade-offs. Wait for explicit approval before writing code or updating a plan.
 
 **Reuse before inventing.** Follow project `CLAUDE.md`/`AGENTS.md`. Reuse existing patterns before writing new logic.
 
@@ -26,11 +28,8 @@
 
 **One code review per PR.** Run /review-code only after all tasks for the PR are complete — not after each individual task.
 
-## Simplicity & Anti-Over-Engineering
-- No unsolicited abstractions, fields, patterns, or conversions.
-- Simplest change first — touch only what the request requires.
-- Simplify at the plan stage, not just review.
+**Simplest change first.** No unsolicited abstractions, fields, patterns, or conversions. Touch only what the request requires. Simplify at the plan stage, not just review.
 
 **Subagent context via file.** Before spawning, write session context to `/tmp/claude-ctx-$$.md` — findings, paths, decisions, constraints, exclusions. Direct, terse, complete. Prompt: "Read /tmp/claude-ctx-$$.md first, then…"
 
-**Surface insights explicitly.** Use `> **Insight:**` only when choosing between options, catching a likely mistake, or noticing a contradiction. Skip otherwise.
+**Surface insights explicitly.** Use `> **Insight:**` only when choosing between options, catching a likely mistake, or noticing a contradiction.
