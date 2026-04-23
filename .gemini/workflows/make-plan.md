@@ -1,18 +1,14 @@
 # Workflow: /make-plan — Plan Creation & Approval
 
-Plans directory: `docs/plans/`. Warn if plan exists. Suggest `/explore` if area unfamiliar.
-
-Filename: `docs/plans/<basename $PWD>_<yyyy-mm-dd>_<type>_<slug>.md` — slug max 5 words. Type: `feature`, `fix`, `refactor`.
-Read `GEMINI.md`. Do NOT write code.
+Plans dir: `docs/plans/`. read `GEMINI.md`. Do NOT write code.
 
 ## Phase 1 — Draft
-Ask clarifying questions (scope, boundaries, constraints, edge cases, done). Max 3 rounds.
-
-Structure:
-```
+1. **Clarify:** Group questions by concern (scope, boundaries, edge cases, done). Max 3 rounds.
+2. **Structure:**
+```markdown
 # Task: <name>
 Status: planning
-Type: <type>
+Type: feature | fix | refactor
 Issue:
 
 ## Requirement
@@ -29,26 +25,18 @@ Issue:
 - [ ] <risk>: <mitigation>
 
 ## Implementation Checklist
-
-### Test Steps (written before any implementation)
+### Test Steps (written before implementation)
 - [ ] Test 1: <what is tested> — verifies <invariant>
 
 ### Implementation Steps (implement to make tests pass)
 - [ ] Step 1: Implement <what> — makes Test 1 pass
-
-## Out of Scope (explicit)
-- <item>: <why excluded>
 ```
-Rules: Verifiable unit per step. Dependency-ordered. 5–10 steps total. Test Steps before Implementation Steps. Propose split if >10. Merge redundant steps. Every Implementation Step must reference a Test Step.
-
-**TDD gate**: Validate `### Test Steps` non-empty & references exist before saving. Add missing, re-confirm.
-
-Save draft. Show brief (Task, Type, Requirement, Step/Risk counts). Ask "Apply these changes?". Apply approved edits in place. Ask "Create a GitHub issue?". If yes: `gh issue create`, update `Issue:` field.
+3. **Rules:** Verifiable units. Dependency-ordered. 5–10 steps total. Propose split if >10. Merge redundant steps.
+4. **TDD gate:** Validate `### Test Steps` non-empty and referenced.
+5. **Brief:** Show brief (Task, Type, Step/Risk counts). Ask "Apply?". Apply edits. Ask "Create issue?".
 
 ## Phase 2 — Review & Approve
-Review saved plan for clarity, explicit scope, considered alternatives, actionable mitigations, verifiable steps.
-Flag ambiguities. Unresolvable → ask (1 round max).
-**TDD compliance (blocking)**: Validate new failing test (feature/fix) or passing coverage test (refactor). Propose missing.
-
-Show brief: Verdict (READY | NEEDS CHANGES), blocking count, suggestion count, `<plan path>`.
-Ask "Apply these changes?". Apply fixes. Set `Status: approved`. Print "Plan approved at `<path>`".
+1. **Review:** clear requirement, explicit scope, considered alternatives, actionable mitigations, verifiable steps.
+2. **Ambiguity:** Flag undefined terms/constraints. Max 1 round.
+3. **TDD Check:** `feature/fix` = failing test; `refactor` = passing coverage test.
+4. **Status:** Set `Status: approved`.

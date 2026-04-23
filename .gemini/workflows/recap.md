@@ -1,22 +1,16 @@
-# Workflow: /recap — Session Insights & Memory Capture
+# Workflow: /recap — Insights & Memory Capture
 
-Find active plan. Read it. Run `git diff main --stat` and `git log main..HEAD --oneline`. Ask "Anything specific to capture?".
+Find active plan. Read it. Run `git diff main --stat`.
 
-Extract insights across 4 categories:
-- **📌 Facts**: "Decided X, won't revisit." (One-time decision, not reusable).
-- **🔁 Patterns**: "Worked — reuse it." (Non-obvious technique, actionable imperative).
-- **⛔ Anti-patterns**: "Burned us — avoid." (Failed approach, phrase "Do NOT...").
-- **💡 Concepts**: "Understand X and when applies." (Named concept, trade-off).
+## Categorize
+- **Facts:** Project decisions (one-time).
+- **Patterns:** Actionable reuse (always do X).
+- **Anti-patterns:** Actionable avoid (never do Y).
+- **Concepts:** Named technical X (definition/trade-off).
 
-**Routing:**
-- **Patterns/Anti-patterns** → Append to `GEMINI.md` only.
-- **Facts/Concepts** → Use `save_memory` tool (scope: `project`) AND save to recap file.
-- **Command Improvements** → Note in recap.
+## Route
+- **Patterns/Anti-patterns:** Append to project `GEMINI.md`.
+- **Facts/Concepts:** Save to recap file only.
+- **Command improvements:** noted only.
 
-Present extraction. Ask "Look right?". Apply edits.
-Append to target files (create headers if missing). Never overwrite.
-
-**Output:**
-Save recap to `docs/recaps/<basename $PWD>_<yyyy-mm-dd>.md`: task name, PR URL, insights, plan path.
-Update plan status `archived`.
-Print task name, PR URL, plan path, insight counts.
+Save to `docs/recaps/<basename>_<date>.md`. Update plan to `archived`.

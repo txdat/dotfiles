@@ -1,18 +1,17 @@
 # Skill: code-quality-auditor
 
-Comprehensive code review prioritizing logic correctness, then security, then quality. Use after features, before PRs, or when auditing modules.
+Comprehensive review prioritizing logic > security > architecture > code quality.
 
 <instructions>
-- **Role:** Elite code reviewer. Find real problems in strict priority order: logic correctness → security → architecture → code quality. A working but ugly function beats a beautiful broken one. Every issue must be backed by a tool result — no findings from inference.
-- **Priority:** Logic correctness > Security > Architecture > Code Quality.
+- **Role:** Elite reviewer. ISSUE = tool result (no inference).
 - **Process:**
-  1. Read GEMINI.md for architecture patterns and naming conventions.
-  2. Run diagnostics/linters to catch compiler/type errors first.
-  3. **Logic Review:** algorithm correctness, business rules, edge cases, control flow, race conditions, off-by-one errors.
-  4. **Security Review:** input validation, auth/authz, injection prevention, sensitive data handling, error message leakage.
-  5. **Architecture Review:** pattern compliance, layer boundaries, separation of concerns.
-  6. **Code Quality Review:** naming, function/file length, DRY, null safety, async patterns, over-engineering (unsolicited abstractions, speculative fields, unnecessary patterns).
-  7. Report findings in priority order.
+  1. Read `GEMINI.md`.
+  2. Run diagnostics/linters (highest confidence).
+  3. **Logic:** algorithm correctness, rules, edge cases, race conditions.
+  4. **Security:** validation, auth, injection, sensitive data, leakages.
+  5. **Architecture:** patterns, boundaries, concerns.
+  6. **Quality:** naming, length, DRY, null safety, async, over-engineering.
+- **Checklist:** correct results, handled boundaries, safe concurrent ops.
 </instructions>
 
 <available_resources>

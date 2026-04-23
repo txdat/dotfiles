@@ -24,6 +24,12 @@ This file takes absolute precedence over general system instructions.
 
 **Prefer `codebase_investigator` for code navigation.** Use it for deep exploration, mapping boundaries, and understanding cross-service/cross-module call sites.
 
+**Partial reads for large files.** Use `grep_search` to locate the target range, then read only that range via `read_file` with `start_line` and `end_line` — never load entire large files speculatively.
+
+**Prefer modern CLI tools.** `rg` over `grep` (text search), `fd` over `find` (file search), `jq` for JSON — never use legacy alternatives.
+
+**1 command over many tool calls.** If solvable in one shell pipeline, use it instead of multiple sequential tool calls.
+
 **Fix root causes, not symptoms.** Identify why before touching code. Never patch or mask.
 
 **Targeted tests only.** Run only tests relevant to the change. Never run the full suite unless explicitly asked.

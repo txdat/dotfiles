@@ -1,41 +1,26 @@
 # Workflow: /explore — Codebase Exploration
 
 Target from input or ask. Read `GEMINI.md`. Do NOT modify files.
-Goal: structured findings summary to inform planning/debugging.
 
 ## Area Decomposition
-Identify codebase areas (e.g., auth, API, DB).
-If single area → explore directly using `codebase_investigator`.
-
-Otherwise, write context to `/tmp/gemini-ctx-$$.md`:
-```
-Target: <feature/module/question>
-Stack: <detected stack>
-Standards: <key points from GEMINI.md>
-```
-Spawn parallel `generalist` tasks (or concurrent `codebase_investigator` calls) — one per area.
-Prompt: "Read /tmp/gemini-ctx-$$.md first. Explore area: <name>. Use `grep_search` and `glob` for entry points, then navigate. Report: entry points (file:line), key files, data flow, patterns, gotchas, open questions."
+Identify distinct codebase areas. If single area → explore directly.
+Otherwise, write context to `/tmp/gemini-ctx-$$.md`. Spawn parallel subagents per area.
+Prompt: "Read `/tmp/gemini-ctx-$$.md`. Explore area: <name>. Report: entry points, key files, data flow, patterns, gotchas."
 
 ## Output
-```
+```markdown
 ## Exploration: <target>
-
 ### Entry Points
 - `file:line` — <description>
-
 ### Key Files
-- `file` — <what it owns>
-
+- `file` — <ownership>
 ### Data Flow
 <input → transform → output>
-
-### Patterns in This Area
-- <pattern>: <where used>
-
+### Patterns
+- <pattern>: <usage>
 ### Gotchas
-- <non-obvious constraint/known issue>
-
+- <constraint/issue>
 ### Open Questions
-- <unclear before planning>
+- <unclear points>
 ```
 Print: "Exploration complete."
