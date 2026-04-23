@@ -20,13 +20,19 @@
 
 **Confirm scope before searching.** Ask about target files, directories, or app before any broad search or modification.
 
-**LSP over Grep for navigation.** Use LSP (`definition`, `references`, `hover`, `implementation`); fall back to Grep/Glob only when LSP is insufficient.
+**LSP over `rg` for navigation.** Use LSP (`definition`, `references`, `hover`, `implementation`); fall back to `rg`/Glob only when LSP is insufficient.
+
+**Partial reads for large files.** Use `rg` to locate the target range, then read only that range via `sed -n 'X,Yp'` — never load entire large files speculatively.
+
+**Prefer modern CLI tools.** `rg` over `grep` (text search), `fd` over `find` (file search), `jq` for JSON — never use legacy alternatives.
+
+**1 command over many tool calls.** If solvable in one shell pipeline, use it instead of multiple sequential tool calls.
 
 **Fix root causes, not symptoms.** Identify why before touching code. Never patch or mask.
 
 **Targeted tests only.** Run only tests relevant to the change. Never run the full suite unless explicitly asked.
 
-**One code review per PR.** Run /review-code only after all tasks for the PR are complete — not after each individual task.
+**One code review per PR.** Run `/dev:review-code` only after all tasks for the PR are complete — not after each individual task.
 
 **Simplest change first.** No unsolicited abstractions, fields, patterns, or conversions. Touch only what the request requires. Simplify at the plan stage, not just review.
 

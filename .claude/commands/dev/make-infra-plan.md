@@ -2,19 +2,21 @@
 effort: high
 ---
 
-# /make-infra-plan — Infrastructure Plan Creation
+# /make-infra-plan — Infrastructure Plan Creation & Approval
 
 Plans directory: `docs/plans/`. Warn and ask if an `approved` or `in-progress` infra plan already exists for the same target.
 
 Filename: `docs/plans/<basename $PWD>_<yyyy-mm-dd>_infra_<slug>.md` — slug from $ARGUMENTS, max 5 words, hyphenated.
 
-Read project `CLAUDE.md` and `~/.claude/CLAUDE.md` before proceeding. Do NOT apply any changes.
+Read project `CLAUDE.md` and `~/.claude/CLAUDE.md` before proceeding. Do NOT apply any infrastructure changes.
 
 You may run READ-ONLY commands at any time during planning to inspect current state (e.g. `terraform show`, `kubectl get`, `helm get values <release>`, `gcloud`/`aws` describe commands). If the target infrastructure is unfamiliar, audit existing state before asking clarifying questions.
 
+## Phase 1 — Draft
+
 Ask clarifying questions grouped by concern (scope, environment targets, existing state, dependencies, re-run safety, rollback strategy, downtime tolerance). Up to 3 rounds maximum.
 
-**Drift detection**: during Pre-flight, compare live state against configuration files using specific command pairs:
+**Drift detection**: In `## Pre-flight Checks`, compare live state against configuration files using specific command pairs:
 - Terraform: `terraform show` vs `.tf` files
 - Helm: `helm get values <release>` vs `values.yaml`
 - Kubernetes: `kubectl get <resource> -o yaml` vs manifests
@@ -68,7 +70,7 @@ Checklist rules: each step = one verifiable unit of work; dependency-ordered (st
 
 For each destructive Implementation Step, note the dry-run command inline: `<apply command>` *(dry-run: `<dry-run command>`)* — e.g. `terraform apply` *(dry-run: `terraform plan`)*, `helm upgrade` *(dry-run: `--dry-run`)*, `kubectl apply` *(dry-run: `--dry-run=client`)*. Skip for non-destructive steps (config file edits, tagging, labelling).
 
-**Verification gate**: before saving, validate that `## Verification Steps` is non-empty, every Implementation Step has a corresponding Verification Step, and `## Rollback Plan` has at least one step. If not, add the missing entries and re-confirm before saving.
+**Verification gate**: before saving, validate that `## Pre-flight Checks` is non-empty, `## Verification Steps` is non-empty, every Implementation Step has a corresponding Verification Step, and `## Rollback Plan` has at least one step. If not, add the missing entries and re-confirm before saving.
 
 Save draft to filename. Show a brief:
 - Task name, Environment
@@ -85,4 +87,24 @@ gh issue create --title "<Task name>" --body "<Requirement paragraph>"
 ```
 Update the `Issue:` field in the saved plan with the created issue number.
 
-Print: "Plan saved to `<path>`. Run /dev:review-plan to review before execution."
+## Phase 2 — Review & Approve
+
+Review the saved plan:
+- **Requirement**: clear problem statement, measurable definition of done
+- **Scope**: in/out explicit, no hidden assumptions
+- **Design decisions**: alternatives considered, reasoning stated
+- **Risks**: each has actionable mitigation; prod-facing risks flag downtime and cost impact
+- **Steps**: dependency-ordered; each independently verifiable; destructive steps have dry-run commands
+
+**Verification gate (blocking)**: Phase 1 gates already enforced structural completeness. Additionally verify: every destructive Implementation Step has a dry-run command; `## Rollback Plan` has a trigger condition (not just steps). If not, add the missing entries and re-confirm before approving.
+
+Flag: undefined environment targets, unaddressed failure modes, steps with no rollback path, missing state-drift sync step (only if drift was detected in Phase 1).
+
+Show:
+- Verdict: READY | NEEDS CHANGES
+- ❌ Blocking: N (titles only)
+- ⚠️ Suggestions: N (titles only)
+
+Ask: "Apply these changes?" Apply approved fixes. Set `Status: approved`.
+
+Print: "Plan approved at `<path>`."
