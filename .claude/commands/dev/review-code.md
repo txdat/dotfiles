@@ -17,9 +17,10 @@ Plan: <path>
 Standards: <key points from CLAUDE.md>
 Diff: <git diff main output>
 Log: <git log main..HEAD --oneline output>
+Constraints: Read-only — do NOT modify any files. Report findings only.
 ```
 
-Spawn parallel `code-quality-auditor` subagents:
+Spawn parallel `code-quality-auditor` subagents. For each, substitute `<dimensions>` with its bullet list:
 
 **Subagent A — Correctness + TDD**
 - Correctness: implementation matches plan, all checklist steps done, edge cases handled, no silent exception swallowing
@@ -33,9 +34,17 @@ Spawn parallel `code-quality-auditor` subagents:
 - Scope: flag any changes not in the approved plan
 - Hygiene: no debug logs, commented-out code, unlinked TODOs, or secrets
 
-Each subagent prompt: "Read /tmp/claude-ctx-<slug>.md first. Review: <assigned dimensions listed explicitly>. Report: blocking issues (File:Line — issue — why — fix), non-blocking issues, positives."
+Prompt template:
+```
+Read `/tmp/claude-ctx-<slug>.md` first — follow Constraints exactly.
 
-Aggregate:
+Review these dimensions only:
+<dimensions>
+
+Report: blocking issues (File:Line — issue — why — fix), non-blocking issues, positives.
+```
+
+Aggregate into:
 
 ```
 ## Code Review Report

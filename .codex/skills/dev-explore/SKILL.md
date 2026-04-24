@@ -20,9 +20,17 @@ Otherwise, write shared context to `/tmp/codex-ctx-<slug>.md`:
 Target: <feature/module/question>
 Stack: <detected stack>
 Standards: <key points from CODEX.md>
+Constraints: Read-only — do NOT modify any files. Report findings only.
 ```
 
-Spawn parallel `code-explorer` subagents — one per area. Each prompt: "Read /tmp/codex-ctx-<slug>.md first. Explore area: <name>. Use `rg`/`fd` to locate entry points, then read key files to map definitions, usage, and flow. Report: entry points (file:line), key files, data flow, patterns, gotchas, open questions."
+Spawn parallel `code-explorer` subagents — one per area. Prompt template:
+```
+Read `/tmp/codex-ctx-<slug>.md` first — follow Constraints exactly.
+
+Explore area: <name>.
+Use `rg`/`fd` to locate entry points, then read key files to map definitions, usage, and flow.
+Report: entry points (file:line), key files, data flow, patterns, gotchas, open questions.
+```
 
 ## Output
 

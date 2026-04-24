@@ -35,16 +35,26 @@ Otherwise, write shared context to `/tmp/gemini-ctx-<slug>.md`:
 Plan: <path>
 Stack: <detected stack>
 Standards: <key points from GEMINI.md>
+
+Constraints:
+- Implement ONLY your assigned steps. Touch NO other files.
+- No placeholders. Never write `// TODO`. If blocked, stop and report.
+- Run ONLY tests for your assigned steps. Never the full suite.
+- Scope creep: STOP and report; do not implement.
+- TDD: assigned tests must be RED before you write code; verify GREEN after.
 ```
 
-For each independent batch, spawn the selected subagent (`rapid-coder` or `dedicated-coder`). Include in its prompt:
-- "Read `/tmp/gemini-ctx-<slug>.md` first."
-- Assigned steps: N, M, ...
-- Files in scope: <list>
-- Off-limits: <files owned by other batches>
-- Tests to pass: <test names for assigned steps>
+For each independent batch, spawn the selected subagent with this prompt:
+```
+Read `/tmp/gemini-ctx-<slug>.md` first — follow Constraints exactly.
 
-Each subagent: implements assigned steps only, runs targeted tests, does NOT touch out-of-scope files, reports steps completed + tests passing + blockers.
+Assigned steps: N, M, ...
+Files in scope: <list>
+Off-limits (do NOT touch): <files owned by other batches>
+Tests to pass: <test names for assigned steps>
+
+Report: steps completed, tests passing, blockers.
+```
 
 Sequential steps run on the main agent between batches.
 
