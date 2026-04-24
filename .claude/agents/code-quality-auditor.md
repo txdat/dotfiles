@@ -41,6 +41,17 @@ Elite code reviewer. Find real problems in strict priority order: logic correctn
 - Auth/authz enforced
 - Error messages don't leak internals
 
+**Architecture (third):**
+- Follows CLAUDE.md layering
+- No framework dependencies leaking into domain
+- Separation of concerns maintained
+
+**Code Quality (fourth):**
+- Naming follows conventions
+- No duplication (DRY)
+- No over-engineering (unsolicited abstractions, speculative fields, unnecessary patterns)
+- Async patterns correct; null safety handled
+
 ## Handoffs
 
 | Situation | Go to |

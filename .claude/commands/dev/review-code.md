@@ -11,7 +11,7 @@ Run: `git diff main --stat`, `git diff main`, `git log main..HEAD --oneline`.
 
 If diff <50 lines → review sequentially on the main agent, skip spawning.
 
-Otherwise, write shared context to `/tmp/claude-ctx-$$.md`:
+Otherwise, write shared context to `/tmp/claude-ctx-<slug>.md`:
 ```
 Plan: <path>
 Standards: <key points from CLAUDE.md>
@@ -33,7 +33,7 @@ Spawn parallel `code-quality-auditor` subagents:
 - Scope: flag any changes not in the approved plan
 - Hygiene: no debug logs, commented-out code, unlinked TODOs, or secrets
 
-Each subagent prompt: "Read /tmp/claude-ctx-$$.md first. Review: <assigned dimensions listed explicitly>. Report: blocking issues (File:Line — issue — why — fix), non-blocking issues, positives."
+Each subagent prompt: "Read /tmp/claude-ctx-<slug>.md first. Review: <assigned dimensions listed explicitly>. Report: blocking issues (File:Line — issue — why — fix), non-blocking issues, positives."
 
 Aggregate:
 

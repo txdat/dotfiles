@@ -63,7 +63,7 @@ Save draft. Show brief:
 - Risk Flags: N
 - `<path>`
 
-Ask: "Apply these changes?" Apply approved edits in place.
+Ask: "Any changes before review?" Apply approved edits in place.
 
 Ask: "Create a GitHub issue for this plan?" If yes:
 ```bash

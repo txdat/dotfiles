@@ -13,13 +13,13 @@ Do NOT add features, fix bugs, or change behavior. Scope: simplification only.
 
 If single file → analyze directly without spawning.
 
-Otherwise, write shared context to `/tmp/claude-ctx-$$.md`:
+Otherwise, write shared context to `/tmp/claude-ctx-<slug>.md`:
 ```
 Standards: <key points from CLAUDE.md>
 Scope: simplification only — no features, no bug fixes, no behavior changes
 ```
 
-Spawn parallel `code-explorer` subagents — one per file. Each prompt: "Read /tmp/claude-ctx-$$.md first. Analyze <file>. Find: dead code (unused vars, unreachable branches, commented-out blocks) · redundant logic (duplicate conditions, re-computed values, unnecessary wrappers) · premature abstractions (one-impl interfaces, single-use helpers) · over-engineering (patterns that don't earn their complexity). Per finding: file:line, why it simplifies, simpler form."
+Spawn parallel `code-explorer` subagents — one per file. Each prompt: "Read /tmp/claude-ctx-<slug>.md first. Analyze <file>. Find: dead code (unused vars, unreachable branches, commented-out blocks) · redundant logic (duplicate conditions, re-computed values, unnecessary wrappers) · premature abstractions (one-impl interfaces, single-use helpers) · over-engineering (patterns that don't earn their complexity). Per finding: file:line, why it simplifies, simpler form."
 
 ## Apply
 

@@ -14,14 +14,14 @@ Identify distinct codebase areas the target spans (e.g. auth layer, API handlers
 
 If single area → explore directly without spawning.
 
-Otherwise, write shared context to `/tmp/claude-ctx-$$.md`:
+Otherwise, write shared context to `/tmp/claude-ctx-<slug>.md`:
 ```
 Target: <feature/module/question>
 Stack: <detected stack>
 Standards: <key points from CLAUDE.md>
 ```
 
-Spawn parallel `code-explorer` subagents — one per area. Each prompt: "Read /tmp/claude-ctx-$$.md first. Explore area: <name>. Use Grep/Glob to locate entry points, then LSP (`definition`, `references`, `hover`, `implementation`) to navigate. Report: entry points (file:line), key files, data flow, patterns, gotchas, open questions."
+Spawn parallel `code-explorer` subagents — one per area. Each prompt: "Read /tmp/claude-ctx-<slug>.md first. Explore area: <name>. Use Grep/Glob to locate entry points, then LSP (`definition`, `references`, `hover`, `implementation`) to navigate. Report: entry points (file:line), key files, data flow, patterns, gotchas, open questions."
 
 ## Output
 

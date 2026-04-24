@@ -33,5 +33,4 @@ Show brief:
 
 Ask: "Apply these changes?" Apply approved edits in place (full details used internally to drive edits).
 
-If status was `planning` and all blocking issues resolved → set `approved`.
-Print: "Plan updated. Run /dev:execute-plan to begin."
+If status was `planning` and all blocking issues resolved → set `approved` and print: "Plan approved. Run /dev:execute-plan to begin."

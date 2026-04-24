@@ -34,7 +34,7 @@ Per batch, select agent:
 
 If ≤3 steps total or all steps sequential → implement on main agent, skip spawning.
 
-Otherwise, write shared context to `/tmp/claude-ctx-$$.md`:
+Otherwise, write shared context to `/tmp/claude-ctx-<slug>.md`:
 ```
 Plan: <path>
 Stack: <detected stack>
@@ -42,7 +42,7 @@ Standards: <key points from CLAUDE.md>
 ```
 
 For each independent batch, spawn the selected subagent (`rapid-coder` or `dedicated-coder`). Include in its prompt:
-- "Read /tmp/claude-ctx-$$.md first."
+- "Read `/tmp/claude-ctx-<slug>.md` first."
 - Assigned steps: N, M, ...
 - Files in scope: <list>
 - Off-limits: <files owned by other batches>
@@ -67,4 +67,4 @@ Discovered work not in the plan: STOP. Log under `## Discovered Scope` with size
 
 ## Completion
 
-All steps `[x]`: run lint + build per `CLAUDE.md`. Update status to `implemented`. Suggest: `/dev:review-code`.
+All steps `[x]`: run lint + build + targeted tests per `CLAUDE.md` — never the full suite. Update status to `implemented`. Suggest: `/dev:review-code`.

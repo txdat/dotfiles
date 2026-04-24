@@ -17,7 +17,7 @@ Generate 3–5 hypotheses ranked by probability.
 
 If ≤2 hypotheses → investigate sequentially on main agent, skip spawning.
 
-Otherwise, write shared context to `/tmp/claude-ctx-$$.md`:
+Otherwise, write shared context to `/tmp/claude-ctx-<slug>.md`:
 ```
 Symptom: <description>
 Expected: <behavior>
@@ -26,7 +26,7 @@ Git context: <log + diff stat>
 Hypotheses: <ranked list>
 ```
 
-Spawn parallel `code-explorer` subagents. Each prompt: "Read /tmp/claude-ctx-$$.md first. Investigate hypothesis: <N — description>. Find supporting or contradicting evidence. Verdict: CONFIRMED / ELIMINATED / INCONCLUSIVE. If CONFIRMED: exact file:line, why it causes the symptom."
+Spawn parallel `code-explorer` subagents. Each prompt: "Read /tmp/claude-ctx-<slug>.md first. Investigate hypothesis: <N — description>. Find supporting or contradicting evidence. Verdict: CONFIRMED / ELIMINATED / INCONCLUSIVE. If CONFIRMED: exact file:line, why it causes the symptom."
 
 Main agent selects the first CONFIRMED hypothesis. If none confirmed, retry INCONCLUSIVE hypotheses sequentially.
 
