@@ -147,7 +147,8 @@ alias jest="TZ=UTC NODE_ENV=test ./node_modules/.bin/jest"
 
 alias claude-opus="claude --model=claude-opus-4-5-20251101"
 
-_cat() {
+# cat file in range
+_catr () {
     # Check if we have exactly 2 arguments and the 2nd argument contains a colon
     if [[ $# -eq 2 && "$2" == *:* ]]; then
         local file="$1"
@@ -163,6 +164,7 @@ _cat() {
         command cat "$@"
     fi
 }
+compdef _cat _catr
 
 # update zsh's plugins
 _update_zsh () {
