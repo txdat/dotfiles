@@ -1,5 +1,6 @@
 ---
 model: gpt-5.4-mini
+description: Explore a codebase area and summarize findings for planning.
 ---
 
 # /explore — Codebase Exploration

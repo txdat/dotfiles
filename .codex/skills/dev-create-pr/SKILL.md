@@ -1,5 +1,6 @@
 ---
 model: gpt-5.4-mini
+description: Create a pull request from an implemented or reviewed plan.
 ---
 
 # /create-pr — Create Pull Request

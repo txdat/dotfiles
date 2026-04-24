@@ -1,5 +1,6 @@
 ---
 model: gpt-5.3-codex
+description: Create and approve a development plan with TDD structure.
 effort: high
 ---
 

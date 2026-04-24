@@ -1,5 +1,6 @@
 ---
 model: gpt-5.3-codex
+description: Review code changes against the plan and project standards.
 effort: high
 ---
 

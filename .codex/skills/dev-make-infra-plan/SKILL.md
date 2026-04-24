@@ -1,5 +1,6 @@
 ---
 model: gpt-5.3-codex
+description: Create an infrastructure plan with pre-flight, implementation, and rollback steps.
 effort: high
 ---
 

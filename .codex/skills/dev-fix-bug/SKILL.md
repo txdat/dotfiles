@@ -1,5 +1,6 @@
 ---
 model: gpt-5.3-codex
+description: Diagnose and fix a bug with structured investigation.
 effort: high
 ---
 

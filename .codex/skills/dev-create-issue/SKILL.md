@@ -1,5 +1,6 @@
 ---
 model: gpt-5.4-mini
+description: Create a standalone GitHub issue from a short prompt.
 ---
 
 # /create-issue — Create Standalone GitHub Issue

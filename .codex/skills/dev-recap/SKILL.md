@@ -1,5 +1,6 @@
 ---
 model: gpt-5.3-codex
+description: Capture session insights into repo and personal memory files.
 effort: medium
 ---
 

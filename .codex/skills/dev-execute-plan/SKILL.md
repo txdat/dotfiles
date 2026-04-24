@@ -1,5 +1,6 @@
 ---
 model: gpt-5.3-codex
+description: Implement an approved plan with TDD and verification.
 effort: high
 ---
 
@@ -20,7 +21,7 @@ Classify each Implementation Step:
 - **Sequential**: shares files or depends on prior output → ordered between batches
 
 Per batch, select agent:
-- **`rapid-coder`**: existing pattern confirmed via `rg`/reads, no edge cases, no security sensitivity
+- **`rapid-coder`**: existing pattern confirmed via `rg`/`fd`, no edge cases, no security sensitivity
 - **`dedicated-coder`**: no existing pattern, edge cases present, security/external integrations
 - Mixed or uncertain → `dedicated-coder`
 

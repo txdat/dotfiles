@@ -1,5 +1,6 @@
 ---
 model: gpt-5.3-codex
+description: Review an existing plan for gaps, risks, and TDD compliance.
 effort: high
 ---
 

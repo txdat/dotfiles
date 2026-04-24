@@ -1,5 +1,6 @@
 ---
 model: gpt-5.3-codex
+description: Run the full development cycle from exploration to PR.
 effort: high
 ---
 

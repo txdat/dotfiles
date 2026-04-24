@@ -1,5 +1,6 @@
 ---
 model: gpt-5.3-codex
+description: Simplify existing code without changing behavior.
 effort: high
 ---
 
