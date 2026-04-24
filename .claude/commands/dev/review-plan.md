@@ -2,35 +2,37 @@
 effort: high
 ---
 
-# /review-plan — Review and Improve an Existing Plan
+# /review-plan — Review Existing Plan
 
-Do NOT write any code.
+If `skip approval` context — auto-apply changes, auto-create sub-issues.
 
-Plans directory: `docs/plans/`. Find plan from $ARGUMENTS (full/partial name) or auto-discover by status `planning`/`approved`. If multiple, ask. If none, stop. If the plan references unfamiliar codebase areas, suggest running `/dev:explore` on them first.
+Do NOT write code.
 
-Read the plan plus project `CLAUDE.md` and `~/.claude/CLAUDE.md`.
+Find plan from $ARGUMENTS or by status `planning`/`approved`. If unfamiliar areas, suggest `/dev:explore`.
 
-Review:
-- **Requirement**: clear problem statement, measurable definition of done
-- **Scope**: in/out explicitly defined, no hidden assumptions
-- **Design decisions**: alternatives considered, reasoning stated
-- **Risks**: each has an actionable mitigation
-- **Steps**: dependency-ordered; target 5–10; each verifiable. If steps exceed 10, flag `❌` blocking — propose a split.
+Read plan + `CLAUDE.md`.
 
-**If split accepted**: create a new plan file for each sub-plan. If parent plan has `Issue:` set, ask: "Create sub-issues?" If yes: `gh issue create --title "..." --body "Part of #N"` for each sub-plan; update its `Issue:` field.
+## Review
 
-Flag ambiguities: undefined terms, missing constraints, unaddressed edge cases, unstated assumptions. If unresolvable from the plan, ask — one follow-up round maximum.
+- **Requirement**: clear, measurable done
+- **Scope**: in/out explicit
+- **Design**: alternatives + reasoning
+- **Risks**: actionable mitigations
+- **Steps**: 5–10, dependency-ordered. >10 → `❌` propose split
 
-**TDD compliance (blocking)**: non-empty `### Test Steps`; Test Steps before Implementation Steps; every Implementation Step references a Test Step. Missing TDD structure is `❌` blocking — propose missing test steps. Validate content by type:
-- *Feature/fix*: each Test Step describes a new failing test
-- *Refactor*: each Test Step describes coverage/characterization tests that pass before and after
+**Split accepted**: new files per sub-plan. If `Issue:` set, ask: "Create sub-issues?"
 
-Show brief:
+Flag: undefined terms, missing constraints, edge cases, assumptions. One follow-up max.
+
+**TDD (blocking)**: Test Steps non-empty, before Implementation, each Impl references Test.
+- Feature/fix: new failing tests
+- Refactor: coverage tests pass before and after
+
+## Output
+
 - Verdict: READY | NEEDS CHANGES
-- ❌ Blocking: N (titles only)
-- ⚠️ Suggestions: N (titles only)
-- `<plan path>`
+- ❌ Blocking: N
+- ⚠️ Suggestions: N
+- `<path>`
 
-Ask: "Apply these changes?" Apply approved edits in place (full details used internally to drive edits).
-
-If status was `planning` and all blocking issues resolved → set `approved` and print: "Plan approved. Run /dev:execute-plan to begin."
+Ask: "Apply?" If `planning` + resolved → `approved`. Print: "Plan approved. Run /dev:execute-plan."

@@ -2,16 +2,14 @@
 model: haiku
 ---
 
-# /create-issue — Create Standalone GitHub Issue
+# /create-issue — Standalone GitHub Issue
 
-For plan-linked issues, use `/dev:make-plan` — it creates and links an issue automatically.
+For plan-linked issues, use `/dev:make-plan` instead.
 
-For issues not tied to a plan: bugs, spikes, discussions, quick tasks.
-
-Collect from $ARGUMENTS or ask: title, description, labels, milestone (all optional except title).
+Collect from $ARGUMENTS or ask: title (required), description, labels, milestone.
 
 ```bash
 gh issue create --title "..." --body "..." [--label "..."] [--milestone "..."]
 ```
 
-Print: issue URL.
+Print issue URL.

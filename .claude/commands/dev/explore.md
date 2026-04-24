@@ -4,31 +4,24 @@ model: haiku
 
 # /explore — Codebase Exploration
 
-Target from $ARGUMENTS (feature, module, file, or question) or ask. Read `CLAUDE.md` and `~/.claude/CLAUDE.md`.
-
-Goal: structured findings summary to inform planning or debugging. Do NOT modify any files.
+Target from $ARGUMENTS or ask. Read `CLAUDE.md`. Do NOT modify files.
 
 ## Area Decomposition
 
-Identify distinct codebase areas the target spans (e.g. auth layer, API handlers, DB models).
+Identify distinct areas (e.g. auth, API, DB). Single area → explore directly.
 
-If single area → explore directly without spawning.
-
-Otherwise, write shared context to `/tmp/claude-ctx-<slug>.md`:
+Otherwise, write to `/tmp/claude-ctx-<slug>.md`:
 ```
 Target: <feature/module/question>
-Stack: <detected stack>
-Standards: <key points from CLAUDE.md>
-Constraints: Read-only — do NOT modify any files. Report findings only.
+Stack: <detected>
+Standards: <from CLAUDE.md>
+Constraints: Read-only. Report findings only.
 ```
 
-Spawn parallel `code-explorer` subagents — one per area. Prompt template:
+Spawn parallel `code-explorer` per area:
 ```
-Read `/tmp/claude-ctx-<slug>.md` first — follow Constraints exactly.
-
-Explore area: <name>.
-Use Grep/Glob to locate entry points, then Read to navigate.
-Report: entry points (file:line), key files, data flow, patterns, gotchas, open questions.
+Read `/tmp/claude-ctx-<slug>.md` first.
+Explore: <area>. Report: entry points, key files, data flow, patterns, gotchas.
 ```
 
 ## Output
@@ -45,14 +38,14 @@ Report: entry points (file:line), key files, data flow, patterns, gotchas, open 
 ### Data Flow
 <input → transform → output>
 
-### Patterns in This Area
-- <pattern>: <where it's used>
+### Patterns
+- <pattern>: <where>
 
 ### Gotchas
-- <non-obvious constraint or known issue>
+- <constraint or issue>
 
 ### Open Questions
-- <anything unclear before planning>
+- <unclear before planning>
 ```
 
 Print: "Exploration complete."

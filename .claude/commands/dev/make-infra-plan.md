@@ -4,107 +4,75 @@ effort: high
 
 # /make-infra-plan — Infrastructure Plan Creation & Approval
 
-Plans directory: `docs/plans/`. Warn and ask if an `approved` or `in-progress` infra plan already exists for the same target.
+Warn if `approved`/`in-progress` infra plan exists.
 
-Filename: `docs/plans/<basename $PWD>_<yyyy-mm-dd>_infra_<slug>.md` — slug from $ARGUMENTS, max 5 words, hyphenated.
+Filename: `docs/plans/<basename>_<date>_infra_<slug>.md`.
 
-Read project `CLAUDE.md` and `~/.claude/CLAUDE.md` before proceeding. Do NOT apply any infrastructure changes.
-
-You may run READ-ONLY commands at any time during planning to inspect current state (e.g. `terraform show`, `kubectl get`, `helm get values <release>`, `gcloud`/`aws` describe commands). If the target infrastructure is unfamiliar, audit existing state before asking clarifying questions.
+Read `CLAUDE.md`. Do NOT apply changes. Read-only commands OK (`terraform show`, `kubectl get`, etc.).
 
 ## Phase 1 — Draft
 
-Ask clarifying questions grouped by concern (scope, environment targets, existing state, dependencies, re-run safety, rollback strategy, downtime tolerance). Up to 3 rounds maximum.
+Clarify: scope, environments, state, dependencies, re-run safety, rollback, downtime. Up to 3 rounds.
 
-**Drift detection**: In `## Pre-flight Checks`, compare live state against configuration files using specific command pairs:
-- Terraform: `terraform show` vs `.tf` files
-- Helm: `helm get values <release>` vs `values.yaml`
-- Kubernetes: `kubectl get <resource> -o yaml` vs manifests
-
-If drift is found, add a sync step as the first Implementation Step to reconcile config files with live state before applying any new changes.
-
-Write the plan in this exact structure:
+**Drift detection**: compare live vs config (terraform show vs .tf, helm get values vs values.yaml). If drift → sync step first.
 
 ```
 # Task: <name>
 Status: planning
 Type: infra
-Environment: <dev | staging | prod | all>
+Environment: <dev|staging|prod|all>
 Issue:
 
 ## Requirement
-<one paragraph — what infrastructure change is being made and why>
+<change and why>
 
 ## Scope
 ### In scope
 ### Out of scope
 
 ## Design Decisions
-| Decision | Options Considered | Chosen | Reason |
+| Decision | Options | Chosen | Reason |
 
 ## Risk Flags
 - [ ] <risk>: <mitigation>
 
 ## Pre-flight Checks
-Read-only commands only — no mutations. Audit live state and detect drift against config files.
-- [ ] Check 1: `<command>` — confirms <current state or no drift>
+- [ ] Check 1: `<cmd>` — confirms <state>
 
 ## Implementation Steps
-Ordered changes to apply. Each step is independently verifiable.
-- [ ] Step 1: <what to apply> — `<command>`
+- [ ] Step 1: <apply> — `<cmd>`
 
 ## Verification Steps
-Post-apply checks to confirm the change succeeded.
-- [ ] Verify 1: `<command>` — expected: <result>
+- [ ] Verify 1: `<cmd>` — expected: <result>
 
 ## Rollback Plan
-- Trigger: <condition that requires rollback>
-- [ ] Step 1: <what to undo> — `<command>`
+- Trigger: <condition>
+- [ ] Step 1: <undo> — `<cmd>`
 
 ## Out of Scope (explicit)
-Items considered during planning but deliberately excluded — future plans must not re-litigate these.
-- <item>: <why excluded>
+- <item>: <why>
 ```
 
-Checklist rules: each step = one verifiable unit of work; dependency-ordered (step N never requires step N+1); target 5–15 total steps across Pre-flight + Implementation + Verification. If steps exceed 15, stop — propose a split before continuing.
+Rules: 5–15 steps, dependency-ordered. >15 → split. Destructive steps: note dry-run inline.
 
-For each destructive Implementation Step, note the dry-run command inline: `<apply command>` *(dry-run: `<dry-run command>`)* — e.g. `terraform apply` *(dry-run: `terraform plan`)*, `helm upgrade` *(dry-run: `--dry-run`)*, `kubectl apply` *(dry-run: `--dry-run=client`)*. Skip for non-destructive steps (config file edits, tagging, labelling).
+**Gate**: Pre-flight non-empty, Verification non-empty, each Impl has Verify, Rollback has step.
 
-**Verification gate**: before saving, validate that `## Pre-flight Checks` is non-empty, `## Verification Steps` is non-empty, every Implementation Step has a corresponding Verification Step, and `## Rollback Plan` has at least one step. If not, add the missing entries and re-confirm before saving.
+Save. Show: name, env, requirement, counts, path.
 
-Save draft to filename. Show a brief:
-- Task name, Environment
-- Requirement: <1-line summary>
-- Pre-flight: N | Implementation: N | Verification: N | Rollback: N
-- Risk Flags: N
-- `<path>`
+Ask: "Changes?" then "Create issue?"
 
-Ask: "Apply these changes?" Apply approved edits in place.
+## Phase 2 — Review
 
-Ask: "Create a GitHub issue for this plan?" If yes:
-```bash
-gh issue create --title "<Task name>" --body "<Requirement paragraph>"
-```
-Update the `Issue:` field in the saved plan with the created issue number.
+- Requirement: clear, measurable
+- Scope: explicit
+- Design: alternatives
+- Risks: actionable; prod → downtime/cost
+- Steps: ordered, verifiable, dry-runs for destructive
 
-## Phase 2 — Review & Approve
+**Gate**: destructive → dry-run, rollback → trigger.
 
-Review the saved plan:
-- **Requirement**: clear problem statement, measurable definition of done
-- **Scope**: in/out explicit, no hidden assumptions
-- **Design decisions**: alternatives considered, reasoning stated
-- **Risks**: each has actionable mitigation; prod-facing risks flag downtime and cost impact
-- **Steps**: dependency-ordered; each independently verifiable; destructive steps have dry-run commands
+Flag: undefined env, failure modes, no rollback path, missing drift sync.
 
-**Verification gate (blocking)**: Phase 1 gates already enforced structural completeness. Additionally verify: every destructive Implementation Step has a dry-run command; `## Rollback Plan` has a trigger condition (not just steps). If not, add the missing entries and re-confirm before approving.
+Show: Verdict, Blocking N, Suggestions N.
 
-Flag: undefined environment targets, unaddressed failure modes, steps with no rollback path, missing state-drift sync step (only if drift was detected in Phase 1).
-
-Show:
-- Verdict: READY | NEEDS CHANGES
-- ❌ Blocking: N (titles only)
-- ⚠️ Suggestions: N (titles only)
-
-Ask: "Apply these changes?" Apply approved fixes. Set `Status: approved`.
-
-Print: "Plan approved at `<path>`."
+Ask: "Apply?" Set `approved`. Print path.
