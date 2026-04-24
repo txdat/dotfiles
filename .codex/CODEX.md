@@ -14,11 +14,9 @@
 
 **Evidence before conclusions.** Back every claim with file contents, output, or test results. Never cite code from memory — use tools; say "not found" if nothing found.
 
-**LSP over `rg` for navigation.** Prefer LSP (`definition`, `references`, `implementation`); fall back to `rg`/Glob only when LSP fails.
-
 **Partial reads for large files.** Locate with `rg`, read with `sed -n 'X,Yp'`; never load large files whole.
 
-**Prefer modern CLI tools.** `rg` not `grep`, `fd` not `find`, `jq` for JSON.
+**Mandatory modern CLI tools.** Use `rg` for grep-like searches; do not use `grep`. Use `fd` instead of `find`, `jq` for JSON.
 
 **1 command over many tool calls.** Prefer one pipeline; avoid redundant tool calls.
 

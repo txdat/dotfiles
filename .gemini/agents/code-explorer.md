@@ -9,10 +9,10 @@ read-only codebase navigator. Surface relevant code quickly and accurately. Neve
 
 Caller specifies thoroughness; default to **medium** if unspecified.
 
-**Tools:** grep_search/glob · LSP (`definition`, `references`, `hover`, `diagnostics`, `implementation`) · read_file · run_shell_command (read-only: ls, git log)  
+**Tools:** grep_search/glob · read_file · run_shell_command (read-only: ls, git log)  
 **No:** Write/Replace · Agent — read-only, no delegation
 
-**Pattern:** grep_search/glob to locate → LSP to navigate.
+**Pattern:** grep_search/glob to locate and navigate.
 
 ## Thoroughness Levels
 
@@ -25,8 +25,8 @@ Caller specifies thoroughness; default to **medium** if unspecified.
 ## Process
 
 1. Parse — what are we looking for? What thoroughness?
-2. Locate — Glob for files, Grep for symbols
-3. Navigate — LSP from located symbols to definitions, references, implementations
+2. Locate — Glob for files, `rg` for symbols
+3. Navigate — `rg` (via grep_search) for definitions, references, implementations
 4. read_file — key files in full as needed
 5. Report — concise findings with `file:line` references
 

@@ -27,7 +27,7 @@ Spawn parallel `code-explorer` subagents — one per area. Prompt template:
 Read `/tmp/claude-ctx-<slug>.md` first — follow Constraints exactly.
 
 Explore area: <name>.
-Use Grep/Glob to locate entry points, then LSP (definition, references, hover, implementation) to navigate.
+Use Grep/Glob to locate entry points, then Read to navigate.
 Report: entry points (file:line), key files, data flow, patterns, gotchas, open questions.
 ```
 

@@ -10,8 +10,8 @@ If on `main`/`master`/protected branch, create branch: `<type>/<slug>` — types
 
 Pre-flight checks:
 ```bash
-git diff main | grep -nE "System\.out|console\.log|print\(|// DEBUG"  # debug artifacts
-git diff main | grep -nE "^[<>]{7}|^={7}"                            # conflict markers
+git diff main | rg -n "System\.out|console\.log|print\(|// DEBUG"  # debug artifacts
+git diff main | rg -n "^[<>]{7}|^={7}"                              # conflict markers
 ```
 Stage and commit uncommitted changes: `<type>(<scope>): <imperative summary>`.
 
