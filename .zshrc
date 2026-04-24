@@ -123,12 +123,7 @@ export CLAUDE_CODE_DISABLE_1M_CONTEXT=1
 export CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export CLAUDE_CODE_ENABLE_TELEMETRY=0
-export CLAUDE_CODE_ENABLE_LSP_TOOL=1
 export CLAUDE_CODE_SUBAGENT_MODEL="sonnet"
-# export CLAUDE_CODE_EFFORT_LEVEL="high"
-export USE_BUILTIN_RIPGREP=0
-export CLAUDE_CODE_SHELL=/bin/zsh
-export CLAUDE_CODE_DISABLE_TERMINAL_TITLE=1
 
 [ -f ~/.env ] && source ~/.env
 
@@ -144,8 +139,6 @@ alias tlmgr="/usr/share/texmf-dist/scripts/texlive/tlmgr.pl --usermode"
 alias npm="TZ=UTC npm"
 alias node="TZ=UTC node"
 alias jest="TZ=UTC NODE_ENV=test ./node_modules/.bin/jest"
-
-alias claude-opus="claude --model=claude-opus-4-5-20251101"
 
 # cat file in range
 _catr () {
