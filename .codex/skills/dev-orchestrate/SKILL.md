@@ -8,30 +8,35 @@ effort: high
 
 Flow: **explore → plan → execute → review → recap → pr**
 
-`$ARGUMENTS`: `<requirement or issue #>` — append `from <step>` to resume.
+`$ARGUMENTS`: `<requirement or issue #>` — append `from <step>` to resume, `skip approval` for unattended run.
 Steps: `explore` · `plan` · `execute` · `review` · `recap` · `pr`
 
 Read `CODEX.md`; if present, also read `~/.codex/CODEX.md`.
 
-## State Detection
+## Entry Point
 
 If `from <step>` not provided, auto-detect resume point from plan status in `docs/plans/`:
 
 | Plan status | Resume from |
 |-------------|-------------|
-| none | `explore` |
+| none / not found | `explore` |
 | `planning` | `plan` |
-| `approved` | `execute` |
-| `in-progress` | `execute` |
+| `approved` / `in-progress` | `execute` |
 | `implemented` | `review` |
 | `reviewed` | `recap` |
-| `pr-created` | warn: cycle already complete — stop unless user specifies a step |
+| `pr-created` | **STOP** — cycle complete unless user specifies a step |
+
+## Flow Control
+
+**Normal mode**: PAUSE after each phase — print summary, ask user to confirm before proceeding. Stop if no.
+
+**`skip approval` mode**: No pauses. Auto-approve internal prompts (issue creation, plan changes, fixes). Proceed to next phase immediately after completion.
 
 ## Phase: explore
 
 Follow `/dev:explore` logic on `<requirement or issue #>`. Output structured findings.
 
-**→ PAUSE** — print findings summary. Ask: "Proceed to planning?" Stop if no.
+**→ PAUSE** — print findings summary. Ask: "Proceed to planning?"
 
 ## Phase: plan
 
@@ -40,28 +45,28 @@ Otherwise → follow `/dev:make-plan` logic to create and approve a new plan.
 
 Outputs plan at `Status: approved`.
 
-**→ PAUSE** — print plan summary. Ask: "Proceed to execution?" Stop if no.
+**→ PAUSE** — print plan summary. Ask: "Proceed to execution?"
 
 ## Phase: execute
 
 Follow `/dev:execute-plan` logic — TDD RED→GREEN→BLUE, all steps `[x]`.
 
-**→ PAUSE** — print completion summary. Ask: "Proceed to code review?" Stop if no.
+**→ PAUSE** — print completion summary. Ask: "Proceed to code review?"
 
 ## Phase: review
 
 Follow `/dev:review-code` logic. If REWORK REQUIRED: fix blocking issues inline, re-review before proceeding.
 
-**→ PAUSE** — print review report. Ask: "Proceed to recap?" Stop if no.
+**→ PAUSE** — print review report. Ask: "Proceed to recap?"
 
 ## Phase: recap
 
 Follow `/dev:recap` logic.
 
-**→ PAUSE** — Ask: "Create PR?" Stop if no.
+**→ PAUSE** — Ask: "Create PR?"
 
 ## Phase: pr
 
 Follow `/dev:create-pr` logic. Default `--draft`; pass `ready` in arguments to open directly.
 
-Print PR URL.
+Print PR URL and finish.

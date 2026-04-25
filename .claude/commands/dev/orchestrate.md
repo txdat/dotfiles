@@ -6,35 +6,34 @@ effort: high
 
 **explore → plan → execute → review → recap → pr**
 
-`$ARGUMENTS`: `<requirement>` — append `from <step>` to resume, `skip approval` to run end-to-end without pauses.
+`$ARGUMENTS`: `<requirement>` — append `from <step>` to resume, `skip approval` for unattended run.
 
-Read `CLAUDE.md`.
+Read `CLAUDE.md` before starting.
 
-## State Detection
+## Entry Point
 
-Auto-detect from plan status if `from` not given:
+Determine starting phase from `from <step>` or auto-detect from existing plan file (`.plan.md`, `PLAN.md`, etc.):
 
-| Status | Resume |
-|--------|--------|
-| none | explore |
+| Plan status | Start from |
+|-------------|------------|
+| none / not found | explore |
 | planning | plan |
-| approved/in-progress | execute |
+| approved / in-progress | execute |
 | implemented | review |
 | reviewed | recap |
-| pr-created | warn — stop |
+| pr-created | **STOP** — PR already exists |
 
-If `skip approval` in $ARGUMENTS — skip all PAUSEs, auto-approve all internal prompts in each phase (issue creation, plan changes, fixes, etc.).
+## Flow Control
+
+**Normal mode**: PAUSE after each phase — ask user to confirm before proceeding.
+
+**`skip approval` mode**: No pauses. Auto-approve internal prompts (issue creation, plan changes, fixes). Proceed to next phase immediately.
 
 ## Phases
 
-**explore** → `/dev:explore`. **PAUSE** — "Proceed to planning?"
-
-**plan** → existing `planning`? `/dev:review-plan` : `/dev:make-plan`. **PAUSE** — "Proceed to execution?"
-
-**execute** → `/dev:execute-plan` (RED→GREEN→BLUE). **PAUSE** — "Proceed to review?"
-
-**review** → `/dev:review-code`. REWORK? Fix inline, re-review. **PAUSE** — "Proceed to recap?"
-
-**recap** → `/dev:recap`. **PAUSE** — "Create PR?"
-
-**pr** → `/dev:create-pr`. Print PR URL.
+1. **explore** → `/dev:explore`
+2. **plan** → existing plan? `/dev:review-plan` : `/dev:make-plan`
+3. **execute** → `/dev:execute-plan` (RED→GREEN→BLUE)
+4. **review** → `/dev:review-code` — if rework needed, fix inline and re-review
+5. **recap** → `/dev:recap`
+6. **pr** → `/dev:create-pr` — print PR URL and finish
