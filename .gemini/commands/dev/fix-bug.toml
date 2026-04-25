@@ -1,55 +1,51 @@
 prompt = """
 # /fix-bug — Structured Bug Fix
 
-Modes: `/dev:fix-bug <symptom>` — full fix; `/dev:fix-bug diagnose <symptom>` — diagnosis only, stops before touching code.
+Modes: `<symptom>` full fix; `diagnose <symptom>` stops before code.
 
-Collect from {{args}} or ask: symptom, expected behavior, reproduction steps, context (when did it start, after which change). Read any available stack trace or test output.
-
-Run `git log --oneline -20` and `git diff main --stat` to identify regressions vs never-worked bugs.
+Collect: symptom, expected, repro steps, context. Run `git log --oneline -20` and `git diff main --stat`.
 
 ## Hypothesis Investigation
 
-Generate 3–5 hypotheses ranked by probability.
+Generate 3–5 ranked hypotheses. ≤2 → investigate sequentially.
 
-If ≤2 hypotheses → investigate sequentially on main agent, skip spawning.
-
-Otherwise, write shared context to `/tmp/gemini-ctx-<slug>.md`:
+Otherwise, write to `/tmp/gemini-ctx-<slug>.md`:
 ```
 Symptom: <description>
 Expected: <behavior>
-Stack trace: <if available>
-Git context: <log + diff stat>
-Hypotheses: <ranked list>
+Stack trace: <if any>
+Git context: <log + diff>
+Hypotheses: <ranked>
 ```
 
-Spawn parallel `code-explorer` subagents. Each prompt: "Read /tmp/gemini-ctx-<slug>.md first. Investigate hypothesis: <N — description>. Find supporting or contradicting evidence. Verdict: CONFIRMED / ELIMINATED / INCONCLUSIVE. If CONFIRMED: exact file:line, why it causes the symptom."
+Spawn `code-explorer` per hypothesis: "Read /tmp/gemini-ctx-<slug>.md. Investigate: <N — description>. Verdict: CONFIRMED / ELIMINATED / INCONCLUSIVE. If CONFIRMED: file:line, why."
 
-Main agent selects the first CONFIRMED hypothesis. If none confirmed, retry INCONCLUSIVE hypotheses sequentially.
+Select first CONFIRMED. If none, retry INCONCLUSIVE sequentially.
 
 ## Root Cause
 
-State before touching code:
+Before code:
 ```
-Root Cause: <specific line/condition/assumption>
-Why it manifests as: <link to symptom>
-Why it was missed: <test gap or wrong assumption>
+Root Cause: <line/condition>
+Manifests as: <symptom>
+Missed because: <gap>
 ```
 
-If `diagnose` in {{args}}: stop here. Ask: "Proceed with fix?" Do NOT touch code.
+If `diagnose`: stop. Ask: "Proceed?"
 
 ## Fix
 
-Apply minimal fix — root cause only, no refactoring, no new behavior. Mark any debug logging `// DEBUG`. Run reproduction case + affected module tests. Remove all `// DEBUG`.
+Minimal fix — root cause only. Mark debug as `// DEBUG`. Run repro + module tests. Remove DEBUG.
 
-Write regression test: `should_not_<bad behavior>_when_<condition>`. Verify fails on unfixed code, passes after fix. Update any existing tests broken by the change.
+Regression test: `should_not_<bad>_when_<condition>`. Verify fails unfixed, passes fixed.
 
-Plans directory: `docs/plans/`. Find active plan (status `in-progress`/`implemented`). If found, append under `## Bug Fixes`:
+If active plan in `docs/plans/`, append under `## Bug Fixes`:
 ```
 ### Fix: <date> — <symptom>
-Root cause: <one line>
-Fix: <file:line — what changed>
-Regression test: <name>
+Root cause: <line>
+Fix: <file:line — change>
+Test: <name>
 ```
 
-Print: "Bug fix complete. Run /dev:review-code before /dev:create-pr."
+Print: "Bug fix complete. Run /dev:review-code."
 """

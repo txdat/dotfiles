@@ -1,115 +1,34 @@
 prompt = """
 # Gemini Code Commands
 
-Two ways to work: **orchestrated** (one command, full cycle) or **step-by-step** (manual control).
+**Orchestrated**: `/dev:orchestrate <requirement>` — explore → plan → execute → review → recap → pr (pauses each phase)
 
----
+Resume: `/dev:orchestrate add-jwt from execute`
 
-## Orchestrated — full cycle
-
-```
-/dev:orchestrate Add JWT authentication to the login endpoint
-```
-
-Runs: **explore → plan → execute → review → recap → pr**
-
-Pauses at each phase for confirmation. Resume from any step:
-
-```
-/dev:orchestrate add-jwt from execute
-```
+No confirmations: `/dev:orchestrate add-jwt skip approval`
 
 ---
 
 ## Step-by-step
 
-**Scenario**: Adding JWT authentication to `auth-service`
-
-### 0. Standalone issue (optional)
-
-```
-/dev:create-issue Add JWT authentication to the login endpoint
-```
-
-For issues not tied to a plan. Plan-linked issues are created inside `/dev:make-plan`.
-
-### 1. Explore
-
-```
-/dev:explore auth-service login flow
-```
-
-Maps entry points, data flow, patterns, and gotchas before planning.
-
-### 2. Plan + approve
-
-```
-/dev:make-plan add JWT authentication to the login endpoint
-```
-
-Drafts the plan, validates TDD structure, reviews for gaps, and outputs `Status: approved` in one pass.
-
-Saves to `docs/plans/auth-service_2026-04-17_feature_add-jwt-authentication.md`
-
-### 3. Execute
-
-```
-/dev:execute-plan
-```
-
-Auto-discovers the approved plan and runs all steps (TDD RED→GREEN→BLUE).
-
-Resume from a specific step:
-
-```
-/dev:execute-plan add-jwt from 3
-```
-
-### 4. Fix a bug mid-execution (optional)
-
-```
-/dev:fix-bug JWT token validation returns 401 on valid tokens
-```
-
-Diagnoses root cause, applies minimal fix, adds regression test.
-
-### 5. Review code
-
-```
-/dev:review-code
-```
-
-Reviews branch changes against the plan and coding standards.
-
-### 6. Recap
-
-```
-/dev:recap
-```
-
-Extracts insights, writes patterns/anti-patterns to `GEMINI.md`, saves recap file.
-
-### 7. Create PR
-
-```
-/dev:create-pr
-```
-
-Stages, commits, and opens a draft PR with generated summary.
-
-To open directly (not draft):
-
-```
-/dev:create-pr ready
-```
+| Step | Command | Purpose |
+|------|---------|---------|
+| 0 | `/dev:create-issue <title>` | Standalone issue (not plan-linked) |
+| 1 | `/dev:explore <target>` | Map entry points, flow, patterns |
+| 2 | `/dev:make-plan <requirement>` | Draft + approve plan |
+| 3 | `/dev:execute-plan [from N]` | TDD RED→GREEN→BLUE |
+| 4 | `/dev:fix-bug <symptom>` | Diagnose + minimal fix (optional) |
+| 5 | `/dev:review-code` | Review against plan |
+| 6 | `/dev:recap` | Extract patterns → GEMINI.md |
+| 7 | `/dev:create-pr [ready]` | Draft PR (or ready) |
 
 ---
 
-## Review existing plan
+## Other
 
-For hand-written or interrupted plans not yet approved:
-
-```
-/dev:review-plan
-```
+| Command | Purpose |
+|---------|---------|
+| `/dev:review-plan` | Review existing/interrupted plan |
+| `/dev:simplify-code <target>` | Simplify without behavior change |
+| `/dev:make-infra-plan` | Infrastructure plan + approval |
 """
