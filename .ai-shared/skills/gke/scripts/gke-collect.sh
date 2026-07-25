@@ -98,17 +98,45 @@ if [ -n "${T_USER:-}" ]; then
 else
   T_UTC=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 fi
-T_START=$(date -u -d "$T_UTC - 30 minutes" +%Y-%m-%dT%H:%M:%SZ)
+# The skill documents the duration grammar \d+(s|m|h|d) — but `date -d` does not understand a bare
+# "20m"/"2h", it needs "20 minutes"/"2 hours". Left untranslated, `date` returns empty, T_END goes
+# blank, and every windowed query dies with INVALID_ARGUMENT while the report still prints section
+# headers as if it had run. Translate the documented grammar; pass anything else through unchanged
+# so "90 minutes" and other date-native phrasings keep working.
+norm_duration() {
+  case "$1" in
+    *[0-9]s) printf '%s seconds' "${1%s}" ;;
+    *[0-9]m) printf '%s minutes' "${1%m}" ;;
+    *[0-9]h) printf '%s hours'   "${1%h}" ;;
+    *[0-9]d) printf '%s days'    "${1%d}" ;;
+    *)       printf '%s' "$1" ;;
+  esac
+}
+
+T_SYMPTOM_LOOKBACK="$(norm_duration "${T_SYMPTOM_LOOKBACK:-30m}")"
+T_CHANGE_LOOKBACK="$(norm_duration "${T_CHANGE_LOOKBACK:-2h}")"
+T_CRITICAL_LOOKBACK="$(norm_duration "${T_CRITICAL_LOOKBACK:-6h}")"
+
+T_START=$(date -u -d "$T_UTC - $T_SYMPTOM_LOOKBACK" +%Y-%m-%dT%H:%M:%SZ)
 
 if [ -z "$T_DURATION" ] || [ "$T_DURATION" = "now" ]; then
   T_END=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 else
-  T_END=$(date -u -d "$T_UTC + $T_DURATION + 10 minutes" +%Y-%m-%dT%H:%M:%SZ)
+  T_END=$(date -u -d "$T_UTC + $(norm_duration "$T_DURATION") + 10 minutes" +%Y-%m-%dT%H:%M:%SZ)
 fi
 
-T_START_MINUS_2H=$(date -u -d "$T_UTC - 2 hours" +%Y-%m-%dT%H:%M:%SZ)
-T_CRITICAL_LOOKBACK="${T_CRITICAL_LOOKBACK:-6 hours}"
+T_START_MINUS_2H=$(date -u -d "$T_UTC - $T_CHANGE_LOOKBACK" +%Y-%m-%dT%H:%M:%SZ)
 T_START_CRITICAL=$(date -u -d "$T_UTC - $T_CRITICAL_LOOKBACK" +%Y-%m-%dT%H:%M:%SZ)
+
+# A blank timestamp poisons every query downstream but leaves the report looking populated —
+# fail loudly here instead.
+for tv in T_START T_END T_START_MINUS_2H T_START_CRITICAL; do
+  if [ -z "${!tv:-}" ]; then
+    echo "Aborting: $tv is empty — a duration input could not be parsed by 'date'." >&2
+    echo "  T_USER='${T_USER:-<now>}' T_DURATION='${T_DURATION:-now}' T_SYMPTOM_LOOKBACK='$T_SYMPTOM_LOOKBACK' T_CHANGE_LOOKBACK='$T_CHANGE_LOOKBACK' T_CRITICAL_LOOKBACK='$T_CRITICAL_LOOKBACK'" >&2
+    exit 1
+  fi
+done
 NODE_DELETE_BURST="${NODE_DELETE_BURST:-3}"
 NOTREADY_MAX="${NOTREADY_MAX:-2}"
 AGE_RESET_FRAC="${AGE_RESET_FRAC:-0.5}"
@@ -123,6 +151,19 @@ echo "gke-collect: writing report to $REPORT" >&3
 exec >"$REPORT" 2>&1      # stdout+stderr of the sweep now land in the report file
 
 section "Pre-Flight — Resolved Inputs"
+# $REGION is used as the --region/--location for every cluster-scoped gcloud call. If the caller
+# passes a zone for a regional cluster (or vice-versa) those calls 404 one by one and their
+# detectors silently look "empty" rather than UNKNOWN. Ask GKE where the cluster actually lives
+# and correct the value once, here, instead of losing 1f.7/1g.4/1g.5/H13 to a typo.
+REGION_INPUT="$REGION"
+CLUSTER_LOCATION=$(gcloud container clusters list --project="$PROJECT" \
+  --filter="name=$CLUSTER" --format="value(location)" 2>/dev/null | head -1)
+if [ -n "$CLUSTER_LOCATION" ] && [ "$CLUSTER_LOCATION" != "$REGION" ]; then
+  REGION="$CLUSTER_LOCATION"
+  echo "[WARNING] REGION corrected: input '$REGION_INPUT' is not where '$CLUSTER' lives — GKE reports location '$CLUSTER_LOCATION'. Using the reported location for all cluster-scoped calls. Fix \$GKE_REGION to '$CLUSTER_LOCATION' to silence this."
+elif [ -z "$CLUSTER_LOCATION" ]; then
+  echo "[WARNING] Could not resolve '$CLUSTER' location via 'gcloud container clusters list' (permission or wrong name?) — proceeding with the supplied REGION='$REGION' unverified. Cluster-scoped sections that come back empty may be 404s, not clean results."
+fi
 echo "PROJECT=$PROJECT CLUSTER=$CLUSTER REGION=$REGION NAMESPACE=$NAMESPACE"
 echo "Services=$SERVICES  SVC_RE=$SVC_RE  primary=$SERVICE  deployment=$DEPLOYMENT"
 echo "T_START=$T_START  T_END=$T_END"
@@ -206,16 +247,40 @@ echo "NODE_NAME=${NODE_NAME:-<none>}  NODE_ZONE=${NODE_ZONE:-<none>}  NODE_INSTA
 
 LB_NAME="${LB_NAME:-}"
 LB_BACKEND_NAME="${LB_BACKEND_NAME:-}"
-INGRESS_IP=$(kubectl get ingress -n "$NAMESPACE" -o jsonpath='{range .items[*]}{.status.loadBalancer.ingress[*].ip}{"\n"}{end}' 2>/dev/null | head -1)
-if [ -z "$LB_NAME" ] && [ -n "$INGRESS_IP" ]; then
-  LB_NAME=$(gcloud compute forwarding-rules list --project="$PROJECT" --filter="IPAddress=$INGRESS_IP" --format="value(name)" 2>/dev/null | head -1)
+# The fronting LB may be an Ingress OR a Gateway (GKE Gateway API creates forwarding rules with no
+# Ingress object at all). Try both before giving up, else 1d.2-1d.5 — the whole 5xx-ratio signal —
+# are skipped on every Gateway-fronted cluster.
+LB_VIP=$(kubectl get ingress -n "$NAMESPACE" -o jsonpath='{range .items[*]}{.status.loadBalancer.ingress[*].ip}{"\n"}{end}' 2>/dev/null | head -1)
+LB_SOURCE="ingress"
+if [ -z "$LB_VIP" ]; then
+  LB_VIP=$(kubectl get gateway -n "$NAMESPACE" -o jsonpath='{range .items[*]}{.status.addresses[*].value}{"\n"}{end}' 2>/dev/null | head -1)
+  [ -n "$LB_VIP" ] && LB_SOURCE="gateway"
 fi
-if [ -n "$LB_NAME" ] && [ -z "$LB_BACKEND_NAME" ]; then
-  LB_TARGET=$(gcloud compute forwarding-rules describe "$LB_NAME" --project="$PROJECT" --global --format="value(target)" 2>/dev/null || \
-              gcloud compute forwarding-rules describe "$LB_NAME" --project="$PROJECT" --region="$REGION" --format="value(target)" 2>/dev/null)
-  LB_BACKEND_NAME=$(gcloud compute backend-services list --project="$PROJECT" --format="value(name)" 2>/dev/null | head -1)
+if [ -z "$LB_NAME" ] && [ -n "$LB_VIP" ]; then
+  LB_NAME=$(gcloud compute forwarding-rules list --project="$PROJECT" --filter="IPAddress=$LB_VIP" --format="value(name)" 2>/dev/null | head -1)
 fi
+# Backend services owned by THIS namespace's services. Both Ingress (k8s-be/k8s2-be) and Gateway
+# (gkegw1-<hash>-<ns>-<svc>-<port>) name their backends after the NEG, and the NEG name always
+# carries namespace + service — so match on that, per service. The previous `backend-services
+# list | head -1` grabbed whichever backend sorted first in the whole project, which on a shared
+# project is another tenant's service entirely.
+LB_BACKEND_RE=""
+if [ -z "$LB_BACKEND_NAME" ]; then
+  NS_SHORT=$(printf '%s' "$NAMESPACE" | cut -c1-12)   # GKE truncates ns/svc inside generated names
+  LB_BACKENDS=$(gcloud compute backend-services list --project="$PROJECT" \
+      --format="value(name,backends[].group)" 2>/dev/null | \
+    awk -v ns="$NS_SHORT" -v svcre="$SVC_RE" '
+      $0 ~ ns {
+        n=split(svcre, pats, "|")
+        for (i=1; i<=n; i++) { p=pats[i]; sub(/^\^/, "", p); if (index($0, p)) { print $1; break } }
+      }' | sort -u)
+  LB_BACKEND_NAME=$(printf '%s\n' "$LB_BACKENDS" | head -1)
+  LB_BACKEND_RE=$(printf '%s\n' "$LB_BACKENDS" | paste -sd'|' -)
+fi
+[ -z "$LB_BACKEND_RE" ] && [ -n "$LB_BACKEND_NAME" ] && LB_BACKEND_RE="$LB_BACKEND_NAME"
+echo "LB_VIP=${LB_VIP:-<none>} (source: $LB_SOURCE)"
 echo "LB_NAME=${LB_NAME:-<not discovered — see 1d step 1 output below>}  LB_BACKEND_NAME=${LB_BACKEND_NAME:-<not discovered>}"
+echo "LB_BACKEND_RE=${LB_BACKEND_RE:-<no backend service matched this namespace + services>}"
 
 # ============================================================================
 # Phase 1 — Broad Sweep
@@ -278,18 +343,76 @@ gcloud compute network-endpoint-groups list --project=$PROJECT --format="table(n
 
 LB_LOGGING_ENABLED="false"
 if [ -n "$LB_BACKEND_NAME" ]; then
-  LB_LOGGING_ENABLED=$(gcloud compute backend-services describe "$LB_BACKEND_NAME" --global --project=$PROJECT --format="value(logConfig.enable)" 2>/dev/null || echo false)
+  LB_LOGGING_ENABLED=$(gcloud compute backend-services describe "$LB_BACKEND_NAME" --global --project=$PROJECT --format="value(logConfig.enable)" 2>/dev/null || \
+                       gcloud compute backend-services describe "$LB_BACKEND_NAME" --region=$REGION --project=$PROJECT --format="value(logConfig.enable)" 2>/dev/null || echo false)
 fi
+# gcloud prints the boolean as 'True'/'False' (Python repr), so a `= "true"` test never matched and
+# 1d.2-1d.5 were skipped even on a correctly-logging LB. Normalise before comparing.
+LB_LOGGING_ENABLED=$(printf '%s' "$LB_LOGGING_ENABLED" | tr '[:upper:]' '[:lower:]')
 echo "LB_BACKEND_NAME=$LB_BACKEND_NAME  logConfig.enable=$LB_LOGGING_ENABLED"
 
-if [ -n "$LB_NAME" ] && [ "$LB_LOGGING_ENABLED" = "true" ]; then
-  # One read, three aggregations: per minute, per backend service, and a truncation guard.
-  # Per-backend matters because the ratio's denominator is the whole forwarding rule — one dead
-  # service behind a shared LB is diluted by its healthy siblings.
-  section "1d.2 — LB Request Rate & 5xx Ratio (per minute, per backend)"
+# Scope the LB log reads by forwarding rule when we know it, else by the backend services owned by
+# this namespace. The backend-scoped filter is in fact the *better* denominator on a shared LB: it
+# excludes sibling tenants' traffic that would otherwise dilute the 5xx ratio.
+LB_FILTER=""
+LB_SCOPE=""
+if [ -n "$LB_BACKEND_RE" ]; then
+  # Prefer the backend-scoped filter: one forwarding rule commonly fronts every namespace in the
+  # project (a shared Gateway), so scoping by rule puts other tenants' traffic in the denominator
+  # and a service that is 100% down reads as a couple of percent.
+  LB_FILTER='resource.labels.backend_service_name=~"'$LB_BACKEND_RE'"'
+  LB_SCOPE="backend_service_name (this namespace's services only)"
+elif [ -n "$LB_NAME" ]; then
+  LB_FILTER='resource.labels.forwarding_rule_name="'$LB_NAME'"'
+  LB_SCOPE="forwarding_rule_name=$LB_NAME (WHOLE rule — may include other namespaces/tenants; read the per-backend block, not the window ratio)"
+fi
+[ -n "$LB_FILTER" ] && echo "LB log scope: $LB_SCOPE"
+
+if [ -n "$LB_FILTER" ] && [ "$LB_LOGGING_ENABLED" = "true" ]; then
+  # Two reads, because one cannot answer both halves of the ratio on a busy LB.
+  #
+  # Read A (5xx only) is COMPLETE across the window: errors are rare, so they fit under the limit,
+  # and this is what identifies the onset minute and the worst backend. Read B (all requests) is a
+  # capped SAMPLE that only supplies a denominator — at a few thousand req/min, $LB_LOG_LIMIT
+  # entries can cover well under a minute of a 30-minute window, so a single combined read would
+  # report "0 5xx" for an incident that produced hundreds of them minutes later. That is exactly
+  # how a real burst gets missed, so the counts and the ratio are reported separately and labelled.
+  section "1d.2a — LB 5xx Counts, COMPLETE across window (per minute, per backend)"
   gcloud logging read \
     'resource.type="http_load_balancer"
-     resource.labels.forwarding_rule_name="'$LB_NAME'"
+     '"$LB_FILTER"'
+     httpRequest.status>=500
+     timestamp>="'$T_START'"
+     timestamp<="'$T_END'"' \
+    --project=$PROJECT --order=asc \
+    --format="value(timestamp,httpRequest.status,resource.labels.backend_service_name)" \
+    --limit=${LB_5XX_LIMIT:-5000} | \
+    awk -F'\t' -v lim="${LB_5XX_LIMIT:-5000}" '
+      {
+        m=substr($1,1,16); b=($3==""?"(no-backend-matched)":$3)
+        emin[m]++; eb[b]++; ecode[$2+0]++; E++
+        if (first=="") first=$1
+      }
+      END {
+        if (E==0) {print "(no 5xx in window — G1 signal CLEAR for this scope)"; exit}
+        print "-- 5xx per minute (complete) --  onset = first minute that steps up"; fflush()
+        for (m in emin) printf "%s  5xx=%d\n", m, emin[m] | "sort"
+        close("sort")
+        print ""
+        print "-- 5xx per backend service (complete) --"; fflush()
+        for (b in eb) printf "%-62s 5xx=%d\n", b, eb[b] | "sort -k2 -t= -rn"
+        close("sort -k2 -t= -rn")
+        print ""
+        printf "-- status codes --  "
+        for (c in ecode) printf "%d:%d  ", c, ecode[c]
+        printf "\nWINDOW_5XX_TOTAL=%d  first_5xx=%s\n", E, first
+        if (E>=lim) printf "[NOTE] 5xx read hit --limit=%d — even the error stream is truncated; raise $LB_5XX_LIMIT.\n", lim
+      }'
+
+  section "1d.2b — LB Traffic Volume (SAMPLE — denominator for the ratio)"
+  gcloud logging read \
+    'resource.type="http_load_balancer"
+     '"$LB_FILTER"'
      timestamp>="'$T_START'"
      timestamp<="'$T_END'"' \
     --project=$PROJECT --order=asc \
@@ -299,6 +422,8 @@ if [ -n "$LB_NAME" ] && [ "$LB_LOGGING_ENABLED" = "true" ]; then
       {
         m=substr($1,1,16); b=($3==""?"(no-backend-matched)":$3); is5=($2+0>=500)
         tot[m]++; btot[b]++; T++
+        if (first=="") first=$1
+        last=$1
         if (is5) {err[m]++; berr[b]++; E++}
       }
       END {
@@ -313,18 +438,20 @@ if [ -n "$LB_NAME" ] && [ "$LB_LOGGING_ENABLED" = "true" ]; then
         print ""
         print "-- per backend service (denominator check: is one service dead, or all of them?) --"
         fflush()
-        for (b in btot) printf "%-45s total=%-6d 5xx=%-6d 5xx_ratio=%.1f%%\n", \
+        for (b in btot) printf "%-62s total=%-6d 5xx=%-6d 5xx_ratio=%.1f%%\n", \
           b, btot[b], berr[b]+0, 100*(berr[b]+0)/btot[b] | "sort"
         close("sort")
-        printf "\nWINDOW_TOTAL  total=%d 5xx=%d 5xx_ratio=%.1f%%\n", T, E+0, 100*(E+0)/T
-        if (T>=lim)
-          printf "[NOTE] Read hit --limit=%d and is ordered ASC: these numbers cover only the EARLIEST %d requests of the window, not all of it. Ratios are biased toward incident onset. Narrow T_START/T_END or raise $LB_LOG_LIMIT before trusting the window ratio.\n", lim, lim
+        printf "\nSAMPLE_TOTAL  total=%d 5xx=%d 5xx_ratio=%.1f%%\n", T, E+0, 100*(E+0)/T
+        printf "SAMPLE_SPAN   %s → %s\n", first, last
+        if (T>=lim) {
+          printf "[NOTE] Read hit --limit=%d (ASC): this sample covers ONLY %s → %s, not the whole window. Its 0%%/low ratio says nothing about the rest of the window — take the error counts from 1d.2a, which are complete, and use this block only as a req/min rate. Raise $LB_LOG_LIMIT or narrow the window to widen the sample.\n", lim, first, last
+        }
       }'
 
   section "1d.3 — LB 5xx Breakdown"
   gcloud logging read \
     'resource.type="http_load_balancer"
-     resource.labels.forwarding_rule_name="'$LB_NAME'"
+     '"$LB_FILTER"'
      httpRequest.status>=500
      timestamp>="'$T_START'"
      timestamp<="'$T_END'"' \
@@ -335,7 +462,7 @@ if [ -n "$LB_NAME" ] && [ "$LB_LOGGING_ENABLED" = "true" ]; then
   section "1d.4 — LB Latency Distribution"
   gcloud logging read \
     'resource.type="http_load_balancer"
-     resource.labels.forwarding_rule_name="'$LB_NAME'"
+     '"$LB_FILTER"'
      timestamp>="'$T_START'"
      timestamp<="'$T_END'"' \
     --project=$PROJECT --format="value(httpRequest.latency)" --limit=5000 | \
@@ -351,14 +478,14 @@ if [ -n "$LB_NAME" ] && [ "$LB_LOGGING_ENABLED" = "true" ]; then
   section "1d.5 — LB statusDetails"
   gcloud logging read \
     'resource.type="http_load_balancer"
-     resource.labels.forwarding_rule_name="'$LB_NAME'"
+     '"$LB_FILTER"'
      httpRequest.status>=500
      timestamp>="'$T_START'"
      timestamp<="'$T_END'"' \
     --project=$PROJECT --format="value(jsonPayload.statusDetails)" --limit=1000 | sort | uniq -c | sort -rn
 
 else
-  note "1d steps 2-5 skipped: LB_NAME not discovered or logConfig.enable=false. Set \$LB_NAME/\$LB_BACKEND_NAME and re-run, or run the LB queries manually (see skill 1d)."
+  note "1d steps 2-5 skipped: no LB scope (neither Ingress nor Gateway VIP resolved to a forwarding rule, and no backend service matched this namespace) or logConfig.enable=false. Set \$LB_NAME or \$LB_BACKEND_NAME and re-run, or run the LB queries manually (see skill 1d). This is UNKNOWN for the G1 5xx signal, not CLEAR."
 fi
 
 section "1e — Deploy Gate (H7)"
