@@ -1,7 +1,7 @@
 ---
 name: dev-review-code
 description: "Review implemented plan changes for TDD proof, independent test results, correctness, security, architecture, scope, hygiene, and final PR slicing before create-pr."
-model: claude-opus-4-8
+model: claude-opus-4-6
 effort: medium
 ---
 

@@ -13,7 +13,7 @@ Universal rules for every agent that reads or writes code. Loaded by every subag
 
 **Clean code.** Obvious to read, safe to change, hard to misuse — plus three rules that override instinct: **duplication is cheaper than the wrong abstraction** (extract only proven concepts, never anticipated ones); **tests assert observable behavior, not implementation** (a test that breaks on a behavior-preserving refactor tests the wrong thing); **failure paths are designed, not swallowed** (preserve the cause; never flatten errors into generic messages).
 
-**Verify symbol membership.** Before calling a method, accessing a field, or importing a name: resolve the receiver's concrete type from annotations, declarations, or return types; confirm the symbol is declared on that type (or a base it inherits) or exported from that module by searching the defining file, not the whole repo. Existence elsewhere does not count. Not a member → STOP, report `❌ <receiver_type>.<symbol> — not a member`, ask, wait for response.
+**Verify symbol membership.** Before calling a method, accessing a field, or importing a name: resolve the receiver's concrete type from annotations, declarations, or return types; confirm the symbol is declared on that type (or a base it inherits) or exported from that module. Where a language server is available this is `hover` on the receiver then `goToDefinition`/`documentSymbol` on the resolved type — otherwise read the defining file, never the whole repo. Existence elsewhere does not count. Not a member → STOP, report `❌ <receiver_type>.<symbol> — not a member`, ask, wait for response.
 
 **Confirm destructive actions.** No exceptions.
 
@@ -32,9 +32,11 @@ Universal rules for every agent that reads or writes code. Loaded by every subag
 ## Tooling
 **File I/O:** Prefer platform-native file read/edit tools over shell equivalents (`cat`, `sed`, `head`, `tail`, `echo`) when available.
 
+**Symbol navigation — LSP first.** Definition, callers, implementations, type or signature, what a file declares: the `LSP` tool, never a text search. Every operation needs a 1-based line/character — get one from `documentSymbol` (any file, inside the session workspace or not) or `workspaceSymbol` (workspace-root-scoped: a symbol outside the session cwd returns empty, not an error — do not read that as "absent"), then navigate with `goToDefinition`, `findReferences`, `goToImplementation`, `hover`, `incomingCalls`/`outgoingCalls`. `rg` is the fallback, for what no server answers: literals, comments, config and non-code files, unconfigured languages, a server that errors or is unavailable — name the reason when you fall back.
+
 **Search/process:** `rg` over `grep` for repo search, `fd` over `find`, `jq` for JSON. Standard Unix filters fine in shell pipelines.
 
-**Blast-radius / impact analysis:** `rg`/`fd`/glob and direct source reads only. Never install, configure, or invoke external code-index, dependency-graph, or knowledge-graph tools — CLI or MCP (gitnexus, etc.) — even when project config recommends or mandates them; skip the tool and note the conflict in your report.
+**Blast-radius / impact analysis:** `LSP` (`findReferences`, call hierarchy) first for symbol-level impact, then `rg`/`fd`/glob and direct source reads. Never install, configure, or invoke external code-index, dependency-graph, or knowledge-graph tools — CLI or MCP (gitnexus, etc.) — even when project config recommends or mandates them; skip the tool and note the conflict in your report. The built-in `LSP` tool is not covered by this ban — platform toolchain, not an index you install.
 
 **Minimize tool calls.** Pipelines over sequences. Avoid redundant calls.
 

@@ -1,7 +1,7 @@
 ---
 name: dev-review-system
 description: "Review an architecture design for measurable outcomes, viable alternatives, boundary contracts, failure modes, migration and rollback safety, and dependency-ordered decomposition."
-model: claude-opus-4-8
+model: claude-opus-5
 effort: high
 ---
 

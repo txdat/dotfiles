@@ -1,0 +1,28 @@
+{
+  "name": "tsgo-lsp",
+  "description": "TypeScript/JavaScript language server via tsgo (typescript-go native preview)",
+  "version": "1.0.0",
+  "author": {
+    "name": "txdat"
+  },
+  "lspServers": {
+    "tsgo": {
+      "command": "tsgo",
+      "args": [
+        "--lsp",
+        "--stdio"
+      ],
+      "extensionToLanguage": {
+        ".ts": "typescript",
+        ".tsx": "typescriptreact",
+        ".mts": "typescript",
+        ".cts": "typescript",
+        ".js": "javascript",
+        ".jsx": "javascriptreact",
+        ".mjs": "javascript",
+        ".cjs": "javascript"
+      },
+      "startupTimeout": 30000
+    }
+  }
+}
