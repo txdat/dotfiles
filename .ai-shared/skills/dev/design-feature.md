@@ -10,7 +10,7 @@ Clarify scope, constraints, edge cases, and done in up to three rounds. Keep the
 
 ```text
 # Task: <name>
-Status: planning | Type: feature|fix|refactor | Issue: | Worktree:
+Status: planning | Type: feature|fix|refactor | Issue: | Review: | Worktree:
 ## Goal                        # preserve the user's requested outcome; do not replace it with TCs
 ## Requirement                 # problem, why, measurable done
 ## Context                     # current behavior; dependencies and ordering
@@ -60,7 +60,8 @@ Design-feature proposes behavior; it never approves it. `approval.md` (single so
 
 ## Planning Rules
 
-- **A plan carries design, not implementation — everything in it is language-neutral design notation.** Contract *declarations* — a signature, an endpoint shape, a schema change, an event payload — are design: state them exactly, but as notation (`apply(tx) → receipt | reject(reason)`), never in target-language syntax. Implementation *bodies* never appear: no function bodies, no procedural code, nothing the executor would paste instead of write. Pseudo-code is allowed only when the structure is itself the decision (an algorithm, a state machine, a protocol). Quoting existing source as evidence is citation, not implementation. Target-language text in a plan anchors the executor and hides behavior gaps behind premature detail.
+- **Design altitude:** follow `altitude.md` (single source). The plan is language-neutral design notation throughout.
+- Leave `Review:` empty — review-feature owns it. Never write `Status: approved` or `Review: READY` here.
 - Open Questions must be empty before handoff; move settled answers into assumptions or their owning section.
 - Use dependency-ordered steps, as few as the change needs; >10 → split. Verify symbols named by steps against their target type/module.
 - Goal → AC ↔ TC ↔ Step traceability is complete: every AC has ≥1 TC, every TC names exactly one AC and appears by ID in ≥1 step, and every step names ≥1 TC. Enumerate IDs; never write ranges such as `TC-1 through TC-4`.
@@ -79,12 +80,12 @@ Show name, type, requirement, AC/TC/step counts, and path. Ask for design change
 
 ## Self-Check (BLOCKING)
 
-- [ ] **Schema and questions:** every section that applies is filled; Open Questions empty; `Status: planning`.
+- [ ] **Schema and questions:** every section that applies is filled; Open Questions empty; `Status: planning`; `Review:` empty.
 - [ ] **Goal and ACs:** Goal is preserved; each AC is atomic, observable, sourced, pass/fail decidable, and implementation-independent; counterexample attempt found no known way to pass while violating the Goal.
 - [ ] **Approach/impact:** requirement and scope are measurable; components/contracts/data/non-functional effects and decisions are concrete; every affected component, dependency, and contract has its failure behavior answered.
 - [ ] **BDD/TDD:** every TC has Proves/Given/When/Then, one owning AC, and correct fail/pass intent; Goal → AC ↔ TC ↔ Step mapping is complete; affected existing tests are reasoned.
 - [ ] **Conditional rigor:** each new structure has guard/invariant/boundary TC; behavior-axis combinations are covered or excluded with reason.
 - [ ] **Execution shape:** steps are dependency-ordered, each names the TC it satisfies, and are ≤10 (else split); provisional PR Pattern partitions steps and does not split a TC.
-- [ ] **Altitude:** the plan is language-neutral design notation throughout — contracts declared as notation, never in target-language syntax; no function bodies or procedural code; pseudo-code marks structural decisions only.
+- [ ] **Altitude:** the plan passes `altitude.md` — no target-language syntax, no implementation body.
 
 All checked → emit: `Plan drafted. Run the review-feature skill.`

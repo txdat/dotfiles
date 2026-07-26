@@ -27,7 +27,7 @@ Compare 2–3 viable options when they exist. If hard constraints leave one, sho
 
 ### 3. Recommend
 
-Recommend one option with rationale tied to the goal, constraints, and evidence. State trade-offs and rejection reasons. Define each changed boundary contract as `<producer> → <consumer>: <event/call> — invariant`; include ownership, compatibility/versioning, timeout or delivery semantics, and failure handling when relevant. Record `no boundary changes` when true. Do not ask for approval here: review-system independently challenges the draft before the human decides.
+Recommend one option with rationale tied to the goal, constraints, and evidence. State trade-offs and rejection reasons. Define each changed boundary contract at `altitude.md`'s notation level — `<producer> → <consumer>: <event/call> — invariant`, never target-language syntax; include ownership, compatibility/versioning, timeout or delivery semantics, and failure handling when relevant. Record `no boundary changes` when true. Do not ask for approval here: review-system independently challenges the draft before the human decides.
 
 ### 4. Migrate safely
 

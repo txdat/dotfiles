@@ -1,0 +1,39 @@
+# Review Independence — Single Source
+
+Referenced by review-feature, review-code, and review-system. A review is worth what its independence is worth: a session that authored the artifact cannot re-derive a judgment it already made, so the rule is about *context*, not effort.
+
+## The rule
+
+**Did this session produce the artifact under review?**
+
+- **No** → review directly in the main session. Nothing else applies.
+- **Yes** → delegate the whole review to exactly one fresh agent with no conversation inheritance (EXECUTION_CORE `Subagent context`). In Claude Code that means any `subagent_type` other than `fork`; `fork` inherits this conversation and is never valid here.
+- **Yes, but isolation is unavailable** → review in-session, treating authoring memory as untrusted: re-derive every judgment from the artifact file and source reads, never from what you remember deciding.
+
+| Skill | Reviewer | Artifact |
+|---|---|---|
+| review-feature | `feature-planner` (review mode) | the plan file |
+| review-code | `code-quality-auditor` | the worktree plan + `<base>..HEAD` diff |
+| review-system | `architecture-strategist` (review mode) | the architecture document |
+
+## The packet
+
+Write it to `/tmp/ai-ctx/<slug>.md` and name **only**:
+
+- the artifact path — for review-code, the **worktree** plan copy and the worktree/base refs, never the `$MAIN_ROOT` locator;
+- the project AI config;
+- the reviewing skill file (`review-feature.md` / `review-code.md` / `review-system.md`).
+
+Never include authoring rationale, exploration notes, design alternatives you rejected, or a conversation summary. Each of those re-imports the anchor the delegation exists to remove.
+
+## What the reviewer may and may not do
+
+- Applies the **reviewing** skill file, not the drafting one. It judges the artifact as written; it never redrafts it.
+- Runs in **one context and spawns nothing**. Size, risk, file count, and independent concerns are not exceptions — process large work as dependency-ordered file or slice batches in the same context.
+- May read files, run tests, run `dev-check`, and run read-only Git inspection (`status`/`diff`/`log`/`show`) inside its assigned worktree.
+- May **not** mutate Git state, edit files, edit `docs/plans/**` or `docs/architecture/**`, set any `Status:`, or finalize a PR Pattern. Those are the main agent's, acting on the reviewer's evidence.
+- Reports findings, counterexamples, and its verdict in the reviewing skill's output shape. The main agent relays them verbatim.
+
+## Re-review
+
+A revision authored in-session is unreviewed text: re-review it as adversarially as the original, or delegate again. After piecewise edits, re-read the whole artifact — a lexical consistency pass catches stale identifiers, not a contradiction between two sections.

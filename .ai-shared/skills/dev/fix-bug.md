@@ -22,7 +22,7 @@ Stop here. Offer to pass the diagnosis into design-feature. The fix plan must pr
 
 ## Execution Gate
 
-`execute` requires a `Type: fix` plan in `approved` or `in-progress` state. `gate-check` owns issue, worktree, and status. A missing or unapproved plan, or one whose Goal/Scope does not match the diagnosis → STOP.
+`execute` requires a `Type: fix` plan in `approved` or `in-progress` state, carrying `Review: READY <date>`. `gate-check` owns issue, worktree, status, and that marker. A missing or unapproved plan, or one whose Goal/Scope does not match the diagnosis → STOP.
 
 Use `worktree.md` with branch `fix/<slug>` from `<base>`. Record the worktree, copy the plan, and set `Status: in-progress`.
 

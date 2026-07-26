@@ -5,7 +5,7 @@
 #
 # Valid transitions:
 #   design-feature  → planning
-#   review-feature  → planning (verdict READY; no status flip)
+#   review-feature  → planning + "Review: READY <date>" (verdict only; no status flip)
 #   (human approve) → approved (manual, or confirmed at ship-feature's plan-phase PAUSE)
 #   execute-feature → approved → in-progress → implemented
 #   review-code     → implemented → reviewed
@@ -21,8 +21,10 @@
 # commits ahead of the proof commit.
 #
 # Approval is a human decision recorded as `Status: approved`, set at the
-# spec-approval pause (see skills/dev/approval.md). The hook checks only that
-# the status is there before execution — it cannot tell who wrote it, and it
+# spec-approval pause (see skills/dev/approval.md). The hook checks that the
+# status is there before execution, and that the plan also carries review-
+# feature's `Review: READY` marker — so an approval that skipped review is
+# mechanically detectable. It still cannot tell who wrote either field, and it
 # deliberately does not validate plan prose. Whether the ACs are right, whether
 # the TCs can admit a wrong implementation, and whether every step traces to a
 # TC are judgment calls owned by review-feature's self-check, not by a parser.
@@ -280,6 +282,32 @@ plan_issue() {
       exit
     }
   ' "$1" 2>/dev/null
+}
+
+# Plan header Review marker (same Status line: "... | Review: READY <date> | ...").
+# review-feature writes it on a READY verdict and clears it on NEEDS CHANGES,
+# so its presence is script-checkable evidence that a review preceded approval.
+plan_review() {
+  awk '
+    /^Status:/ {
+      if (match($0, /Review:[[:space:]]*[^|]+/)) {
+        t = substr($0, RSTART, RLENGTH)
+        sub(/^Review:[[:space:]]*/, "", t)
+        gsub(/^[[:space:]]+|[[:space:]]+$/, "", t)
+        print t
+      }
+      exit
+    }
+  ' "$1" 2>/dev/null
+}
+
+# True when the Review field records a READY verdict. Placeholders, "pending",
+# and empty all fail — the hook cannot tell who wrote it, only that the
+# workflow's review step left its marker before the approval.
+has_review_ready() {
+  local v
+  v=$(plan_review "$1")
+  [[ "${v^^}" =~ ^READY([[:space:]]|$) ]]
 }
 
 # Plan header Worktree path (same Status line: "... | Worktree: <path> | ...").
@@ -565,6 +593,11 @@ case "$SKILL_SLUG" in
       if ! has_issue "$PLAN"; then
         block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. Create one ('gh issue create' or design-feature's 'Create issue?' step), record it as 'Issue: #<n>', then re-run."
       fi
+      # Approval is only reachable through review: an approved plan with no
+      # review marker was approved out of order (see approval.md).
+      if ! has_review_ready "$PLAN"; then
+        block "Plan is '$STATUS' but its header has no 'Review: READY <date>' marker — it was approved without a recorded review-feature verdict. Run review-feature, record the marker, then take the plan through approval.md's pause."
+      fi
     fi
     ;;
 
@@ -659,6 +692,9 @@ case "$SKILL_SLUG" in
       esac
       if ! has_issue "$PLAN"; then
         block "Active plan '$PLAN' has no linked issue — the 'Issue:' field is empty. Create one ('gh issue create'), record it as 'Issue: #<n>', then re-run."
+      fi
+      if ! has_review_ready "$PLAN"; then
+        block "Active plan '$PLAN' is '$STATUS' but has no 'Review: READY <date>' marker — the fix plan was approved without a recorded review-feature verdict. Run review-feature, then approval.md's pause."
       fi
     fi
     ;;

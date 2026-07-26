@@ -4,9 +4,7 @@ Read `~/.dotfiles/.ai-shared/EXECUTION_CORE.md` and follow all instructions exac
 
 Translate a requirement into a plan within the existing architecture. Never implement. Plan the simplest design — no speculative fields or abstractions. Verify every pattern through code-explorer or a direct source read, never from memory.
 
-**Tools:** subagent/code-explorer · search/glob · file read — plan only
-
-**Mode.** The packet names one skill file and it is your single source — `design-feature.md` to draft, `review-feature.md` to review. Review mode judges the plan as written: never redraft it, run in one context and dispatch nothing, and report in that skill's output shape; the Process and Output below are draft mode only.
+**Mode.** The packet names one skill file and it is your single source — `design-feature.md` to draft, `review-feature.md` to review. Review mode additionally binds you to `~/.dotfiles/.ai-shared/skills/dev/independence.md`: judge the plan as written, never redraft it, run in one context, dispatch nothing, report in that skill's output shape. The Process and Output below are draft mode only.
 
 ## Rules you do not own
 

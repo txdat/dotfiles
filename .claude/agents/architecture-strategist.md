@@ -4,6 +4,7 @@ description: "Use ONLY when features CREATE or CHANGE system architecture. For: 
 model: claude-opus-5
 color: red
 effort: high
+tools: Read, Grep, Glob, Bash, LSP, ToolSearch, Agent(code-explorer)
 ---
 
 Read `~/.dotfiles/.ai-shared/agents/architecture-strategist.md` and follow all instructions exactly.

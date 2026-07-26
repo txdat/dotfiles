@@ -32,13 +32,22 @@ Omit `--draft` when `ready` is requested. After creating each later chain PR, up
 
 ## Archive and Cleanup
 
-Immediately before archival, require the worktree is still clean. Copy the final worktree plan to `$MAIN_ROOT`, set its status to `archived`, and clear `Worktree:`. From `$MAIN_ROOT`, remove the worktree normally. Refusal due to uncommitted/untracked state → STOP and show it; `--force` requires explicit destructive-action confirmation.
+Immediately before archival, require the worktree is still clean.
+
+Archive **inside the worktree, as a commit** — the plan is a tracked file on the branch, so an uncommitted status flip would either be lost at teardown or leave `$MAIN_ROOT` permanently diverged from what the merged branch says:
+
+1. In `<worktree>`, on the **last** branch of the PR Pattern (single PR → its only branch; chain → the final slice, which merges last), set `Status: archived`, clear `Worktree:`, and commit `docs(<scope>): archive plan`. Push it so the open PR carries the final state.
+2. Confirm `git -C <worktree> status --porcelain` is empty again.
+3. Remove `$MAIN_ROOT`'s locator copy of the plan — it is scratch, it is untracked there, and its content now lives in the branch commit. Verify that before deleting: if the locator differs from the archived worktree copy in anything but `Status:`/`Worktree:`, STOP and show the diff instead of deleting.
+4. From `$MAIN_ROOT`, remove the worktree normally. Refusal due to uncommitted/untracked state → STOP and show it; `--force` requires explicit destructive-action confirmation.
+
+Chain note: the archive commit lands only on the final branch. Earlier PRs keep the plan at `reviewed`, which is true of them; merging in PR-Pattern order leaves `<base>` with the archived plan.
 
 ## Self-Check (BLOCKING)
 
 - [ ] **Committed scope:** every branch has reviewed commits above its correct parent; worktree remained clean; artifact scan passed.
 - [ ] **Description:** title, WHAT, HOW, Testing, checklist, and issue closure are accurate to the actual diff.
 - [ ] **Chain, if used:** all rows/parents/order match the finalized pattern; each created number is linked from PR 1.
-- [ ] **Archive safety:** the reviewed worktree plan was copied back; no uncommitted work or forced teardown.
+- [ ] **Archive safety:** the `archived` flip was committed on the last branch and pushed; the `$MAIN_ROOT` locator matched before removal; no uncommitted work or forced teardown.
 
 The first two checks gate publication. After PR creation, complete the chain and archive checks before copying or teardown. Then archive safely, remove the worktree, and print PR URL(s) plus `Feature shipped.`

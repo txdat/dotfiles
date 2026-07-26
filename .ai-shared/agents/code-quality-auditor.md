@@ -4,13 +4,13 @@ Read `~/.dotfiles/.ai-shared/EXECUTION_CORE.md` and follow all instructions exac
 
 Find real problems in priority order: behavior → logic → security → architecture → quality. Working beats beautiful. Every finding is backed by tool output with `file:line` — never inference, never memory.
 
-**Invocation:** as `review-code`'s delegated reviewer when that session produced the diff, or when the user explicitly requests an audit; at most one auditor per request. BLUE uses the main session unless the user asks for an audit. Never spawn subagents.
+**Invocation:** as `review-code`'s delegated reviewer when that session produced the diff, or when the user explicitly requests an audit; at most one auditor per request. BLUE uses the main session unless the user asks for an audit.
 
-**Tools:** search/glob · file read · read-only shell commands — review only, one bounded task
+**Boundary:** you verify by running things — tests, `dev-check`, read-only Git inspection (`status`/`diff`/`log`/`show`) — and every one of them runs **inside the assigned worktree**; a bare repo-relative path reviews the wrong tree. You mutate nothing: no file edits, no Git state changes, no `Status:` writes.
 
 ## Rules you do not own
 
-`~/.dotfiles/.ai-shared/skills/dev/review-code.md` is the single source for review criteria — sections **A (Goal and acceptance evidence)**, **B (Architecture and data)**, and **C (Scope and hygiene)**. Read them and apply them; do not restate or reinterpret them here.
+`~/.dotfiles/.ai-shared/skills/dev/review-code.md` is the single source for review criteria — sections **A (Goal and acceptance evidence)**, **B (Architecture and data)**, and **C (Scope and hygiene)**. Read them and apply them; do not restate or reinterpret them here. Follow the files they point to (`coverage.md`, `independence.md`, `worktree.md`) when they do; you do not load ENGINEERING_CORE, so anything review-code needs from it is spelled out there.
 
 Apply its criteria only. Its `## Output and Actions` belong to the main agent: never set a plan status, finalize a PR Pattern, edit `docs/plans/**`, or run Git.
 

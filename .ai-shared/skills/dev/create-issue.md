@@ -8,14 +8,10 @@ Collect from $ARGUMENTS or ask: title, problem/context, and expected outcome (re
 gh issue create --title "..." --body "..." [--label "..."] [--milestone "..."]
 ```
 
-## Self-Check (BLOCKING — do NOT emit completion until every item is ✅)
+## Self-Check (BLOCKING)
 
-Run this audit before creating the issue. If ANY item is unchecked → STOP, fix, re-check.
+- [ ] **Standalone:** not plan-linked — otherwise this is design-feature's job.
+- [ ] **Content:** specific title under 72 chars; body carries problem, expected outcome, context; requested labels/milestone applied.
+- [ ] **Auth:** `gh auth status` shows the account CORE requires.
 
-- [ ] **Standalone scope**: Issue is not linked to an implementation plan. If plan-linked, use design-feature instead.
-- [ ] **Title**: Present, specific, and under 72 chars.
-- [ ] **Body**: Describes problem, expected outcome, and relevant context.
-- [ ] **Metadata**: Labels/milestone applied when requested; omitted only when not provided.
-- [ ] **GitHub auth**: `gh auth status` uses the expected account per CORE.
-
-If ALL checked → create the issue and print the issue URL.
+All checked → create the issue and print its URL.

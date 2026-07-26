@@ -10,7 +10,7 @@ Once the worktree copy exists, set `Status: in-progress` and commit `docs(<scope
 
 ## Strategy
 
-Execute inline by default. Delegate only when more than three steps are genuinely independent with exclusive source/test files. Route by step, not by convenience: critical steps → `senior-engineer`; simple, well-patterned steps → `junior-engineer`. Workers receive the Goal, owning ACs, TCs, steps, critical invariants, file ownership, and off-limits paths, and may neither edit plans nor run Git. The main agent verifies the resulting file union, reruns the union of targeted tests and coverage, and alone commits.
+Execute inline by default. Delegation is permitted **only** when more than three steps are genuinely independent and each owns an exclusive set of source/test files; otherwise every step runs inline, whatever its difficulty. When that bar is met, route each delegated step by its nature, not by convenience: critical → `senior-engineer`; simple and well-patterned → `junior-engineer`. Workers receive the Goal, owning ACs, TCs, steps, critical invariants, file ownership, and off-limits paths, and may neither edit plans nor run Git. The main agent verifies the resulting file union, reruns the union of targeted tests and coverage, and alone commits.
 
 Security, concurrency, or data-integrity steps are critical: state invariants and failure modes before editing, whether inline or delegated.
 
@@ -30,13 +30,13 @@ After all GREEN work, perform BLUE as defined in `tdd.md`: inspect for worthwhil
 
 For every changed file, derive targeted tests using project conventions, semantic references, then filename/import search. No test found → log a Coverage Gap and STOP: return through design/review and re-approval for a new TC, accept a stated gap, or split. Never add unapproved behavior and never run the full suite unless EXECUTION_CORE permits it.
 
-At first scoring read `coverage.md`. Measure touched/changed files, run `dev-check coverage <percent> [uncovered-critical]`, and apply CORE #6 judgment. Log every ⚠️/❌ in `## Coverage Gaps`; ❌ → STOP and ask. Coverage-driven new behavior must enter through a reviewed, re-approved plan TC.
+At first scoring read `coverage.md`. Measure touched/changed files, run `dev-check coverage <percent> [uncovered-critical]`, and apply CORE #6 judgment. Log every ⚠️/❌ in `## Coverage Gaps`, naming the uncovered lines and the behavior each belongs to. **⚠️ → log and continue; ❌ → STOP and ask.** Coverage-driven new behavior must enter through a reviewed, re-approved plan TC.
 
 After GREEN/BLUE, follow `dependents.md` for every changed externally reachable symbol. Breakage or unresolved reachability → log `## Discovered Scope`, STOP, and ask: re-plan/re-review, separate, or narrow via a recorded CORE #5 deviation. Never ship a known-broken caller.
 
 Run lint, build, the TC tests, and `## Affected Existing Tests`. Root-cause failures: regression → fix implementation; incomplete implementation → finish its step. A conflict among Goal, AC, TC, domain contract, or observed intended behavior is not a free deviation: STOP and go back through `approval.md`. Run `dev-check artifacts <base> HEAD`.
 
-Scope discovered beyond the approved plan follows CORE #7. Including it requires design-feature, review-feature, and `approval.md`'s pause again. Divergence of means within unchanged behavior follows CORE #5; any behavior change goes back through `approval.md`.
+Scope discovered beyond the approved plan follows CORE #7; divergence of means within unchanged behavior follows CORE #5. Which of the two you are looking at, and what a behavior change costs, is `approval.md` — do not re-derive it here.
 
 ## Self-Check (BLOCKING)
 

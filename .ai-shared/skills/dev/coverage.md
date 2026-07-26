@@ -19,7 +19,9 @@ Each command reports line/statement %; the **Branch** column is how to get branc
 
 ## Closing a gap — behavior-first, never line-first
 
-A red line is a symptom; the unit of testing is a behavior (input class, error path, state transition — a Given/When/Then), never a line. When a file scores ⚠️/❌:
+**When this section applies:** a ❌, or a ⚠️ you have decided to close. A ⚠️ you log and carry stops at step 1 — name the behavior in the Coverage Gap entry and continue (CORE #6). Logging an uncovered behavior is not Discovered Scope and is not a STOP; only an attempt to *close* it can surface CORE #7 work.
+
+A red line is a symptom; the unit of testing is a behavior (input class, error path, state transition — a Given/When/Then), never a line. For a gap in scope:
 
 1. Name the behavior each uncovered line/branch belongs to. Can't name one → boilerplate/unreachable: log excluded-by-reason (denominator curation above), don't test it.
 2. Behavior already has a plan TC → the test is missing or misaligned: fix *that* test.

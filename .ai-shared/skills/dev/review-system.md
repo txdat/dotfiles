@@ -4,7 +4,7 @@ Resolve the `draft` document from `$ARGUMENTS` or latest `docs/architecture/`; r
 
 ## Independence
 
-If this session drafted the document, delegate the review to one fresh `architecture-strategist` with no conversation inheritance (EXECUTION_CORE `Subagent context`): the packet names only the document path, project AI config, and this skill file — never drafting rationale or a conversation summary. The reviewer applies this file, not design-system.md, judges the document as written rather than redrafting it, and spawns nothing. It returns verdict, findings, and author questions; the approval prompt, its pause, and any `Status` change stay with the main agent. A session that did not draft reviews directly. Isolation unavailable → treat drafting memory as untrusted and re-derive every judgment from the document and source. A revision authored in-session is unreviewed text: re-review it as adversarially as the original, or delegate. After piecewise edits, re-read the whole document — a lexical consistency check catches stale identifiers, not a contradiction between two sections.
+Follow `independence.md` (single source): reviewer `architecture-strategist`, artifact the architecture document, verdict `READY` / `NEEDS REVISION`. The approval prompt, its pause, and any `Status` change stay with the main agent.
 
 ## Review
 
@@ -18,7 +18,7 @@ Blocking examples: lost user goal, unmeasurable or gameable success metric, no b
 
 ## Self-Check (BLOCKING)
 
-- [ ] **Independence:** the review ran in a context without drafting memory (fresh agent, or a session that did not draft); fallback in-session review re-derived every judgment from the document and source. Context: __.
+- [ ] **Independence:** `independence.md` satisfied — fresh agent, or a session that did not draft; any in-session fallback re-derived every judgment from the document and source; a revision authored in-session was re-reviewed. Context: __.
 - [ ] **Outcome/options:** goal and measurable outcome hold; each metric was attacked for gameability and every proxy is paired with an outcome guard; alternatives or eliminations were independently challenged. Issues: __.
 - [ ] **Contracts/failures:** boundaries and required semantics are sufficient; critical failures have detection and recovery. Missing: __.
 - [ ] **Migration:** Change/Verify/Rollback gates are credible; destructive steps and applicable cutover/reconciliation hold. Issues: __.
@@ -26,4 +26,4 @@ Blocking examples: lost user goal, unmeasurable or gameable success metric, no b
 
 Report verdict, blocking findings with required revisions, warnings, strengths, and author questions.
 
-Any blocking finding → `NEEDS REVISION`; leave `Status: draft` and name the required revisions. Otherwise report `READY`, show the recommendation, decisive trade-offs, phases, and plan decomposition, then ask: **`Approve this architecture? Reply "approve", or name what to revise.`** Pause. Only explicit approval sets `Status: approved`; revisions return through design-system and review-system. Any later semantic change returns the document to `draft` and requires fresh review and approval.
+Any blocking finding → `NEEDS REVISION`; leave `Status: draft` and name the required revisions. Otherwise report `READY`, then run `approval.md`'s `## Architecture` pause — it is the single source for that decision and this skill never adds an exception to it.

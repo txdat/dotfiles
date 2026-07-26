@@ -4,6 +4,7 @@ description: "Accurate executor for complex and critical tasks — including con
 model: claude-opus-4-6
 color: blue
 effort: low
+tools: Read, Write, Edit, Grep, Glob, Bash, LSP, ToolSearch
 ---
 
 Read `~/.dotfiles/.ai-shared/agents/senior-engineer.md` and follow all instructions exactly.

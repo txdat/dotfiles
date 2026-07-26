@@ -21,10 +21,11 @@ new_repo() {
 
 write_plan() {
   local path="$1" status="$2" type="$3" issue="$4" worktree="$5" pattern="$6"
+  local review="${7-READY 2026-01-01}"
   {
     printf '# Task: gate test\n'
-    printf 'Status: %s | Type: %s | Issue: %s | Worktree: %s\n\n' \
-      "$status" "$type" "$issue" "$worktree"
+    printf 'Status: %s | Type: %s | Issue: %s | Review: %s | Worktree: %s\n\n' \
+      "$status" "$type" "$issue" "$review" "$worktree"
     printf '%s\n' "$pattern"
     printf 'Type: single\n'
     printf '| # | Branch | Steps | Summary |\n'
@@ -63,11 +64,12 @@ assert_block() {
 
 make_registered_plan() {
   local repo="$1" type="$2" status="$3" issue="$4" pattern="$5"
+  local review="${6-READY 2026-01-01}"
   local worktree="$repo-worktree"
   git -C "$repo" worktree add -q -b "$type/gate-test" "$worktree" main
-  write_plan "$repo/docs/plans/gate.md" planning "$type" "$issue" "$worktree" "$pattern"
+  write_plan "$repo/docs/plans/gate.md" planning "$type" "$issue" "$worktree" "$pattern" "$review"
   mkdir -p "$worktree/docs/plans"
-  write_plan "$worktree/docs/plans/gate.md" "$status" "$type" "$issue" "$worktree" "$pattern"
+  write_plan "$worktree/docs/plans/gate.md" "$status" "$type" "$issue" "$worktree" "$pattern" "$review"
   printf '%s\n' "$worktree"
 }
 
@@ -164,5 +166,27 @@ repo=$(new_repo)
 make_registered_plan "$repo" feature implemented '#12' '## PR Pattern' >/dev/null
 output=$(run_gate "$repo" dev-create-pr 'docs/plans/gate.md')
 assert_block "$output" 'run review-code first' 'implemented plan cannot skip review-code and open a PR'
+
+# Approval is only reachable through review: an approved plan carrying no
+# 'Review: READY' marker was approved out of order and cannot execute.
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" approved feature '#12' '' '## PR Pattern (provisional)' ''
+output=$(run_gate "$repo" dev-execute-feature 'docs/plans/gate.md')
+assert_block "$output" 'no '"'"'Review: READY' 'approved plan without a review marker cannot execute'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" approved feature '#12' '' '## PR Pattern (provisional)' 'pending'
+output=$(run_gate "$repo" dev-execute-feature 'docs/plans/gate.md')
+assert_block "$output" 'no '"'"'Review: READY' 'a non-READY review marker does not satisfy the gate'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" approved feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate "$repo" dev-execute-feature 'docs/plans/gate.md')
+assert_pass "$output" 'approved plan with issue and READY review marker executes'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" approved fix '#12' '' '## PR Pattern (provisional)' ''
+output=$(run_gate "$repo" dev-fix-bug 'execute docs/plans/gate.md')
+assert_block "$output" 'no '"'"'Review: READY' 'fix-bug execute also requires the review marker'
 
 printf 'All gate-check tests passed. Temporary fixtures: %s\n' "$TMP_ROOT"

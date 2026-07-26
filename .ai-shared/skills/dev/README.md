@@ -12,15 +12,17 @@ Architecture uses a separate falsifiable chain: goal and constraints → options
 
 ## Full Feature Cycle
 
-`/dev:ship-feature <requirement>` — explore → design-feature → review-feature → spec approval → execute → review-code → PR
+`/dev:ship-feature <requirement>` — [explore] → design-feature → review-feature → spec approval → execute → review-code → PR
+
+`explore` is optional (CORE #10); the six phases after it are not.
 
 Resume: `/dev:ship-feature add-jwt from execute`
 
 Plan review enforces the Open Questions gate and does the real work: it independently derives the expected outcomes from `## Goal` before reading the proposed TCs, then attacks them with counterexamples. It returns READY; it never approves.
 
-**One application-spec approval, and it is the human's.** `approval.md` is the single source: after review returns READY, the full Goal/AC/TC spec is shown and the user answers `Approve this spec?` — approve, or name the IDs to revise or drop. Only that answer sets `Status: approved`. There is no inferred, request-as-approval, urgent-fix, or planless-mutation shortcut; behavior-preserving cleanup is a `Type: refactor` plan like any other change. Changing approved behavior later returns the plan to `planning` and back through review and the pause. A different *means* to the same behavior is an ordinary `## Deviations` record, not a re-approval.
+**Every approval is the human's, and `approval.md` is the single source** — both the application spec and the architecture decision. Nothing else in this tree states when approval is granted; they point there. A plan reaches the pause only carrying `Review: READY <date>` from review-feature, and `gate-check` refuses to execute an `approved` plan without it.
 
-Know what enforces what. For application plans, `gate-check` blocks on `Status: approved` and facts a script can verify — status, issue, worktree, proof order, and PR pattern. It does not judge plan or architecture prose or identify who approved it. Human pauses enforce decisions; adversarial reviews provide rigor.
+Know what enforces what: ENGINEERING_CORE `Self-check boundary`. Short version — the hook proves state, the self-checks prove correctness, and the pause proves consent.
 
 **BDD then TDD.** BDD owns `Goal → AC → Given/When/Then TC` and answers whether the right behavior is specified. TDD consumes only approved TCs through RED → GREEN → BLUE and answers whether code implements that behavior. Passing TCs never overrides a failed AC or Goal; contradictions return to design/review and human reapproval.
 
@@ -31,6 +33,10 @@ Know what enforces what. For application plans, `gate-check` blocks on `Status: 
 Every dev skill ends with a blocking self-check. Do not emit the skill's handoff line until that checklist is verified against the artifacts.
 
 ---
+
+## Single-Source Files
+
+Read by the skills that need them; never restated. `approval.md` (both human decisions) · `independence.md` (delegated review) · `altitude.md` (plan is design, not code) · `tdd.md` (RED→GREEN→BLUE) · `coverage.md` (measurement, bands, test quality bar) · `worktree.md` (lifecycle) · `dependents.md` (blast radius).
 
 ## Design Skills
 

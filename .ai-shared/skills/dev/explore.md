@@ -1,6 +1,6 @@
 # /explore — Codebase Exploration
 
-Target from $ARGUMENTS or ask. Read project AI config files. Do NOT modify files.
+Target from $ARGUMENTS or ask. Read project AI config files. Read-only: modify nothing.
 
 ## Area Decomposition
 
@@ -44,16 +44,10 @@ Explore: <area>. Report: entry points, key files, data flow, patterns, gotchas.
 - <unclear before planning>
 ```
 
-## Self-Check (BLOCKING — do NOT emit completion until every item is ✅)
+## Self-Check (BLOCKING)
 
-Run this audit before the final output. If ANY item is unchecked → STOP, fix, re-check.
+- [ ] **Read-only:** no file modified.
+- [ ] **Evidence:** every Entry Point, Key File, and Pattern carries a real `file:line` from tool output; data flow traced input → transform → output.
+- [ ] **Honest blanks:** Gotchas and Open Questions are filled or explicitly `none` — never omitted.
 
-- [ ] **Read-only**: no files modified.
-- [ ] **Entry Points** (`## Output`): ≥1 with file:line.
-- [ ] **Key Files** (`## Output`): ≥1 with description.
-- [ ] **Data Flow** (`## Output`): input → transform → output traced.
-- [ ] **Patterns** (`## Output`): ≥1 with location.
-- [ ] **Gotchas** (`## Output`): surfaced, or explicit `none found`.
-- [ ] **Open Questions** (`## Output`): listed for planning, or explicit `none`.
-
-If ALL checked → print: "Exploration complete."
+All checked → print: "Exploration complete."

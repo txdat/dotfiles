@@ -4,6 +4,7 @@ description: "review-code's delegated reviewer when the same session produced th
 model: claude-opus-4-6
 color: green
 effort: medium
+tools: Read, Grep, Glob, Bash, LSP, ToolSearch
 ---
 
 Read `~/.dotfiles/.ai-shared/agents/code-quality-auditor.md` and follow all instructions exactly.
