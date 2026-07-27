@@ -36,7 +36,8 @@ after defaults, i.e. its env var is unset. Always state which defaults you appli
 export GCP_PROJECT_ID=... GKE_CLUSTER=... GKE_REGION=... GKE_NAMESPACE=... GKE_SERVICES=...
 # optional: T_USER, T_DURATION, T_TZ, T_SYMPTOM_LOOKBACK, T_CHANGE_LOOKBACK, T_CRITICAL_LOOKBACK,
 #           NODE_DELETE_BURST, NOTREADY_MAX, AGE_RESET_FRAC, PENDING_GRACE_MIN,
-#           LB_LOG_LIMIT, LB_5XX_LIMIT, LB_NAME, LB_BACKEND_NAME, POD_NAME, NODE_INSTANCE_ID
+#           LB_LOG_LIMIT, LB_5XX_LIMIT, LB_NAME, LB_BACKEND_NAME, MON_PEAK_MIN_REQ,
+#           POD_NAME, NODE_INSTANCE_ID
 ```
 
 The script resolves all of this internally and prints it under `Pre-Flight — Resolved Inputs`.
@@ -112,7 +113,7 @@ grep -F '[VERDICT:' "$REPORT"                                      # every detec
 | `INFO` | Condition held but a planned op / recovered state explains it | Benign unless it correlates with symptom onset |
 
 `Phase 0b — Capability Preflight` reports which sources are readable (`CAP_LOGGING`, `CAP_K8S`,
-`CAP_OPS`, `CAP_COMPUTE`, `CAP_BILLING`). **If a capability is 0, every detector depending on it is
+`CAP_OPS`, `CAP_COMPUTE`, `CAP_BILLING`, `CAP_MONITORING`). **If a capability is 0, every detector depending on it is
 UNKNOWN — an empty query under a missing permission is not an all-clear.** Fix the capability
 (grant `roles/logging.viewer`, run `--get-credentials`, correct `REGION`) and re-run before
 concluding "nothing found".
@@ -179,24 +180,74 @@ backend services whose NEG names carry this namespace and these services. It pri
 `LB log scope:` telling you which it used. It prefers `backend_service_name` over the forwarding
 rule, because one rule commonly fronts every namespace in a project and a shared Gateway would put
 other tenants' traffic in your denominator. If it fell back to `forwarding_rule_name`, read the
-per-backend block, not the window ratio. If neither resolved, or `logConfig.enable` is false, the
-LB steps are skipped and **G1 is UNKNOWN, not CLEAR** — set `$LB_NAME`/`$LB_BACKEND_NAME` and re-run.
+per-backend block, not the window ratio. The same scope is applied to the metric read (`LB metric
+scope:`), where `backend_target_name` *is* the backend service name — so the two reads cover the
+same traffic. If neither resolved, **G1 is UNKNOWN, not CLEAR** — set `$LB_NAME`/`$LB_BACKEND_NAME`
+and re-run. `logConfig.enable=false` skips the *log* steps only; the metric read in `1d.2m` does not
+need LB logging at all, so counts survive and only `statusDetails`/`requestUrl`/latency are lost.
 
-**Counts vs ratio — two reads, and the difference matters:**
+**The metric is the source of truth; the logs are colour.** There are two independent LB reads and
+they are not equal:
 
-- **5xx counts (complete across the window)** — every 5xx by minute and by backend, plus status
-  codes. Errors are rare enough to fit under the cap, so **this is the authoritative error signal**
-  and its onset minute is trustworthy.
-- **Traffic volume (SAMPLE)** — a capped read supplying the *denominator* only. It prints
-  `SAMPLE_SPAN`, the time range it actually covers.
+| Read | Section | Source | Use it for |
+|------|---------|--------|-----------|
+| **LB metric** | `1d.2m` | `loadbalancing.googleapis.com/https/request_count` (+ the `internal/` variant) via the Monitoring API, 60s `ALIGN_DELTA`, grouped by `backend_target_name` + `forwarding_rule_name` + `response_code`, scoped client-side | **All counts, the denominator, the ratios, the onset minute, the per-backend split, the sibling comparison, the G1 verdict** |
+| **LB request logs** | `1d.2a`/`1d.2b`/`1d.3`/`1d.4`/`1d.5` | `resource.type="http_load_balancer"` in Cloud Logging | Only what a metric cannot carry: `statusDetails`, `requestUrl`, per-request latency |
 
-**Take counts from the first, rate from the second, and never a ratio from the second alone.** At a
-few thousand req/min, the cap can cover well under a minute of a 30-minute window, so the sample
-routinely reads `5xx_ratio=0.0%` for a window containing hundreds of errors. Check `SAMPLE_SPAN`
-against the onset minute before quoting any ratio; to get a real ratio for a burst, re-read that
-single minute.
+**Why the logs cannot be trusted for counts.** LB request logs pass through
+`logConfig.sampleRate` *and* through any project-level logging **exclusion filter**. Excluding
+health-check and polling endpoints from LB logs is a routine cost measure — and it removes those
+requests from **both** the numerator and the denominator, so a log-derived read can report a
+fraction of the real 5xx, or none at all, for an incident that the metric shows plainly. On top of
+that, `1d.2b` is a capped sample: at a few thousand req/min the cap can cover well under a minute of
+a 30-minute window, so it routinely prints `5xx_ratio=0.0%` for a window containing hundreds of
+errors (check its `SAMPLE_SPAN`). The metric is emitted by the load balancer itself, before logging,
+so neither sampling nor exclusions touch it.
 
-**Interpreting the ratio** (once you have a valid one): <1% background noise, 1–10% partial
+**Rules.** Quote the ratio, counts and onset from `1d.2m`. Never quote a ratio from `1d.2b`. Treat
+`1d.2a`'s totals as a **lower bound** only. When the two disagree, the metric wins and the gap is
+itself a finding — it means requests are being excluded from LB logging, which is worth reporting
+under Blind Spots. "No 5xx in the logs" is **not** an all-clear; only `1d.2m` can issue `CLEAR` for
+G1. If `CAP_MONITORING=0` or no LB scope resolved, **G1 is UNKNOWN** — grant `roles/monitoring.viewer`,
+or set `$LB_BACKEND_NAME`/`$LB_NAME`, and re-run before concluding anything about error volume.
+
+**What the metric changes about the denominator.** Because nothing is excluded, polling and
+health-check traffic is now *in* the denominator. That is the correct total, but on a service whose
+traffic is mostly polling it dilutes the window ratio — a user-facing outage can read as a modest
+percentage. So read the **per-minute rows and the per-backend split**, not just `METRIC_WINDOW`, and
+say which you are quoting. This cuts both ways versus the old log-based read: that one excluded
+polling endpoints from the numerator too, which is how a real 5xx burst could show up as zero.
+
+Three mechanical notes:
+
+- `1d.2m` labels each minute bucket by the **end** of the alignment period while `1d.2a` labels by
+  request time, so the metric onset can legitimately read one minute later. Not a discrepancy.
+- LB metrics ingest with **up to ~4 minutes of delay**. For an *ongoing* incident the trailing edge
+  of the window is undercounted or empty — judge onset and peak from the middle, and never read a
+  falling tail as recovery.
+- An internal ALB reports under `internal_http_lb_rule` / `https/internal/request_count`. The script
+  tries external then internal (and both Monitoring label-filter spellings) and prints the
+  `metric source:` that answered.
+
+**The `SIBLINGS` line answers "just us, or everything?"** Because the metric read is unscoped at the
+API and filtered locally, `1d.2m` can also total the backends on the same LB that are *outside* your
+namespace scope. Siblings healthy while in-scope is not ⇒ the fault is this service or its
+NEG/endpoints. Siblings elevated too ⇒ cluster/node/network-wide (H3/H9/H12/H15/B1). An in-scope
+`(no-backend-matched)` row is a request the LB could not route anywhere — the empty-NEG /
+all-backends-unhealthy signature — and counts as 100%-failure evidence.
+
+**Three views, and G1 scores the worst of them.** `1d.2m` prints `METRIC_WINDOW` (whole window),
+`METRIC_PEAK` (worst single minute) and `METRIC_WORST` (worst single backend) — the latter two
+guarded by ≥ `$MON_PEAK_MIN_REQ` requests, default 20, since a one-request minute returning 503 is
+100% and is noise. **Any one view alone is a dilution trap**: a two-minute total outage inside a
+thirty-minute window, or one dead backend among a dozen healthy ones, both vanish into a sub-1%
+aggregate. The verdict therefore takes `max(window, peak, worst backend)` and names which drove it.
+
+Quote all three in the RCA — the gaps between them *are* the diagnosis. Peak ≫ window means a short
+sharp burst rather than sustained degradation. Worst-backend ≫ window means the fault is one
+service, not the cluster; cross-check against `SIBLINGS` below and read the per-backend block.
+
+**Interpreting either ratio**: <1% background noise, 1–10% partial
 degradation, >10% sustained a real outage, ~100% all backends gone. Compare each backend against
 the window total — one backend ~100% with healthy siblings means the fault is that service or its
 NEG/endpoints, not the cluster; all backends elevated together means cluster/node/network-wide.
@@ -237,7 +288,8 @@ Latency shape: a rising slow bucket *before* errors = saturation (H4/H5/H6); lat
 errors = endpoints dropped (H1/H2/H3/H7).
 
 **G1 is a signal, not a hypothesis.** The 5xx ratio triggers the investigation; score the
-underlying causes (H1–H16, B1), never the error ratio itself. Grep `-F '{HYP: G1}'` for its verdict.
+underlying causes (H1–H16, B1), never the error ratio itself. Grep `-F '{HYP: G1}'` for its verdict
+— it is issued by `1d.2m` (the metric) and by nothing else.
 
 ### Deploy gate `{HYP: H7}`
 
@@ -488,8 +540,10 @@ MTTD:         <first symptom → first alert>      MTTM: <first alert → fully 
 **Pods** — table: Pod | Container | Restarts | Exit Code | Down From | Recovered At
 **Replicas** — desired / min healthy during incident / peak unhealthy
 **Endpoints** — per service: addresses normal | addresses min | NotReady peak
-**Error Volume** — total 5xx | total requests | peak per-min ratio | window ratio |
-                   dominant status code | partial vs full outage
+**Error Volume** — total 5xx | total requests | window ratio | peak per-min ratio |
+                   worst-backend ratio | dominant status code | partial vs full outage
+                   (`METRIC_WINDOW` / `METRIC_PEAK` / `METRIC_WORST` from `1d.2m`, plus `SIBLINGS`
+                    — say so if you had to fall back to logs)
 **Nodes affected** — <names or "none"> (eviction / preemption / pressure)
 **Blast radius** — other services or namespaces degraded
 
@@ -507,6 +561,7 @@ MTTD:         <first symptom → first alert>      MTTM: <first alert → fully 
 | Metric | Pre-onset (in-window) | Peak / Incident |
 request rate · 5xx ratio · onset minute · dominant status code · dominant statusDetails ·
 worst backend · traffic spike? · spike vs pod failure · causality direction
+(metric-derived except `statusDetails`, which only the logs carry)
 
 ### Hypotheses Evaluated
 | # | Hypothesis | Verdict | Key Evidence |
@@ -523,7 +578,9 @@ worst backend · traffic spike? · spike vs pod failure · causality direction
 ## Safety Rules
 
 **Allowed:** `kubectl get/describe/logs/top/rollout history` · `gcloud logging read` ·
-`gcloud monitoring metrics list` · `gcloud compute/container describe` ·
+`gcloud monitoring metrics list` · read-only `GET` against the Cloud Monitoring v3 API
+(`metricDescriptors`, `timeSeries`) via `gcloud auth print-access-token` + `curl` ·
+`gcloud compute/container describe` ·
 `gcloud container operations list` · `gcloud container node-pools list` ·
 `gcloud billing projects describe` · `gcloud auth list` · `gcloud config get-value` ·
 `gcloud container clusters get-credentials` **after confirmation**.
@@ -555,7 +612,13 @@ Mechanical traps — things that make a query lie or hide evidence. For "is it H
 | Codes | 502 timing | `backend_connection_closed` died mid-request; `failed_to_connect` already dead |
 | Time | GCP timestamps are UTC | Convert the user's timezone first |
 | Time | Retry storm looks like a spike | Compare LB spike vs k8s event timestamps |
-| LB | Sample ratio reads 0.0% on a busy LB | The sample covered seconds — check `SAMPLE_SPAN`, take counts from the complete 5xx read |
+| LB | Logging exclusion filter hides the 5xx | Excluding health/polling endpoints from LB logs drops them from numerator **and** denominator — take counts from the `1d.2m` metric, which logging config cannot touch |
+| LB | Log counts far below metric counts | Not a bug: sampling or an exclusion filter. Metric wins; report the gap under Blind Spots |
+| LB | Sample ratio reads 0.0% on a busy LB | The sample covered seconds — check `SAMPLE_SPAN`; never quote a ratio from `1d.2b` at all, use `1d.2m` |
+| LB | Metric onset one minute after log onset | `ALIGN_DELTA` buckets are labelled by period **end**, logs by request time — not a discrepancy |
+| LB | Ratio falls off at the end of an ongoing incident | LB metrics lag ~4 min — the trailing edge is undercounted, not recovering |
+| LB | Window ratio looks mild on a polling-heavy service | The metric denominator includes health/polling traffic — quote the per-minute and per-backend rows |
+| LB | Internal ALB reads "no data" | Internal LBs are `internal_http_lb_rule` / `https/internal/request_count`, not `https_lb_rule` — the script falls back and prints which it used |
 | LB | Gateway cluster has no Ingress | GKE Gateway creates forwarding rules with no Ingress object; VIP comes from `kubectl get gateway` |
 | LB | Shared LB dilutes the ratio | One rule fronts every namespace — scope by `backend_service_name` |
 | LB | Log sampling at high RPS | Verify `logConfig.sampleRate` |

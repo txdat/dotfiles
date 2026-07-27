@@ -26,7 +26,7 @@ set -uo pipefail  # NOT -e: one failed/empty query must not abort the sweep
 section() {
   local title="$1" extra="${2:-}" hyps
   hyps=$(printf '%s %s\n' "$title" "$extra" \
-         | grep -oiE '\b(B1|H1[0-6]|H[1-9])\b' | tr 'a-z' 'A-Z' | sort -uV | paste -sd' ' -)
+         | grep -oiE '\b(B1|G1|H1[0-6]|H[1-9])\b' | tr 'a-z' 'A-Z' | sort -uV | paste -sd' ' -)
   if [ -n "$hyps" ]; then
     printf '\n===== %s =====  {HYP: %s}\n' "$title" "$hyps"
   else
@@ -35,6 +35,81 @@ section() {
 }
 note()    { printf '[NOTE] %s\n' "$1"; }
 manual()  { printf '[MANUAL: Cloud Console Metrics Explorer — MQL]\n%s\n' "$1"; }
+
+# mon_ts <metric.type> <resource.type> <label-prefix>
+# Reads Cloud Monitoring time series over the symptom window and emits TSV:
+#   <alignment endTime>  <backend_target_name>  <forwarding_rule_name>  <response_code>  <count>
+#
+# Deliberately UNSCOPED: the filter names only the metric and resource type, and the namespace
+# scoping happens in awk downstream. Three reasons. (1) A real project can have 40+ backend services
+# matching a namespace, and an inline one_of(...) of those names is a multi-kilobyte GET URL.
+# (2) It keeps every label-name guess out of the *filter*, where a mistake returns 400 and reads as
+# "no data" — a false all-clear. (3) It lets the caller compare in-scope backends against their
+# siblings, which is the "one service dead vs the whole cluster" discriminator; a server-side filter
+# throws that comparison away.
+# On API failure it emits a single "ERROR<TAB><message>" line and returns 1, so the caller can tell
+# "unreadable" (UNKNOWN) apart from "readable and empty" — the same distinction Phase 0b enforces
+# everywhere else.
+#
+# Why this exists: `gcloud monitoring` has no `time-series` subcommand, so the v3 REST API is the
+# only CLI-reachable path to LB *metrics*. Metrics matter here because LB request LOGS are subject
+# to the backend service's logConfig sampleRate AND to any logging exclusion filter on the project
+# — and excluding health/polling endpoints from LB logs is a common cost measure. Such an exclusion
+# silently removes both 5xx and successes from the log-derived counts, so the log read can report
+# far fewer errors than actually occurred (or none). The metric is emitted by the LB itself, before
+# logging, so it is unaffected by sampling and exclusions and is the authoritative 5xx count.
+#
+# <label-prefix> is "label" or "labels": Monitoring's filter grammar documents the singular
+# `resource.label.<key>`, but the plural is widely accepted too, and getting it wrong is a 400 that
+# would read as "no data" — i.e. a false all-clear. The caller tries both rather than betting on one.
+# (Note this applies only to the REQUEST; the TimeSeries response proto is always plural, so the jq
+# extraction below is fixed at `.resource.labels` / `.metric.labels`.)
+mon_ts() {
+  local mt="$1" rt="$2" lp="$3" token="" page=0 resp err filter
+  filter="metric.type=\"$mt\" AND resource.type=\"$rt\""
+  while :; do
+    local args=(
+      -H "Authorization: Bearer $MON_TOKEN"
+      --data-urlencode "filter=$filter"
+      --data-urlencode "interval.startTime=$T_START"
+      --data-urlencode "interval.endTime=$T_END"
+      --data-urlencode "aggregation.alignmentPeriod=60s"
+      --data-urlencode "aggregation.perSeriesAligner=ALIGN_DELTA"
+      --data-urlencode "aggregation.crossSeriesReducer=REDUCE_SUM"
+      --data-urlencode "aggregation.groupByFields=resource.$lp.backend_target_name"
+      --data-urlencode "aggregation.groupByFields=resource.$lp.forwarding_rule_name"
+      --data-urlencode "aggregation.groupByFields=metric.$lp.response_code"
+    )
+    [ -n "$token" ] && args+=(--data-urlencode "pageToken=$token")
+    resp=$(curl -sS --get "${args[@]}" \
+      "https://monitoring.googleapis.com/v3/projects/$PROJECT/timeSeries" 2>/dev/null)
+    err=$(printf '%s' "$resp" | jq -r '.error.message // ""' 2>/dev/null)
+    # An empty body or a non-JSON one (proxy/HTML error page, curl failure) leaves $err empty and
+    # extracts to zero rows — indistinguishable from a genuine "no traffic" unless caught here.
+    # A successful call always returns a JSON object, even when it holds no time series.
+    if [ -z "$err" ] && ! printf '%s' "$resp" | jq -e 'type == "object"' >/dev/null 2>&1; then
+      err="unparseable or empty response from the Monitoring API (not a JSON object)"
+    fi
+    if [ -n "$err" ]; then
+      printf 'ERROR\t%s\n' "$err"
+      return 1
+    fi
+    printf '%s' "$resp" | jq -r '
+      .timeSeries[]? as $s | $s.points[]? |
+      [ .interval.endTime,
+        ($s.resource.labels.backend_target_name // ""),
+        ($s.resource.labels.forwarding_rule_name // ""),
+        ($s.metric.labels.response_code // ""),
+        (.value.int64Value // .value.doubleValue // 0) ] | @tsv' 2>/dev/null
+    token=$(printf '%s' "$resp" | jq -r '.nextPageToken // ""' 2>/dev/null)
+    page=$((page + 1))
+    [ -z "$token" ] && break
+    # Bail out rather than page forever, but SAY so: silently truncated totals would understate the
+    # 5xx count, which is the one failure mode this whole section exists to eliminate.
+    if [ "$page" -ge 20 ]; then printf '#TRUNC\n'; break; fi
+  done
+  return 0
+}
 
 # Tri-state verdict — grep -F '[VERDICT:' for a one-line summary of every detector.
 #   FIRES-CRITICAL / FIRES-WARNING = signal present (still needs corroboration before RCA)
@@ -79,7 +154,7 @@ done
 
 # Warn (don't abort) on missing tooling — a gcloud-only or kubectl-only run still yields
 # partial evidence, but the operator should know why whole sections come back empty.
-for bin in gcloud kubectl jq; do
+for bin in gcloud kubectl jq curl; do   # curl+jq back the Cloud Monitoring LB-metric read (1d.2m)
   command -v "$bin" >/dev/null 2>&1 || echo "WARNING: '$bin' not on PATH — sections needing it will be empty."
 done
 
@@ -205,6 +280,19 @@ gcloud container operations list --project="$PROJECT" --region="$REGION" --limit
   && CAP_OPS=1 || CAP_OPS=0
 BILLING_NOW=$(gcloud billing projects describe "$PROJECT" --format='value(billingEnabled)' 2>/dev/null) \
   && CAP_BILLING=1 || CAP_BILLING=0    # one call: capture current state and readability together
+# Cloud Monitoring read (LB request_count metric — the authoritative 5xx signal, see mon_ts).
+# Probe with a cheap metricDescriptors call rather than a time-series read.
+CAP_MONITORING=0
+MON_TOKEN=""
+if command -v curl >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
+  MON_TOKEN=$(gcloud auth print-access-token 2>/dev/null)
+  if [ -n "$MON_TOKEN" ]; then
+    curl -sS --get -H "Authorization: Bearer $MON_TOKEN" \
+      --data-urlencode 'filter=metric.type="loadbalancing.googleapis.com/https/request_count"' \
+      "https://monitoring.googleapis.com/v3/projects/$PROJECT/metricDescriptors" 2>/dev/null \
+      | jq -e '.error | not' >/dev/null 2>&1 && CAP_MONITORING=1
+  fi
+fi
 if kubectl cluster-info --request-timeout=5s >/dev/null 2>&1; then CAP_KUBECTL=1; else CAP_KUBECTL=0; fi
 CUR_CTX=$(kubectl config current-context 2>/dev/null)
 case "$CUR_CTX" in *"_${CLUSTER}") CAP_KUBECTL_CTX=1 ;; *) CAP_KUBECTL_CTX=0 ;; esac
@@ -212,10 +300,12 @@ case "$CUR_CTX" in *"_${CLUSTER}") CAP_KUBECTL_CTX=1 ;; *) CAP_KUBECTL_CTX=0 ;; 
 echo "CAP_LOGGING=$CAP_LOGGING (Cloud Logging read: log-based detectors B1/H13-partial/H14/H1-H12 audit)"
 echo "CAP_COMPUTE=$CAP_COMPUTE (Compute read: quota 1g.4, node instance-id, stockout)"
 echo "CAP_OPS=$CAP_OPS (container operations: H13 ops, planned-op guards)"
+echo "CAP_MONITORING=$CAP_MONITORING (Cloud Monitoring read: LB request_count metric — authoritative G1 5xx counts + true denominator, 1d.2m)"
 echo "CAP_BILLING=$CAP_BILLING (Cloud Billing read: B1 current-state guard)  billingEnabled_now=${BILLING_NOW:-<unreadable>}"
 echo "CAP_KUBECTL=$CAP_KUBECTL  CAP_KUBECTL_CTX=$CAP_KUBECTL_CTX (context '$CUR_CTX' targets '$CLUSTER'?)  CAP_K8S=$CAP_K8S (live kubectl detectors H1/H2/H5/H15/H16)"
 [ "$CAP_LOGGING" = 0 ] && verdict UNKNOWN "Cloud Logging unreadable — ALL log-based detectors are UNKNOWN, not CLEAR. Grant roles/logging.viewer (+ privateLogViewer for Data Access) and re-run."
 [ "$CAP_K8S" = 0 ] && verdict UNKNOWN "kubectl not targeting $CLUSTER (or unreachable) — live cluster-state detectors are UNKNOWN. Re-run with --get-credentials (after confirming) or fix the context."
+[ "$CAP_MONITORING" = 0 ] && verdict UNKNOWN "Cloud Monitoring unreadable (needs curl+jq, a token, and roles/monitoring.viewer) — the authoritative LB 5xx metric (1d.2m) cannot run, so G1 rests on LB logs alone, which a logging exclusion filter can gut. Grant roles/monitoring.viewer and re-run before trusting a low/zero 5xx count."
 
 # ============================================================================
 # Auto-discovery — read-only, feeds Phase 3 deep-dives
@@ -265,8 +355,11 @@ fi
 # list | head -1` grabbed whichever backend sorted first in the whole project, which on a shared
 # project is another tenant's service entirely.
 LB_BACKEND_RE=""
+NS_SHORT=$(printf '%s' "$NAMESPACE" | cut -c1-12)   # GKE truncates ns/svc inside generated names
+# Hoisted out of the branch below: 1d.2m uses it to decide whether an unrouted request
+# ((no-backend-matched)) arrived on THIS namespace's gateway, and that must work even when
+# $LB_BACKEND_NAME was supplied by hand and the discovery branch is skipped.
 if [ -z "$LB_BACKEND_NAME" ]; then
-  NS_SHORT=$(printf '%s' "$NAMESPACE" | cut -c1-12)   # GKE truncates ns/svc inside generated names
   LB_BACKENDS=$(gcloud compute backend-services list --project="$PROJECT" \
       --format="value(name,backends[].group)" 2>/dev/null | \
     awk -v ns="$NS_SHORT" -v svcre="$SVC_RE" '
@@ -368,16 +461,179 @@ elif [ -n "$LB_NAME" ]; then
 fi
 [ -n "$LB_FILTER" ] && echo "LB log scope: $LB_SCOPE"
 
+# The same scope, but applied client-side (see mon_ts). `https_lb_rule`'s backend_target_name IS the
+# backend service name, so the metric and log reads cover the same traffic and are comparable.
+MON_SCOPE_KIND=""
+MON_SCOPE=""
+if [ -n "$LB_BACKEND_RE" ]; then
+  MON_SCOPE_KIND="backend"
+  MON_SCOPE="backend_target_name ∈ {$(printf '%s' "$LB_BACKEND_RE" | tr '|' ' ')} — this namespace's services only"
+elif [ -n "$LB_NAME" ]; then
+  MON_SCOPE_KIND="rule"
+  MON_SCOPE="forwarding_rule_name=$LB_NAME (WHOLE rule — may include other namespaces/tenants; read the per-backend block, not the window ratio)"
+fi
+[ -n "$MON_SCOPE" ] && echo "LB metric scope: $MON_SCOPE"
+
+# ---------------------------------------------------------------------------
+# 1d.2m — the AUTHORITATIVE 5xx read. Runs independently of logConfig.enable, because the whole
+# point is that it does not depend on LB logging: neither sampleRate nor a project logging
+# exclusion (e.g. one dropping health/polling endpoints) can remove requests from this metric.
+# ---------------------------------------------------------------------------
+section "1d.2m — LB 5xx from Cloud Monitoring metric (AUTHORITATIVE — counts AND true denominator)" "G1"
+if [ -z "$MON_SCOPE_KIND" ]; then
+  note "Skipped: no LB scope resolved (no backend service matched this namespace, and no forwarding rule from an Ingress/Gateway VIP). Set \$LB_BACKEND_NAME or \$LB_NAME and re-run. G1 is UNKNOWN, not CLEAR."
+  verdict UNKNOWN "G1: LB 5xx metric could not be scoped to this namespace."
+elif [ "${CAP_MONITORING:-0}" = 0 ]; then
+  note "Skipped: CAP_MONITORING=0 (needs curl, jq, an access token and roles/monitoring.viewer)."
+  verdict UNKNOWN "G1: LB 5xx metric unreadable — fall back to 1d.2a/1d.2b logs, but treat their counts as a LOWER BOUND (logging exclusions/sampling remove requests)."
+else
+  # Query external AND internal ALB and MERGE the results — do not stop at the first that answers.
+  # A cluster can front different services with both, and since scoping is now client-side, "this
+  # metric returned rows" says nothing about whether any of them are ours. Stopping early on the
+  # external metric while the namespace sits behind an internal one would leave in-scope traffic at
+  # zero and report "scope is probably wrong" — a false UNKNOWN manufactured by the shortcut.
+  # Within each metric, try the singular then the plural label form and keep whichever answers.
+  MON_TSV=""; MON_KIND=""; MON_ERR=""; MON_EMPTY_OK=""; MON_TRUNC=0; MON_NL=$'\n'
+  for mon_combo in \
+    "loadbalancing.googleapis.com/https/request_count|https_lb_rule|external ALB" \
+    "loadbalancing.googleapis.com/https/internal/request_count|internal_http_lb_rule|internal ALB"
+  do
+    IFS='|' read -r mon_mt mon_rt mon_kind <<<"$mon_combo"
+    for mon_lp in label labels; do
+      mon_out=$(mon_ts "$mon_mt" "$mon_rt" "$mon_lp")
+      if printf '%s' "$mon_out" | grep -q '^ERROR'; then
+        MON_ERR="$mon_out"                       # remembered only if nothing at all succeeds
+        continue                                 # wrong label form (or real failure) — try the twin
+      fi
+      # This form is accepted; whether it carried points or not, don't retry its twin.
+      printf '%s' "$mon_out" | grep -q '^#TRUNC' && MON_TRUNC=1
+      mon_out=$(printf '%s' "$mon_out" | grep -v '^#TRUNC') || true
+      if [ -n "$mon_out" ]; then
+        # Via a variable, NOT an inline $'\n': ANSI-C quoting is not applied inside ${x:+...}, so
+        # the literal four characters would be spliced in and the two result sets welded together.
+        MON_TSV="${MON_TSV:+$MON_TSV$MON_NL}$mon_out"
+        MON_KIND="${MON_KIND:+$MON_KIND + }$mon_kind ($mon_rt, resource.$mon_lp.*)"
+      else
+        MON_EMPTY_OK="${MON_EMPTY_OK:+$MON_EMPTY_OK, }$mon_kind (accepted, no points)"
+      fi
+      break
+    done
+  done
+  # An error on one metric type is irrelevant once the other returned data.
+  [ -n "$MON_TSV" ] && MON_ERR=""
+  [ "$MON_TRUNC" = 1 ] && note "Paging cap hit: the metric read stopped at 20 pages, so these totals are TRUNCATED and are a lower bound. Narrow the window before quoting any figure."
+  echo "metric source: ${MON_KIND:-<none returned data>}   window: $T_START → $T_END   alignment: 60s ALIGN_DELTA"
+  echo "note: 60s buckets are anchored to the query END time, not to wall-clock minutes, and are labelled by the bucket's end. So a bucket labelled 10:15 typically covers ~10:14:4x-10:15:4x, and the metric onset can read up to a minute later than the log onset in 1d.2a (which labels by request time). Do not call that a discrepancy."
+  echo "note: LB metrics ingest with a delay of up to ~4 minutes, so for an ONGOING incident the last few minutes of the window are undercounted or absent. Judge onset and peak from the middle of the window, not its trailing edge."
+  if [ -n "$MON_ERR" ]; then
+    printf '%s\n' "$MON_ERR"
+    verdict UNKNOWN "G1: Monitoring API returned an error for every metric/label-form combination — see above. Not CLEAR."
+  elif [ -z "$MON_TSV" ]; then
+    note "Query accepted (${MON_EMPTY_OK:-scope readable}) but returned no request_count points in window. Either the LB genuinely served no traffic, or the scope is wrong — check 'LB metric scope' above against the backend services in 1d.1."
+    verdict UNKNOWN "G1: no metric data points — cannot distinguish 'no traffic' from 'wrong scope'."
+  else
+    printf '%s\n' "$MON_TSV" | awk -F'\t' \
+      -v minreq="${MON_PEAK_MIN_REQ:-20}" -v kind="$MON_SCOPE_KIND" \
+      -v backends="$LB_BACKEND_RE" -v rule="$LB_NAME" -v ns="$NS_SHORT" '
+      BEGIN { n = split(backends, ba, "|"); for (i = 1; i <= n; i++) if (ba[i] != "") inset[ba[i]] = 1 }
+      {
+        m = substr($1, 1, 16); b = $2; fr = $3; code = $4 + 0; v = $5 + 0
+        # The API returns an EMPTY backend label (not null) for requests the LB could not route to
+        # any backend — the empty-NEG / all-backends-unhealthy signature, and 100%-failure evidence.
+        # Treated as a real bucket, and claimed as in-scope when it arrived on this namespace own
+        # gateway, otherwise it would be misfiled as a healthy sibling and the signal would vanish.
+        if (b == "") b = "(no-backend-matched)"
+        if (fr == "") fr = "(no-rule)"
+        # Scope client-side. Everything outside the scope is kept as the sibling aggregate — it is
+        # what distinguishes "this service is dead" from "the whole LB/cluster is degraded".
+        if (kind == "backend")
+          mine = (b in inset) || (b == "(no-backend-matched)" && ns != "" && index(fr, ns) > 0)
+        else
+          mine = (fr == rule)
+        if (!mine) { otot += v; if (code >= 500) oerr += v; next }
+        tot[m] += v; btot[b] += v; T += v
+        ccode[code] += v
+        if (code >= 500) { err[m] += v; berr[b] += v; E += v }
+        if (code >= 500 && v > 0 && (onset == "" || $1 < onset)) onset = $1
+      }
+      END {
+        if (T == 0) {
+          printf "(no in-scope traffic; siblings outside the scope carried total=%d 5xx=%d)\n", otot+0, oerr+0
+          print "[VERDICT: UNKNOWN] G1: metric returned data but none of it matched this namespace scope — the scope is probably wrong. Check LB metric scope against 1d.1."
+          exit
+        }
+        print "-- per minute (complete: numerator AND denominator from the metric) --"; fflush()
+        for (m in tot) printf "%s  total=%-7d 5xx=%-6d 5xx_ratio=%.1f%%\n", \
+          m, tot[m], err[m]+0, (tot[m] ? 100*(err[m]+0)/tot[m] : 0) | "sort"
+        close("sort")
+        print ""
+        print "-- per backend service (one dead service, or all of them?) --"; fflush()
+        for (b in btot) printf "%-62s total=%-7d 5xx=%-6d 5xx_ratio=%.1f%%\n", \
+          b, btot[b], berr[b]+0, (btot[b] ? 100*(berr[b]+0)/btot[b] : 0) | "sort"
+        close("sort")
+        print ""
+        printf "-- response codes --  "
+        for (c in ccode) if (ccode[c] > 0) printf "%d:%d  ", c, ccode[c]
+        print ""
+        printf "SIBLINGS (same LB, OUTSIDE this scope)  total=%d 5xx=%d 5xx_ratio=%.2f%%\n", \
+          otot+0, oerr+0, (otot ? 100*(oerr+0)/otot : 0)
+        print "  -> siblings healthy while in-scope is not = the fault is this service/its NEG."
+        print "  -> siblings elevated too = cluster / node / network-wide (H3 H9 H12 H15 B1)."
+
+        # Peak minute, over minutes carrying enough traffic to mean anything (a 1-request minute
+        # that returned 503 is 100%, and is noise). The RCA template asks for this figure directly.
+        peak = -1
+        for (m in tot) {
+          if (tot[m] < minreq) continue
+          pr = 100*(err[m]+0)/tot[m]
+          if (pr > peak) { peak = pr; pm = m; ptot = tot[m]; perr = err[m]+0 }
+        }
+        # Worst single backend, same volume guard. One dead service among many healthy ones is
+        # diluted in the aggregate exactly as a short burst is diluted across the window.
+        worst = -1
+        for (b in btot) {
+          if (btot[b] < minreq) continue
+          br = 100*(berr[b]+0)/btot[b]
+          if (br > worst) { worst = br; wb = b; wtot = btot[b]; werr = berr[b]+0 }
+        }
+        rw = (T ? 100*(E+0)/T : 0)
+        printf "METRIC_WINDOW  total=%d 5xx=%d 5xx_ratio=%.2f%%  onset=%s\n", \
+          T, E+0, rw, (onset == "" ? "(none)" : onset)
+        if (peak >= 0) printf "METRIC_PEAK    %s  total=%d 5xx=%d 5xx_ratio=%.2f%%  (busiest-qualifying minute, >=%d req)\n", pm, ptot, perr, peak, minreq
+        else           printf "METRIC_PEAK    (no minute carried >=%d requests — too little traffic to rate a per-minute ratio)\n", minreq
+        if (worst >= 0) printf "METRIC_WORST   %s  total=%d 5xx=%d 5xx_ratio=%.2f%%  (worst backend, >=%d req)\n", wb, wtot, werr, worst, minreq
+
+        # Severity takes the WORST of three views: whole window, worst minute, worst backend. Any
+        # one of them alone is a dilution trap — a 2-minute total outage inside a 30-minute window,
+        # or one dead backend among a dozen healthy ones, both vanish into a sub-1% aggregate and
+        # would read INFO. That false all-clear is the exact failure this section exists to prevent.
+        r = rw; src = "window"
+        if (peak  > r) { r = peak;  src = "peak minute " pm }
+        if (worst > r) { r = worst; src = "worst backend " wb }
+        if (E+0 == 0)     printf "[VERDICT: CLEAR] G1: zero 5xx in the LB metric across the window for this scope.\n"
+        else if (r >= 10) printf "[VERDICT: FIRES-CRITICAL] G1: %.2f%% 5xx by %s (window %d of %d) — outage-level error rate; onset %s.\n", r, src, E, T, onset
+        else if (r >= 1)  printf "[VERDICT: FIRES-WARNING] G1: %.2f%% 5xx by %s (window %d of %d) — partial degradation; onset %s.\n", r, src, E, T, onset
+        else              printf "[VERDICT: INFO] G1: %.2f%% 5xx by %s (window %d of %d) — below the 1%% noise floor even at peak; %d errors did occur, so scan the per-minute rows before dismissing.\n", r, src, E, T, E
+      }'
+  fi
+fi
+
 if [ -n "$LB_FILTER" ] && [ "$LB_LOGGING_ENABLED" = "true" ]; then
+  # The LOG reads below are SECONDARY to the metric in 1d.2m. They exist for what a metric cannot
+  # give — statusDetails, requestUrl, per-request latency — and their counts are a LOWER BOUND:
+  # logConfig.sampleRate and any project logging exclusion (commonly one dropping health/polling
+  # endpoints) silently remove requests from both numerator and denominator here, but not from the
+  # metric. Where the two disagree, the metric wins.
+  #
   # Two reads, because one cannot answer both halves of the ratio on a busy LB.
   #
-  # Read A (5xx only) is COMPLETE across the window: errors are rare, so they fit under the limit,
-  # and this is what identifies the onset minute and the worst backend. Read B (all requests) is a
-  # capped SAMPLE that only supplies a denominator — at a few thousand req/min, $LB_LOG_LIMIT
+  # Read A (5xx only) is complete across the window *as far as logging captured it*: errors are rare
+  # enough to fit under the limit, so it can still name the worst backend. Read B (all requests) is
+  # a capped SAMPLE that only supplies a denominator — at a few thousand req/min, $LB_LOG_LIMIT
   # entries can cover well under a minute of a 30-minute window, so a single combined read would
   # report "0 5xx" for an incident that produced hundreds of them minutes later. That is exactly
   # how a real burst gets missed, so the counts and the ratio are reported separately and labelled.
-  section "1d.2a — LB 5xx Counts, COMPLETE across window (per minute, per backend)"
+  section "1d.2a — LB 5xx Counts from LOGS (secondary — LOWER BOUND, see 1d.2m for the true count)"
   gcloud logging read \
     'resource.type="http_load_balancer"
      '"$LB_FILTER"'
@@ -394,7 +650,7 @@ if [ -n "$LB_FILTER" ] && [ "$LB_LOGGING_ENABLED" = "true" ]; then
         if (first=="") first=$1
       }
       END {
-        if (E==0) {print "(no 5xx in window — G1 signal CLEAR for this scope)"; exit}
+        if (E==0) {print "(no 5xx in the LB LOGS for this scope — NOT a G1 all-clear on its own: a logging exclusion filter or sampleRate<1 can hide every one of them. Take the verdict from 1d.2m.)"; exit}
         print "-- 5xx per minute (complete) --  onset = first minute that steps up"; fflush()
         for (m in emin) printf "%s  5xx=%d\n", m, emin[m] | "sort"
         close("sort")
@@ -409,7 +665,7 @@ if [ -n "$LB_FILTER" ] && [ "$LB_LOGGING_ENABLED" = "true" ]; then
         if (E>=lim) printf "[NOTE] 5xx read hit --limit=%d — even the error stream is truncated; raise $LB_5XX_LIMIT.\n", lim
       }'
 
-  section "1d.2b — LB Traffic Volume (SAMPLE — denominator for the ratio)"
+  section "1d.2b — LB Traffic Volume from LOGS (SAMPLE — superseded by 1d.2m's denominator)"
   gcloud logging read \
     'resource.type="http_load_balancer"
      '"$LB_FILTER"'
@@ -448,7 +704,7 @@ if [ -n "$LB_FILTER" ] && [ "$LB_LOGGING_ENABLED" = "true" ]; then
         }
       }'
 
-  section "1d.3 — LB 5xx Breakdown"
+  section "1d.3 — LB 5xx Breakdown from LOGS (statusDetails + requestUrl — what metrics cannot carry)"
   gcloud logging read \
     'resource.type="http_load_balancer"
      '"$LB_FILTER"'
@@ -459,7 +715,7 @@ if [ -n "$LB_FILTER" ] && [ "$LB_LOGGING_ENABLED" = "true" ]; then
     --format="table(timestamp,httpRequest.status,httpRequest.latency,jsonPayload.statusDetails,httpRequest.requestUrl)" \
     --limit=1000
 
-  section "1d.4 — LB Latency Distribution"
+  section "1d.4 — LB Latency Distribution from LOGS (capped sample — read the shape, not the volume)"
   gcloud logging read \
     'resource.type="http_load_balancer"
      '"$LB_FILTER"'
@@ -475,7 +731,7 @@ if [ -n "$LB_FILTER" ] && [ "$LB_LOGGING_ENABLED" = "true" ]; then
       END {print "< 100ms:", fast; print "100-500ms:", mid; print "500ms-2s:", slow; print "> 2s:", veryslow}
     '
 
-  section "1d.5 — LB statusDetails"
+  section "1d.5 — LB statusDetails from LOGS (distribution across the LOGGED 5xx only)"
   gcloud logging read \
     'resource.type="http_load_balancer"
      '"$LB_FILTER"'
@@ -485,7 +741,7 @@ if [ -n "$LB_FILTER" ] && [ "$LB_LOGGING_ENABLED" = "true" ]; then
     --project=$PROJECT --format="value(jsonPayload.statusDetails)" --limit=1000 | sort | uniq -c | sort -rn
 
 else
-  note "1d steps 2-5 skipped: no LB scope (neither Ingress nor Gateway VIP resolved to a forwarding rule, and no backend service matched this namespace) or logConfig.enable=false. Set \$LB_NAME or \$LB_BACKEND_NAME and re-run, or run the LB queries manually (see skill 1d). This is UNKNOWN for the G1 5xx signal, not CLEAR."
+  note "1d log steps 2a-5 skipped: no LB scope (neither Ingress nor Gateway VIP resolved to a forwarding rule, and no backend service matched this namespace) or logConfig.enable=false. Set \$LB_NAME or \$LB_BACKEND_NAME and re-run, or run the LB queries manually (see skill 1d). The 5xx COUNTS are unaffected — take them from the metric in 1d.2m, which needs no LB logging at all. What is lost here is the qualitative detail only: statusDetails, requestUrl and latency are UNKNOWN."
 fi
 
 section "1e — Deploy Gate (H7)"
