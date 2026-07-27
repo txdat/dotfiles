@@ -51,7 +51,7 @@ List feature plans by name, owning phase, dependencies, delivered outcome, and a
 ## Self-Check (BLOCKING)
 
 - [ ] **Outcome:** goal, pain, success, baseline or measurement phase, constraints, and boundaries are concrete.
-- [ ] **Options:** viable choices or constraint-based eliminations are honest; trade-offs and critical failures are covered; the simpler-option counterexample was attempted.
+- [ ] **Options:** viable choices or constraint-based eliminations are honest; trade-offs and critical failures are covered; the simpler option is named in `### 2` and either adopted or defeated by a stated goal or constraint, never waved off. Simpler option: __.
 - [ ] **Recommendation/contracts:** rationale follows evidence; costs are explicit; relevant ownership, compatibility, delivery, and failure semantics are defined.
 - [ ] **Migration:** phases are ordered and independently deployable; each has Change/Verify/Rollback; destructive steps, cutover, synchronization, and reconciliation are handled where relevant.
 - [ ] **Handoff:** decomposition is acyclic and actionable; every contract has a plan, every plan has a phase, and observable contract behavior is assigned to AC/TC proof without replacing the plan Goal.

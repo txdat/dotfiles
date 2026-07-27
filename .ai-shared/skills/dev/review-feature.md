@@ -14,6 +14,7 @@ Avoid anchoring on the proposed tests:
 2. Before inspecting proposed TCs, independently list the observable outcomes and failure conditions required by the Goal.
 3. Compare that list with the proposed ACs. Identify missing, invented, ambiguous, mechanism-coupled, or conflicting criteria.
 4. Only then inspect TCs and search adversarially for counterexamples.
+5. Last of all — never before step 4 — read `## Counterexamples Attempted` and any `## Review History`. Reading them earlier tells you which areas are already "settled" and is the anchoring this ordering exists to prevent. Use them only to widen coverage and to audit the claims themselves: a recorded defeater is an assertion to verify, not a closed question, and a round that changed ACs/TCs is a place to check the change actually landed.
 
 Challenge every AC/TC graph with:
 
@@ -43,18 +44,28 @@ Undefined or unsupported expected behavior is blocking and becomes an Open Quest
 
 `READY` means the behavior is ready for the human's decision, not approved. Leave `Status: planning` — review never approves. The spec pause in `approval.md` follows, driven by ship-feature or by the user directly.
 
+On **every** verdict, READY or NEEDS CHANGES, the main agent appends one entry to `## Review History` at the end of the plan — a rejected round is the one a later reviewer gains most from:
+
+```text
+### Review <ISO date> — READY | NEEDS CHANGES
+Attacked: <counterexample tried> — <what defeated it, or the finding it produced>
+Changed:  <AC/TC IDs added, revised, or dropped in response> | none
+```
+
+Keep it to what a future reviewer can act on; findings that changed nothing are noise, and git history already holds the diff. The reviewer reports these; only the main agent writes them.
+
 On `READY`, the **main agent** records the verdict in the plan header: `Review: READY <ISO date>`. That marker is what makes the plan eligible for the approval pause and, downstream, for execution — `gate-check` refuses an `approved` plan without it. Only ever write it after an actual review reported READY; a delegated reviewer never writes it. On `NEEDS CHANGES`, clear `Review:`.
 
 ## Self-Check (BLOCKING)
 
-- [ ] **Independence:** `independence.md` satisfied — fresh agent, or a session that did not draft; any in-session fallback re-derived every judgment from the plan file and source. Context: __.
+- [ ] **Independence:** `independence.md` satisfied — fresh agent, or a session that did not draft; any in-session fallback re-derived every judgment from the plan file and source; `## Counterexamples Attempted` and `## Review History` were read only after my own attacks. Context: __.
 - [ ] **Mode/questions:** eligibility or full schema verified; no Open Questions surfaced. Issues: __.
 - [ ] **Independent outcomes:** expected outcomes were derived from Goal/sources before TC inspection; missing/invented ACs resolved. Issues: __.
-- [ ] **Adversarial behavior:** every AC/TC faced counterexample, invalid-pass, and valid-rejection challenges; failure/edge axes are sufficient. Gaps: __.
+- [ ] **Adversarial behavior:** every AC/TC faced counterexample, invalid-pass, and valid-rejection challenges, each attempt named with what defeated it rather than asserted as clean; `## Counterexamples Attempted` was re-attacked rather than accepted — verify each claimed defeater really constrains the cheat, and treat a thin, absent, or self-defeating entry as a finding; failure/edge axes are sufficient. Gaps: __.
 - [ ] **Approach/system fit:** alternatives, boundaries, compatibility, order, blast radius, rollback, and Non-functional effects are sound. Issues: __.
 - [ ] **Traceability/TDD:** Goal → AC ↔ TC ↔ Step graph, fail/pass intent, meaningful observable assertions, and affected tests hold; each TC's entry point actually executes the behavior it proves. Gaps: __.
 - [ ] **Execution shape:** steps are dependency-ordered, ≤10, and each names its TC; the PR partition is independently mergeable and splits no TC; `altitude.md` holds. Issues: __.
 
-Report summary, independently derived outcomes, blocking findings, counterexamples attempted, suggestions, and `READY` or `NEEDS CHANGES`.
+Report summary, independently derived outcomes, blocking findings, the counterexamples **you** attempted (distinct from the plan's `## Counterexamples Attempted`, which you are judging), suggestions, and `READY` or `NEEDS CHANGES`.
 
 `NEEDS CHANGES`: clear `Review:`, offer plan fixes, and wait; design rethink routes to design-feature. `READY`: leave `Status: planning`, write `Review: READY <ISO date>`, and print: `Plan READY. Run approval.md's spec pause — approval is the user's, not mine.`

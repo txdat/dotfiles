@@ -30,6 +30,17 @@ Any later change to the Goal, an AC, or a TC — during execution, review, or re
 
 This is not a deviation. A **deviation** is a different *means* to the same approved behavior: log it under `## Deviations` per CORE #5 and keep going. A change to the *behavior itself* comes back here. If you cannot tell which one you are looking at, it is this one.
 
+## Abandoning a plan
+
+Dropping a plan before it ships is the human's call, on the same authority as granting approval — propose it, never decide it. On an explicit answer:
+
+1. `Worktree:` recorded → remove the worktree and its branch from `$MAIN_ROOT`, requiring a clean tree first and showing any refusal instead of forcing it. A plan dropped at `planning` or `approved` never had one; skip this.
+2. In `$MAIN_ROOT`'s locator copy, set `Status: abandoned`, clear `Worktree:`, and record in one line what was dropped and why.
+
+Abandonment is the inverse of archival, so the record lives in the opposite place. `archived` survives on a branch that merges, which is why create-pr commits it there and deletes the locator; a dropped branch takes its plan copy with it, leaving the locator as the only surviving record — and the only one `gate-check` can see, since it scans `$MAIN_ROOT/docs/plans/`. Write `abandoned` anywhere else and the plan stays active forever, holding the session pin against every later plan.
+
+`abandoned` and `archived` are the two terminal statuses: both leave the active set and release the pin, and neither is an entry status, so an abandoned plan blocks at whatever gate it is aimed at. Reviving one is not a status edit — it re-enters at `planning` and comes back through review-feature and the spec pause above.
+
 ## What is enforced, and what is not
 
 `gate-check` blocks execution unless `Status: approved` **and** `Review: READY` are both set. That is the whole mechanical guarantee — it proves a review happened before the approval, and nothing more. It cannot tell who set either field, and no parser can check that an AC is the right AC.

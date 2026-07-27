@@ -43,6 +43,15 @@ run_gate() {
     (cd "$repo" && "$GATE")
 }
 
+# Same-session variant: pinning is keyed by session_id, so exercising pin
+# reuse/staleness needs two calls sharing one session.
+run_gate_session() {
+  local repo="$1" session="$2" skill="$3" args="$4"
+  jq -cn --arg session "$session" --arg skill "$skill" --arg args "$args" \
+    '{session_id:$session,tool_input:{skill:$skill,arguments:$args}}' |
+    (cd "$repo" && "$GATE")
+}
+
 assert_pass() {
   local output="$1" label="$2"
   if [[ -n "$output" ]]; then
@@ -188,5 +197,33 @@ repo=$(new_repo)
 write_plan "$repo/docs/plans/gate.md" approved fix '#12' '' '## PR Pattern (provisional)' ''
 output=$(run_gate "$repo" dev-fix-bug 'execute docs/plans/gate.md')
 assert_block "$output" 'no '"'"'Review: READY' 'fix-bug execute also requires the review marker'
+
+# 'abandoned' is terminal: a dropped plan must leave the active set, so it
+# neither counts toward the multiple-active ambiguity nor blocks the lone
+# remaining plan from being adopted without an explicit name.
+repo=$(new_repo)
+write_plan "$repo/docs/plans/dropped.md" abandoned feature '#12' '' '## PR Pattern (provisional)'
+write_plan "$repo/docs/plans/gate.md" approved feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate "$repo" dev-execute-feature '')
+assert_pass "$output" 'abandoned plan does not make the lone active plan ambiguous'
+
+# Abandoning the pinned plan must release the session pin, exactly as
+# archiving does. Otherwise a dropped plan keeps capturing every later
+# unnamed invocation in that session and the remaining plan is unreachable.
+repo=$(new_repo)
+session="gate-check-test-$$-abandon-pin"
+write_plan "$repo/docs/plans/gate.md" approved feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate_session "$repo" "$session" dev-execute-feature 'docs/plans/gate.md')
+assert_pass "$output" 'explicit plan pins the session'
+write_plan "$repo/docs/plans/gate.md" abandoned feature '#12' '' '## PR Pattern (provisional)'
+write_plan "$repo/docs/plans/next.md" approved feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate_session "$repo" "$session" dev-execute-feature '')
+assert_pass "$output" 'abandoning the pinned plan releases the pin for the next plan'
+
+# An abandoned plan is not an entry status for any skill.
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" abandoned feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate "$repo" dev-execute-feature 'docs/plans/gate.md')
+assert_block "$output" 'abandoned' 'abandoned plan cannot be executed'
 
 printf 'All gate-check tests passed. Temporary fixtures: %s\n' "$TMP_ROOT"

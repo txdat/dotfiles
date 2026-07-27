@@ -26,6 +26,7 @@ Status: planning | Type: feature|fix|refactor | Issue: | Review: | Worktree:
 ## Risk Flags                  # risk / mitigation
 ## Acceptance Criteria         # AC-N observable outcome + Source / Success / Failure
 ## Test Cases                  # TC-N scenario + Proves / Given / When / Then
+## Counterexamples Attempted   # target AC/TC + the attempt + what defeated it
 ## Affected Existing Tests     # test + reachability reason + still passes/needs update
 ## Implementation Steps        # Step N + action + explicit satisfying TC IDs
 ## Out of Scope                # item + reason
@@ -56,7 +57,7 @@ Design-feature proposes behavior; it never approves it. `approval.md` (single so
 3. Convert each atomic outcome into one implementation-independent AC. Unsupported expected behavior is an Open Question, never an invented AC.
 4. Cite the source for every AC. Replace subjective terms (`fast`, `safe`, `correct`) with observable measures or ask the user.
 5. Derive TCs only after the AC set is complete. Each TC has exactly one `Proves: AC-N`; an AC may own multiple positive, negative, boundary, failure, concurrency, or security scenarios.
-6. Attempt the counterexample: "Can an implementation pass all proposed TCs while violating this AC or the Goal?" If yes, refine ACs/TCs before handoff.
+6. Attempt the counterexample: "Can an implementation pass all proposed TCs while violating this AC or the Goal?" If yes, refine ACs/TCs before handoff. Record each attempt in `## Counterexamples Attempted` with **what defeated it** — name the AC or TC that constrains the cheat, not a defect in the plan. An attempt nothing defeats is a missing TC: add it, then log the attempt as defeated by the TC you added. review-feature reads the plan and nothing else, so an attempt you keep in your head is one it cannot re-attack, and a bare "none found" is unfalsifiable.
 
 ## Planning Rules
 
@@ -81,7 +82,7 @@ Show name, type, requirement, AC/TC/step counts, and path. Ask for design change
 ## Self-Check (BLOCKING)
 
 - [ ] **Schema and questions:** every section that applies is filled; Open Questions empty; `Status: planning`; `Review:` empty.
-- [ ] **Goal and ACs:** Goal is preserved; each AC is atomic, observable, sourced, pass/fail decidable, and implementation-independent; counterexample attempt found no known way to pass while violating the Goal.
+- [ ] **Goal and ACs:** Goal is preserved; each AC is atomic, observable, sourced, pass/fail decidable, and implementation-independent; `## Counterexamples Attempted` names each attempt, its target, and the AC/TC that defeated it — never a bare "none found", never an undefeated attempt left standing.
 - [ ] **Approach/impact:** requirement and scope are measurable; components/contracts/data/non-functional effects and decisions are concrete; every affected component, dependency, and contract has its failure behavior answered.
 - [ ] **BDD/TDD:** every TC has Proves/Given/When/Then, one owning AC, and correct fail/pass intent; Goal → AC ↔ TC ↔ Step mapping is complete; affected existing tests are reasoned.
 - [ ] **Conditional rigor:** each new structure has guard/invariant/boundary TC; behavior-axis combinations are covered or excluded with reason.

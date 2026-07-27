@@ -33,7 +33,17 @@ case "${1:-}" in
       case "$path" in *Test.*|*Spec.*) continue ;; esac
       allowed_test=false
       for test_file in "${test_paths[@]}"; do [[ "$path" == "$test_file" ]] && allowed_test=true; done
-      $allowed_test && continue
+      if $allowed_test; then
+        # --test exempts a path that does not look like a test, so it is the
+        # one way past the non-test-path block below. Require the claim to be
+        # backed by test code the commit actually adds: an in-source test file
+        # that introduces no test declares itself a test and isn't one.
+        additions=$(git show --format= --unified=0 "$commit" -- "$path" | sed -n 's/^+\([^+]\)/\1/p')
+        if ! printf '%s\n' "$additions" | rg -q '#\[(test|cfg\(test\))|\bmod tests\b|\bdef test|\bclass Test|\bfunc (Test|Benchmark|Fuzz)|@(Test|ParameterizedTest|Nested)\b|\[(Test|Fact|Theory)\]|\b(it|test|describe)(\.(each|only|skip))?[[:space:]]*\(|\bTEST(_F|_P|_CASE)?[[:space:]]*\(|\bfunction test'; then
+          block "--test path adds no test code: $path (declare a real stub with --stub, or commit the test)"
+        fi
+        continue
+      fi
       allowed_stub=false
       for stub in "${stub_paths[@]}"; do [[ "$path" == "$stub" ]] && allowed_stub=true; done
       $allowed_stub || block "proof touches non-test path: $path"

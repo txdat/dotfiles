@@ -8,6 +8,8 @@ Use `worktree.md` exactly. Bind `<slug>` from the plan filename; single branch `
 
 Once the worktree copy exists, set `Status: in-progress` and commit `docs(<scope>): start plan execution` before proof. Plan edits are separate from proof commits and otherwise accompany the code they describe.
 
+Because that flip precedes proof, `in-progress` means *execution was entered*, not that any proof exists. On resume, establish where it actually stopped from the worktree's commits, never from the status: no proof commit yet → start at RED as if from `approved`; proof present → `tdd.md` step 3 governs which proof is reusable. A slice whose proof and implementation are both absent has no work to preserve.
+
 ## Strategy
 
 Execute inline by default. Delegation is permitted **only** when more than three steps are genuinely independent and each owns an exclusive set of source/test files; otherwise every step runs inline, whatever its difficulty. When that bar is met, route each delegated step by its nature, not by convenience: critical → `senior-engineer`; simple and well-patterned → `junior-engineer`. Workers receive the Goal, owning ACs, TCs, steps, critical invariants, file ownership, and off-limits paths, and may neither edit plans nor run Git. The main agent verifies the resulting file union, reruns the union of targeted tests and coverage, and alone commits.

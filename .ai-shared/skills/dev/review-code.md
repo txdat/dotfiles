@@ -42,7 +42,7 @@ Verdict: any blocking finding → `REWORK REQUIRED`; none plus Should Fix → `P
 ## Self-Check (BLOCKING)
 
 - [ ] **Independence:** `independence.md` satisfied — fresh agent, or a session that did not implement; any in-session fallback re-derived every verdict from plan, diff, and test runs; every file read, test, and Git command ran inside `<worktree>`. Context: __.
-- [ ] **Goal/behavior:** every AC has independent PASS evidence against the Goal; adversarial counterexample attempted; every TC maps to its AC and test; edge/failure paths and meaningful assertions verified. Gaps: __.
+- [ ] **Goal/behavior:** every AC has independent PASS evidence against the Goal; each adversarial counterexample attempted is named with what defeated it in the actual code, not asserted as clean; every TC maps to its AC and test; edge/failure paths and meaningful assertions verified. Gaps: __.
 - [ ] **Proof and symbols:** proof contents independently checked; app symbols resolve. Issues: __.
 - [ ] **Architecture/data:** every Non-functional commitment and each concern applicable to changed paths were checked; no repository-wide audit was substituted. Issues: __.
 - [ ] **Scope/hygiene:** deviations complete; no unplanned change, secret, TODO, or debug/conflict artifact. Issues: __.

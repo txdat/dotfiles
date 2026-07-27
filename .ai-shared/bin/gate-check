@@ -12,8 +12,12 @@
 #   create-pr       → reviewed → archived
 #   fix-bug diagnose → read-only, plan optional
 #   fix-bug execute  → approved fix plan
+#   (human abandon) → abandoned (terminal; any non-archived status)
 #
 # Each skill's entry gate is the prerequisite status.
+# archived and abandoned are the two terminal statuses: both leave the active
+# set and both drop a session pin. Neither is an entry status for any skill,
+# so an abandoned plan blocks at whatever gate it is aimed at.
 # Review-code additionally requires proof-commit sequencing for every plan slice.
 # Plan-only commits (every changed path under docs/plans/) are workflow
 # metadata and are exempt from sequencing — the skills deliberately commit
@@ -178,7 +182,8 @@ find_token_plan() {
   return 1
 }
 
-# Count plans in an active (non-archived) status.
+# Count plans in an active status — i.e. not one of the terminal ones
+# (archived = shipped, abandoned = dropped before shipping).
 count_active_plans() {
   local dir="docs/plans"
   [[ -d "$dir" ]] || { echo 0; return 0; }
@@ -207,8 +212,8 @@ read_pin() {
   local p
   p=$(head -1 "$PIN_FILE" 2>/dev/null || true)
   [[ -n "$p" && -f "$p" ]] || return 1
-  # Stale if archived — drop the pin so a fresh plan can take over.
-  [[ "$(plan_status "$p")" == "archived" ]] && return 1
+  # Stale once terminal — drop the pin so a fresh plan can take over.
+  case "$(plan_status "$p")" in archived|abandoned) return 1 ;; esac
   echo "$p"
 }
 

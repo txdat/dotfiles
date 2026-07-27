@@ -20,6 +20,8 @@ Resume: `/dev:ship-feature add-jwt from execute`
 
 Plan review enforces the Open Questions gate and does the real work: it independently derives the expected outcomes from `## Goal` before reading the proposed TCs, then attacks them with counterexamples. It returns READY; it never approves.
 
+Plan statuses run `planning → approved → in-progress → implemented → reviewed → archived`, with `abandoned` as the second terminal status for work dropped before it ships. `archived` is create-pr's own last step once the PRs exist; `abandoned` is a human decision and lives in `approval.md` with the others.
+
 **Every approval is the human's, and `approval.md` is the single source** — both the application spec and the architecture decision. Nothing else in this tree states when approval is granted; they point there. A plan reaches the pause only carrying `Review: READY <date>` from review-feature, and `gate-check` refuses to execute an `approved` plan without it.
 
 Know what enforces what: ENGINEERING_CORE `Self-check boundary`. Short version — the hook proves state, the self-checks prove correctness, and the pause proves consent.

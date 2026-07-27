@@ -16,6 +16,7 @@ Use an explicit `from` phase or the active plan's live header. Route on `Status:
 | `implemented` | — | review-code |
 | `reviewed` | — | create-pr |
 | `archived` | — | STOP — already shipped |
+| `abandoned` | — | STOP — dropped; reviving re-enters at `planning` (`approval.md`) |
 
 Once a plan exists, pass its explicit path to every downstream phase. A phase is complete only when its owner passes its self-check.
 

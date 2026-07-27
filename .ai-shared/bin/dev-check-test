@@ -34,6 +34,22 @@ printf '#[test]\nfn behavior() {}\n' > "$TMP/src/lib.rs"
 git -C "$TMP" add . && git -C "$TMP" commit -qm 'test(red): inline rust test'
 ok proof HEAD --test src/lib.rs
 
+# --test is the only way past the non-test-path block, so it must be backed by
+# test code: declaring a plain implementation file as a test cannot launder it.
+git -C "$TMP" reset -q --hard HEAD~1
+mkdir -p "$TMP/src"
+printf 'def f():\n    return 42\n' > "$TMP/src/impl.py"
+git -C "$TMP" add . && git -C "$TMP" commit -qm 'test(red): smuggled impl'
+bad proof HEAD --test src/impl.py
+bad proof HEAD --stub src/impl.py
+bad proof HEAD
+
+git -C "$TMP" reset -q --hard HEAD~1
+mkdir -p "$TMP/src"
+printf '#[test]\nfn behavior() {}\n' > "$TMP/src/lib.rs"
+git -C "$TMP" add . && git -C "$TMP" commit -qm 'test(red): inline rust test again'
+ok proof HEAD --test src/lib.rs
+
 printf 'fn stub() -> u32 { match 0 { _ => todo!("later") } }\n' > "$TMP/src/stub.rs"
 printf 'int Foo() => throw new NotImplementedException();\n' > "$TMP/src/Stub.cs"
 git -C "$TMP" add . && git -C "$TMP" commit -qm 'test(red): throwing stubs'
