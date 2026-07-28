@@ -33,7 +33,7 @@ Use `worktree.md` with branch `fix/<slug>` from `<base>`. Record the worktree, c
 Read `tdd.md`. Delegation, if any, follows execute-feature's `## Strategy` — a root-cause fix is a critical step (`senior-engineer`). Apply these bug-specific steps:
 
 1. Use the approved regression TC; do not add, edit, merge, or weaken behavior during execution.
-2. Author the regression test from the TC's intent line per execute-feature's `The RED commit authors the TC body` — including reject-if-green on a stub-free baseline — prove failure comes from the diagnosed bug, commit `test(red): <bug>`, and run `dev-check proof <commit>` before implementation.
+2. Author the regression test from the TC's intent line per execute-feature's `The RED commit authors the TC body`, applying `tdd.md` step 2 in full — reject-if-green on a stub-free baseline included — prove failure comes from the diagnosed bug, commit `test(red): <bug>`, and run `dev-check proof <commit>` before implementation.
 3. Verify symbols against target types/modules. Apply the smallest root-cause fix that satisfies the parent AC for all valid inputs; commit separately and verify reproduction plus targeted module tests.
 4. Read `coverage.md`, measure changed files, and run `dev-check coverage <percent> [uncovered-critical]`. The regression test must assert the buggy branch; otherwise coverage is ❌ regardless of percentage.
 5. Follow `dependents.md` for changed externally reachable symbols. Breakage or unresolved reachability → STOP and re-plan.

@@ -22,7 +22,11 @@ For each PR in PR-Pattern order, check out its branch and create a body from the
 - HOW: approach, decisions, correctness, out of scope;
 - Testing: automated evidence and manual steps;
 - project checklist, or default checklist;
-- `Closes #N` from the plan.
+- the plan's issue link — `Closes #N` **only when both** conditions hold, otherwise `Refs #N`:
+  1. no other active plan links `#N` — `rg -l 'Issue: #N\b' "$MAIN_ROOT/docs/plans/"` lists this plan alone. Archival removes each shipped plan's locator (`## Archive and Cleanup` step 3), so what remains is exactly the still-active claimants;
+  2. `#N` carries no unchecked deferred-goal entries — `gh issue view N`.
+
+  The second condition is not redundant: `frame-goal` defers goals as checklist entries **before any plan file exists for them**, so the scan alone would let goal 1's PR close a parent that still owes goals 2 and 3. A parent is closed by the last goal to ship, never by whichever slice merges first. Unsure → ask rather than guess a verb.
 
 For a chain, every PR body includes the complete ordered branch table, with the current row marked and known PR numbers filled. Create with:
 
@@ -31,6 +35,8 @@ gh pr create --title "..." --body "..." --base <parent> --draft
 ```
 
 Omit `--draft` when `ready` is requested. After creating each later chain PR, update PR 1's exact branch row with its PR number; never substring-match branch names.
+
+When the plan links a shared parent, tick this goal's entry in the parent's task list and note the PR number (`gh issue edit`). The tick means *a PR exists*, not *merged* — the parent itself closes when the last goal's PR merges via its `Closes #N`. Skipping the tick strands the parent open forever, since the next sibling's closure check reads exactly these boxes.
 
 ## Archive and Cleanup
 
@@ -55,7 +61,7 @@ Chain note: the archive commit lands only on the final branch. Earlier PRs keep 
 ## Self-Check (BLOCKING)
 
 - [ ] **Committed scope:** every branch has reviewed commits above its correct parent; worktree remained clean; artifact scan passed.
-- [ ] **Description:** title, WHAT, HOW, Testing, checklist, and issue closure are accurate to the actual diff.
+- [ ] **Description:** title, WHAT, HOW, Testing, and checklist are accurate to the actual diff; the issue verb was resolved, not assumed — `Closes` only where both conditions held (no other active plan links it **and** no unchecked deferred goal remains on it), `Refs` otherwise; a shared parent's entry for this goal was ticked with its PR number.
 - [ ] **Chain, if used:** all rows/parents/order match the finalized pattern; each created number is linked from PR 1.
 - [ ] **Archive safety:** the `archived` flip was committed on the last branch and pushed; locator identity and archived persistence were verified before removing that exact locator — never content equality, which the frozen locator is expected to fail; no uncommitted work in `<worktree>` and no forced teardown.
 
@@ -63,6 +69,6 @@ The first two checks gate publication. After PR creation, complete the chain and
 
 ## Shipped, and what comes after
 
-`archived` and `Feature shipped.` mean the PR exists and this cycle is closed — **never merged, never deployed**. From here the branch is immutable under this workflow: any requested change to the PR (review feedback, a follow-up fix) is a new artifact-bound cycle with its own plan, issue, review, approval, and PR. Nothing reopens an archived plan or updates a PR in place, and teardown already removed the worktree one would need.
+`archived` and `Feature shipped.` mean the PR exists and this cycle is closed — **never merged, never deployed**. From here the branch is immutable under this workflow: any requested change to the PR (review feedback, a follow-up fix) is a new artifact-bound cycle with its own plan, review, approval, and PR, linking a new issue or the same parent. Nothing reopens an archived plan or updates a PR in place, and teardown already removed the worktree one would need.
 
 **A follow-up amending a PR that has not merged yet parents on that PR's branch, not `<base>`** — `<base>` does not contain the code being amended. The new plan records that branch in its PR Pattern `Parent` column and its PR targets it, so the two merge in order. Once the original merges, the follow-up parents on `<base>` like any other plan.

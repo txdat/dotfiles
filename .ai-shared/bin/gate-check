@@ -680,7 +680,7 @@ case "$SKILL_SLUG" in
       # design-feature owns issue creation, so the omission surfaces here rather
       # than at execution — after review and approval have already been spent.
       if ! has_issue "$PLAN"; then
-        block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. design-feature creates it ('gh issue create'); record it as 'Issue: #<n>', then re-run."
+        block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. Link an existing issue (a parent issue may back several plans) or create one ('gh issue create'); record it as 'Issue: #<n>', then re-run."
       fi
       require_traceability "$PLAN"
     fi
@@ -700,7 +700,7 @@ case "$SKILL_SLUG" in
       esac
       # Every plan (feature/fix/refactor) must be issue-backed before implementation.
       if ! has_issue "$PLAN"; then
-        block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. design-feature creates it ('gh issue create'); record it as 'Issue: #<n>', then re-run."
+        block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. Link an existing issue (a parent issue may back several plans) or create one ('gh issue create'); record it as 'Issue: #<n>', then re-run."
       fi
       # Approval is only reachable through review: an approved plan with no
       # review marker was approved out of order (see approval.md).
@@ -725,7 +725,7 @@ case "$SKILL_SLUG" in
       esac
       # Catches plans that entered implemented without the normal execution gate.
       if ! has_issue "$PLAN"; then
-        block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. Create one ('gh issue create'), record it as 'Issue: #<n>', then re-run."
+        block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. Link an existing issue or create one ('gh issue create'), record it as 'Issue: #<n>', then re-run."
       fi
       # Re-checked here, not just at review-feature: the plan is edited between
       # the two (Deviations, Coverage Gaps, a TC added mid-flight), so a TC that
@@ -771,7 +771,7 @@ case "$SKILL_SLUG" in
         block "Plan PR Pattern is missing or still provisional. Run review-code to finalize it before create-pr."
       fi
       if ! has_issue "$PLAN"; then
-        block "Plan has no linked issue — the 'Issue:' field must hold '#<n>' before a PR can reference it. Create one ('gh issue create'), record it, then re-run."
+        block "Plan has no linked issue — the 'Issue:' field must hold '#<n>' before a PR can reference it. Link an existing issue or create one ('gh issue create'), record it, then re-run."
       fi
     fi
     ;;
@@ -804,7 +804,7 @@ case "$SKILL_SLUG" in
         *) block "Active plan status is '$STATUS' — complete the normal fix-plan workflow before mutation." ;;
       esac
       if ! has_issue "$PLAN"; then
-        block "Active plan '$PLAN' has no linked issue — the 'Issue:' field is empty. Create one ('gh issue create'), record it as 'Issue: #<n>', then re-run."
+        block "Active plan '$PLAN' has no linked issue — the 'Issue:' field is empty. Link an existing issue or create one ('gh issue create'), record it as 'Issue: #<n>', then re-run."
       fi
       if ! has_review_ready "$PLAN"; then
         block "Active plan '$PLAN' is '$STATUS' but has no 'Review: READY <date>' marker — the fix plan was approved without a recorded review-feature verdict. Run review-feature, then approval.md's pause."

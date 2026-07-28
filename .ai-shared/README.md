@@ -24,7 +24,7 @@ This rule governs the ad-hoc lane only. Inside the dev skills it is **superseded
 
 **3-strike rule.** If the same problem persists after 3 fix attempts: STOP. Output a recap — what was tried, what each attempt produced, why it likely failed. Wait for explicit guidance.
 
-**Session handoff.** Hooks snapshot verified repo state to `~/.cache/ai-handoff/<repo-basename>[-<plan-slug>].md` at compaction and session end, and inject it at session start. The snapshot is machine-written; your duty is the narrative: when leaving unfinished planless work, append/refresh `## Goal`, `## Blockers`, `## Remaining Work` in that file (verified facts, exact paths, no secrets) — snapshots preserve those sections. Where handoff and compaction summary disagree, the handoff wins; delete the file once its work ships.
+**Session handoff.** Nothing writes or injects one for you: run the `handoff` skill (single source — path, triggers, format, rules) when asked to hand off, when ending a session with work remaining, at dev-flow phase boundaries in a long session, when context is filling, and before continuing another session's work on a repo.
 
 **A hook block is not negotiable.** The `bin/gate-check` PreToolUse hook is the mechanical layer of the dev skills; when it blocks, STOP and satisfy the prerequisite. Never rephrase an invocation to evade it. What it does and does not guarantee — and the judgment layer that covers the rest — is PROCESS `Self-check boundary`.
 
@@ -47,19 +47,19 @@ Load the skill for the current phase via the Skill tool. Each skill loads the si
 | Review design | `dev-review-feature` / `dev-review-system` | `independence.md` |
 | Approve | (user pause) | `approval.md` |
 | Execute | `dev-execute-feature` | `tdd.md`, `coverage.md`, `worktree.md`, `dependents.md` |
-| Review code | `dev-review-code` | `independence.md` |
+| Review code | `dev-review-code` | `independence.md`, `tdd.md` |
 | Publish PR | `dev-create-pr` | `worktree.md` |
 | Fix bug | `dev-fix-bug` | — |
 | Explore | `dev-explore` | — |
 | Create issue | `dev-create-issue` | — |
 
 ## Lifecycle
-Plan statuses: `planning → approved → in-progress → implemented → reviewed → archived`; `abandoned` = dropped early. Terminal plans (archived/abandoned) are inert and never entry states; revival re-enters at planning.
+Plan statuses: `planning → approved → in-progress → implemented → reviewed → archived`; `abandoned` = dropped early. Both terminal; `approval.md` owns their semantics and revival re-enters at planning.
 
-Every application-code change runs the full chain: frame-goal → design → plan review → user approval → execute (TDD) → code review → PR. No phase skipped or reordered; no planless mutation — cleanup is a `Type: refactor` plan.
+Every application-code change runs the full chain: frame-goal → design → plan review → user approval → execute (TDD) → code review → PR. The no-skip, no-reorder, and no-planless-mutation rules are PROCESS #10.
 
 ## Phase exit
-A phase ends by verifying every applicable rule against the artifacts actually produced — not intent — then emitting its handoff line (PROCESS #2). An unmet rule → fix and re-verify. Never report done past a failing gate; report failures verbatim, with the output.
+Phase self-checks and exit lines: PROCESS #2. Never report done past a failing gate; report failures verbatim, with the output.
 
 ## Insights
 `> **Insight:**` only for: trade-offs, likely mistakes, contradictions, spotted cleanup.

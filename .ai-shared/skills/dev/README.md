@@ -16,13 +16,13 @@ Architecture uses a separate falsifiable chain: goal and constraints → options
 
 `/dev:ship-feature <requirement>` — [explore] → frame-goal → design-feature → review-feature → spec approval → execute → review-code → PR
 
-`explore` is optional (PROCESS #10). `frame-goal` frames the requirement into confirmed goal(s) — single source for the too-broad test — routes each goal to design-system or design-feature by shape, and collapses to a pass-through when the requirement is already one clear goal; it pauses only on a split, rewrite, or question. The six phases after it are not optional.
+`explore` is optional and the six phases after `frame-goal` are not (PROCESS #10). `frame-goal` frames the requirement into confirmed goal(s) — single source for the too-broad test — routes each goal to design-system or design-feature by shape, and collapses to a pass-through when the requirement is already one clear goal; it pauses only on a split, rewrite, or question.
 
 Resume: `/dev:ship-feature docs/plans/<file>.md from execute` — resuming names its plan; `ship-feature <requirement>` always starts a new design and adopts nothing.
 
 Plan review enforces the Open Questions gate and does the real work: it independently derives the expected outcomes from `## Goal` before reading the proposed TC intents, then attacks the AC set with counterexamples. It returns READY; it never approves. It is bounded — two rounds plus landing checks, counted durably in the plan header's `Rounds:` field so the budget survives pruned history and compacted sessions — and may never add behavior: after handoff the AC set only narrows, and a missing outcome becomes a proposed extension plan with its own Goal and approval, never a round-N AC.
 
-Plan statuses run `planning → approved → in-progress → implemented → reviewed → archived`, with `abandoned` as the second terminal status for work dropped before it ships. `archived` is create-pr's own last step once the PRs exist; `abandoned` is a human decision and lives in `approval.md` with the others.
+Plan statuses are enumerated in `README.md` `Lifecycle`, and `approval.md` owns the two terminal ones. `archived` is create-pr's own last step once the PRs exist; `abandoned` is a human decision.
 
 `archived` means the PR exists and the cycle is closed — **not merged, not deployed**. What that implies for follow-up work, and where a follow-up parents, is `create-pr.md` `Shipped, and what comes after`.
 
@@ -36,7 +36,7 @@ Know what enforces what: PROCESS `Self-check boundary`. Short version — the ho
 
 **Named plan, always.** Every plan-consuming skill takes an exact `docs/plans/<file>.md` — no slug, no session pin, no lone-plan adoption. See PROCESS `Named plan and entry gates`.
 
-Every dev skill ends with a blocking self-check. Do not emit the skill's handoff line until that checklist is verified against the artifacts.
+Every dev skill ends with a blocking self-check. Do not emit the skill's exit line until that checklist is verified against the artifacts.
 
 ## Loading
 
@@ -56,7 +56,7 @@ Read by the skills that need them; never restated. `approval.md` (both human dec
 
 | Skill                 | Scope                                                                                                            | Output                                                 |
 | --------------------- | ---------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------ |
-| `/dev:frame-goal`     | Frame a requirement into confirmed goal(s); split too-broad, question ambiguous; runs ahead of both design lanes | goal list, routed by shape + issues for deferred goals |
+| `/dev:frame-goal`     | Frame a requirement into confirmed goal(s); split too-broad, question ambiguous; runs ahead of both design lanes | goal list, routed by shape; deferred goals tracked in the parent issue |
 | `/dev:design-system`  | Boundaries, communication, decomposition                                                                         | `docs/architecture/<date>_<slug>.md`                   |
 | `/dev:design-feature` | Feature/fix/refactor                                                                                             | `docs/plans/<basename>_<date>_<type>_<slug>.md`        |
 

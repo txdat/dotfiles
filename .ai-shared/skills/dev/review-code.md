@@ -14,7 +14,7 @@ Cost boundary: load only the approved plan, project config, diff, changed files/
 
 ## Review
 
-Start with diff name/status, stat, log, and the plan's Goal/AC/TC set. Create one row per TC (`TC | AC | test | implementation evidence | result`) and fill it during one integrated changed-file pass. Roll TC evidence up to an `AC-N: PASS|FAIL — evidence` conclusion; never infer an AC pass only from green tests. Evaluate behavior, architecture/data, and scope together instead of rereading the diff by category. Cite findings as `file:line — issue — impact — required fix`.
+Read `tdd.md` first — it is the standard the proof commits are judged against. Start with diff name/status, stat, log, and the plan's Goal/AC/TC set. Create one row per TC (`TC | AC | test | implementation evidence | result`) and fill it during one integrated changed-file pass. Roll TC evidence up to an `AC-N: PASS|FAIL — evidence` conclusion; never infer an AC pass only from green tests. Evaluate behavior, architecture/data, and scope together instead of rereading the diff by category. Cite findings as `file:line — issue — impact — required fix`.
 
 ### A. Goal and acceptance evidence
 
@@ -27,7 +27,7 @@ Start with diff name/status, stat, log, and the plan's Goal/AC/TC set. Create on
 - each test would fail when its named behavior breaks — apply `coverage.md` `Quality bar`; any smell it lists is blocking here;
 - independently rerun TC tests plus `## Affected Existing Tests`;
 - verify new calls/fields/imports resolve to their target type/module;
-- inspect every proof commit with `dev-check proof <commit> [--test <in-source-test-path>] [--stub <throwing-stub-path>]`, then confirm its failure/baseline evidence and meaningful assertion. `gate-check` already verifies proof ordering.
+- inspect every proof commit with `dev-check proof <commit> [--test <in-source-test-path>] [--stub <throwing-stub-path>]`, then confirm its failure/baseline evidence against `tdd.md` step 2 — each test observed failing individually on a stub-free baseline, or a recorded GREEN-minus-one where the stub was load-bearing — and its meaningful assertion. `gate-check` already verifies proof ordering.
 
 Passing all TCs is insufficient when any AC or the Goal fails. Implementation failure against a sound AC/TC is rework; a wrong or ambiguous AC or TC is a plan defect and goes back through `approval.md`.
 
