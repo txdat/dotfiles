@@ -1,9 +1,9 @@
 # AI — Global Guidelines
 
 ## Precedence
-Highest to lowest: **user instruction in this session** → **GUIDELINES / ENGINEERING_CORE / EXECUTION_CORE** → **dev-skill files** → **project AI config**.
+Highest to lowest: **user instruction in this session** → **GUIDELINES / ENGINEERING_CORE / EXECUTION_CORE** → **dev-skill files** → **project config for AI**.
 
-A project AI config may override exactly one thing: *how code is written* — style, naming, layout, file organization, stack-local patterns, and project-specific commands. It may not override, relax, or add an exception to any rule in the three core files or in a dev skill, and it may not mandate a tool the cores ban. A project config that tries → follow the core rule and note the conflict in your report.
+A project config for AI may override exactly one thing: *how code is written* — style, naming, layout, file organization, stack-local patterns, and project-specific commands. It may not override, relax, or add an exception to any rule in the three core files or in a dev skill, and it may not mandate a tool the cores ban. A project config that tries → follow the core rule and note the conflict in your report.
 
 Precedence settles *conflicts* only. A dev skill adding detail the cores don't cover is not a conflict — follow both. Where two rules both apply and disagree, the more specific one governs (a skill's phase rule over a general core rule; a single-source file over a summary of it). Only an irreducible contradiction — both rules govern the same act and cannot both be satisfied — is a defect in these files: STOP, quote both, and ask. Do not stop for a difference in wording or emphasis.
 

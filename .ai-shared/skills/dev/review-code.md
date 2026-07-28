@@ -1,8 +1,8 @@
 # /review-code — Review Implemented Plan Work
 
-Behavior is locked to the approved Goal/AC/TC spec. Review fidelity plus independent semantic correctness, security, and quality; do not reopen preferences owned by review-feature. A plan defect that makes work incorrect, insecure, lossy, or unverifiable is blocking and returns the plan through `approval.md`. Cosmetic design observations are out-of-band notes.
+Behavior is locked to the approved Goal and AC set. Review fidelity plus independent semantic correctness, security, and quality; do not reopen preferences owned by review-feature. **You are the first reviewer of every TC body.** `design-feature` wrote each TC as a one-line intent; `execute-feature` authored its Given/When/Then at RED, which settles only that the test fails first and is constructible. Under-constraint, a misrouted `Proves:`, an assertion mirroring the implementation, and an AC clause no assertion reaches all arrive here unreviewed — and they arrive with the code, which is why this is the right place for them and not review-feature. A plan defect that makes work incorrect, insecure, lossy, or unverifiable is blocking and returns the plan through `approval.md`. Cosmetic design observations are out-of-band notes.
 
-The main agent resolves the active plan per CORE; a delegated reviewer uses the worktree plan path in its packet and resolves nothing. Entry status is `implemented`, and `gate-check` owns plan, issue, worktree, and proof-order gates. Read plan/config and inspect `<base>..HEAD` diff, stat, and log inside `<worktree>`; changed-file reads and test runs resolve there too — a bare repo-relative path lands on `$MAIN_ROOT`'s pre-change copy and silently reviews the wrong tree. The worktree plan is authoritative for status and the AC/TC spec; `$MAIN_ROOT`'s copy is only the locator and never advances past its pre-execution status (worktree.md `Plan resolution vs. truth`).
+The main agent names an exact `docs/plans/<file>.md` per CORE `Named plan and entry gates`; a delegated reviewer uses the worktree plan path in its packet and resolves nothing. Entry status is `implemented`, and `gate-check` owns plan, issue, worktree, and proof-order gates. Read plan/config and inspect `<base>..HEAD` diff, stat, and log inside `<worktree>`; changed-file reads and test runs resolve there too — a bare repo-relative path lands on `$MAIN_ROOT`'s pre-change copy and silently reviews the wrong tree. The worktree plan is authoritative for status and the AC/TC spec; `$MAIN_ROOT`'s copy is only the locator and never advances past its pre-execution status (worktree.md `Plan resolution vs. truth`).
 
 ## Independence and Cost Boundary
 
@@ -18,8 +18,10 @@ Start with diff name/status, stat, log, and the plan's Goal/AC/TC set. Create on
 
 - read the original Goal before using tests as an oracle; independently describe the delivered observable outcome;
 - verify each AC one by one against its Source, Success, and Failure fields; report `AC-N: PASS|FAIL — <evidence>`;
-- attempt at least one counterexample where all planned TCs pass but the AC or Goal fails; a known counterexample is blocking;
-- then verify every TC has an identifiable test (TC ID or explicit plan mapping), the correct `Proves: AC-N`, and matching Given/When/Then behavior; extra behavioral tests require `## Discovered Scope`;
+- attempt at least one counterexample **per AC** where all its TCs pass but the AC or Goal fails; write the cheating implementation concretely against the actual code, not hypothetically; a known counterexample is blocking. This is the check that catches a TC weaker than the AC it claims to prove — a test that goes RED then GREEN while the clause it exists to force is never implemented;
+- **walk every AC clause** (`design-feature` defines the term). For each clause of an AC's Success and Failure, name the assertion that reaches it. A clause with no assertion is blocking: it is behavior the plan promised, the ledger claims covered, and nothing verifies. Absence is invisible to a test run and to a green suite, so this walk is the only place it is caught;
+- verify which production entry point each test invokes: the behavior it proves must execute as a consequence of that entry point, not be asserted by joining below it;
+- then verify every TC's `Test: path::name` names a real test in the diff, its `Proves: AC-N` names the AC the test actually constrains, and the test body matches the TC's intent line — not an adjacent scenario; extra behavioral tests require `## Discovered Scope`;
 - each test would fail when its named behavior breaks — apply `coverage.md` `Quality bar`; any smell it lists is blocking here;
 - independently rerun TC tests plus `## Affected Existing Tests`;
 - verify new calls/fields/imports resolve to their target type/module;
@@ -42,7 +44,7 @@ Verdict: any blocking finding → `REWORK REQUIRED`; none plus Should Fix → `P
 ## Self-Check (BLOCKING)
 
 - [ ] **Independence:** `independence.md` satisfied — fresh agent, or a session that did not implement; any in-session fallback re-derived every verdict from plan, diff, and test runs; every file read, test, and Git command ran inside `<worktree>`. Context: __.
-- [ ] **Goal/behavior:** every AC has independent PASS evidence against the Goal; each adversarial counterexample attempted is named with what defeated it in the actual code, not asserted as clean; every TC maps to its AC and test; edge/failure paths and meaningful assertions verified. Gaps: __.
+- [ ] **Goal/behavior:** every AC has independent PASS evidence against the Goal; a counterexample was attempted **per AC** and named with what defeated it in the actual code, not asserted as clean; **every clause of every AC's Success and Failure has a named assertion reaching it**; every TC's `Test:` names a real test whose body matches its intent and whose `Proves:` names the AC it constrains; edge/failure paths and meaningful assertions verified. Gaps: __.
 - [ ] **Proof and symbols:** proof contents independently checked; app symbols resolve. Issues: __.
 - [ ] **Architecture/data:** every Non-functional commitment and each concern applicable to changed paths were checked; no repository-wide audit was substituted. Issues: __.
 - [ ] **Scope/hygiene:** deviations complete; no unplanned change, secret, TODO, or debug/conflict artifact. Issues: __.
@@ -54,6 +56,6 @@ Report verdict and Goal outcome first, then AC conclusions, the TC evidence tabl
 
 - `REWORK REQUIRED`: offer fixes; wait for approval before editing.
 - `PASS WITH NOTES`: ask which Should Fix items to apply/skip; wait. Continue only after all are resolved.
-- `PASS`: compare the actual diff with the provisional PR Pattern and finalize it. Match → remove `(provisional)`; drift → propose a corrected pattern and wait for approval; missing → REWORK.
+- `PASS`: compare the actual diff with the provisional PR Pattern and finalize it. **Match** = same slice count, each slice owns the same TC set, and each branch has the same parent. Step reordering *within* a slice is not drift; a step moving *between* slices is, as are merged, split, added, or dropped slices — including a slice absorbed because it turned out trivial. Match → remove `(provisional)`; drift → propose a corrected pattern and wait for approval; missing → REWORK.
 
 After PASS finalization, set the worktree plan to `reviewed`, commit `docs(<scope>): review passed`, and print: `Review passed; every AC independently verified. Run the create-pr skill.`

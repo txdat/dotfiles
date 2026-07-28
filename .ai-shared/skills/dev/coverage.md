@@ -25,7 +25,18 @@ A red line is a symptom; the unit of testing is a behavior (input class, error p
 
 1. Name the behavior each uncovered line/branch belongs to. Can't name one → boilerplate/unreachable: log excluded-by-reason (denominator curation above), don't test it.
 2. Behavior already has a plan TC → the test is missing or misaligned: fix *that* test.
-3. Behavior has no TC → discovered work, not a free test: log in `## Discovered Scope` and ask. Approved → add the TC (Given/When/Then) to the plan first, then RED→GREEN it like any other. **Tests enter through TCs only.**
+3. Behavior has no TC → discovered work, not a free test: log in `## Discovered Scope` and ask. Approved → add the TC intent line to the plan first, then author its body at RED like any other. **Tests enter through TCs only.**
+
+A `## Coverage Gaps` entry names lines *and* the behavior each belongs to — a bare percentage is not an entry:
+
+```text
+⚠️ payments/refund.py — 84% branch (patch, diff-cover vs <base>)
+   Uncovered: 112-118 — the gateway-timeout retry path (AC-3); no TC exercises a timeout.
+   Uncovered: 131 — the `currency mismatch` guard; unreachable until multi-currency lands (Out of Scope).
+   Carried, not closed: logging this is not Discovered Scope (CORE #6).
+```
+
+"⚠️ coverage 84% — will fix later" names no line and no behavior, so it hides the hole it claims to flag.
 
 **Quality bar (every test):** a test must fail when the behavior it names breaks. Smells that fail it: assert-nothing (runs code, asserts no exception), trivial asserts (not-null, type-only, blanket snapshots), asserting a mock was called instead of the outcome, copying the implementation's expression into the expectation. Such a test raises % while verifying nothing — the mirror of a fake implementation; delete it and log the gap instead.
 

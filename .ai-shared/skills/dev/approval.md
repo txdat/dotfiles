@@ -30,6 +30,21 @@ Any later change to the Goal, an AC, or a TC — during execution, review, or re
 
 This is not a deviation. A **deviation** is a different *means* to the same approved behavior: log it under `## Deviations` per CORE #5 and keep going. A change to the *behavior itself* comes back here. If you cannot tell which one you are looking at, it is this one.
 
+### What happens to work already committed
+
+A behavior change found mid-execution leaves proof and implementation commits in the worktree for a spec that is no longer approved. The worktree and its branch survive the round trip; what comes out is scoped by commit boundaries, not by TC:
+
+1. **Reversion granularity is the commit, not the TC.** `execute-feature` bundles a slice's TCs into one proof/GREEN pair, so a TC cannot be extracted from its siblings. Revert **whole pairs**: the pair holding the amended TC comes out entirely and that slice re-enters at RED with its revised TC set, siblings included.
+2. **Other slices keep everything.** A slice whose TCs are all unaffected keeps its proof and GREEN commits; re-approval does not invalidate behavior that did not change.
+3. **Revert, never reset** — the branch keeps the record of what was built and withdrawn. A dropped TC ends there; survivors re-enter at RED after re-approval. `tdd.md` step 3 does not apply: the old proof is gone, not reused.
+4. **Then flip status in the worktree copy** (`planning`, `Review:` cleared) and commit it, per CORE `Plan worktree`. `gate-check` will refuse execution until the plan carries `Review: READY` and an explicit approval again.
+
+Never carry a reverted TC's implementation forward "since it's already written". That is the approved-spec equivalent of a fake implementation: code whose only warrant was a spec that no longer exists.
+
+### Scope of the re-approval
+
+The pause is not optional and not implied, but it is scoped: on an amendment, show the Goal plus **the changed AC/TC subgraph and everything traceable to it** — not the full spec replayed. Ask the same question. Everything else about the pause is unchanged: silence, urgency, and "we already agreed on the rest" are still not approvals, and review-feature still runs first on the amended plan.
+
 ## Abandoning a plan
 
 Dropping a plan before it ships is the human's call, on the same authority as granting approval — propose it, never decide it. On an explicit answer:
@@ -37,9 +52,9 @@ Dropping a plan before it ships is the human's call, on the same authority as gr
 1. `Worktree:` recorded → remove the worktree and its branch from `$MAIN_ROOT`, requiring a clean tree first and showing any refusal instead of forcing it. A plan dropped at `planning` or `approved` never had one; skip this.
 2. In `$MAIN_ROOT`'s locator copy, set `Status: abandoned`, clear `Worktree:`, and record in one line what was dropped and why.
 
-Abandonment is the inverse of archival, so the record lives in the opposite place. `archived` survives on a branch that merges, which is why create-pr commits it there and deletes the locator; a dropped branch takes its plan copy with it, leaving the locator as the only surviving record — and the only one `gate-check` can see, since it scans `$MAIN_ROOT/docs/plans/`. Write `abandoned` anywhere else and the plan stays active forever, holding the session pin against every later plan.
+Abandonment is the inverse of archival, so the record lives in the opposite place. `archived` survives on a branch that merges, which is why create-pr commits it there and deletes the locator; a dropped branch takes its plan copy with it, leaving the locator as the only surviving record — and the only one `gate-check` can see, since it scans `$MAIN_ROOT/docs/plans/`. Write `abandoned` anywhere else and no surviving record says the plan was dropped: the locator keeps reading as active, and `gate-check` — which scans `$MAIN_ROOT/docs/plans/` — will let a later phase be pointed at it and gated on it as live work.
 
-`abandoned` and `archived` are the two terminal statuses: both leave the active set and release the pin, and neither is an entry status, so an abandoned plan blocks at whatever gate it is aimed at. Reviving one is not a status edit — it re-enters at `planning` and comes back through review-feature and the spec pause above.
+`abandoned` and `archived` are the two terminal statuses: both leave the active set, and neither is an entry status, so an abandoned plan blocks at whatever gate it is aimed at. Reviving one is not a status edit — it re-enters at `planning` and comes back through review-feature and the spec pause above.
 
 ## What is enforced, and what is not
 

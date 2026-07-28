@@ -16,8 +16,8 @@
 #
 # Each skill's entry gate is the prerequisite status.
 # archived and abandoned are the two terminal statuses: both leave the active
-# set and both drop a session pin. Neither is an entry status for any skill,
-# so an abandoned plan blocks at whatever gate it is aimed at.
+# set, and neither is an entry status for any skill, so an abandoned plan
+# blocks at whatever gate it is aimed at.
 # Review-code additionally requires proof-commit sequencing for every plan slice.
 # Plan-only commits (every changed path under docs/plans/) are workflow
 # metadata and are exempt from sequencing — the skills deliberately commit
@@ -29,14 +29,17 @@
 # status is there before execution, and that the plan also carries review-
 # feature's `Review: READY` marker — so an approval that skipped review is
 # mechanically detectable. It still cannot tell who wrote either field, and it
-# deliberately does not validate plan prose. Whether the ACs are right, whether
-# the TCs can admit a wrong implementation, and whether every step traces to a
-# TC are judgment calls owned by review-feature's self-check, not by a parser.
+# deliberately does not validate plan prose. The AC/TC/Step ID graph is checked
+# for referential closure (see traceability_report) — identifiers only. Whether
+# the ACs are right, whether a TC can admit a wrong implementation, and whether
+# a step actually satisfies the TC it cites are judgment calls owned by
+# review-feature's self-check, not by a parser.
 #
-# Active plan resolution is session-pinned (see resolve_plan): an explicit
-# plan ref in the skill args pins the session; otherwise the existing pin is
-# reused; otherwise the lone active plan is adopted. 0 or 2+ active and none
-# named → no plan (require_plan skills block).
+# Plan resolution is by explicit path only (see resolve_plan). Governance binds
+# to a named artifact: a plan-consuming skill either names its
+# docs/plans/<file>.md or blocks asking for it. No slug matching, no session
+# pin, no lone-plan adoption — a dormant plan can never capture unrelated work,
+# and a gate never fires merely because some plan exists in the repository.
 #
 # Worktree model (skills/dev/worktree.md): the main-tree plan is only the
 # locator — its Status goes stale once execution starts. When its header
@@ -52,9 +55,18 @@ if ! command -v jq >/dev/null 2>&1; then
   exit 0
 fi
 
+# find_explicit_plan canonicalises with realpath -m; without it every plan
+# would fail to resolve and report as "no plan named", which hides the real
+# cause. Probe the flag, not just the binary — macOS ships a realpath without
+# -m, and `command -v` alone would pass it.
+if ! realpath -m -- / >/dev/null 2>&1; then
+  printf '{"continue":false,"stopReason":"gate-check requires realpath with -m support (GNU coreutils) to validate plan paths.","decision":"block","reason":"gate-check requires realpath with -m support (GNU coreutils) to validate plan paths."}\n'
+  exit 0
+fi
+
 HOOK_INPUT=$(cat)
 
-DEV_SKILL_SLUG_RE='create-issue|create-pr|design-feature|design-system|execute-feature|explore|fix-bug|review-code|review-feature|review-system|ship-feature'
+DEV_SKILL_SLUG_RE='create-issue|create-pr|design-feature|design-system|execute-feature|explore|fix-bug|frame-goal|review-code|review-feature|review-system|ship-feature'
 
 is_dev_skill_slug() {
   [[ "$1" =~ ^($DEV_SKILL_SLUG_RE)$ ]]
@@ -129,28 +141,30 @@ HOOK_TEXT=$(
   ' <<<"$HOOK_INPUT" 2>/dev/null || true
 )
 
-# Session id — keys the per-session active-plan pin. Fall back to a fixed
-# token so a missing id still shares one pin within the process tree.
-SESSION_ID=$(
-  jq -r '[.session_id?, .sessionId?, .session?.id?] | map(select(type=="string" and length>0)) | .[0] // ""' \
-    <<<"$HOOK_INPUT" 2>/dev/null || true
-)
-[[ -n "$SESSION_ID" ]] || SESSION_ID="default"
-SESSION_ID="${SESSION_ID//[^A-Za-z0-9._-]/_}"
-PIN_DIR="/tmp/ai-ctx"
-PIN_FILE="$PIN_DIR/active-plan.$SESSION_ID"
-
 # ── helpers ───────────────────────────────────────────────────────────
 
+# "Exact path" has to mean exact. A bare substring match would accept
+# /another/repo/docs/plans/x.md (matching from its own "docs/plans/" and then
+# resolving *this* repo's file) and docs/plans/../escape.md, and would pick a
+# plan out of surrounding prose. Canonicalise and require a direct child of
+# $REPO_ROOT/docs/plans.
+#
+# Known limit: the hook reads tokens, not intent. A valid plan path *mentioned*
+# in free text still resolves ("ship-feature follow up on docs/plans/old.md
+# but different" adopts old.md), and when two paths appear the first wins
+# silently. Both are the caller's ambiguity to avoid — the skills' contract is
+# one named plan per invocation — and a parser cannot tell mention from naming.
 find_explicit_plan() {
-  local candidate
-  if [[ "$HOOK_TEXT" =~ (docs/plans/[^[:space:]]+\.md) ]]; then
-    candidate="${BASH_REMATCH[1]}"
-    [[ -f "$candidate" ]] || return 1
-    echo "$candidate"
-    return 0
-  fi
-  return 1
+  local candidate real base
+  [[ "$HOOK_TEXT" =~ (^|[[:space:]])([^[:space:]]*docs/plans/[^[:space:]]+\.md) ]] || return 1
+  candidate="${BASH_REMATCH[2]}"
+  real=$(realpath -m -- "$candidate" 2>/dev/null) || return 1
+  base=$(realpath -m -- "$REPO_ROOT/docs/plans" 2>/dev/null) || return 1
+  # Direct child only: no nesting, no traversal, no other repository.
+  [[ "$real" == "$base/"* && "${real#"$base"/}" != */* ]] || return 1
+  [[ -f "$real" ]] || return 1
+  # Emit the repo-relative form the rest of the script expects.
+  printf '%s\n' "docs/plans/${real#"$base"/}"
 }
 
 # A bare path was given but resolves to no file (e.g. "docs/plans/x.md" typo).
@@ -160,90 +174,16 @@ explicit_path_given_but_missing() {
   return 0
 }
 
-# Match a unique filename token (slug) from the args against plan basenames.
-# Token must be ≥3 chars, appear in exactly one plan filename. Ambiguous or no
-# match → fail (treated as "not explicitly named").
-find_token_plan() {
-  local dir="docs/plans" tok match count=0 found=""
-  [[ -d "$dir" ]] || return 1
-  for tok in $HOOK_TEXT; do
-    [[ "$tok" == *.md || "$tok" == */* ]] && continue
-    [[ "$tok" =~ ^[A-Za-z0-9][A-Za-z0-9._-]{2,}$ ]] || continue
-    count=0; match=""
-    while IFS= read -r found; do
-      [[ -n "$found" ]] || continue
-      count=$((count+1)); match="$found"
-    done < <(find "$dir" -maxdepth 1 -type f -name "*${tok}*.md" 2>/dev/null || true)
-    if [[ "$count" -eq 1 ]]; then
-      echo "$match"
-      return 0
-    fi
-  done
-  return 1
-}
-
-# Count plans in an active status — i.e. not one of the terminal ones
-# (archived = shipped, abandoned = dropped before shipping).
-count_active_plans() {
-  local dir="docs/plans"
-  [[ -d "$dir" ]] || { echo 0; return 0; }
-  local active='planning|approved|in-progress|implemented|reviewed'
-  grep -Erl "^Status:[[:space:]]*($active)([[:space:]|]|$)" "$dir" 2>/dev/null | grep -c . || true
-}
-
-# The lone active plan, only when exactly one exists.
-lone_active_plan() {
-  local dir="docs/plans"
-  [[ -d "$dir" ]] || return 1
-  local active='planning|approved|in-progress|implemented|reviewed'
-  local n
-  n=$(grep -Erl "^Status:[[:space:]]*($active)([[:space:]|]|$)" "$dir" 2>/dev/null | grep -c . || true)
-  [[ "$n" -eq 1 ]] || return 1
-  grep -Erl "^Status:[[:space:]]*($active)([[:space:]|]|$)" "$dir" 2>/dev/null | head -1
-}
-
-pin_plan() {
-  mkdir -p "$PIN_DIR" 2>/dev/null || true
-  printf '%s\n' "$1" > "$PIN_FILE" 2>/dev/null || true
-}
-
-read_pin() {
-  [[ -f "$PIN_FILE" ]] || return 1
-  local p
-  p=$(head -1 "$PIN_FILE" 2>/dev/null || true)
-  [[ -n "$p" && -f "$p" ]] || return 1
-  # Stale once terminal — drop the pin so a fresh plan can take over.
-  case "$(plan_status "$p")" in archived|abandoned) return 1 ;; esac
-  echo "$p"
-}
-
-# Skills whose argument is a plan name (so a bare slug token deliberately
-# names a plan). All other skills take free-text args (requirement, symptom)
-# where a stray word must NOT be treated as a plan reference.
-takes_plan_name() {
-  case "$1" in
-    review-feature|execute-feature|review-code|create-pr|fix-bug) return 0 ;;
-    *) return 1 ;;
-  esac
-}
-
-# Session-pinned active-plan resolution. Order:
-#   1. explicit ref in args (path always; unique slug token only for
-#      plan-name skills — see takes_plan_name) → (re)pin + use
-#   2. existing valid session pin → use
-#   3. lone active plan → adopt + pin
-# Returns empty when 0 or 2+ active plans and none named.
+# Plan resolution is by explicit path, and only by explicit path.
 #
-# Slug-token matching is gated to plan-name skills so free-text args
-# (ship-feature requirement, fix-bug symptom, design-* prose) can never
-# silently pin — or block on — an unrelated plan.
+# Ambient resolution — unique-slug matching, a session pin, adopting the lone
+# active plan — used to make plan-taking skills convenient. It also meant a
+# dormant plan sitting in docs/plans/ could capture unrelated work, and that a
+# gate fired because a plan existed *somewhere in the repository* rather than
+# because this invocation was about that plan. Governance now binds to a named
+# artifact: the caller says which plan, or the command blocks asking for one.
 resolve_plan() {
-  local skill="$1" p
-  if p=$(find_explicit_plan 2>/dev/null); then pin_plan "$p"; echo "$p"; return 0; fi
-  if takes_plan_name "$skill" && p=$(find_token_plan 2>/dev/null); then pin_plan "$p"; echo "$p"; return 0; fi
-  if p=$(read_pin 2>/dev/null);           then echo "$p"; return 0; fi
-  if p=$(lone_active_plan 2>/dev/null);   then pin_plan "$p"; echo "$p"; return 0; fi
-  return 1
+  find_explicit_plan 2>/dev/null
 }
 
 plan_status() {
@@ -383,6 +323,167 @@ open_questions_count() {
   ' "$1" 2>/dev/null
 }
 
+# Referential closure of the AC <-> TC <-> Step ID graph. This reads
+# identifiers, never prose: it proves every ID is referenced, never that any
+# edge is *true* (whether a Proves: names the right AC, whether a step
+# satisfies the TC it cites). That stays review-feature's judgment.
+#
+# Two output classes, and the caller must keep them apart. A line prefixed `!`
+# means the graph could not be read at all (ID ranges, a missing section, an
+# unparseable Proves:) — a parser that cannot read the graph must say so, not
+# report a defect, because a false traceability block teaches the reader to
+# distrust the hook. Everything else is a real unreferenced-ID finding.
+traceability_report() {
+  awk '
+    function trim(s) {
+      gsub(/^[[:space:]]+|[[:space:]]+$/, "", s)
+      return s
+    }
+    /^## / { sec = "" }
+    /^## Acceptance Criteria/  { sec = "ac";   next }
+    /^## Test Cases/           { sec = "tc";   next }
+    /^## Implementation Steps/ { sec = "step"; next }
+    sec == "" { next }
+
+    # design-feature.md requires enumerated IDs precisely so this graph is
+    # readable. A range collapses IDs the parser must see individually, so it
+    # is unreadable input, not an unreferenced ID. Both operands must be IDs
+    # (or a "through"/"to" keyword) — otherwise "TC-1 - 200 returned" trips it.
+    # "to" appears in both alternatives: with an ID on each side ("TC-1 to
+    # TC-4") only the first can match, and missing it there would let the range
+    # decay into unreferenced-ID findings for the collapsed middle IDs — the
+    # false verdict this class exists to prevent.
+    /(AC|TC)-[0-9]+[[:space:]]*(through|thru|to|\.\.|–|—|-)[[:space:]]*(AC|TC)-[0-9]+/ ||
+    /(AC|TC)-[0-9]+[[:space:]]+(through|thru|to)[[:space:]]+[0-9]+/ {
+      printf "!line %d uses an ID range (%s) — enumerate IDs so traceability can be checked\n", NR, trim($0)
+      unreadable = 1
+    }
+
+    sec == "ac" && /^[[:space:]]*([-*][[:space:]]*)?AC-[0-9]+/ {
+      match($0, /AC-[0-9]+/)
+      id = substr($0, RSTART, RLENGTH)
+      # A reused ID is two ACs wearing one name: silently collapsing them drops
+      # a criterion from the graph, so it is unreadable input, not an orphan.
+      if (id in ac) {
+        printf "!%s is declared more than once (line %d) — IDs must be unique\n", id, NR
+        unreadable = 1
+      } else { ac[id] = 1; acorder[++nac] = id }
+      next
+    }
+
+    sec == "tc" && /^[[:space:]]*([-*][[:space:]]*)?TC-[0-9]+/ {
+      match($0, /TC-[0-9]+/)
+      curtc = substr($0, RSTART, RLENGTH)
+      if (curtc in tc) {
+        printf "!%s is declared more than once (line %d) — IDs must be unique\n", curtc, NR
+        unreadable = 1
+      } else {
+        tc[curtc] = 1; tcorder[++ntc] = curtc; proves[curtc] = ""; provesline[curtc] = 0
+      }
+      next
+    }
+    sec == "tc" && /^[[:space:]]*([-*][[:space:]]*)?Proves:/ {
+      if (curtc == "") next
+      line = $0
+      sub(/^[[:space:]]*([-*][[:space:]]*)?Proves:[[:space:]]*/, "", line)
+      line = trim(line)
+      n = 0; tmp = line
+      while (match(tmp, /AC-[0-9]+/)) {
+        n++
+        last = substr(tmp, RSTART, RLENGTH)
+        tmp = substr(tmp, RSTART + RLENGTH)
+      }
+      # Exactly one Proves: per TC, naming exactly one AC. A second line would
+      # otherwise overwrite the first and the plan would read as well-formed.
+      if (provesline[curtc] > 0) {
+        printf "!%s has more than one Proves: line (lines %d and %d) — exactly one is required\n", curtc, provesline[curtc], NR
+        unreadable = 1
+      }
+      provesline[curtc] = NR
+      if (n == 0) {
+        printf "!%s has an unparseable Proves: line (%s)\n", curtc, line
+        unreadable = 1
+      } else if (n > 1) {
+        printf "!%s names %d ACs in Proves: — exactly one is required\n", curtc, n
+        unreadable = 1
+      } else {
+        proves[curtc] = last
+      }
+      next
+    }
+
+    sec == "step" && /^[[:space:]]*([-*][[:space:]]*)?Step[[:space:]]+[0-9]+/ {
+      cur = ++nstep
+      stepline[cur] = NR
+      steptxt[cur] = trim($0)
+      stepref[cur] = 0
+      # Steps are keyed by occurrence, but their numbers are still IDs that
+      # TC mappings cite ("satisfies TC-3" lives on a numbered step). A reused
+      # number is two steps wearing one name — the same unreadable input as a
+      # duplicate AC/TC ID, not a closure finding.
+      match($0, /Step[[:space:]]+[0-9]+/)
+      # Numeric key, so "Step 01" and "Step 1" collide as they should.
+      num = trim(substr($0, RSTART + 4, RLENGTH - 4)) + 0
+      if (num in stepnum) {
+        printf "!Step %s is declared more than once (line %d) — step numbers must be unique\n", num, NR
+        unreadable = 1
+      } else stepnum[num] = 1
+    }
+    sec == "step" && cur > 0 {
+      tmp = $0
+      while (match(tmp, /TC-[0-9]+/)) {
+        id = substr(tmp, RSTART, RLENGTH)
+        referenced[id] = 1
+        stepref[cur]++
+        # Record where an undeclared ID was cited; whether it is declared can
+        # only be judged in END, since ## Test Cases may follow ## Steps.
+        if (!(id in stepcite)) { stepcite[id] = NR }
+        tmp = substr(tmp, RSTART + RLENGTH)
+      }
+    }
+
+    END {
+      if (nac == 0)   { print "!no AC- entries under ## Acceptance Criteria"; unreadable = 1 }
+      if (ntc == 0)   { print "!no TC- entries under ## Test Cases";          unreadable = 1 }
+      if (nstep == 0) { print "!no Step entries under ## Implementation Steps"; unreadable = 1 }
+      # Unreadable input cannot produce a trustworthy closure verdict: reporting
+      # orphans derived from IDs we failed to parse is the false block above.
+      if (unreadable) exit
+      for (i = 1; i <= nac; i++) {
+        id = acorder[i]; found = 0
+        for (j = 1; j <= ntc; j++) if (proves[tcorder[j]] == id) found = 1
+        if (!found) printf "%s has no TC — no Test Case names it in Proves:\n", id
+      }
+      for (j = 1; j <= ntc; j++) {
+        id = tcorder[j]; p = proves[id]
+        if (p == "") printf "%s has no Proves: line — every TC names exactly one AC\n", id
+        else if (!(p in ac)) printf "%s names %s in Proves:, which is not in ## Acceptance Criteria\n", id, p
+        if (!(id in referenced)) printf "%s is not named by any Implementation Step\n", id
+      }
+      for (i = 1; i <= nstep; i++) {
+        if (stepref[i] == 0) printf "step at line %d names no TC: %s\n", stepline[i], steptxt[i]
+      }
+      # A step citing an undeclared TC satisfies "names a TC" without the edge
+      # existing, which would let a step own nothing while appearing to own one.
+      for (id in stepcite) {
+        if (!(id in tc)) printf "step at line %d names %s, which is not declared in ## Test Cases\n", stepcite[id], id
+      }
+    }
+  ' "$1" 2>/dev/null
+}
+
+# Blocks on either output class, with different messages: an unreadable plan is
+# a shape defect to fix, never a traceability verdict.
+require_traceability() {
+  local report
+  report=$(traceability_report "$1")
+  [[ -n "$report" ]] || return 0
+  if [[ "$report" == *$'\n'!* || "$report" == !* ]]; then
+    block "$(printf 'gate-check cannot read this plan'"'"'s AC/TC/Step ID graph — fix the plan shape and re-run. This is NOT a traceability verdict:\n%s' "$(sed 's/^!//' <<<"$report")")"
+  fi
+  block "$(printf "Plan's AC/TC/Step graph is not closed — every AC needs a TC, every TC a Proves: and a step, every step a TC:\n%s\n\nClosure is shape, not correctness: fixing these does not mean an edge is right." "$report")"
+}
+
 # fix-bug has exactly two documented modes: `diagnose <symptom>` (read-only) and
 # `execute <fix-plan>`. Read the mode from the leading argument token only — a
 # substring search would hand read-only status to any request that merely says
@@ -507,19 +608,18 @@ block() {
 
 # ── gate dispatch ─────────────────────────────────────────────────────
 
-# Resolve (and possibly pin) the active plan only for skills that consume one.
-# Entry skills (design-*, explore, create-issue) must
-# never write a pin — otherwise a lone plan would be pinned before design-feature
-# creates its successor, and the next gated skill would reuse the stale pin.
+# Resolve the named plan only for skills that consume one. Entry skills
+# (frame-goal, design-*, explore, create-issue) never take one — they
+# create the artifact that later phases must name.
 case "$SKILL_SLUG" in
   review-feature|execute-feature|review-code|create-pr|ship-feature)
-    PLAN=$(resolve_plan "$SKILL_SLUG" 2>/dev/null || true) ;;
+    PLAN=$(resolve_plan 2>/dev/null || true) ;;
   fix-bug)
     FIX_BUG_MODE=$(fix_bug_mode "$HOOK_TEXT")
     if [[ "$FIX_BUG_MODE" == "diagnose" ]]; then
       PLAN=""
     else
-      PLAN=$(resolve_plan "$SKILL_SLUG" 2>/dev/null || true)
+      PLAN=$(resolve_plan 2>/dev/null || true)
     fi ;;
   *)
     PLAN="" ;;
@@ -544,17 +644,15 @@ if [[ -n "$PLAN" ]]; then
   STATUS=$(plan_status "$PLAN")
 fi
 
+# A plan-consuming skill must name its artifact. The block never inspects how
+# many plans exist: "which plan did you mean" is the caller's answer to give,
+# and counting them is how a dormant plan used to capture unrelated work.
 require_plan() {
   [[ -n "$PLAN" ]] && return 0
   if explicit_path_given_but_missing; then
     block "Named plan not found. Pass an existing docs/plans/<file>.md."
   fi
-  local n
-  n=$(count_active_plans)
-  if [[ "$n" -ge 2 ]]; then
-    block "Multiple active plans in docs/plans — name one explicitly for ${SKILL_SLUG}, e.g. docs/plans/<file>.md (or its slug)."
-  fi
-  block "No active plan in this session for ${SKILL_SLUG} — name it explicitly with docs/plans/<file>.md (or its slug), or run design-feature first."
+  block "${SKILL_SLUG} operates on a plan and none was named. Pass its exact path: ${SKILL_SLUG} docs/plans/<file>.md. A slug, a previously used plan, or the only plan in docs/plans/ will not resolve — the path is required. No plan yet → run design-feature first."
 }
 
 require_worktree() {
@@ -579,6 +677,12 @@ case "$SKILL_SLUG" in
       if [[ "$OQ" -gt 0 ]]; then
         block "Plan has $OQ unresolved Open Question(s). Resolve them in design-feature before review."
       fi
+      # design-feature owns issue creation, so the omission surfaces here rather
+      # than at execution — after review and approval have already been spent.
+      if ! has_issue "$PLAN"; then
+        block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. design-feature creates it ('gh issue create'); record it as 'Issue: #<n>', then re-run."
+      fi
+      require_traceability "$PLAN"
     fi
     ;;
 
@@ -596,7 +700,7 @@ case "$SKILL_SLUG" in
       esac
       # Every plan (feature/fix/refactor) must be issue-backed before implementation.
       if ! has_issue "$PLAN"; then
-        block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. Create one ('gh issue create' or design-feature's 'Create issue?' step), record it as 'Issue: #<n>', then re-run."
+        block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. design-feature creates it ('gh issue create'); record it as 'Issue: #<n>', then re-run."
       fi
       # Approval is only reachable through review: an approved plan with no
       # review marker was approved out of order (see approval.md).
@@ -623,6 +727,10 @@ case "$SKILL_SLUG" in
       if ! has_issue "$PLAN"; then
         block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. Create one ('gh issue create'), record it as 'Issue: #<n>', then re-run."
       fi
+      # Re-checked here, not just at review-feature: the plan is edited between
+      # the two (Deviations, Coverage Gaps, a TC added mid-flight), so a TC that
+      # gained no owning step during execution would otherwise never be caught.
+      require_traceability "$PLAN"
     fi
     BASE=$(resolve_base)
     SLICES=$(slice_count "$PLAN")

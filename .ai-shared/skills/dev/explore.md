@@ -1,6 +1,6 @@
 # /explore — Codebase Exploration
 
-Target from $ARGUMENTS or ask. Read project AI config files. Read-only: modify nothing.
+Target from $ARGUMENTS or ask. Read project config for AI. Read-only: modify nothing.
 
 ## Area Decomposition
 

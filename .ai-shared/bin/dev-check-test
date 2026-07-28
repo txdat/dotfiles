@@ -55,6 +55,28 @@ printf 'int Foo() => throw new NotImplementedException();\n' > "$TMP/src/Stub.cs
 git -C "$TMP" add . && git -C "$TMP" commit -qm 'test(red): throwing stubs'
 ok proof HEAD --stub src/stub.rs --stub src/Stub.cs
 
+# A body-less stub returns None/null/zero implicitly — no `return` for the
+# value-implementation scan to catch, but enough to turn a RED test green.
+git -C "$TMP" reset -q --hard HEAD~1
+printf 'def apply(tx):\n    pass\n' > "$TMP/src/stub.py"
+git -C "$TMP" add . && git -C "$TMP" commit -qm 'test(red): pass stub'
+bad proof HEAD --stub src/stub.py
+
+git -C "$TMP" reset -q --hard HEAD~1
+printf 'func Apply(tx Tx) Receipt {}\n' > "$TMP/src/stub.go"
+git -C "$TMP" add . && git -C "$TMP" commit -qm 'test(red): empty block stub'
+bad proof HEAD --stub src/stub.go
+
+git -C "$TMP" reset -q --hard HEAD~1
+printf 'def apply(tx):\n    return\n' > "$TMP/src/stub.py"
+git -C "$TMP" add . && git -C "$TMP" commit -qm 'test(red): bare return stub'
+bad proof HEAD --stub src/stub.py
+
+git -C "$TMP" reset -q --hard HEAD~1
+printf 'def apply(tx):\n    raise NotImplementedError\n' > "$TMP/src/stub.py"
+git -C "$TMP" add . && git -C "$TMP" commit -qm 'test(red): raising stub'
+ok proof HEAD --stub src/stub.py
+
 ok coverage 95
 ok coverage 85
 bad coverage 79

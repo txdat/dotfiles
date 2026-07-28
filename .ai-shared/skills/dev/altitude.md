@@ -1,6 +1,6 @@
 # Design Altitude — Single Source
 
-Referenced by design-feature (drafting) and review-feature (blocking check). Applies to `docs/plans/**` and `docs/architecture/**`.
+Referenced by design-feature (drafting standard) and review-feature (advisory finding). Applies to `docs/plans/**` and `docs/architecture/**`.
 
 **A plan carries design, not implementation. Everything in it is language-neutral design notation.**
 
@@ -9,6 +9,6 @@ Referenced by design-feature (drafting) and review-feature (blocking check). App
 - **Pseudo-code only when the structure is itself the decision** — an algorithm, a state machine, a protocol.
 - **Quoting existing source as evidence is citation, not implementation.** Cite it with `file:line`.
 
-Why it is blocking, not stylistic: target-language text anchors the executor to one implementation and substitutes premature detail for behavior, hiding the gaps the AC/TC graph exists to expose.
+Why it matters, and why it is not merely stylistic: target-language text anchors the executor to one implementation and substitutes premature detail for behavior, hiding the gaps the AC/TC graph exists to expose.
 
-**Verdict:** in design-feature, target-language syntax or an implementation body fails the Altitude self-check — rewrite as notation before handoff. In review-feature, it is a blocking finding.
+**Verdict:** in design-feature this is the drafting standard — write notation, and rewrite target-language syntax before handoff. In review-feature it is a **Should Fix** finding, reported with the rewrite, never a `NEEDS CHANGES` on its own. It does not clear `Review:` and it does not gate the approval pause: a plan whose ACs and TCs are sound is not made unsound by a stray type annotation. Altitude blocks nothing; the AC/TC graph and the counterexamples do.

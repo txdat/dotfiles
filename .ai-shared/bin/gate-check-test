@@ -19,13 +19,43 @@ new_repo() {
   printf '%s\n' "$repo"
 }
 
+# A schema-valid plan carries a closed AC/TC/Step graph; gate-check now blocks
+# without one, so the default fixture has to be a real plan, not a header stub.
+# Pass $8 to substitute a broken graph for the traceability cases.
+#
+# Parser fixture, NOT an authoring exemplar — the checker reads only IDs and
+# Proves: targets, so everything else here is filler chosen to keep the graph
+# closed. For what an AC, TC, or Source should actually look like, see the
+# filled examples in skills/dev/design-feature.md.
+valid_graph() {
+  cat <<'EOF'
+## Acceptance Criteria
+AC-1 — the gate blocks an unapproved plan
+  Source: ENGINEERING_CORE #11
+  Success: execution is refused
+  Failure: execution proceeds
+
+## Test Cases
+TC-1 — unapproved plan reaches execute-feature
+  Proves: AC-1
+  Given: a plan at Status: planning
+  When: execute-feature is invoked
+  Then: the hook blocks
+
+## Implementation Steps
+Step 1 — add the status gate — satisfies TC-1
+EOF
+}
+
 write_plan() {
   local path="$1" status="$2" type="$3" issue="$4" worktree="$5" pattern="$6"
   local review="${7-READY 2026-01-01}"
+  local graph="${8-$(valid_graph)}"
   {
     printf '# Task: gate test\n'
-    printf 'Status: %s | Type: %s | Issue: %s | Review: %s | Worktree: %s\n\n' \
+    printf 'Status: %s | Type: %s | Issue: %s | Review: %s | Rounds: 1 | Worktree: %s\n\n' \
       "$status" "$type" "$issue" "$review" "$worktree"
+    printf '%s\n\n' "$graph"
     printf '%s\n' "$pattern"
     printf 'Type: single\n'
     printf '| # | Branch | Steps | Summary |\n'
@@ -74,11 +104,12 @@ assert_block() {
 make_registered_plan() {
   local repo="$1" type="$2" status="$3" issue="$4" pattern="$5"
   local review="${6-READY 2026-01-01}"
+  local graph="${7-$(valid_graph)}"
   local worktree="$repo-worktree"
   git -C "$repo" worktree add -q -b "$type/gate-test" "$worktree" main
-  write_plan "$repo/docs/plans/gate.md" planning "$type" "$issue" "$worktree" "$pattern" "$review"
+  write_plan "$repo/docs/plans/gate.md" planning "$type" "$issue" "$worktree" "$pattern" "$review" "$graph"
   mkdir -p "$worktree/docs/plans"
-  write_plan "$worktree/docs/plans/gate.md" "$status" "$type" "$issue" "$worktree" "$pattern" "$review"
+  write_plan "$worktree/docs/plans/gate.md" "$status" "$type" "$issue" "$worktree" "$pattern" "$review" "$graph"
   printf '%s\n' "$worktree"
 }
 
@@ -198,32 +229,338 @@ write_plan "$repo/docs/plans/gate.md" approved fix '#12' '' '## PR Pattern (prov
 output=$(run_gate "$repo" dev-fix-bug 'execute docs/plans/gate.md')
 assert_block "$output" 'no '"'"'Review: READY' 'fix-bug execute also requires the review marker'
 
-# 'abandoned' is terminal: a dropped plan must leave the active set, so it
-# neither counts toward the multiple-active ambiguity nor blocks the lone
-# remaining plan from being adopted without an explicit name.
-repo=$(new_repo)
-write_plan "$repo/docs/plans/dropped.md" abandoned feature '#12' '' '## PR Pattern (provisional)'
-write_plan "$repo/docs/plans/gate.md" approved feature '#12' '' '## PR Pattern (provisional)'
-output=$(run_gate "$repo" dev-execute-feature '')
-assert_pass "$output" 'abandoned plan does not make the lone active plan ambiguous'
-
-# Abandoning the pinned plan must release the session pin, exactly as
-# archiving does. Otherwise a dropped plan keeps capturing every later
-# unnamed invocation in that session and the remaining plan is unreachable.
-repo=$(new_repo)
-session="gate-check-test-$$-abandon-pin"
-write_plan "$repo/docs/plans/gate.md" approved feature '#12' '' '## PR Pattern (provisional)'
-output=$(run_gate_session "$repo" "$session" dev-execute-feature 'docs/plans/gate.md')
-assert_pass "$output" 'explicit plan pins the session'
-write_plan "$repo/docs/plans/gate.md" abandoned feature '#12' '' '## PR Pattern (provisional)'
-write_plan "$repo/docs/plans/next.md" approved feature '#12' '' '## PR Pattern (provisional)'
-output=$(run_gate_session "$repo" "$session" dev-execute-feature '')
-assert_pass "$output" 'abandoning the pinned plan releases the pin for the next plan'
-
-# An abandoned plan is not an entry status for any skill.
+# 'abandoned' is terminal: it is not an entry status for any skill. With
+# ambient resolution gone this is the whole of its mechanical meaning — the
+# pin it used to release no longer exists.
 repo=$(new_repo)
 write_plan "$repo/docs/plans/gate.md" abandoned feature '#12' '' '## PR Pattern (provisional)'
 output=$(run_gate "$repo" dev-execute-feature 'docs/plans/gate.md')
 assert_block "$output" 'abandoned' 'abandoned plan cannot be executed'
+
+# A terminal plan beside an active one is inert: naming the active plan works
+# regardless of what else sits in docs/plans/.
+repo=$(new_repo)
+write_plan "$repo/docs/plans/dropped.md" abandoned feature '#12' '' '## PR Pattern (provisional)'
+write_plan "$repo/docs/plans/shipped.md" archived feature '#12' '' '## PR Pattern (provisional)'
+write_plan "$repo/docs/plans/gate.md" approved feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate "$repo" dev-execute-feature 'docs/plans/gate.md')
+assert_pass "$output" 'terminal plans beside an explicitly named active plan are inert'
+
+# ── explicit plan resolution ──
+# Governance binds to a named artifact: a dormant plan must never capture
+# unrelated work, and a gate must never fire because a plan merely exists.
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" approved feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate "$repo" dev-execute-feature '')
+assert_block "$output" 'none was named' 'a lone active plan is not adopted without an explicit path'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/alpha.md" approved feature '#12' '' '## PR Pattern (provisional)'
+write_plan "$repo/docs/plans/beta.md" planning feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate "$repo" dev-execute-feature 'docs/plans/alpha.md')
+assert_pass "$output" 'an exact path selects among several active plans'
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/beta.md')
+assert_pass "$output" 'the sibling plan resolves independently by its own path'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/jwt-auth.md" approved feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate "$repo" dev-execute-feature 'jwt-auth')
+assert_block "$output" 'none was named' 'a unique slug without a path no longer resolves'
+
+# No pin: two calls in one session both require the path.
+repo=$(new_repo)
+session="gate-check-test-$$-no-pin"
+write_plan "$repo/docs/plans/gate.md" approved feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate_session "$repo" "$session" dev-execute-feature 'docs/plans/gate.md')
+assert_pass "$output" 'an explicitly named plan resolves'
+output=$(run_gate_session "$repo" "$session" dev-execute-feature '')
+assert_block "$output" 'none was named' 'a prior explicit call does not pin the session for the next'
+
+# ship-feature <requirement> starts a new design and must not adopt a dormant
+# plan — otherwise unrelated work inherits that plan's gates.
+repo=$(new_repo)
+write_plan "$repo/docs/plans/dormant.md" implemented feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate "$repo" dev-ship-feature 'add rate limiting to the upload endpoint')
+assert_pass "$output" 'ship-feature with a requirement ignores a dormant plan'
+
+# frame-goal is an entry skill: it frames goals before any plan exists, so
+# it is ungated and adopts nothing.
+output=$(run_gate "$repo" dev-frame-goal 'add rate limiting to the upload endpoint')
+assert_pass "$output" 'frame-goal is ungated beside a dormant plan'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" archived feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate "$repo" dev-ship-feature 'docs/plans/gate.md from execute')
+assert_block "$output" 'already shipped' 'ship-feature resume names its plan and still sees terminal status'
+
+# fix-bug diagnose stays planless and read-only; execute still cannot fall back.
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" approved feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate "$repo" dev-fix-bug 'diagnose uploads return 502 under load')
+assert_pass "$output" 'diagnose remains planless beside an active plan'
+output=$(run_gate "$repo" dev-fix-bug 'execute')
+assert_block "$output" 'requires an approved fix plan' 'fix-bug execute cannot adopt the lone active plan'
+
+# ── AC <-> TC <-> Step referential closure ──
+# The hook reads identifiers, never prose. Closure proves every ID is
+# referenced; whether an edge is *true* stays review-feature's judgment.
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' ''
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_pass "$output" 'closed AC/TC/Step graph enters review-feature'
+
+# design-feature owns issue creation, so a missing issue must surface at review
+# entry — not at execution, after review and approval have been spent.
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '' '' '## PR Pattern (provisional)' ''
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" 'no linked issue' 'review-feature requires the issue before review'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' '## Acceptance Criteria
+AC-1 — outcome
+  Source: goal
+AC-2 — second outcome
+  Source: approval.md
+## Test Cases
+TC-1 — scenario
+  Proves: AC-1
+## Implementation Steps
+Step 1 — action — satisfies TC-1'
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" 'AC-2 has no TC' 'an AC no TC proves is an unreferenced ID'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' '## Acceptance Criteria
+AC-1 — outcome
+  Source: goal
+## Test Cases
+TC-1 — scenario
+  Proves: AC-1
+TC-2 — second scenario
+  Proves: AC-1
+## Implementation Steps
+Step 1 — action — satisfies TC-1'
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" 'TC-2 is not named by any Implementation Step' 'a TC no step names is an unreferenced ID'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' '## Acceptance Criteria
+AC-1 — outcome
+  Source: goal
+## Test Cases
+TC-1 — scenario
+  Proves: AC-1
+## Implementation Steps
+Step 1 — action — satisfies TC-1
+Step 2 — unrelated cleanup'
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" 'names no TC' 'a step citing no TC is an unreferenced ID'
+
+# Unreadable input must not be reported as a traceability defect: a false
+# closure block teaches the reader to distrust the hook.
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' '## Acceptance Criteria
+AC-1 — outcome
+## Test Cases
+TC-1 — scenario
+  Proves: AC-1
+## Implementation Steps
+Step 1 — action — satisfies TC-1 through TC-4'
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" 'cannot read' 'an ID range is unreadable input, not an unreferenced ID'
+assert_block "$output" 'uses an ID range' 'the range block names the offending line'
+
+# "TC-1 to TC-4" is the same range: without the "to" separator the middle IDs
+# would decay into unreferenced-ID findings — a false closure verdict.
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' '## Acceptance Criteria
+AC-1 — outcome
+## Test Cases
+TC-1 — scenario
+  Proves: AC-1
+TC-2 — scenario
+  Proves: AC-1
+TC-3 — scenario
+  Proves: AC-1
+TC-4 — scenario
+  Proves: AC-1
+## Implementation Steps
+Step 1 — action — satisfies TC-1 to TC-4'
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" 'uses an ID range' 'a "to" range between two IDs is unreadable input, not orphaned middle IDs'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' '## Acceptance Criteria
+AC-1 — outcome
+## Test Cases
+TC-1 — scenario
+  Proves: the login AC
+## Implementation Steps
+Step 1 — action — satisfies TC-1'
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" 'unparseable Proves:' 'a Proves: naming no AC ID is unreadable input'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' '## Acceptance Criteria
+AC-1 — outcome
+## Test Cases
+TC-1 — scenario
+  Proves: AC-1, AC-2
+## Implementation Steps
+Step 1 — action — satisfies TC-1'
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" 'exactly one is required' 'a TC proving two ACs is unreadable input'
+
+# Bulleted entries are the same graph: the step matcher already tolerated a
+# leading bullet, so AC/TC/Proves must too or a bulleted plan blocks as
+# "unreadable" over pure formatting.
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' '## Acceptance Criteria
+- AC-1 — outcome
+  - Source: goal
+## Test Cases
+- TC-1 — scenario
+  - Proves: AC-1
+## Implementation Steps
+- Step 1 — action — satisfies TC-1'
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_pass "$output" 'a bulleted plan resolves the same graph'
+
+# Malformed graphs the parser must not accept as closed. Each contradicts the
+# advertised guarantee (unique IDs, exactly one Proves: per TC naming a
+# declared AC, every step citing declared TCs).
+bad_graph() {
+  local label="$1" graph="$2" expected="$3"
+  local r
+  r=$(new_repo)
+  write_plan "$r/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' "$graph"
+  assert_block "$(run_gate "$r" dev-review-feature 'docs/plans/gate.md')" "$expected" "$label"
+}
+
+bad_graph 'a duplicate AC ID is unreadable input' '## Acceptance Criteria
+AC-1 — outcome
+AC-1 — a different outcome wearing the same ID
+## Test Cases
+TC-1 — scenario
+  Proves: AC-1
+## Implementation Steps
+Step 1 — action — satisfies TC-1' 'declared more than once'
+
+bad_graph 'a duplicate TC ID is unreadable input' '## Acceptance Criteria
+AC-1 — outcome
+## Test Cases
+TC-1 — scenario
+  Proves: AC-1
+TC-1 — another scenario
+  Proves: AC-1
+## Implementation Steps
+Step 1 — action — satisfies TC-1' 'declared more than once'
+
+# Steps are keyed by occurrence, but their numbers are IDs the plan cites —
+# a reused number is two steps wearing one name, same as a duplicate AC/TC.
+bad_graph 'a duplicate Step number is unreadable input' '## Acceptance Criteria
+AC-1 — outcome
+## Test Cases
+TC-1 — scenario
+  Proves: AC-1
+TC-2 — second scenario
+  Proves: AC-1
+## Implementation Steps
+Step 1 — action — satisfies TC-1
+Step 1 — a different action wearing the same number — satisfies TC-2' 'declared more than once'
+
+bad_graph 'two Proves: lines on one TC are unreadable input' '## Acceptance Criteria
+AC-1 — outcome
+AC-2 — second outcome
+## Test Cases
+TC-1 — scenario
+  Proves: AC-1
+  Proves: AC-2
+## Implementation Steps
+Step 1 — action — satisfies TC-1' 'more than one Proves:'
+
+# A TC with no Proves: at all used to slip through whenever another TC already
+# covered the AC and a step named the malformed one.
+bad_graph 'a TC with no Proves: line at all is reported' '## Acceptance Criteria
+AC-1 — outcome
+## Test Cases
+TC-1 — scenario
+  Proves: AC-1
+TC-2 — scenario with no Proves line
+  Given: setup
+## Implementation Steps
+Step 1 — action — satisfies TC-1 and TC-2' 'TC-2 has no Proves: line'
+
+bad_graph 'a step citing an undeclared TC is reported' '## Acceptance Criteria
+AC-1 — outcome
+## Test Cases
+TC-1 — scenario
+  Proves: AC-1
+## Implementation Steps
+Step 1 — action — satisfies TC-1
+Step 2 — action — satisfies TC-99' 'TC-99, which is not declared'
+
+# ── plan path must be exact ──
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" approved feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate "$repo" dev-execute-feature '/some/other/repo/docs/plans/gate.md')
+assert_block "$output" 'not found' 'a path in another repository does not resolve this repo'"'"'s plan'
+
+mkdir -p "$repo/docs/other"
+write_plan "$repo/docs/other/escape.md" approved feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate "$repo" dev-execute-feature 'docs/plans/../other/escape.md')
+assert_block "$output" 'not found' 'traversal out of docs/plans does not resolve'
+
+mkdir -p "$repo/docs/plans/nested"
+write_plan "$repo/docs/plans/nested/deep.md" approved feature '#12' '' '## PR Pattern (provisional)'
+output=$(run_gate "$repo" dev-execute-feature 'docs/plans/nested/deep.md')
+assert_block "$output" 'not found' 'a nested plan path is not a direct child of docs/plans'
+
+# The intent-line plan shape (design-feature): "## Test Cases (intent)" header
+# and a Test: back-fill line must parse as the same graph.
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' '## Acceptance Criteria
+AC-1 — outcome
+  Source: goal
+## Test Cases (intent)
+TC-1 — scenario intent
+  Proves: AC-1
+  Test: tests/refund_test.py::test_over_balance_rejected
+## Implementation Steps
+Step 1 — action — satisfies TC-1'
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_pass "$output" 'an intent-line plan with a Test: field resolves the same graph'
+
+# "TC-1 — 200 returned" must not trip the range detector.
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' '## Acceptance Criteria
+AC-1 — the endpoint returns 200 on success
+  Source: contract
+## Test Cases
+TC-1 — 200 returned for a valid request
+  Proves: AC-1
+## Implementation Steps
+Step 1 — add the handler — satisfies TC-1'
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_pass "$output" 'a numeric em-dash summary is not read as an ID range'
+
+# The graph is re-checked at review-code: the plan is edited during execution,
+# so a TC added mid-flight with no owning step is caught there or nowhere.
+repo=$(new_repo)
+make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)' 'READY 2026-01-01' '## Acceptance Criteria
+AC-1 — outcome
+  Source: goal
+## Test Cases
+TC-1 — scenario
+  Proves: AC-1
+TC-2 — added during execution
+  Proves: AC-1
+## Implementation Steps
+Step 1 — action — satisfies TC-1' >/dev/null
+output=$(run_gate "$repo" dev-review-code 'docs/plans/gate.md')
+assert_block "$output" 'TC-2 is not named by any Implementation Step' 'review-code re-checks closure after execution edits'
 
 printf 'All gate-check tests passed. Temporary fixtures: %s\n' "$TMP_ROOT"

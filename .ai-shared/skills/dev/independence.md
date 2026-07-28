@@ -7,7 +7,7 @@ Referenced by review-feature, review-code, and review-system. A review is worth 
 **Did this session produce the artifact under review?**
 
 - **No** → review directly in the main session. Nothing else applies.
-- **Yes** → delegate the whole review to exactly one fresh agent with no conversation inheritance (EXECUTION_CORE `Subagent context`). In Claude Code that means any `subagent_type` other than `fork`; `fork` inherits this conversation and is never valid here.
+- **Yes** → delegate the whole review to exactly one fresh agent with no conversation inheritance (EXECUTION_CORE `Subagent context`): its context starts empty except for the packet below. Any delegation mode that forks, inherits, or summarizes this conversation is not fresh and is never valid here, whatever the platform calls it.
 - **Yes, but isolation is unavailable** → review in-session, treating authoring memory as untrusted: re-derive every judgment from the artifact file and source reads, never from what you remember deciding.
 
 | Skill | Reviewer | Artifact |
@@ -16,12 +16,14 @@ Referenced by review-feature, review-code, and review-system. A review is worth 
 | review-code | `code-quality-auditor` | the worktree plan + `<base>..HEAD` diff |
 | review-system | `architecture-strategist` (review mode) | the architecture document |
 
+Independence buys nothing if the fresh agent cannot do adversarial work — an anchored strong reviewer beats an unanchored one that returns counterexample-shaped text. When choosing the model behind these agents, see `capability.md`.
+
 ## The packet
 
 Write it to `/tmp/ai-ctx/<slug>.md` and name **only**:
 
 - the artifact path — for review-code, the **worktree** plan copy and the worktree/base refs, never the `$MAIN_ROOT` locator;
-- the project AI config;
+- the project config for AI;
 - the reviewing skill file (`review-feature.md` / `review-code.md` / `review-system.md`).
 
 Never include authoring rationale, exploration notes, design alternatives you rejected, or a conversation summary. Each of those re-imports the anchor the delegation exists to remove.

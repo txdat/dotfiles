@@ -1,6 +1,6 @@
 # /review-system — Architecture Review
 
-Resolve the `draft` document from `$ARGUMENTS` or latest `docs/architecture/`; read it, relevant source, project AI config, and the configs that invoke and host the system — scheduler cadence and jitter, retry and delivery semantics, concurrency, IAM — which are design surface, not deployment detail. Independently challenge the decision, not field presence. Review the chain: goal and constraints → options → recommendation → contracts → reversible phases → measured outcome.
+Takes an exact `docs/architecture/<file>.md` in `$ARGUMENTS`, and it must be `Status: draft` — there is no latest-document fallback, for the reason CORE `Named plan and entry gates` gives for plans. Unlike the plan lane, **nothing mechanical enforces this**: `gate-check` treats the architecture skills as ungated entry skills and never resolves or validates an architecture document, so the named path and the `draft` status are this skill's own check. Not given an exact path, or the document is not `draft` → STOP and ask. Read it, relevant source, project config for AI, and the configs that invoke and host the system — scheduler cadence and jitter, retry and delivery semantics, concurrency, IAM — which are design surface, not deployment detail. Independently challenge the decision, not field presence. Review the chain: goal and constraints → options → recommendation → contracts → reversible phases → measured outcome.
 
 ## Independence
 

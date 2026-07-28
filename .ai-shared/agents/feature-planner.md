@@ -17,7 +17,7 @@ Two boundaries that are yours, not design-feature's:
 
 ## Process
 
-1. Read project AI config files — patterns, API, naming, testing
+1. Read project config for AI — patterns, API, naming, testing
 2. Dispatch code-explorer for related code
 3. Analyze — preserve the user's Goal; decompose observable outcomes, constraints, prohibited outcomes, and non-functional behavior
 4. Design — models, contracts, dependencies
