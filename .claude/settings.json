@@ -63,10 +63,9 @@
   "workflowKeywordTriggerEnabled": false,
   "enabledPlugins": {
     "tsgo-lsp@txdat-local": true,
+    "pyright-lsp@txdat-local": true,
     "frontend-design@claude-plugins-official": true,
     "playwright@claude-plugins-official": true,
-    "typescript-lsp@claude-plugins-official": false,
-    "pyright-lsp@claude-plugins-official": true,
     "mongodb@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {

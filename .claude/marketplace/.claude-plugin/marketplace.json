@@ -9,6 +9,11 @@
       "name": "tsgo-lsp",
       "source": "./plugins/tsgo-lsp",
       "description": "TypeScript/JavaScript language server via tsgo (typescript-go native preview)"
+    },
+    {
+      "name": "pyright-lsp",
+      "source": "./plugins/pyright-lsp",
+      "description": "Python language server"
     }
   ]
 }
