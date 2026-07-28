@@ -16,7 +16,7 @@ Architecture uses a separate falsifiable chain: goal and constraints → options
 
 `/dev:ship-feature <requirement>` — [explore] → frame-goal → design-feature → review-feature → spec approval → execute → review-code → PR
 
-`explore` is optional (CORE #10). `frame-goal` frames the requirement into confirmed goal(s) — single source for the too-broad test — routes each goal to design-system or design-feature by shape, and collapses to a pass-through when the requirement is already one clear goal; it pauses only on a split, rewrite, or question. The six phases after it are not optional.
+`explore` is optional (PROCESS #10). `frame-goal` frames the requirement into confirmed goal(s) — single source for the too-broad test — routes each goal to design-system or design-feature by shape, and collapses to a pass-through when the requirement is already one clear goal; it pauses only on a split, rewrite, or question. The six phases after it are not optional.
 
 Resume: `/dev:ship-feature docs/plans/<file>.md from execute` — resuming names its plan; `ship-feature <requirement>` always starts a new design and adopts nothing.
 
@@ -28,34 +28,29 @@ Plan statuses run `planning → approved → in-progress → implemented → rev
 
 **Every approval is the human's, and `approval.md` is the single source** — both the application spec and the architecture decision. Nothing else in this tree states when approval is granted; they point there. A plan reaches the pause only carrying `Review: READY <date>` from review-feature, and `gate-check` refuses to execute an `approved` plan without it.
 
-Know what enforces what: ENGINEERING_CORE `Self-check boundary`. Short version — the hook proves state, the self-checks prove correctness, and the pause proves consent.
+Know what enforces what: PROCESS `Self-check boundary`. Short version — the hook proves state, the self-checks prove correctness, and the pause proves consent.
 
 **BDD then TDD.** BDD owns `Goal → AC → TC intent` and answers whether the right behavior is specified; the TC's Given/When/Then body is authored at RED, where its vacuity and constructibility are settled by a runner instead of argued in prose. TDD consumes only approved TCs through RED → GREEN → BLUE and answers whether code implements that behavior. Passing TCs never overrides a failed AC or Goal; contradictions return to design/review and human reapproval.
 
 **One lane, scaled to the change.** There is no lite mode. A small change gets a short plan because it has little to say, not because a flag excused it — and Goal, ACs, TCs, adversarial review, the approval pause, RED proof, coverage, and symbol gates apply to every change regardless of size.
 
-**Named plan, always.** Every plan-consuming skill takes an exact `docs/plans/<file>.md` — no slug, no session pin, no lone-plan adoption. See ENGINEERING_CORE `Named plan and entry gates`.
+**Named plan, always.** Every plan-consuming skill takes an exact `docs/plans/<file>.md` — no slug, no session pin, no lone-plan adoption. See PROCESS `Named plan and entry gates`.
 
 Every dev skill ends with a blocking self-check. Do not emit the skill's handoff line until that checklist is verified against the artifacts.
 
-## Reading Order (first session only)
+## Loading
 
-1. `GUIDELINES.md` — precedence, role, communication
-2. `ENGINEERING_CORE.md` — gates, conventions, active plan, the two enforcement layers
-3. `EXECUTION_CORE.md` — universal code/discipline/tooling rules
-4. This file — flow overview
-5. `approval.md` — the human decision, and the single most important concept here
-6. The skill you are about to run, plus the single-source files it names
+Nothing in this tree is preloaded; only `README.md` auto-loads. Everything else is read at its trigger (`README.md` `Load on demand`): `PROCESS.md` before plan-backed work, `CODING.md` before the first code read or write, this file when you need the flow overview, `approval.md` at its pause, and each skill — plus the single-source files it names — at invocation.
 
 ## Project Config For AI
 
-Every skill opens with "read project config for AI". That means the nearest `CLAUDE.md/AGENTS.md` at or above the repo root, plus any file it includes. Read it once per phase. Per `GUIDELINES.md` precedence it may override exactly one thing — _how code is written_ (style, naming, layout, stack-local patterns, project commands) — and never a core rule, a skill gate, or a banned tool.
+Every skill opens with "read project config for AI". That means the nearest `CLAUDE.md/AGENTS.md` at or above the repo root, plus any file it includes. Read it once per phase. Per `README.md` precedence it may override exactly one thing — _how code is written_ (style, naming, layout, stack-local patterns, project commands) — and never a core rule, a skill gate, or a banned tool.
 
 ---
 
 ## Single-Source Files
 
-Read by the skills that need them; never restated. `approval.md` (both human decisions) · `independence.md` (delegated review) · `altitude.md` (plan is design, not code) · `tdd.md` (RED→GREEN→BLUE) · `coverage.md` (measurement, bands, test quality bar) · `worktree.md` (lifecycle) · `dependents.md` (blast radius) · `capability.md` (which phases need which model).
+Read by the skills that need them; never restated. `approval.md` (both human decisions) · `independence.md` (delegated review) · `altitude.md` (plan is design, not code) · `tdd.md` (RED→GREEN→BLUE) · `coverage.md` (measurement, bands, test quality bar) · `worktree.md` (lifecycle) · `dependents.md` (blast radius).
 
 ## Design Skills
 

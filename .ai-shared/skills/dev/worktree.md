@@ -1,6 +1,6 @@
 # Worktree Lifecycle — Single Source
 
-Referenced by execute-feature, fix-bug, review-code, create-pr. Skills bind `<slug>`/`<branch>`/`<parent>` themselves and follow these steps — never restate them. Resolution and the single-source-of-truth rule live in CORE `Plan worktree`.
+Referenced by execute-feature, fix-bug, review-code, create-pr. Skills bind `<slug>`/`<branch>`/`<parent>` themselves and follow these steps — never restate them. Resolution and the single-source-of-truth rule live in PROCESS `Plan worktree`.
 
 - **Create (first run):** `<parent>` is always explicit — never implicit HEAD. Only the main agent runs these Git commands.
   ```bash

@@ -1,6 +1,6 @@
 # Coverage Measurement — Single Source
 
-Referenced by CORE gate #6 (thresholds, no-gaming, and the stricter-only rule live there) and read by execute-feature/fix-bug at first scoring. Mechanics below; each names its **fallback** for when the stack can't measure what it asks.
+Referenced by PROCESS gate #6 (thresholds, no-gaming, and the stricter-only rule live there) and read by execute-feature/fix-bug at first scoring. Mechanics below; each names its **fallback** for when the stack can't measure what it asks.
 
 - **Branch, not just line, for logic.** On business-logic/domain/service files the branches *are* the behavior (auth, state transitions, money math, validation, retry/idempotency); a red branch is an untested error path, i.e. a future incident. Gate on branch coverage via the table's Branch column. *Fallback where the stack can't (Go is statement-only):* gate line-% and flag each untested branch by name in the Coverage Gap.
 - **Curate the denominator.** Exclude generated code, DTOs, serialization boilerplate, migrations, config, and `main`/wiring via the project's coverage config (omit/exclude globs), not by padding with hollow tests. *Fallback where editing that config is out of the step's scope:* don't exclude silently — note the boilerplate lines as excluded-by-reason in the Coverage Gap and score the rest. A meaningful 82% beats a hollow 92%.
@@ -19,7 +19,7 @@ Each command reports line/statement %; the **Branch** column is how to get branc
 
 ## Closing a gap — behavior-first, never line-first
 
-**When this section applies:** a ❌, or a ⚠️ you have decided to close. A ⚠️ you log and carry stops at step 1 — name the behavior in the Coverage Gap entry and continue (CORE #6). Logging an uncovered behavior is not Discovered Scope and is not a STOP; only an attempt to *close* it can surface CORE #7 work.
+**When this section applies:** a ❌, or a ⚠️ you have decided to close. A ⚠️ you log and carry stops at step 1 — name the behavior in the Coverage Gap entry and continue (PROCESS #6). Logging an uncovered behavior is not Discovered Scope and is not a STOP; only an attempt to *close* it can surface PROCESS #7 work.
 
 A red line is a symptom; the unit of testing is a behavior (input class, error path, state transition — a Given/When/Then), never a line. For a gap in scope:
 
@@ -33,13 +33,13 @@ A `## Coverage Gaps` entry names lines *and* the behavior each belongs to — a 
 ⚠️ payments/refund.py — 84% branch (patch, diff-cover vs <base>)
    Uncovered: 112-118 — the gateway-timeout retry path (AC-3); no TC exercises a timeout.
    Uncovered: 131 — the `currency mismatch` guard; unreachable until multi-currency lands (Out of Scope).
-   Carried, not closed: logging this is not Discovered Scope (CORE #6).
+   Carried, not closed: logging this is not Discovered Scope (PROCESS #6).
 ```
 
 "⚠️ coverage 84% — will fix later" names no line and no behavior, so it hides the hole it claims to flag.
 
 **Quality bar (every test):** a test must fail when the behavior it names breaks. Smells that fail it: assert-nothing (runs code, asserts no exception), trivial asserts (not-null, type-only, blanket snapshots), asserting a mock was called instead of the outcome, copying the implementation's expression into the expectation. Such a test raises % while verifying nothing — the mirror of a fake implementation; delete it and log the gap instead.
 
-**Touched-line (patch) coverage** — CORE #6 gates the lines *this change* touched, not the whole file. Where the run emits a coverage XML (`--cov-report=xml`, JaCoCo XML, `llvm-cov --lcov`), get patch granularity with `diff-cover coverage.xml --compare-branch=<base>`. Fallback where no XML/diff-cover: score the whole changed-file % (never the repo-global number).
+**Touched-line (patch) coverage** — PROCESS #6 gates the lines *this change* touched, not the whole file. Where the run emits a coverage XML (`--cov-report=xml`, JaCoCo XML, `llvm-cov --lcov`), get patch granularity with `diff-cover coverage.xml --compare-branch=<base>`. Fallback where no XML/diff-cover: score the whole changed-file % (never the repo-global number).
 
-That fallback dilutes, and it dilutes worst exactly where the file is largest and best covered: new uncovered lines in a 400-line file at 95% still score ~95% and pass ✅ while every line the change added is red. Whenever you score a whole file instead of the patch, read the uncovered-line list against the diff and gate on the touched lines by inspection — a ✅ that no changed line earned is a false pass, and the band is a floor, not a score (CORE #6).
+That fallback dilutes, and it dilutes worst exactly where the file is largest and best covered: new uncovered lines in a 400-line file at 95% still score ~95% and pass ✅ while every line the change added is red. Whenever you score a whole file instead of the patch, read the uncovered-line list against the diff and gate on the touched lines by inspection — a ✅ that no changed line earned is a false pass, and the band is a floor, not a score (PROCESS #6).

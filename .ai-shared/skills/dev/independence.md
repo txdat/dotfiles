@@ -7,7 +7,7 @@ Referenced by review-feature, review-code, and review-system. A review is worth 
 **Did this session produce the artifact under review?**
 
 - **No** → review directly in the main session. Nothing else applies.
-- **Yes** → delegate the whole review to exactly one fresh agent with no conversation inheritance (EXECUTION_CORE `Subagent context`): its context starts empty except for the packet below. Any delegation mode that forks, inherits, or summarizes this conversation is not fresh and is never valid here, whatever the platform calls it.
+- **Yes** → delegate the whole review to exactly one fresh agent with no conversation inheritance (CODING `Subagent context`): its context starts empty except for the packet below. Any delegation mode that forks, inherits, or summarizes this conversation is not fresh and is never valid here, whatever the platform calls it.
 - **Yes, but isolation is unavailable** → review in-session, treating authoring memory as untrusted: re-derive every judgment from the artifact file and source reads, never from what you remember deciding.
 
 | Skill | Reviewer | Artifact |
@@ -16,7 +16,7 @@ Referenced by review-feature, review-code, and review-system. A review is worth 
 | review-code | `code-quality-auditor` | the worktree plan + `<base>..HEAD` diff |
 | review-system | `architecture-strategist` (review mode) | the architecture document |
 
-Independence buys nothing if the fresh agent cannot do adversarial work — an anchored strong reviewer beats an unanchored one that returns counterexample-shaped text. When choosing the model behind these agents, see `capability.md`.
+Independence buys nothing if the fresh agent cannot do adversarial work — an anchored strong reviewer beats an unanchored one that returns counterexample-shaped text. Put the strongest available model behind review agents; economize on mechanical phases, never on judgment.
 
 ## The packet
 

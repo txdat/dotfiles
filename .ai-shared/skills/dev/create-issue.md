@@ -12,6 +12,6 @@ gh issue create --title "..." --body "..." [--label "..."] [--milestone "..."]
 
 - [ ] **Standalone:** not plan-linked — otherwise this is design-feature's job.
 - [ ] **Content:** specific title under 72 chars; body carries problem, expected outcome, context; requested labels/milestone applied.
-- [ ] **Auth:** `gh auth status` shows the account CORE requires.
+- [ ] **Auth:** `gh auth status` shows the account PROCESS requires.
 
 All checked → create the issue and print its URL.

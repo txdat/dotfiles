@@ -1,6 +1,8 @@
 # /execute-feature — Implement the Approved Plan
 
-Takes an exact `docs/plans/<file>.md` per CORE `Named plan and entry gates`. Entry status is `approved` or `in-progress`; `gate-check` owns plan/issue/status. Read the Goal, every AC and TC, the plan, and project config for AI. `$ARGUMENTS`: `<plan> [from N|N]`; partial execution must preserve dependency order. No TODO placeholders.
+`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
+
+Takes an exact `docs/plans/<file>.md` per PROCESS `Named plan and entry gates`. Entry status is `approved` or `in-progress`; `gate-check` owns plan/issue/status. Read the Goal, every AC and TC, the plan, and project config for AI. `$ARGUMENTS`: `<plan> [from N|N]`; partial execution must preserve dependency order. No TODO placeholders.
 
 ## Setup
 
@@ -34,7 +36,7 @@ The approved Goal → AC → TC spec is the oracle; TDD consumes it and may not 
 
 Before each GREEN:
 
-1. Verify each new call, field access, and import against its target type/module per EXECUTION_CORE.
+1. Verify each new call, field access, and import against its target type/module per CODING.
 2. Run `dev-check proof <commit> [--test <in-source-test-path>] [--stub <throwing-stub-path>]`.
 3. Commit implementation separately after its targeted tests pass. Any test-input special case or hardcoded expected-value table is a fake implementation → STOP and report.
 
@@ -42,15 +44,15 @@ After all GREEN work, perform BLUE as defined in `tdd.md`: inspect for worthwhil
 
 ## Verification
 
-For every changed file, derive targeted tests using project conventions, semantic references, then filename/import search. No test found → log a Coverage Gap and STOP: return through design/review and re-approval for a new TC, accept a stated gap, or split. Never add unapproved behavior and never run the full suite unless EXECUTION_CORE permits it.
+For every changed file, derive targeted tests using project conventions, semantic references, then filename/import search. No test found → log a Coverage Gap and STOP: return through design/review and re-approval for a new TC, accept a stated gap, or split. Never add unapproved behavior and never run the full suite unless CODING permits it.
 
-At first scoring read `coverage.md`. Measure touched/changed files, run `dev-check coverage <percent> [uncovered-critical]`, and apply CORE #6 judgment. Log every ⚠️/❌ in `## Coverage Gaps`, naming the uncovered lines and the behavior each belongs to. **⚠️ → log and continue; ❌ → STOP and ask.** Coverage-driven new behavior must enter through a reviewed, re-approved plan TC.
+At first scoring read `coverage.md`. Measure touched/changed files, run `dev-check coverage <percent> [uncovered-critical]`, and apply PROCESS #6 judgment. Log every ⚠️/❌ in `## Coverage Gaps`, naming the uncovered lines and the behavior each belongs to. **⚠️ → log and continue; ❌ → STOP and ask.** Coverage-driven new behavior must enter through a reviewed, re-approved plan TC.
 
-After GREEN/BLUE, follow `dependents.md` for every changed externally reachable symbol. Breakage or unresolved reachability → log `## Discovered Scope`, STOP, and ask: re-plan/re-review, separate, or narrow via a recorded CORE #5 deviation. Never ship a known-broken caller.
+After GREEN/BLUE, follow `dependents.md` for every changed externally reachable symbol. Breakage or unresolved reachability → log `## Discovered Scope`, STOP, and ask: re-plan/re-review, separate, or narrow via a recorded PROCESS #5 deviation. Never ship a known-broken caller.
 
 Run lint, build, the TC tests, and `## Affected Existing Tests`. Root-cause failures: regression → fix implementation; incomplete implementation → finish its step. A conflict among Goal, AC, TC, domain contract, or observed intended behavior is not a free deviation: STOP and go back through `approval.md`. Run `dev-check artifacts <base> HEAD`.
 
-Scope discovered beyond the approved plan follows CORE #7; divergence of means within unchanged behavior follows CORE #5. Which of the two you are looking at, and what a behavior change costs, is `approval.md` — do not re-derive it here.
+Scope discovered beyond the approved plan follows PROCESS #7; divergence of means within unchanged behavior follows PROCESS #5. Which of the two you are looking at, and what a behavior change costs, is `approval.md` — do not re-derive it here.
 
 ## Self-Check (BLOCKING)
 
@@ -59,7 +61,7 @@ Scope discovered beyond the approved plan follows CORE #7; divergence of means w
 - [ ] **Symbols and implementation:** all new symbols resolve; no fake implementation or hollow test. Issues: __.
 - [ ] **Coverage:** each changed file is ✅ or ⚠️ logged; no unresolved ❌; BLUE-touched files remeasured. Gaps: __.
 - [ ] **Dependents:** evidence blocks complete; breakage/unknowns were STOP-asked. Open: __.
-- [ ] **Scope:** all deviations have four CORE #5 fields; discoveries follow CORE #7. Open: __.
+- [ ] **Scope:** all deviations have four PROCESS #5 fields; discoveries follow PROCESS #7. Open: __.
 - [ ] **Delegation, if used:** exclusive ownership held; main agent verified file union and reran combined tests/coverage. Violations: __.
 
 All checked → set the worktree plan to `implemented`, commit `docs(<scope>): mark plan implemented`, and print: `Implementation complete. Run review-code for independent AC verification.` Surface non-empty Coverage Gaps and Deviations.

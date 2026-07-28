@@ -1,16 +1,18 @@
 # /ship-feature — Gated Delivery Router
 
-Flow: [explore] → frame-goal → design-feature → review-feature → spec approval → execute-feature → review-code → create-pr. `explore` is optional (CORE #10); `frame-goal` always runs on a fresh requirement but collapses to a one-line pass-through when it is already a single clear goal — its pause fires only on a split, rewrite, or question. Read project config for AI. `$ARGUMENTS`: `<requirement>` to start, or `docs/plans/<file>.md [from <phase>]` to resume.
+`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
+
+Flow: [explore] → frame-goal → design-feature → review-feature → spec approval → execute-feature → review-code → create-pr. `explore` is optional (PROCESS #10); `frame-goal` always runs on a fresh requirement but collapses to a one-line pass-through when it is already a single clear goal — its pause fires only on a split, rewrite, or question. Read project config for AI. `$ARGUMENTS`: `<requirement>` to start, or `docs/plans/<file>.md [from <phase>]` to resume.
 
 ship-feature drives **one goal's lane at a time**: frame-goal's goal 1 proceeds through design and onward; deferred goals live as issues and each ships later through its own ship-feature run.
 
 ## Route
 
-A bare `<requirement>` always starts a new design and adopts no existing plan; resuming names its plan path (CORE `Named plan and entry gates`). Use an explicit `from` phase or the named plan's live header. Route on `Status:` **and** `Review:` — never on session memory of what already ran:
+A bare `<requirement>` always starts a new design and adopts no existing plan; resuming names its plan path (PROCESS `Named plan and entry gates`). Use an explicit `from` phase or the named plan's live header. Route on `Status:` **and** `Review:` — never on session memory of what already ran:
 
 | Status | `Review:` | Next |
 |---|---|---|
-| no plan | — | frame-goal, then design-feature with the first confirmed goal (explore first when the area is unfamiliar — optional, per CORE #10; a boundary-shaped goal detours through design-system → review-system before its feature plans, per frame-goal's routing) |
+| no plan | — | frame-goal, then design-feature with the first confirmed goal (explore first when the area is unfamiliar — optional, per PROCESS #10; a boundary-shaped goal detours through design-system → review-system before its feature plans, per frame-goal's routing) |
 | `planning` | empty | review-feature, once Open Questions are empty |
 | `planning` | `READY <date>` | `approval.md` spec pause |
 | `approved` / `in-progress` | `READY <date>` | execute-feature |

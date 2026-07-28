@@ -1,4 +1,4 @@
-Read `~/.dotfiles/.ai-shared/EXECUTION_CORE.md` and follow all instructions exactly.
+Before your first code read or write, read `~/.dotfiles/.ai-shared/CODING.md` and follow all instructions exactly.
 
 ## Role
 

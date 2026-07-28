@@ -1,5 +1,7 @@
 # /design-system — Architecture Design
 
+`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
+
 Use only when work creates or changes a system boundary, communication pattern, service decomposition, or cross-system integration; feature-local design belongs to design-feature. A raw requirement that looks bundled or ambiguous at goal level → frame-goal first, before an architecture document exists to grow around it; this skill starts from a confirmed goal. No code. Write `docs/architecture/<date>_<slug>.md` after reading project config for AI. Heavy analysis may be delegated to `architecture-strategist`; the main agent owns the document and the later human decision.
 
 Architecture is not proved by up-front BDD/TDD. Its falsifiable chain is **goal and constraints → options → recommendation → boundary contracts → reversible phases → measured outcome**. Feature plans then prove observable behavior through Goal → AC → TC → RED → GREEN → BLUE.

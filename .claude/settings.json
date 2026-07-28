@@ -28,7 +28,31 @@
           {
             "type": "command",
             "command": "~/.dotfiles/.ai-shared/bin/handoff-write",
-            "timeout": 300
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.dotfiles/.ai-shared/bin/handoff-write",
+            "timeout": 60
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.dotfiles/.ai-shared/bin/handoff-read",
+            "timeout": 30
           }
         ]
       }

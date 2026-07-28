@@ -1,6 +1,8 @@
 # /review-feature — Review a Feature Plan
 
-No code and no approval decisions. Independently challenge the WHAT — the Goal, the AC set, and whether the TC intent lines cover it — rather than ratifying fields. You are reviewing a spec, not a transcript: TC bodies do not exist yet and are not yours to write or to judge (`execute-feature` authors them at RED; `review-code` reviews them). Takes an exact `docs/plans/<file>.md` per CORE `Named plan and entry gates`; entry status is `planning`. `gate-check` blocks entry on unresolved Open Questions and on a missing `Issue: #<n>`; the Goal/AC/TC/Step graph is yours to verify, not a parser's.
+`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
+
+No code and no approval decisions. Independently challenge the WHAT — the Goal, the AC set, and whether the TC intent lines cover it — rather than ratifying fields. You are reviewing a spec, not a transcript: TC bodies do not exist yet and are not yours to write or to judge (`execute-feature` authors them at RED; `review-code` reviews them). Takes an exact `docs/plans/<file>.md` per PROCESS `Named plan and entry gates`; entry status is `planning`. `gate-check` blocks entry on unresolved Open Questions and on a missing `Issue: #<n>`; the Goal/AC/TC/Step graph is yours to verify, not a parser's.
 
 ## Independence
 

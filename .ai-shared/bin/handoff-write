@@ -1,22 +1,69 @@
 #!/bin/bash
-# PreCompact hook (type: command) — write the session handoff before
-# compaction. PreCompact does not support agent-type hooks, so this
-# script invokes headless `claude -p` to summarize the transcript per
-# handoff.md. Must always exit 0: a non-zero exit blocks compaction.
+# PreCompact + SessionEnd hook (type: command) — deterministic session
+# handoff snapshot. Pure script, no agent: it records verifiable repo
+# state; narrative sections (Goal/Blockers/Remaining Work) are the live
+# session's duty when leaving unfinished planless work, and are
+# preserved here if present. Must always exit 0.
 set -uo pipefail
 
+DIR="$HOME/.cache/ai-handoff"
+mkdir -p "$DIR"
+find "$DIR" -maxdepth 1 -type f -name '*.md' -mtime +7 -delete 2>/dev/null
+
 input=$(cat)
-transcript=$(jq -r '.transcript_path // empty' <<<"$input")
 cwd=$(jq -r '.cwd // empty' <<<"$input")
-focus=$(jq -r '.custom_instructions // empty' <<<"$input")
-[[ -n "$transcript" && -f "$transcript" ]] || exit 0
+[[ -n "$cwd" && -d "$cwd" ]] || exit 0
+root=$(git -C "$cwd" rev-parse --show-toplevel 2>/dev/null) || exit 0
+base=$(basename "$root")
 
-prompt="Read ~/.dotfiles/.ai-shared/handoff.md and follow it exactly — it owns the file path rule and the format; do not improvise either. Read the session transcript at $transcript (a JSONL file; if it is large, work from the most recent entries backward), extract the five sections (Goal, Current State, Current Plan, Blockers, Remaining Work), derive the path from the working directory $cwd per handoff.md's Path rule, and overwrite that file."
-[[ -n "$focus" ]] && prompt+=" The user's compaction focus, weight it accordingly: $focus"
+# Name: <repo-basename>[-<plan-slug>].md. A worktree's root basename is
+# already <repo>-<slug> — use as-is. Otherwise derive the slug from the
+# single active plan (Status neither archived nor abandoned; prefer the
+# single in-progress one); ambiguous or none → no suffix.
+name="$base"
+plan="" plan_status=""
+if [[ "$root" != /tmp/ai-worktrees/* ]]; then
+  active=() in_progress=()
+  for f in "$root"/docs/plans/*.md; do
+    [[ -f "$f" ]] || continue
+    st=$(sed -n 's/^Status:[[:space:]]*\([a-z-]*\).*/\1/p' "$f" | head -1)
+    [[ "$st" == archived || "$st" == abandoned ]] && continue
+    active+=("$f:$st")
+    [[ "$st" == in-progress ]] && in_progress+=("$f:$st")
+  done
+  pick=""
+  [[ ${#active[@]} -eq 1 ]] && pick="${active[0]}"
+  [[ -z "$pick" && ${#in_progress[@]} -eq 1 ]] && pick="${in_progress[0]}"
+  if [[ -n "$pick" ]]; then
+    plan="${pick%:*}" plan_status="${pick##*:}"
+    slug=$(basename "$plan" .md | awk -F_ '{print $NF}')
+    [[ -n "$slug" ]] && name="$base-$slug"
+  fi
+fi
+out="$DIR/$name.md"
 
-mkdir -p /tmp/ai-handoff
-cd "$cwd" 2>/dev/null || true
-claude -p "$prompt" \
-  --allowedTools 'Read,Glob,Grep,Write,Bash(git rev-parse:*),Bash(basename:*),Bash(ls:*),Bash(mkdir:*),Bash(head:*),Bash(tail:*),Bash(wc:*),Bash(jq:*)' \
-  >/tmp/ai-handoff/.last-hook.log 2>&1 || true
+# Preserve agent-written narrative (everything from the first narrative
+# heading onward) across snapshot rewrites.
+narrative=""
+[[ -f "$out" ]] && narrative=$(awk '/^## (Goal|Blockers|Remaining Work)/{found=1} found' "$out")
+
+{
+  printf '# Handoff: %s — %s (script snapshot)\n\n' "$base" "$(date -Is)"
+  printf '## Repo State (verified at snapshot time)\n'
+  printf 'root: %s\n' "$root"
+  printf 'branch: %s\n' "$(git -C "$root" branch --show-current 2>/dev/null)"
+  printf 'head: %s\n' "$(git -C "$root" log -1 --format='%h %s' 2>/dev/null)"
+  printf 'recent: %s\n' "$(git -C "$root" log -5 --format='%h' 2>/dev/null | tr '\n' ' ')"
+  printf 'status:\n'
+  git -C "$root" status --porcelain 2>/dev/null | head -30 | sed 's/^/  /'
+  printf 'worktrees:\n'
+  git -C "$root" worktree list 2>/dev/null | sed 's/^/  /'
+  if [[ -n "$plan" ]]; then
+    printf '\n## Current Plan\n%s — Status: %s\n' "$plan" "$plan_status"
+  fi
+  if [[ -n "$narrative" ]]; then
+    printf '\n%s\n' "$narrative"
+  fi
+} >"$out" 2>/dev/null
+
 exit 0

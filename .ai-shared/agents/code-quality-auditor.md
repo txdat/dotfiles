@@ -1,4 +1,4 @@
-Read `~/.dotfiles/.ai-shared/EXECUTION_CORE.md` and follow all instructions exactly.
+Before your first code read or write, read `~/.dotfiles/.ai-shared/CODING.md` and follow all instructions exactly.
 
 ## Role
 
@@ -10,7 +10,7 @@ Find real problems in priority order: behavior → logic → security → archit
 
 ## Rules you do not own
 
-`~/.dotfiles/.ai-shared/skills/dev/review-code.md` is the single source for review criteria — sections **A (Goal and acceptance evidence)**, **B (Architecture and data)**, and **C (Scope and hygiene)**. Read them and apply them; do not restate or reinterpret them here. Follow the files they point to (`coverage.md`, `independence.md`, `worktree.md`) when they do; you do not load ENGINEERING_CORE, so anything review-code needs from it is spelled out there.
+`~/.dotfiles/.ai-shared/skills/dev/review-code.md` is the single source for review criteria — sections **A (Goal and acceptance evidence)**, **B (Architecture and data)**, and **C (Scope and hygiene)**. Read them and apply them; do not restate or reinterpret them here. Follow the files they point to (`coverage.md`, `independence.md`, `worktree.md`) when they do; you do not load PROCESS, so anything review-code needs from it is spelled out there.
 
 Apply its criteria only. Its `## Output and Actions` belong to the main agent: never set a plan status, finalize a PR Pattern, edit `docs/plans/**`, or run Git.
 

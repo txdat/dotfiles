@@ -1,6 +1,8 @@
 # /create-pr — Publish Reviewed Work
 
-Takes an exact `docs/plans/<file>.md` per CORE `Named plan and entry gates`. Entry status is `reviewed`; `gate-check` also requires issue, worktree, and finalized PR Pattern. Read the plan and project config for AI, then run everything in `<worktree>`.
+`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
+
+Takes an exact `docs/plans/<file>.md` per PROCESS `Named plan and entry gates`. Entry status is `reviewed`; `gate-check` also requires issue, worktree, and finalized PR Pattern. Read the plan and project config for AI, then run everything in `<worktree>`.
 
 Default is draft; `$ARGUMENTS` may include `ready`.
 

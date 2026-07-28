@@ -1,5 +1,7 @@
 # /fix-bug — Structured Bug Diagnosis and Approved Fix Execution
 
+`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
+
 Modes: `diagnose <symptom>` is read-only and stops after root-cause evidence; `execute docs/plans/<fix-plan>.md` implements an already reviewed and human-approved fix plan. There is no diagnose-and-mutate or request-as-approval mode.
 
 ## Diagnose
@@ -50,7 +52,7 @@ Cause: <file:line> | AC: <AC-N> | TC: <TC-N/test> | Change: <what> | Callers: <c
 
 - [ ] **Diagnosis/regression:** root cause is evidence-backed; the test asserts the actual buggy branch and exactly implements an approved TC and its AC.
 - [ ] **Correctness:** fix satisfies Goal and parent AC for all valid inputs; symbols resolve; no fake implementation, hollow test, or debug artifact.
-- [ ] **Coverage/dependents:** changed files satisfy CORE #6 or have accepted logged gaps; dependent evidence is complete and open breakage was STOP-asked.
+- [ ] **Coverage/dependents:** changed files satisfy PROCESS #6 or have accepted logged gaps; dependent evidence is complete and open breakage was STOP-asked.
 - [ ] **Approval/scope:** no behavior changed during execution; contradictions went back through `approval.md`; evidence and PR Pattern are complete.
 
 All checked → set the worktree plan to `implemented`, commit `docs(<scope>): mark plan implemented`, and emit: `Bug fix implementation complete. Run review-code for independent AC verification.`

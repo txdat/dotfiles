@@ -31,7 +31,7 @@ valid_graph() {
   cat <<'EOF'
 ## Acceptance Criteria
 AC-1 — the gate blocks an unapproved plan
-  Source: ENGINEERING_CORE #11
+  Source: PROCESS #11
   Success: execution is refused
   Failure: execution proceeds
 

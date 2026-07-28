@@ -1,5 +1,7 @@
 # /design-feature — Plan a Feature, Fix, or Refactor
 
+`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
+
 Warn if another plan is active; unfamiliar area → suggest explore; a requirement that looks bundled or ambiguous at goal level → frame-goal first, before a plan exists to grow around it. Read project config for AI. Heavy analysis may be delegated to `feature-planner`; the main agent owns the plan and the later human approval. Scope that creates or changes a system boundary, communication pattern, service decomposition, or cross-system integration belongs to design-system first. A decomposed plan cites the approved architecture document and phase in Context, preserves the user Goal, and carries assigned contracts as sources, constraints, or invariants whose observable behavior is covered by ACs and TCs. No approval decisions, and no code — neither written to the repo nor embedded in the plan (see Planning Rules).
 
 Write `docs/plans/<basename>_<date>_<type>_<slug>.md`, where type is feature/fix/refactor.
@@ -133,7 +135,7 @@ Show name, type, requirement, AC/TC/step counts, and path. Ask for design change
 Every plan is issue-backed, and design-feature owns creating it — before handoff, not deferred to the execution gate, so the omission surfaces while the plan is still being written rather than after approval:
 
 1. Build the body from `## Goal`, `## Requirement`, the expected outcome, and `## Scope` — enough for someone who never reads the plan.
-2. **Create if absent; otherwise reconcile.** `Issue:` empty → `gh issue create`, then record `Issue: #<n>` in the header. `Issue: #<n>` already present (a NEEDS CHANGES round re-entering design, or a deferred-goal issue `frame-goal` created) → do **not** open a second issue: fetch it, confirm it is open and still describes this plan, and update its body where the Goal, Requirement, or Scope changed. A recorded issue that is closed or belongs to different work → STOP and ask; never silently repoint the header. Credentials are CORE `Git credentials`; this skill adds nothing to them.
+2. **Create if absent; otherwise reconcile.** `Issue:` empty → `gh issue create`, then record `Issue: #<n>` in the header. `Issue: #<n>` already present (a NEEDS CHANGES round re-entering design, or a deferred-goal issue `frame-goal` created) → do **not** open a second issue: fetch it, confirm it is open and still describes this plan, and update its body where the Goal, Requirement, or Scope changed. A recorded issue that is closed or belongs to different work → STOP and ask; never silently repoint the header. Credentials are PROCESS `Git credentials`; this skill adds nothing to them.
 
 `create-issue` stays restricted to standalone issues with no plan behind them.
 
