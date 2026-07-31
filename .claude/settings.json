@@ -8,6 +8,7 @@
       "Bash(*gitnexus*)"
     ]
   },
+  "model": "opus[1m]",
   "hooks": {
     "PreToolUse": [
       {
@@ -46,6 +47,5 @@
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
-  "fileCheckpointingEnabled": true,
-  "model": "opus[1m]"
+  "fileCheckpointingEnabled": true
 }
