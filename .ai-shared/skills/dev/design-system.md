@@ -25,7 +25,7 @@ Success must be measurable after the final phase. If no baseline exists, the fir
 
 ### 2. Compare viable options
 
-Compare 2–3 viable options when they exist. If hard constraints leave one, show which alternatives they eliminate instead of inventing decorative choices. For each viable option, cover complexity, migration, operations, team fit, rollback, coupling, dependencies, and critical failure → detection → recovery paths. For the recommendation, attempt the counterexample: *could a simpler option meet the same goal and constraints?*
+Compare 2–3 viable options when they exist. If hard constraints leave one, show which alternatives they eliminate. For each option, cover complexity, migration, operations, team fit, rollback, coupling, dependencies, and critical failure → detection → recovery. Attempt the simpler-option counterexample: *could a simpler option meet the same goal and constraints?*
 
 ### 3. Recommend
 
@@ -48,7 +48,7 @@ State dual-run/synchronization, cutover trigger, and reconciliation when applica
 
 List feature plans by name, owning phase, dependencies, delivered outcome, and assigned contracts. No cycles; at least one plan must be initially actionable. Do not create plan files here: design-feature creates each plan when its dependencies permit.
 
-**BDD handoff:** every changed contract is assigned to a plan and cited there as a source, constraint, or invariant. Its observable behavior must be covered by an AC and TC; internal topology is not itself an AC. Each plan preserves its user Goal and cites this document and phase in Context. A contract no plan owns is unimplemented; a plan no phase needs is scope creep. After the final phase ships, measure Success against the baseline and record the result.
+**BDD handoff:** every changed contract is assigned to a plan and cited as a source, constraint, or invariant. Its observable behavior must be covered by an AC and TC; internal topology is not itself an AC. Each plan preserves its user Goal and cites this document and phase in Context. A contract no plan owns is unimplemented; a plan no phase needs is scope creep. After the final phase ships, measure Success against the baseline.
 
 ## Self-Check (BLOCKING)
 

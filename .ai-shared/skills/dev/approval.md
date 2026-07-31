@@ -32,18 +32,18 @@ This is not a deviation. A **deviation** is a different *means* to the same appr
 
 ### What happens to work already committed
 
-A behavior change found mid-execution leaves proof and implementation commits in the worktree for a spec that is no longer approved. The worktree and its branch survive the round trip; what comes out is scoped by commit boundaries, not by TC:
+A behavior change found mid-execution leaves proof and implementation commits for a spec no longer approved. The worktree and branch survive the round trip; reversion is scoped by commit boundaries, not by TC:
 
-1. **Reversion granularity is the commit, not the TC.** `execute-feature` bundles a slice's TCs into one proof/GREEN pair, so a TC cannot be extracted from its siblings. Revert **whole pairs**: the pair holding the amended TC comes out entirely and that slice re-enters at RED with its revised TC set, siblings included.
-2. **Other slices keep everything.** A slice whose TCs are all unaffected keeps its proof and GREEN commits; re-approval does not invalidate behavior that did not change.
-3. **Revert, never reset** — the branch keeps the record of what was built and withdrawn. A dropped TC ends there; survivors re-enter at RED after re-approval. `tdd.md` step 3 does not apply: the old proof is gone, not reused.
-4. **Then flip status in the worktree copy** (`planning`, `Review:` cleared) and commit it, per PROCESS `Plan worktree`. `gate-check` will refuse execution until the plan carries `Review: READY` and an explicit approval again.
+1. **Revert whole proof/GREEN pairs.** A slice's TCs are bundled into one pair, so a TC cannot be extracted from its siblings. The pair holding the amended TC comes out entirely; that slice re-enters at RED with its revised TC set, siblings included.
+2. **Other slices keep everything.** Unaffected slices keep their proof and GREEN commits.
+3. **Revert, never reset.** The branch keeps the record of what was built and withdrawn. Survivors re-enter at RED after re-approval; the old proof is gone, not reused.
+4. **Flip status in the worktree copy** (`planning`, `Review:` cleared) and commit it. `gate-check` refuses execution until `Review: READY` and explicit approval again.
 
-Never carry a reverted TC's implementation forward "since it's already written". That is the approved-spec equivalent of a fake implementation: code whose only warrant was a spec that no longer exists.
+Never carry a reverted TC's implementation forward "since it's already written" — code whose only warrant was a spec that no longer exists.
 
 ### Scope of the re-approval
 
-The pause is not optional and not implied, but it is scoped: on an amendment, show the Goal plus **the changed AC/TC subgraph and everything traceable to it** — not the full spec replayed. Ask the same question. Everything else about the pause is unchanged: silence, urgency, and "we already agreed on the rest" are still not approvals, and review-feature still runs first on the amended plan.
+The pause is scoped, not skipped: on an amendment, show the Goal plus **the changed AC/TC subgraph and everything traceable to it** — not the full spec replayed. Ask the same question. Everything else about the pause is unchanged; review-feature still runs first on the amended plan.
 
 ## Abandoning a plan
 
@@ -52,12 +52,10 @@ Dropping a plan before it ships is the human's call, on the same authority as gr
 1. `Worktree:` recorded → remove the worktree and its branch from `$MAIN_ROOT`, requiring a clean tree first and showing any refusal instead of forcing it. A plan dropped at `planning` or `approved` never had one; skip this.
 2. In `$MAIN_ROOT`'s locator copy, set `Status: abandoned`, clear `Worktree:`, and record in one line what was dropped and why.
 
-Abandonment is the inverse of archival, so the record lives in the opposite place. `archived` survives on a branch that merges, which is why create-pr commits it there and deletes the locator; a dropped branch takes its plan copy with it, leaving the locator as the only surviving record — and the only one `gate-check` can see, since it scans `$MAIN_ROOT/docs/plans/`. Write `abandoned` anywhere else and no surviving record says the plan was dropped: the locator keeps reading as active, and `gate-check` — which scans `$MAIN_ROOT/docs/plans/` — will let a later phase be pointed at it and gated on it as live work.
+Abandonment is the inverse of archival, so the record lives in the opposite place. `archived` survives on a merged branch, which is why create-pr commits it there and deletes the locator; a dropped branch takes its plan copy with it, leaving the locator as the only surviving record `gate-check` can see. Write `abandoned` anywhere else and the locator keeps reading as active, letting a later phase be gated on it as live work.
 
 `abandoned` and `archived` are the two terminal statuses: both leave the active set, and neither is an entry status, so an abandoned plan blocks at whatever gate it is aimed at. Reviving one is not a status edit — it re-enters at `planning` and comes back through review-feature and the spec pause above.
 
 ## What is enforced, and what is not
 
-`gate-check` blocks execution unless `Status: approved` **and** `Review: READY` are both set. That is the whole mechanical guarantee — it proves a review happened before the approval, and nothing more. It cannot tell who set either field, and no parser can check that an AC is the right AC.
-
-So the pause is the enforcement, and the judgment lives in review-feature's adversarial self-check: can a TC pass while its AC fails, can every AC pass while the Goal fails. Treat a plan that reached `approved` without a human answering the question above as unapproved, whatever the file says.
+`gate-check` blocks execution unless `Status: approved` **and** `Review: READY` are both set — it proves a review happened before approval, nothing more. The pause is the enforcement; the judgment lives in review-feature's adversarial self-check. Treat a plan that reached `approved` without a human answering the question above as unapproved, whatever the file says.

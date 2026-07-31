@@ -8,9 +8,9 @@ Takes an exact `docs/plans/<file>.md` per PROCESS `Named plan and entry gates`. 
 
 Use `worktree.md` exactly. Bind `<slug>` from the plan filename; single branch `<type>/<slug>`, chain branches `<type>/<slug>-k`. Take every `<parent>` from the finalized `## PR Pattern` table's `Parent` column — normally `<base>` for the first branch and the preceding branch for later slices, but a follow-up amending an unmerged PR parents on that PR's branch (`create-pr.md` `Shipped, and what comes after`). Never default to `<base>` when a parent is recorded. Never commit to `<base>` or edit the main-tree locator after copying it.
 
-Once the worktree copy exists, set `Status: in-progress` and commit `docs(<scope>): start plan execution` before proof. Plan edits are separate from proof commits and otherwise accompany the code they describe.
+Once the worktree copy exists, set `Status: in-progress` and commit `docs(<scope>): start plan execution` before proof. Plan edits are separate from proof commits.
 
-Because that flip precedes proof, `in-progress` means *execution was entered*, not that any proof exists. On resume, establish where it actually stopped from the worktree's commits, never from the status: no proof commit yet → start at RED as if from `approved`; proof present → `tdd.md` step 3 governs which proof is reusable. A slice whose proof and implementation are both absent has no work to preserve.
+`in-progress` means *execution was entered*, not that proof exists. On resume, read the worktree's commits, not the status: no proof commit → start at RED; proof present → `tdd.md` step 3 governs which proof is reusable. A slice with neither proof nor implementation has no work to preserve.
 
 ## Strategy
 

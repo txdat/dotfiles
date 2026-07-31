@@ -23,10 +23,8 @@ For each PR in PR-Pattern order, check out its branch and create a body from the
 - Testing: automated evidence and manual steps;
 - project checklist, or default checklist;
 - the plan's issue link — `Closes #N` **only when both** conditions hold, otherwise `Refs #N`:
-  1. no other active plan links `#N` — `rg -l 'Issue: #N\b' "$MAIN_ROOT/docs/plans/"` lists this plan alone. Archival removes each shipped plan's locator (`## Archive and Cleanup` step 3), so what remains is exactly the still-active claimants;
-  2. `#N` carries no unchecked deferred-goal entries — `gh issue view N`.
-
-  The second condition is not redundant: `frame-goal` defers goals as checklist entries **before any plan file exists for them**, so the scan alone would let goal 1's PR close a parent that still owes goals 2 and 3. A parent is closed by the last goal to ship, never by whichever slice merges first. Unsure → ask rather than guess a verb.
+  1. no other active plan links `#N` — `rg -l 'Issue: #N\b' "$MAIN_ROOT/docs/plans/"` lists this plan alone (archival removes each shipped plan's locator, so survivors are exactly the still-active claimants);
+  2. `#N` carries no unchecked deferred-goal entries — `gh issue view N`. `frame-goal` defers goals as checklist items, so the first scan alone would let goal 1 close a parent that still owes later goals. A parent is closed by the last goal to ship, never by whichever merges first. Unsure → ask.
 
 For a chain, every PR body includes the complete ordered branch table, with the current row marked and known PR numbers filled. Create with:
 
@@ -46,14 +44,14 @@ Archive **inside the worktree, as a commit** — the plan is a tracked file on t
 
 1. In `<worktree>`, on the **last** branch of the PR Pattern (single PR → its only branch; chain → the final slice, which merges last), set `Status: archived`, clear `Worktree:`, and commit `docs(<scope>): archive plan`. Push it so the open PR carries the final state.
 2. Confirm `git -C <worktree> status --porcelain` is empty again.
-3. Remove `$MAIN_ROOT`'s locator copy of the plan — it is scratch, it is untracked there, and its content now lives in the branch commit. Verify **identity and persistence**, never content equality — the locator froze at execution start (`worktree.md` `Plan resolution vs. truth`) while the authoritative copy kept evolving, so the two are *expected* to differ. Confirm all of:
-   - the locator is the exact path originally resolved, still under `$MAIN_ROOT/docs/plans/`, and still untracked there;
-   - its recorded `Worktree:` names the currently registered worktree;
-   - locator and authoritative copy share the same basename and the same `Issue: #<n>`;
-   - the authoritative copy is tracked in the final branch's `HEAD`, reads `Status: archived` with `Worktree:` cleared, and that commit is pushed;
+3. Remove `$MAIN_ROOT`'s locator copy — it is scratch, untracked, and its content now lives in the branch commit. Verify **identity and persistence**, never content equality (the frozen locator and evolved worktree copy are *expected* to differ). Confirm:
+   - locator is the exact resolved path, still under `$MAIN_ROOT/docs/plans/`, still untracked;
+   - its `Worktree:` names the currently registered worktree;
+   - locator and authoritative copy share same basename and `Issue: #<n>`;
+   - authoritative copy is tracked in the final branch's `HEAD`, reads `Status: archived` with `Worktree:` cleared, and is pushed;
    - `git -C <worktree> status --porcelain` is empty.
 
-   Any check failing → STOP and show which one, instead of deleting. Then remove **only** that exact locator path. Do not require `$MAIN_ROOT` itself to be clean: it is deliberately shared and may hold unrelated user work (`worktree.md` `$MAIN_ROOT sharing`).
+   Any check failing → STOP and show which one. Then remove **only** that exact locator path. Do not require `$MAIN_ROOT` itself to be clean (`worktree.md` `$MAIN_ROOT sharing`).
 4. From `$MAIN_ROOT`, remove the worktree normally. Refusal due to uncommitted/untracked state → STOP and show it; `--force` requires explicit destructive-action confirmation.
 
 Chain note: the archive commit lands only on the final branch. Earlier PRs keep the plan at `reviewed`, which is true of them; merging in PR-Pattern order leaves `<base>` with the archived plan.

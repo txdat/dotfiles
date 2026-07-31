@@ -31,7 +31,7 @@ Never include authoring rationale, exploration notes, design alternatives you re
 ## What the reviewer may and may not do
 
 - Applies the **reviewing** skill file, not the drafting one. It judges the artifact as written; it never redrafts it.
-- Runs in **one context and spawns nothing**. Size, risk, file count, and independent concerns are not exceptions — process large work as dependency-ordered file or slice batches in the same context.
+- Runs in **one context and spawns nothing** — process large work as dependency-ordered batches in the same context.
 - May read files, run tests, run `dev-check`, and run read-only Git inspection (`status`/`diff`/`log`/`show`) inside its assigned worktree.
 - May **not** mutate Git state, edit files, edit `docs/plans/**` or `docs/architecture/**`, set any `Status:`, or finalize a PR Pattern. Those are the main agent's, acting on the reviewer's evidence.
 - Reports findings, counterexamples, and its verdict in the reviewing skill's output shape. The main agent relays them verbatim.

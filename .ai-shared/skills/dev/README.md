@@ -14,19 +14,15 @@ Architecture uses a separate falsifiable chain: goal and constraints → options
 
 ## Full Feature Cycle
 
-`/dev:ship-feature <requirement>` — [explore] → frame-goal → design-feature → review-feature → spec approval → execute → review-code → PR
+`/dev:ship-feature <requirement>` — [explore] → frame-goal → design-feature → review-feature → spec approval → execute → review-code → PR. The six phases after `frame-goal` are mandatory; `explore` is optional (PROCESS #10). Resume by naming the plan: `/dev:ship-feature docs/plans/<file>.md from <phase>`. A bare `<requirement>` always starts a new design.
 
-`explore` is optional and the six phases after `frame-goal` are not (PROCESS #10). `frame-goal` frames the requirement into confirmed goal(s) — single source for the too-broad test — routes each goal to design-system or design-feature by shape, and collapses to a pass-through when the requirement is already one clear goal; it pauses only on a split, rewrite, or question.
-
-Resume: `/dev:ship-feature docs/plans/<file>.md from execute` — resuming names its plan; `ship-feature <requirement>` always starts a new design and adopts nothing.
-
-Plan review enforces the Open Questions gate and does the real work: it independently derives the expected outcomes from `## Goal` before reading the proposed TC intents, then attacks the AC set with counterexamples. It returns READY; it never approves. It is bounded — two rounds plus landing checks, counted durably in the plan header's `Rounds:` field so the budget survives pruned history and compacted sessions — and may never add behavior: after handoff the AC set only narrows, and a missing outcome becomes a proposed extension plan with its own Goal and approval, never a round-N AC.
+Plan review enforces the Open Questions gate and does the real work: it independently derives the expected outcomes from `## Goal` before reading the proposed TC intents, then attacks the AC set with counterexamples. It returns READY; it never approves. It is bounded — two rounds, hard gate, counted durably in the plan header's `Rounds:` field — and may never add behavior: after handoff the AC set only narrows, and a missing outcome becomes a proposed extension plan with its own Goal and approval, never a round-N AC.
 
 Plan statuses are enumerated in `README.md` `Lifecycle`, and `approval.md` owns the two terminal ones. `archived` is create-pr's own last step once the PRs exist; `abandoned` is a human decision.
 
 `archived` means the PR exists and the cycle is closed — **not merged, not deployed**. What that implies for follow-up work, and where a follow-up parents, is `create-pr.md` `Shipped, and what comes after`.
 
-**Every approval is the human's, and `approval.md` is the single source** — both the application spec and the architecture decision. Nothing else in this tree states when approval is granted; they point there. A plan reaches the pause only carrying `Review: READY <date>` from review-feature, and `gate-check` refuses to execute an `approved` plan without it.
+**Every approval is the human's, and `approval.md` is the single source** for both the application spec and the architecture decision. A plan reaches the pause only carrying `Review: READY <date>`; `gate-check` refuses execution without it (PROCESS #11, `approval.md`).
 
 Know what enforces what: PROCESS `Self-check boundary`. Short version — the hook proves state, the self-checks prove correctness, and the pause proves consent.
 
@@ -34,9 +30,7 @@ Know what enforces what: PROCESS `Self-check boundary`. Short version — the ho
 
 **One lane, scaled to the change.** There is no lite mode. A small change gets a short plan because it has little to say, not because a flag excused it — and Goal, ACs, TCs, adversarial review, the approval pause, RED proof, coverage, and symbol gates apply to every change regardless of size.
 
-**Named plan, always.** Every plan-consuming skill takes an exact `docs/plans/<file>.md` — no slug, no session pin, no lone-plan adoption. See PROCESS `Named plan and entry gates`.
-
-Every dev skill ends with a blocking self-check. Do not emit the skill's exit line until that checklist is verified against the artifacts.
+**Named plan, always** (PROCESS `Named plan and entry gates`). Every dev skill ends with a blocking self-check — no exit line until verified against the artifacts (PROCESS #2).
 
 ## Loading
 
@@ -44,7 +38,7 @@ Nothing in this tree is preloaded; only `README.md` auto-loads. Everything else 
 
 ## Project Config For AI
 
-Every skill opens with "read project config for AI". That means the nearest `CLAUDE.md/AGENTS.md` at or above the repo root, plus any file it includes. Read it once per phase. Per `README.md` precedence it may override exactly one thing — _how code is written_ (style, naming, layout, stack-local patterns, project commands) — and never a core rule, a skill gate, or a banned tool.
+Every skill opens with "read project config for AI" — the nearest `CLAUDE.md`/`AGENTS.md`, plus includes. Read once per phase. Overrides only _how code is written_; never a core rule, skill gate, or banned tool (`README.md` Precedence).
 
 ---
 
