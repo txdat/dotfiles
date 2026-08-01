@@ -1,7 +1,7 @@
 ---
 name: dev-fix-bug
 description: "Diagnose an issue-backed bug from ranked hypotheses and evidence, then optionally apply a minimal RED-first fix with coverage, caller verification, and review handoff."
-model: claude-opus-4-6
+model: opus
 effort: medium
 ---
 

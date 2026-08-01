@@ -123,10 +123,14 @@ export CLAUDE_CODE_ENABLE_TELEMETRY=0
 # export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
 # export CLAUDE_CODE_DISABLE_1M_CONTEXT=1
 export CLAUDE_CODE_AUTO_COMPACT_WINDOW="400000"
-# export CLAUDE_AUTOCOMPACT_PCT_OVERRIDE="70"
+# export CLAUDE_AUTOCOMPACT_PCT_OVERRIDE="75"
 export CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+# export ANTHROPIC_MODEL="claude-opus-4-6"
+export ANTHROPIC_DEFAULT_OPUS_MODEL="claude-opus-4-6"
+export ANTHROPIC_DEFAULT_SONNET_MODEL="claude-sonnet-4-6"
+export ANTHROPIC_DEFAULT_HAIKU_MODEL="claude-haiku-4-5"
 # export CLAUDE_CODE_SUBAGENT_MODEL="sonnet"
 # export CLAUDE_CODE_EFFORT_LEVEL="high"
 export ENABLE_CLAUDEAI_MCP_SERVERS=false
@@ -134,10 +138,7 @@ export ENABLE_CLAUDEAI_MCP_SERVERS=false
 alias claude1="ANTHROPIC_AUTH_TOKEN=$(echo $CLAUDE1_AUTH_TOKEN) claude"
 alias claude2="ANTHROPIC_AUTH_TOKEN=$(echo $CLAUDE2_AUTH_TOKEN) claude"
 
-alias deepseek="ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic' ANTHROPIC_AUTH_TOKEN=$(echo $DEEPSEEK_API_KEY) ANTHROPIC_MODEL='deepseek-v4-pro' ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro' ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-flash' ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash' claude"
-
-alias gemini="agy"
-alias kiro="kiro-cli"
+alias deepseek="ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic' ANTHROPIC_AUTH_TOKEN=$(echo $DEEPSEEK_API_KEY) ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro' ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-flash' ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash' claude"
 
 alias k=kubectl
 complete -o default -F __start_kubectl k
