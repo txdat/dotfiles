@@ -4,7 +4,7 @@ A requirement arrives as one sentence — usually with an issue already tracking
 
 ## Procedure
 
-1. **Restate the outcome.** Keep the user's words as the candidate Goal. Requirement phrased as a mechanism ("add a Redis cache") → surface the outcome it serves beside it; whether the mechanism *is* the requirement is the user's call to make, never a silent rewrite (PROCESS #11).
+1. **Restate the outcome.** Keep the user's words as the candidate Goal. Requirement phrased as a mechanism ("add a Redis cache") → surface the outcome it serves beside it; whether the mechanism *is* the requirement is the user's call, never a silent rewrite (PROCESS #11).
 2. **Decompose** into atomic observable outcomes — actors, triggers, outcomes, constraints, prohibited outcomes, failure behavior — the same decomposition design-feature's derivation step 2 later performs on the chosen Goal.
 3. **Too-broad test.** A goal is too broad when either fails:
    - **unity** (run first) — they are not all one capability the user could accept in a single sitting. This catches bundles under the cap: "alert on LB errors" and "include the alert in the daily digest" fit one sentence, but the user could accept the first while rejecting the second — two goals;
@@ -16,7 +16,7 @@ A requirement arrives as one sentence — usually with an issue already tracking
    - **deployment** — migrations and shared structure first, as the PR Pattern already orders slices;
    - **failure domain** — degraded-mode behavior with its own acceptance surface (own success semantics, own false-positive tolerance) is its own goal, not extra ACs on the happy path.
 
-   **When count fires and unity does not** — an atomic-but-large goal — no seam remains to be found, so one is made: prefer **deployment** (what must merge first becomes its own goal), then the thinnest capability slice that still stands alone. Such a slice is legitimate but thin — "create categories that cannot yet contain anything" — and carries `thin` in the push-back table's `Thin?` column, so the user approves a thin outcome knowingly instead of mistaking it for a full one.
+   **When count fires and unity does not** — an atomic-but-large goal — no seam exists, so one is made: prefer **deployment** (what must merge first becomes its own goal), then the thinnest capability slice that still stands alone. Such a slice is legitimate but thin — "create categories that cannot yet contain anything" — and carries `thin` in the push-back table's `Thin?` column, so the user approves a thin outcome knowingly instead of mistaking it for a full one.
 5. **Ambiguity.** Subjective terms, undefined failure behavior, competing readings → ask now, with concrete competing examples, never a silent choice. Every question answered here is one that otherwise resurfaces as a design Open Question or a review round.
 
 ## Push-back and confirmation
@@ -33,11 +33,11 @@ Questions: <competing-example questions, or none>
 
 and **waits for the user's answer** — edits, drops, and reordering included. Confirming this list decides *which goals to pursue and in what order*. It is scoping, not spec approval: `approval.md`'s pause still follows each plan's review, unchanged, and nothing here shortcuts it.
 
-`Thin?` reads `thin` only for a count-forced slice (step 4), `—` otherwise. It exists so a thin outcome is visible at the moment the user decides, rather than discovered at that goal's approval pause.
+`Thin?` reads `thin` only for a count-forced slice (step 4), `—` otherwise. It exists so a thin outcome is visible when the user decides, not at that goal's approval pause.
 
 ## Handoff
 
-This skill runs ahead of any plan and loads no core file, so read PROCESS `Git credentials` — the single source for the identity `gh` runs under — before any `gh` command below.
+This skill runs ahead of any plan and loads no core file, so read PROCESS `Git credentials` — the single source for the identity `gh` uses — before any `gh` command below.
 
 - **Route each confirmed goal by shape.** A goal that creates or changes a system boundary, communication pattern, service decomposition, or cross-system integration → design-system (its approved contracts then feed feature plans). Anything else → design-feature. The boundary test is design-system's own opening line; this skill applies it, it does not restate it.
 - **Goal 1** (or the lone goal) → its design lane now, verbatim as the `## Goal` / architecture goal. A goal that builds on unmerged work parents per design-feature's PR Pattern rules.

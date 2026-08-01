@@ -6,7 +6,7 @@ Takes an exact `docs/architecture/<file>.md` in `$ARGUMENTS`, and it must be `St
 
 ## Independence
 
-Follow `independence.md` (single source): reviewer `architecture-strategist`, artifact the architecture document, verdict `READY` / `NEEDS REVISION`. The approval prompt, its pause, and any `Status` change stay with the main agent.
+Follow `independence.md` (single source). The approval prompt, its pause, and any `Status` change stay with the main agent.
 
 ## Review
 

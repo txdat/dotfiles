@@ -12,7 +12,7 @@ Clarify scope, constraints, edge cases, and done in up to three rounds. Keep the
 
 ```text
 # Task: <name>
-Status: planning | Type: feature|fix|refactor | Issue: | Review: | Rounds: 0 | Worktree:
+Status: planning | Type: feature|fix|refactor | Issue: | Review: | Rounds: 1 | Worktree:
 ## Goal                        # preserve the user's requested outcome; do not replace it with TCs
 ## Requirement                 # problem, why, measurable done
 ## Context                     # current behavior; dependencies and ordering
@@ -49,7 +49,7 @@ TC-1 — <one scenario, one line, naming the behavior and the condition that dis
   Test: <filled during execution — path::name>
 ```
 
-**A clause** is one separable condition of an AC — a conjunct in its Success, or a distinct failure mode in its Failure. Write clauses as separable statements: they are what TC coverage is counted against, in review-feature's coverage check and review-code's reachability walk alike.
+**A clause** is one separable condition of an AC — a conjunct in its Success, or a distinct failure mode in its Failure. Write clauses as separable statements: they are what TC coverage is counted against, in review-feature's coverage check and review-code's reachability walk alike. When the boundary is unclear, write them as separate statements and let review-feature's adversarial check settle it — a clause no TC can isolate is not a clause.
 
 A TC line carries enough to check two things in review: that the AC clause it names is covered, and that its `Proves:` is routed correctly. Its Given/When/Then is authored as a running test in the RED commit (`execute-feature`), because the defects that live in an arrangement — a test that passes against unmodified code, a fixture that cannot be built — are only detectable by running it.
 
@@ -98,12 +98,15 @@ Defeated by: TC-5 (two sequential 30.00 refunds against a 50.00 capture; the sec
 
 - **Design altitude:** follow `altitude.md` (single source). The plan is language-neutral design notation throughout.
 - Leave `Review:` empty — review-feature owns it. Never write `Status: approved` or `Review: READY` here.
-- `Rounds:` starts at 0 and is review-feature's counter; design-feature writes the 0 and never touches it again. It survives a NEEDS CHANGES re-entry — resetting it hides the loop's length. Only a decomposition producing a *new plan file* starts a new count.
+- `Rounds:` starts at 1 (first review upcoming) and is review-feature's counter; design-feature writes the 1 and never touches it again. It survives a NEEDS CHANGES re-entry — resetting it hides the loop's length. Only a decomposition producing a *new plan file* starts a new count.
 - Open Questions must be empty before handoff; move settled answers into assumptions or their owning section.
 - Use dependency-ordered steps, as few as the change needs; >10 → split. Verify symbols named by steps against their target type/module.
 - Goal → AC ↔ TC ↔ Step traceability is complete: every AC has ≥1 TC, every TC names exactly one AC and appears by ID in ≥1 step, and every step names ≥1 TC. Enumerate IDs; never write ranges such as `TC-1 through TC-4`.
 - Feature/fix TCs name initially failing observable behavior; refactor TCs name behavior that passes before and after. `execute-feature` proves that intent at RED and rejects any TC whose test passes against unmodified code. Tests must not mirror the proposed implementation.
-- **AC budget: 8, and ≤3 clauses per AC** — this bullet is the single source for both numbers. The **clause surface, not the AC count**, is what both caps protect: two review rounds can attack ≤24 clauses clause by clause. A budget is an attractor, not merely a limit — plans grow to fill whatever it allows — so a goal exceeding 8 ACs is cut into thinner slices and `frame-goal` marks them `thin`. The clause cap keeps the AC cap honest: fewer, fatter ACs grow the same surface while evading the count. Over budget → STOP and return through `frame-goal` (single source for the too-broad test and split boundaries).
+- **AC budget: 8, and ≤3 clauses per AC** — this bullet is the single source for both numbers.
+  - **Clause surface is the real cap:** two review rounds can attack ≤24 clauses clause by clause. The clause cap keeps the AC cap honest — fewer, fatter ACs grow the same surface while evading the count.
+  - **A budget is an attractor, not merely a limit:** plans grow to fill whatever it allows. A goal exceeding 8 ACs → cut into thinner slices; `frame-goal` marks them `thin`.
+  - **Over budget → STOP** and return through `frame-goal` (single source for the too-broad test and split boundaries).
 - **After handoff the AC set only narrows: update, remove, refine — never add.** A new AC is a new outcome, and a new outcome belongs to a new Goal: draft it as its own issue-backed extension plan (parented per the PR Pattern rules, on this plan's branch if unmerged), and let the user decide whether it runs at all. This holds from the moment the plan reaches review — a review round may send back a wrong or ambiguous AC to fix or drop, never a new one to absorb — and an update may not grow an AC's clause count to smuggle the addition in. Missing coverage of an *existing* AC clause is refinement (a TC intent), not a new AC. Post-approval, updates and removals go back through `approval.md` and are recorded as numbered `## Amendments` entries naming what changed, why, and the user's sign-off; pre-approval they are ordinary design iteration and `## Amendments` stays empty.
 - **Cite symbols, never line numbers.** `normalizeLb`'s missing-label default survives a commit; `monitoring.ts:293` does not. A rotted citation is a finding a later reviewer must spend a round on and which changes nothing about the built artifact.
 - Derive Affected Components from exploration or direct inspection. Answer every impact category; map code-requiring Non-functional commitments to steps or mark `ops-only`.
@@ -142,7 +145,7 @@ A named issue that is closed or belongs to different work → STOP and ask. Cred
 
 ## Self-Check (BLOCKING)
 
-- [ ] **Schema and questions:** every section that applies is filled; Open Questions empty; `Status: planning`; `Review:` empty; `Rounds:` is 0 on a fresh plan and untouched on a re-entry.
+- [ ] **Schema and questions:** every section that applies is filled; Open Questions empty; `Status: planning`; `Review:` empty; `Rounds:` is 1 on a fresh plan and untouched on a re-entry.
 - [ ] **Issue:** exactly one issue backs this plan — linked when one was named, created only when none was, never duplicated; it is open; a dedicated issue's body carries Goal, Requirement, expected outcome, and Scope, while a shared parent's body was left intact and its sharing noted in `## Context`; the header reads exactly `Issue: #<n>`, no suffix.
 - [ ] **Goal and ACs:** Goal is preserved; each AC is atomic, observable, sourced, pass/fail decidable, and implementation-independent; `## Counterexamples Attempted` names each attempt, its target, and the AC/TC that defeated it — never a bare "none found", never an undefeated attempt left standing.
 - [ ] **Approach/impact:** requirement and scope are measurable; components/contracts/data/non-functional effects and decisions are concrete; every affected component, dependency, and contract has its failure behavior answered.

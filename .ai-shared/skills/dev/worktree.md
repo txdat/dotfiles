@@ -13,8 +13,9 @@ Referenced by execute-feature, fix-bug, review-code, create-pr. Skills bind `<sl
 - **Dependency linking (once, before any test run):** for each dep dir present at `$MAIN_ROOT` and absent in the worktree (`node_modules`, `vendor`, `.venv`, `venv`, `Pods`, or project convention) — symlink, never reinstall or copy: `ln -s "$MAIN_ROOT/<dep>" "<worktree>/<dep>"`. This is a deliberate non-hermetic optimization: the worktree tests against `$MAIN_ROOT`'s installed tree, which is correct exactly while the two agree. (Dep dirs are normally gitignored; a project that doesn't ignore one leaves its symlink untracked, so teardown's `git worktree remove` will need confirmed `--force`.)
 - **Dependency divergence — unlink *before* the command, never after a diff:** the symlink must be broken by **any command capable of changing dependency declarations or contents** (`npm|pnpm|yarn install|add|update`, `pip install`, `poetry add`, `go get`, `bundle add`, `cargo add`, `composer require`, …). Comparing manifests first does not work: `npm install <package>` writes into `$MAIN_ROOT/node_modules` *through the symlink* before updating the manifest — every concurrent worktree is already mutated. The trigger is the command's capability, not the pre-command diff. So, before running one:
   1. remove that dependency directory's **symlink** (`rm` the link itself, never its target);
-  2. create a real local dependency directory in the worktree;
-  3. run the command there.
+  2. create a real local dependency directory in the worktree (`mkdir -p <worktree>/<dep>`);
+  3. verify: `test -d <worktree>/<dep> && ! test -L <worktree>/<dep>` — skip this and the next step catches you, but the error is cryptic;
+  4. run the command there.
 
   A read-only command (`npm test`, `npm ci --dry-run`, `pip list`) may keep using the symlink. Never install into `$MAIN_ROOT`'s shared dependency directory through the link. If the symlink cannot be safely unlinked, STOP and ask.
 - **Resume:** `Worktree:` set → reuse it; `git worktree list` must show it (missing → STOP `❌ worktree <path> missing — recreate or ask`); verify ancestry — `git -C <worktree> merge-base --is-ancestor <parent> <branch>` non-zero → STOP `❌ <branch> not based on <parent>`.

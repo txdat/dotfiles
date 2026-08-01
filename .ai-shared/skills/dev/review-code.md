@@ -8,7 +8,7 @@ The main agent names an exact `docs/plans/<file>.md` per PROCESS `Named plan and
 
 ## Independence and Cost Boundary
 
-Follow `independence.md` (single source): reviewer `code-quality-auditor`, artifact the worktree plan plus the `<base>..HEAD` diff, verdict below. Verdict actions — Should Fix resolution, PR Pattern finalization, `reviewed` status, and the review commit — belong to the main agent, on the reviewer's evidence.
+Follow `independence.md` (single source). Verdict actions — Should Fix resolution, PR Pattern finalization, `reviewed` status, and the review commit — belong to the main agent, on the reviewer's evidence.
 
 Cost boundary: load only the approved plan, project config, diff, changed files/tests, and definitions or callers needed to verify behavior or a suspected finding. Inventory once; do not reread the repository once per review category. Batch independent read-only commands when practical.
 
@@ -60,4 +60,4 @@ Report verdict and Goal outcome first, then AC conclusions, the TC evidence tabl
 - `PASS WITH NOTES`: ask which Should Fix items to apply/skip; wait. Continue only after all are resolved.
 - `PASS`: compare the actual diff with the provisional PR Pattern and finalize it. **Match** = same slice count, each slice owns the same TC set, and each branch has the same parent. Step reordering *within* a slice is not drift; a step moving *between* slices is, as are merged, split, added, or dropped slices — including a slice absorbed because it turned out trivial. Match → remove `(provisional)`; drift → propose a corrected pattern and wait for approval; missing → REWORK.
 
-After PASS finalization, set the worktree plan to `reviewed`, commit `docs(<scope>): review passed`, and print: `Review passed; every AC independently verified. Run the create-pr skill.`
+After PASS finalization, set the worktree plan to `reviewed`, commit `docs(<scope>): review passed`, and emit: `Review passed; every AC independently verified. Run the create-pr skill.`

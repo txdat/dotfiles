@@ -1,6 +1,6 @@
 # Coverage Measurement — Single Source
 
-Referenced by PROCESS gate #6 (thresholds, no-gaming, and the stricter-only rule live there) and read by execute-feature/fix-bug at first scoring. Mechanics below; each names its **fallback** for when the stack can't measure what it asks.
+Referenced by PROCESS gate #6 (thresholds, bands, and the stricter-only rule live there) and read by execute-feature/fix-bug at first scoring. PROCESS owns the gates; this file owns only measurement — so the measurement rules can't be edited to bypass a gate. Mechanics below; each names its **fallback** for when the stack can't measure what it asks.
 
 - **Branch, not just line, for logic.** On business-logic/domain/service files the branches *are* the behavior (auth, state transitions, money math, validation, retry/idempotency); a red branch is an untested error path, i.e. a future incident. Gate on branch coverage. *Fallback where the stack cannot measure branch coverage:* gate line-% and flag each untested branch by name in the Coverage Gap.
 - **Curate the denominator.** Exclude generated code, DTOs, serialization boilerplate, migrations, config, and `main`/wiring via the project's coverage config (omit/exclude globs), not by padding with hollow tests. *Fallback where editing that config is out of the step's scope:* don't exclude silently — note the boilerplate lines as excluded-by-reason in the Coverage Gap and score the rest. A meaningful 82% beats a hollow 92%.

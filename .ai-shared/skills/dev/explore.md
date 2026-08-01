@@ -50,4 +50,4 @@ Explore: <area>. Report: entry points, key files, data flow, patterns, gotchas.
 - [ ] **Evidence:** every Entry Point, Key File, and Pattern carries a real `file:line` from tool output; data flow traced input → transform → output.
 - [ ] **Honest blanks:** Gotchas and Open Questions are filled or explicitly `none` — never omitted.
 
-All checked → print: "Exploration complete."
+All checked → emit: "Exploration complete."

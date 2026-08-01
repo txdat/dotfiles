@@ -4,11 +4,11 @@ Referenced by review-feature, review-code, and review-system. A review is worth 
 
 ## The rule
 
-**Did this session produce the artifact under review?**
+**Did this session produce the artifact under review?** The session that authored the plan/diff/architecture doc is the only session that must delegate. Every other session IS the fresh reviewer — delegating from one adds latency, burns a model×context slot, and gains nothing.
 
-- **No** → review directly in the main session. Nothing else applies.
-- **Yes** → delegate the whole review to exactly one fresh agent with no conversation inheritance (CODING `Subagent context`): its context starts empty except for the packet below. Any delegation mode that forks, inherits, or summarizes this conversation is not fresh and is never valid here, whatever the platform calls it.
-- **Yes, but isolation is unavailable** → review in-session, treating authoring memory as untrusted: re-derive every judgment from the artifact file and source reads, never from what you remember deciding.
+- **No, this session did not author it** → review directly. Nothing else applies. Do not spawn an agent — you are the independent reviewer the rule calls for.
+- **Yes, this session authored it** → delegate the whole review to exactly one fresh agent with no conversation inheritance (CODING `Subagent context`): its context starts empty except for the packet below. Any delegation mode that forks, inherits, or summarizes this conversation is not fresh and is never valid here, whatever the platform calls it.
+- **Yes, authored here but isolation is unavailable** → review in-session, treating authoring memory as untrusted: re-derive every judgment from the artifact file and source reads, never from what you remember deciding.
 
 | Skill | Reviewer | Artifact |
 |---|---|---|

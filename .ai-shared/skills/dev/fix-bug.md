@@ -6,7 +6,7 @@ Modes: `diagnose <symptom>` is read-only and stops after root-cause evidence; `e
 
 ## Diagnose
 
-Collect symptom, expected behavior, reproduction, approximate onset, and relevant issue if one exists. Resolve `<base>` and inspect recent commits plus `git diff <base> --stat`; do not create branches, plans, tests, or code.
+Collect symptom, expected behavior, reproduction, approximate onset, and relevant issue. Resolve `<base>` and inspect recent commits plus `git diff <base> --stat`; do not create branches, plans, tests, or code.
 
 Generate 3–5 ranked hypotheses. Investigate sequentially when ≤2; otherwise delegate independent evidence collection to parallel `code-explorer` agents, one per hypothesis — explorers return file:line evidence, never verdicts. The main agent rules each hypothesis CONFIRMED/ELIMINATED/INCONCLUSIVE with confidence and its supporting evidence.
 
@@ -20,7 +20,7 @@ Expected outcome source: <goal, contract, domain rule, or explicit unknown>
 Rejected: <hypothesis> — <evidence>
 ```
 
-Stop here. Offer to pass the diagnosis into design-feature. The fix plan must preserve the user's Goal, derive ACs/TCs, pass review-feature, and clear `approval.md`'s pause.
+Stop here. Offer to hand the diagnosis to design-feature. The fix plan must preserve the user's Goal, derive ACs/TCs, pass review-feature, and clear `approval.md`'s pause.
 
 ## Execution Gate
 

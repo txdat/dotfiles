@@ -6,7 +6,7 @@ No code and no approval decisions. Independently challenge the WHAT — the Goal
 
 ## Independence
 
-Follow `independence.md` (single source): reviewer `feature-planner`, artifact the plan file, verdict `READY` / `NEEDS CHANGES`.
+Follow `independence.md` (single source).
 
 ## Budget and the no-new-behavior rule
 
@@ -19,7 +19,7 @@ Three rules, structural rather than judgment, because judgment always says "one 
 
 (Post-approval re-review after an amendment is different ground: the amendment already carries the user's sign-off per `approval.md`, and this review judges the amended subgraph, not the frozen remainder.) **A second wrong-AC round-trip on one plan is a decomposition trigger** — the Goal is being discovered, not reviewed.
 
-**Two rounds, hard gate.** The round number is the plan header's `Rounds:` field, never session memory. Round 0 is the first review; round 1 is the second and final round — verify fixes landed and attack what changed. After round 1: READY or the plan goes back to design-feature for decomposition, never to round 2.
+**Two rounds, hard gate.** The round number is the plan header's `Rounds:` field, never session memory. Round 1 is the first review; round 2 is the second and final round — verify fixes landed and attack what changed. After round 2: READY or the plan goes back to design-feature for decomposition, never to round 3.
 
 **Report only what changes the built artifact.** A finding is reportable when it changes what gets built or lets a wrong implementation pass. Everything else — a rotted citation, a stale phrase — goes in one grouped `Nits:` line and is **never** a reason to withhold READY.
 
@@ -89,11 +89,11 @@ On `READY`, the **main agent** records the verdict in the plan header: `Review: 
 - [ ] **Mode/questions:** eligibility or full schema verified; no Open Questions surfaced. Issues: __.
 - [ ] **Independent outcomes:** expected outcomes were derived from Goal/sources before TC inspection; missing/invented ACs resolved. Issues: __.
 - [ ] **Adversarial behavior:** every AC faced counterexample, invalid-pass, and valid-rejection challenges, each attempt named with what defeated it rather than asserted as clean; `## Counterexamples Attempted` was re-attacked rather than accepted — verify each claimed defeater really constrains the cheat, and treat a thin, absent, or self-defeating entry as a finding; failure/edge axes are sufficient. Gaps: __.
-- [ ] **Budget and boundary:** the round number came from the header's `Rounds:` field, not memory, and the field was incremented with this verdict; hard gate at 2 rounds — entry at `Rounds: 1` is the final round, and a blocker here ends the lane (decomposition, never round 2); no finding of mine added, widened, or reinterpreted an AC — wrong-AC findings ended the round and routed to design, and missing behavior was proposed as an extension plan, never absorbed; every reported finding changes what gets built or admits a wrong implementation, and the rest are one grouped `Nits:` line. `Rounds:` now: __.
+- [ ] **Budget and boundary:** the round number came from the header's `Rounds:` field, not memory, and the field was incremented with this verdict; hard gate at 2 rounds — entry at `Rounds: 2` is the final round, and a blocker here ends the lane (decomposition, never round 3); no finding of mine added, widened, or reinterpreted an AC — wrong-AC findings ended the round and routed to design, and missing behavior was proposed as an extension plan, never absorbed; every reported finding changes what gets built or admits a wrong implementation, and the rest are one grouped `Nits:` line. `Rounds:` now: __.
 - [ ] **Approach/system fit:** alternatives, boundaries, compatibility, order, blast radius, rollback, and Non-functional effects are sound. Issues: __.
 - [ ] **Traceability/coverage:** Goal → AC ↔ TC ↔ Step graph holds edge by edge; every AC clause has a TC naming it; every `Proves:` names the AC its TC constrains; fail/pass intent is right per axis; affected existing tests are reasoned. Gaps: __.
 - [ ] **Execution shape:** steps are dependency-ordered, ≤10, and each names its TC; the PR partition is independently mergeable and splits no TC. Issues: __.
 
 Report summary, independently derived outcomes, blocking findings, the counterexamples **you** attempted (distinct from the plan's `## Counterexamples Attempted`, which you are judging), suggestions, and `READY` or `NEEDS CHANGES`.
 
-`NEEDS CHANGES`: clear `Review:`, offer plan fixes, and wait; design rethink routes to design-feature. `READY`: leave `Status: planning`, write `Review: READY <ISO date>`, and print: `Plan READY. Run approval.md's spec pause — approval is the user's, not mine.`
+`NEEDS CHANGES`: clear `Review:`, offer plan fixes, and wait; design rethink routes to design-feature. `READY`: leave `Status: planning`, write `Review: READY <ISO date>`, and emit: `Plan READY. Run approval.md's spec pause — approval is the user's, not mine.`

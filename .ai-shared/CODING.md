@@ -1,17 +1,17 @@
 # AI — Coding
 
-Universal rules for every agent that reads or writes code. Loaded on demand, never preloaded — read by the main session (per `README.md`) and every subagent (per its role doc) before the first code read or write. Orchestration rules live in `PROCESS.md`, main session only.
+Universal rules for every agent that reads or writes code. Loaded on demand — read by the main session (per `README.md`) and every subagent (per its role doc) before the first code read or write. Orchestration rules live in `PROCESS.md`, main session only.
 
 ## Code
 **Match before inventing.** Mirror existing patterns and style.
 
-**Minimal footprint.** Every change traces to the request. No adjacent fixes or abstractions. Refactor only when explicitly asked. Remove only what you introduce; leave existing dead code alone. Spotted cleanup → note it (in your report/insights), do not apply.
+**Minimal footprint.** Every change traces to the request. No adjacent fixes or abstractions. Refactor only when explicitly asked. Remove only what you introduce; leave existing dead code alone. Spotted cleanup → note it, do not apply.
 
 **Root causes only.** Never patch or mask symptoms.
 
 **Comment the why, not the what.** A comment states what the code cannot: a non-obvious invariant, constraint, or reason. Never narrate the next line or restate a name. Verify every comment you write or touch is true.
 
-**Clean code.** Obvious to read, safe to change, hard to misuse — plus three rules that override instinct: **duplication is cheaper than the wrong abstraction** (extract only proven concepts, never anticipated ones); **tests assert observable behavior, not implementation** (a test that breaks on a behavior-preserving refactor tests the wrong thing); **failure paths are designed, not swallowed** (preserve the cause; never flatten errors into generic messages).
+**Clean code.** Write code that is obvious to read, safe to change, hard to misuse — plus three rules that override instinct: **duplication is cheaper than the wrong abstraction** (extract only proven concepts, never anticipated ones); **tests assert observable behavior, not implementation** (a test that breaks on a behavior-preserving refactor tests the wrong thing); **failure paths are designed, not swallowed** (preserve the cause; never flatten errors into generic messages).
 
 **Verify symbol membership.** Before calling, accessing, or importing a name: resolve the receiver's concrete type; confirm the symbol is declared on that type (or a base) or exported from that module. Use `Symbol navigation` below for the resolution procedure. Not a member → STOP, report `❌ <type>.<symbol> — not a member`, ask.
 
@@ -19,7 +19,7 @@ Universal rules for every agent that reads or writes code. Loaded on demand, nev
 
 **Git ownership.** Main agent: mutate Git, edit plans. Reviewers: read-only Git (`status`/`diff`/`log`/`show`), tests, `dev-check`; mutate nothing. Workers: edit assigned files only, run assigned tests only; never Git, plans, or claim unproduced results.
 
-**Never run the full test suite.** Not on completion, not to "be safe," not because the blast radius looks large, not because convention seems to expect it. Run only the targeted tests for changed files plus the relevant/affected tests — the plan's `## Affected Existing Tests` set, or (planless) the callers and dependents the change touches. Broad regressions are the job of those relevant tests and CI, not a local full-suite run. **Two exceptions:** the project config documents the suite as fast (e.g. `Full suite: ~40s`), or the user explicitly asks. An undocumented suite is presumed slow — never run it to find out.
+**Never run the full test suite.** Run only the targeted tests for changed files plus relevant/affected tests — the plan's `## Affected Existing Tests` set, or (planless) the callers and dependents the change touches. Broad regressions are CI's job. **Two exceptions:** the project config documents the suite as fast (e.g. `Full suite: ~40s`), or the user explicitly asks. An undocumented suite is presumed slow — never run it to find out.
 
 ## Discipline (non-negotiable)
 

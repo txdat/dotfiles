@@ -22,9 +22,11 @@ For each PR in PR-Pattern order, check out its branch and create a body from the
 - HOW: approach, decisions, correctness, out of scope;
 - Testing: automated evidence and manual steps;
 - project checklist, or default checklist;
-- the plan's issue link — `Closes #N` **only when both** conditions hold, otherwise `Refs #N`:
-  1. no other active plan links `#N` — `rg -l 'Issue: #N\b' "$MAIN_ROOT/docs/plans/"` lists this plan alone (archival removes each shipped plan's locator, so survivors are exactly the still-active claimants);
-  2. `#N` carries no unchecked deferred-goal entries — `gh issue view N`. `frame-goal` defers goals as checklist items, so the first scan alone would let goal 1 close a parent that still owes later goals. A parent is closed by the last goal to ship, never by whichever merges first. Unsure → ask.
+- the plan's issue link. Two checks, in order — both must pass for `Closes #N`; either failing → `Refs #N`:
+  1. **Sole active claimant:** `rg -l 'Issue: #N\b' "$MAIN_ROOT/docs/plans/"` lists only this plan. Archival removes each shipped plan's locator, so survivors are exactly the still-active claimants.
+  2. **No unchecked deferred goals:** `gh issue view N` shows every deferred-goal checklist entry ticked. `frame-goal` defers goals as checklist items; the first scan alone would let goal 1 close a parent that still owes later goals.
+
+  A parent is closed by the last goal to ship, never by whichever merges first. Unsure → ask.
 
 For a chain, every PR body includes the complete ordered branch table, with the current row marked and known PR numbers filled. Create with:
 
@@ -63,7 +65,7 @@ Chain note: the archive commit lands only on the final branch. Earlier PRs keep 
 - [ ] **Chain, if used:** all rows/parents/order match the finalized pattern; each created number is linked from PR 1.
 - [ ] **Archive safety:** the `archived` flip was committed on the last branch and pushed; locator identity and archived persistence were verified before removing that exact locator — never content equality, which the frozen locator is expected to fail; no uncommitted work in `<worktree>` and no forced teardown.
 
-The first two checks gate publication. After PR creation, complete the chain and archive checks before copying or teardown. Then archive safely, remove the worktree, and print PR URL(s) plus `Feature shipped.`
+The first two checks gate publication. After PR creation, complete the chain and archive checks before copying or teardown. Then archive safely, remove the worktree, and emit PR URL(s) plus `Feature shipped.`
 
 ## Shipped, and what comes after
 
