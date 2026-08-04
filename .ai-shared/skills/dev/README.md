@@ -16,7 +16,7 @@ Architecture uses a separate falsifiable chain: goal and constraints → options
 
 `/dev:ship-feature <requirement>` — [explore] → frame-goal → design-feature → review-feature → spec approval → execute → review-code → PR. The six phases after `frame-goal` are mandatory; `explore` is optional (PROCESS #10). Resume by naming the plan: `/dev:ship-feature docs/plans/<file>.md from <phase>`. A bare `<requirement>` always starts a new design.
 
-Plan review enforces the Open Questions gate and does the real work: it independently derives the expected outcomes from `## Goal` before reading the proposed TC intents, then attacks the AC set with counterexamples. It returns READY; it never approves. It is bounded — two rounds, hard gate, counted durably in the plan header's `Rounds:` field — and may never add behavior: after handoff the AC set only narrows, and a missing outcome becomes a proposed extension plan with its own Goal and approval, never a round-N AC.
+Plan review enforces the Open Questions gate and independently derives expected outcomes from `## Goal` before reading proposed TC intents. It returns READY; it never approves. `Rounds:` records iteration but does not override correctness. Missing or wrong behavior returns through design and, after approval, through `approval.md`; use a separate extension plan only for a separate Goal.
 
 Plan statuses are enumerated in `README.md` `Lifecycle`, and `approval.md` owns the two terminal ones. `archived` is create-pr's own last step once the PRs exist; `abandoned` is a human decision.
 
@@ -44,7 +44,7 @@ Every skill opens with "read project config for AI" — the nearest `CLAUDE.md`/
 
 ## Single-Source Files
 
-Read by the skills that need them; never restated. `approval.md` (both human decisions) · `independence.md` (delegated review) · `altitude.md` (plan is design, not code) · `tdd.md` (RED→GREEN→BLUE) · `coverage.md` (measurement, bands, test quality bar) · `worktree.md` (lifecycle) · `dependents.md` (blast radius).
+Read by the skills that need them. Phase files may name their gates but do not redefine these rules: `approval.md` (both human decisions) · `independence.md` (delegated review) · `altitude.md` (plan is design, not code) · `tdd.md` (RED→GREEN→BLUE) · `coverage.md` (measurement, bands, test quality bar) · `worktree.md` (lifecycle) · `dependents.md` (blast radius).
 
 ## Design Skills
 

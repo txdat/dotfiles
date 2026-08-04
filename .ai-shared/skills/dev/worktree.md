@@ -1,6 +1,6 @@
 # Worktree Lifecycle — Single Source
 
-Referenced by execute-feature, fix-bug, review-code, create-pr. Skills bind `<slug>`/`<branch>`/`<parent>` themselves and follow these steps — never restate them. The governing rule — the worktree copy is the plan's single source of truth, and every plan git command runs there — is PROCESS `Plan worktree`.
+Referenced by execute-feature, fix-bug, review-code, and create-pr. Skills bind `<slug>`/`<branch>`/`<parent>` and may summarize entry needs, but this file defines the lifecycle. The governing rule — the worktree copy is the plan's single source of truth, and every plan git command runs there — is PROCESS `Plan worktree`.
 
 - **Create (first run):** `<parent>` is always explicit — never implicit HEAD. Only the main agent runs these Git commands.
   ```bash

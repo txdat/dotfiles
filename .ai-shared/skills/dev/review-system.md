@@ -2,35 +2,35 @@
 
 `PROCESS.md` must be loaded before this skill runs — not in context → read it now.
 
-Takes an exact `docs/architecture/<file>.md` in `$ARGUMENTS`, and it must be `Status: draft` — there is no latest-document fallback, for the reason PROCESS `Named plan and entry gates` gives for plans. Unlike the plan lane, **nothing mechanical enforces this**: `gate-check` treats the architecture skills as ungated entry skills and never resolves or validates an architecture document, so the named path and the `draft` status are this skill's own check. Not given an exact path, or the document is not `draft` → STOP and ask. Read it, relevant source, project config for AI, and the configs that invoke and host the system — scheduler cadence and jitter, retry and delivery semantics, concurrency, IAM — which are design surface, not deployment detail. Independently challenge the decision, not field presence. Review the chain: goal and constraints → options → recommendation → contracts → reversible phases → measured outcome.
+Entry: exact `docs/architecture/<file>.md`, `Status: draft`. No latest-document fallback. Read it, relevant source, project config, and the configs that invoke and host the system — scheduler cadence, retry/delivery semantics, concurrency, IAM — these are design surface, not deployment detail. Challenge the decision, not field presence. Review the chain: goal + constraints → options → recommendation → contracts → reversible phases → measured outcome.
 
 ## Independence
 
-Follow `independence.md` (single source). The approval prompt, its pause, and any `Status` change stay with the main agent.
+Follow `independence.md` (single source). The approval pause and any `Status` change stay with the main agent.
 
 ## Review
 
-- **Outcome:** the user goal is preserved; pain, constraints, boundaries, target, and baseline or measurement phase are credible. Attack every success metric: name a change that hits the target without moving the outcome — if one exists the metric is gameable and needs a paired outcome guard or a second measurement.
-- **Options:** viable alternatives were compared, or hard constraints genuinely eliminate them; trade-offs, dependencies, coupling, and critical failure handling are credible. Re-attempt the simpler-option counterexample.
-- **Recommendation:** evidence supports the choice; alternatives are represented fairly; contracts cover ownership, compatibility, delivery, and failure semantics without prescribing unnecessary internals. Any contract compensating for absent data → prove the data is actually absent: check the API's response and the codebase's own declared-but-unpopulated fields.
-- **Migration:** phases are dependency-ordered and independently deployable; every Change/Verify/Rollback gate is workable; destructive steps, synchronization, reconciliation, and cutover are handled honestly.
-- **Handoff:** decomposition is acyclic and initially actionable; every contract has an owning plan and phase; observable contract behavior reaches AC/TC proof while feature Goals remain user outcomes. For each contract, name the production entry point its AC/TC invokes — a proof that joins below the behavior it governs proves nothing; trace the real path (stub → adapter → parser → detector → ledger) to find where the test enters.
+Review all five headings at the depth the change warrants. Treat `Not applicable` as a claim to verify, not a demand to invent content:
 
-Read `## Review History` only after finishing the five attacks above — earlier, it tells you which ground is already "covered" and becomes the anchor independence exists to remove. Then use it two ways: widen coverage into what no round has attacked, and audit the entries themselves, since a recorded verdict is a claim to verify rather than a settled question. Each entry names the recommendation it reviewed; where that recommendation no longer exists, the entry is history, not evidence — do not re-attack it and do not inherit its conclusions.
+- **Outcome (§1):** user goal preserved; pain, constraints, boundaries, target, and baseline/measurement phase are credible. **Attack every success metric:** name a change that hits the target without moving the outcome — if one exists the metric is gameable and needs a paired outcome guard.
+- **Options (§2):** alternatives compared honestly, or constraints genuinely eliminate them. Re-attempt both questions: could a simpler option work, and could a simpler working system grow into the target later? Complexity beyond that start must answer a current requirement or evidence, not speculative scale alone. Trade-offs, dependencies, coupling, and critical failure handling are credible.
+- **Recommendation (§3):** evidence supports the choice; alternatives represented fairly; contracts cover ownership, compatibility, delivery, and failure semantics without prescribing internals. Challenge credible de facto contracts—errors, defaults, ordering, timing, and side effects—using callers, telemetry, documentation, or history where available, rather than conjecture. Any contract compensating for absent data → prove the data is actually absent: check the API response and codebase's declared-but-unpopulated fields.
+- **Migration (§4):** applicable phases are dependency-ordered and independently deployable; every Change/Verify/Rollback gate is workable; destructive steps, synchronization, reconciliation, and cutover are handled honestly.
+- **Handoff (§5):** decomposition, when needed, is acyclic and initially actionable; every contract has an owning plan and phase. Verify each contract's observable proof strategy. Production-entry-point tracing belongs to feature/code review once tests exist.
 
-Blocking examples: lost user goal, unmeasurable or gameable success metric, no baseline or measurement phase, decorative alternatives, ignored simpler option, mechanism invented for data never confirmed absent, undefined or ownerless contract, missing critical failure handling, proof joining below the behavior it governs, unverifiable phase, dishonest rollback, or dependency cycle. Warnings: oversized phase without a checkpoint, unfamiliar technology, or operational burden without an owner.
+Read `## Review History` only after finishing the review above. Use it to widen coverage and audit the entries themselves — a recorded verdict is a claim to verify, not a settled question. An entry naming a superseded recommendation is history, not evidence: do not re-attack it and do not inherit its conclusions.
+
+Blocking: lost user goal, unmeasurable/gameable success metric, no baseline/measurement phase, decorative alternatives, unjustified present complexity, mechanism for unconfirmed-absent data, undefined or ownerless contract, credible unhandled compatibility break, missing critical failure handling, unverifiable phase, dishonest rollback, dependency cycle. Warnings: oversized phase without checkpoint, unfamiliar technology, operational burden without owner.
 
 ## Self-Check (BLOCKING)
 
-- [ ] **Independence:** `independence.md` satisfied — fresh agent, or a session that did not draft; any in-session fallback re-derived every judgment from the document and source; a revision authored in-session was re-reviewed; `## Review History` was read only after my own attacks, and entries naming a superseded recommendation were not inherited. Context: __.
-- [ ] **Outcome/options:** goal and measurable outcome hold; each metric was attacked for gameability — naming the gaming change tried, per metric — and every proxy is paired with an outcome guard; alternatives or eliminations were independently challenged, and the document's own simpler-option verdict was re-attacked rather than accepted. Issues: __.
-- [ ] **Contracts/failures:** boundaries and required semantics are sufficient; critical failures have detection and recovery. Missing: __.
-- [ ] **Migration:** Change/Verify/Rollback gates are credible; destructive steps and applicable cutover/reconciliation hold. Issues: __.
-- [ ] **Handoff:** plan graph is actionable; contract↔plan↔phase ownership is complete; every contract's AC/TC is traced to the production entry point it invokes and none joins below the behavior it governs; AC/TC mapping preserves feature Goals. Issues: __.
+- [ ] **Independence, outcome, and options:** `independence.md` satisfied. `## Review History` read only after my own attacks; entries naming a superseded recommendation were not inherited. Goal and measurable outcome hold; each metric attacked for gameability. Simpler option and simpler evolution path were independently challenged; complexity beyond that start has current evidence.
+- [ ] **Contracts and migration:** documented contracts and credible de facto dependencies were checked; boundaries and relevant failure semantics are sufficient; critical failures have detection/recovery. Applicable Change/Verify/Rollback gates are credible; omissions are justified rather than padded.
+- [ ] **Handoff:** the required plan graph is actionable; contract↔plan↔phase ownership is complete. Every contract has an observable proof strategy for later feature review; architecture review did not require nonexistent test bodies.
 
-Report verdict, blocking findings with required revisions, warnings, and author questions. Omit empty sections and generic praise; note a strength only where it is a decision worth preserving under revision.
+Report verdict, blocking findings with required revisions, warnings, and author questions. Omit empty sections and generic praise; note a strength only where it is a decision worth preserving.
 
-On every verdict the main agent appends one entry to `## Review History` at the end of the document; the reviewer reports it and never writes it.
+On every verdict the main agent appends one entry to `## Review History`; the reviewer reports it and never writes it:
 
 ```text
 ### Review <ISO date> — READY | NEEDS REVISION — reviewing: <recommendation named in §3>
@@ -38,6 +38,6 @@ Attacked: <metric gaming, simpler option, or failure mode tried> — <what defea
 Changed:  <contract, phase, or metric revised in response> | none
 ```
 
-Naming the recommendation is what keeps this usable: an architecture document outlives the plans it spawns and returns to `draft` on any later semantic change, so rounds accumulate across designs that are no longer the design. The name lets a later reviewer tell evidence from history at a glance. Keep entries to what a future reviewer can act on — the diff is already in git.
+Naming the recommendation keeps the history usable across designs that outlive their plans. Keep entries to what a future reviewer can act on.
 
-Any blocking finding → `NEEDS REVISION`; leave `Status: draft` and name the required revisions. Otherwise report `READY`, then run `approval.md`'s `## Architecture` pause — it is the single source for that decision and this skill never adds an exception to it.
+Blocking finding → `NEEDS REVISION`; leave `Status: draft`. Otherwise `READY`, then run `approval.md`'s `## Architecture` pause.

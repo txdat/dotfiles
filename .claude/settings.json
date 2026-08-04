@@ -8,7 +8,6 @@
       "Bash(*gitnexus*)"
     ]
   },
-  "model": "opus",
   "hooks": {
     "PreToolUse": [
       {
@@ -44,7 +43,7 @@
       }
     }
   },
-  "effortLevel": "medium",
+  "effortLevel": "high",
   "promptSuggestionEnabled": false,
   "awaySummaryEnabled": false,
   "tui": "fullscreen",

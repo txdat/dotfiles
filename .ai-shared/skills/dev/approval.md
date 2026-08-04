@@ -1,6 +1,6 @@
 # Approval — Single Source
 
-Owns every human approval in the dev flow: the **application spec** (`Type: feature|fix|refactor` plans) and the **architecture decision** (`docs/architecture/**`). No other file states, restates, or qualifies the conditions of approval; they point here.
+Owns the exact prompt, pause, and revision procedure for every human approval in the dev flow: the **application spec** (`Type: feature|fix|refactor` plans) and the **architecture decision** (`docs/architecture/**`). Other files may name the gate and its entry state; they do not redefine it.
 
 ## Application spec
 

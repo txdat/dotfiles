@@ -2,39 +2,38 @@
 
 `PROCESS.md` must be loaded before this skill runs — not in context → read it now.
 
-Warn if another plan is active; unfamiliar area → suggest explore; a requirement that looks bundled or ambiguous at goal level → frame-goal first, before a plan exists to grow around it. Read project config for AI. Heavy analysis may be delegated to `feature-planner`; the main agent owns the plan and the later human approval. Scope that creates or changes a system boundary, communication pattern, service decomposition, or cross-system integration belongs to design-system first. A decomposed plan cites the approved architecture document and phase in Context, preserves the user Goal, and carries assigned contracts as sources, constraints, or invariants whose observable behavior is covered by ACs and TCs. No approval decisions, and no code — neither written to the repo nor embedded in the plan (see Planning Rules).
+**Gates before design:** active plan? → warn. Unfamiliar area? → suggest explore. Bundled/ambiguous goal? → frame-goal first. System-boundary scope? → design-system first. Read project config for AI. Heavy analysis may delegate to `feature-planner`; the main agent owns the plan and approval. **No code, no approval decisions.** Design-feature proposes behavior; `approval.md` decides it.
 
 Write `docs/plans/<basename>_<date>_<type>_<slug>.md`, where type is feature/fix/refactor.
 
-## Plan Schema
+## Size the plan to the change
 
-Clarify scope, constraints, edge cases, and done in up to three rounds. Keep the plan as short as the change is small — a section with nothing to say is omitted, not padded. Application plans contain:
+**The plan is as short as the change is small.** Keep the core traceability sections below; omit conditional sections rather than padding them.
 
 ```text
 # Task: <name>
-Status: planning | Type: feature|fix|refactor | Issue: | Review: | Rounds: 1 | Worktree:
-## Goal                        # preserve the user's requested outcome; do not replace it with TCs
-## Requirement                 # problem, why, measurable done
-## Context                     # current behavior; dependencies and ordering
-## Scope                       # In / Out
+Status: planning | Type: feature|fix|refactor | Issue: #N | Review: | Rounds: 1 | Worktree:
+## Goal
+## Requirement
+## Scope (In / Out)
 ## Assumptions & Open Questions
-## Impact Analysis
-### Affected Components        # file/module/service and change
-### API / Contract Changes     # breaking/additive, with details
-### Data / Schema              # migration and rollback
-### Non-functional             # performance budget, security, observability
-## Design Decisions            # decision / options / chosen / reason
-## Mechanism Invariants        # conditional; structure / invariant / guard / boundary TC
-## Risk Flags                  # risk / mitigation
-## Acceptance Criteria         # AC-N observable outcome + Source / Success / Failure
-## Test Cases (intent)         # TC-N one-line scenario + Proves — the body is authored in the RED commit
-## Counterexamples Attempted   # target AC/TC + the attempt + what defeated it
-## Amendments                  # conditional; post-approval AC changes only, numbered, each with the user's sign-off
-## Affected Existing Tests     # test + reachability reason + still passes/needs update
-## Implementation Steps        # Step N + action + explicit satisfying TC IDs
-## Out of Scope                # item + reason
-## PR Pattern (provisional)    # type plus branch / parent / steps / summary table
+## Acceptance Criteria        # fix: 1–2 ACs; feature: 3–5; rarely all 8
+## Test Cases (intent)        # one line per TC; each names exactly one AC
+## Counterexamples Attempted
+## Affected Existing Tests
+## Implementation Steps       # dependency-ordered; each names its TCs
+## PR Pattern (provisional)   # single branch unless forced to chain
 ```
+
+Add `Context`, `Impact Analysis`, `Design Decisions`, `Mechanism Invariants`, `Risk Flags`, and `Out of Scope` only when the change demands them.
+
+Conditional sections stay compact:
+
+- `Context` — current behavior, dependencies, or ordering that changes the design. When the change relies on, removes, or bypasses existing behavior, include the constraint, incident, compatibility need, or invariant that produced it when discoverable.
+- `Impact Analysis` — only affected components, data, or non-functional behavior; contract impact includes credible consumer dependencies on errors, defaults, ordering, timing, and side effects beyond documented interfaces.
+- `Design Decisions` — only a choice the executor must preserve.
+- `Mechanism Invariants` — only for a new structure.
+- `Risk Flags` / `Out of Scope` — only material risks or tempting adjacent work.
 
 Item shape:
 
@@ -49,11 +48,9 @@ TC-1 — <one scenario, one line, naming the behavior and the condition that dis
   Test: <filled during execution — path::name>
 ```
 
-**A clause** is one separable condition of an AC — a conjunct in its Success, or a distinct failure mode in its Failure. Write clauses as separable statements: they are what TC coverage is counted against, in review-feature's coverage check and review-code's reachability walk alike. When the boundary is unclear, write them as separate statements and let review-feature's adversarial check settle it — a clause no TC can isolate is not a clause.
+**A clause** is one separable condition of an AC — a conjunct in Success, or a distinct failure mode. Clauses are what TC coverage is counted against. A TC line carries enough to check that its clause is covered and its `Proves:` is routed correctly; its Given/When/Then is authored at RED, because arrangement-level defects are only detectable by running it.
 
-A TC line carries enough to check two things in review: that the AC clause it names is covered, and that its `Proves:` is routed correctly. Its Given/When/Then is authored as a running test in the RED commit (`execute-feature`), because the defects that live in an arrangement — a test that passes against unmodified code, a fixture that cannot be built — are only detectable by running it.
-
-Filled, for reference — note that `Source` is what kills the vacuous AC, because "the system works correctly" cannot be sourced:
+Filled:
 
 ```text
 AC-2 — a refund exceeding the remaining refundable balance is rejected without mutating the ledger
@@ -70,56 +67,34 @@ TC-5 — two sequential partial refunds cannot exceed the balance together
   Test: <filled during execution — path::name>
 ```
 
-Two TCs: AC-2's Success has two clauses (rejected **and** ledger unchanged) and its failure mode has a sequential form. Clause count, not scenario prose, is what coverage checks read.
-
-Design-feature proposes behavior; it never approves it. `approval.md` (single source) owns that decision.
-
 ## Goal → AC Derivation
 
-1. Preserve the user's original outcome in `## Goal`; separate later interpretation under Requirement/Assumptions.
-2. Decompose the Goal into atomic actors, triggers, observable outcomes, constraints, prohibited outcomes, failure behavior, and measurable non-functional results.
-3. Convert each atomic outcome into one implementation-independent AC. Unsupported expected behavior is an Open Question, never an invented AC.
-4. Cite the source for every AC. Replace subjective terms (`fast`, `safe`, `correct`) with observable measures or ask the user.
-5. Derive TC **intent lines** only after the AC set is complete. Each TC has exactly one `Proves: AC-N`, and every clause of every AC is named by at least one TC. An AC may own multiple positive, negative, boundary, failure, concurrency, or security scenarios. No Given/When/Then here — the item-shape note above says why. An AC whose Success and Failure cannot be judged without reading a TC is under-specified: fix the AC.
-6. Attempt the counterexample: "Can an implementation pass all proposed TCs while violating this AC or the Goal?" Record each attempt with **what defeated it** — name the AC or TC that constrains the cheat. An attempt nothing defeats is a missing TC: add it, then log the attempt as defeated by the TC you added. A bare "none found" is unfalsifiable.
+1. Preserve the user's original outcome in `## Goal`.
+2. Decompose into atomic observable outcomes, constraints, prohibited outcomes, and failure behavior. Each becomes one AC, sourced and implementation-independent. Subjective terms (`fast`, `safe`) → replace with observable measures or ask.
+3. Derive TC intent lines only after the AC set is complete. Each TC names exactly one `Proves: AC-N`; every clause of every AC is named by at least one TC. An AC whose Success/Failure cannot be judged without reading a TC is under-specified: fix the AC.
 
-An entry names the *cheating implementation* you tried:
+## AC Budget
+
+**≤8 ACs, ≤3 clauses per AC.** A fix: 1–2 ACs. A feature: 3–5. These are heuristics — approaching them means reconsider whether the Goal is too broad. Split when cohesion suffers, not by rule. Start from the smallest set that proves the Goal and stop.
+
+Before approval, missing ACs found in review return through design as ordinary iteration. After approval, any behavior change—add, update, or remove—follows `approval.md`. Split an extension plan only when the outcome is independently valuable or would make the current Goal incoherent.
+
+## Counterexamples
+
+Attempt at least one adversarial implementation against the most critical AC: "Can an implementation pass all proposed TCs while violating this AC or the Goal?" Record each with what defeated it — the AC or TC that constrains the cheat. An attempt nothing defeats is a missing TC.
 
 ```text
 Target: AC-2 / TC-4
-Attempt: reject every refund whose amount differs from the captured amount — passes TC-4
-         without comparing against remaining balance, so a second partial refund double-spends.
-Defeated by: TC-5 (two sequential 30.00 refunds against a 50.00 capture; the second must reject).
+Attempt: reject any refund whose amount ≠ capture amount — passes TC-4 without a balance
+         check, so a second partial refund double-spends.
+Defeated by: TC-5 (two sequential 30.00 refunds against a 50.00 capture; second must reject).
 ```
 
-"Attempted: tried to cheat. Defeated by: AC-1" is not an entry — it names no implementation and gives review-feature nothing to re-attack. A defeater here names an **AC clause or TC intent** and is an argument, not yet a proof; `review-code` re-attacks against the running test. Keep only **live** rows: a row invalidated by a design change is deleted, not annotated.
-
-## Planning Rules
-
-- **Design altitude:** follow `altitude.md` (single source). The plan is language-neutral design notation throughout.
-- Leave `Review:` empty — review-feature owns it. Never write `Status: approved` or `Review: READY` here.
-- `Rounds:` starts at 1 (first review upcoming) and is review-feature's counter; design-feature writes the 1 and never touches it again. It survives a NEEDS CHANGES re-entry — resetting it hides the loop's length. Only a decomposition producing a *new plan file* starts a new count.
-- Open Questions must be empty before handoff; move settled answers into assumptions or their owning section.
-- Use dependency-ordered steps, as few as the change needs; >10 → split. Verify symbols named by steps against their target type/module.
-- Goal → AC ↔ TC ↔ Step traceability is complete: every AC has ≥1 TC, every TC names exactly one AC and appears by ID in ≥1 step, and every step names ≥1 TC. Enumerate IDs; never write ranges such as `TC-1 through TC-4`.
-- Feature/fix TCs name initially failing observable behavior; refactor TCs name behavior that passes before and after. `execute-feature` proves that intent at RED and rejects any TC whose test passes against unmodified code. Tests must not mirror the proposed implementation.
-- **AC budget: 8, and ≤3 clauses per AC** — this bullet is the single source for both numbers.
-  - **Clause surface is the real cap:** two review rounds can attack ≤24 clauses clause by clause. The clause cap keeps the AC cap honest — fewer, fatter ACs grow the same surface while evading the count.
-  - **A budget is an attractor, not merely a limit:** plans grow to fill whatever it allows. A goal exceeding 8 ACs → cut into thinner slices; `frame-goal` marks them `thin`.
-  - **Over budget → STOP** and return through `frame-goal` (single source for the too-broad test and split boundaries).
-- **After handoff the AC set only narrows: update, remove, refine — never add.** A new AC is a new outcome, and a new outcome belongs to a new Goal: draft it as its own issue-backed extension plan (parented per the PR Pattern rules, on this plan's branch if unmerged), and let the user decide whether it runs at all. This holds from the moment the plan reaches review — a review round may send back a wrong or ambiguous AC to fix or drop, never a new one to absorb — and an update may not grow an AC's clause count to smuggle the addition in. Missing coverage of an *existing* AC clause is refinement (a TC intent), not a new AC. Post-approval, updates and removals go back through `approval.md` and are recorded as numbered `## Amendments` entries naming what changed, why, and the user's sign-off; pre-approval they are ordinary design iteration and `## Amendments` stays empty.
-- **Cite symbols, never line numbers.** `normalizeLb`'s missing-label default survives a commit; `monitoring.ts:293` does not. A rotted citation is a finding a later reviewer must spend a round on and which changes nothing about the built artifact.
-- Derive Affected Components from exploration or direct inspection. Answer every impact category; map code-requiring Non-functional commitments to steps or mark `ops-only`.
-- For every affected component, external dependency, and contract, ask *what happens when this fails* — down, timeout, crash mid-operation, partial write, retry/duplicate. New or changed failure behavior → failure AC/TC; accepted risk → Risk Flag; no credible answer → Open Question. Existing handling the change doesn't touch needs no artifact.
-- Find Affected Existing Tests semantically, then by targeted search. Predict `still passes` or `needs update` with reason; empty only for isolated new code.
-- A new structure requires its operational invariant, initialization/identity guard, and boundary TC using the same key after zero/full/exhausted/evicted state.
-- For orthogonal behavior axes, cover each non-trivial combination with a TC or justify it under Out of Scope.
+An entry naming no implementation is not an entry. Keep only live rows: a row invalidated by a design change is deleted.
 
 ## PR Pattern
 
-Draft once the issue exists. One deployable unit → single branch `<type>/<slug>`. Otherwise chain independently mergeable slices, ordered by dependencies; migrations isolate first, shared architecture precedes behavior, and service slices include all their layers. The table partitions every step exactly once and keeps every TC wholly within one slice.
-
-**Every row carries its own `Parent`** — the branch this slice builds on and the PR's base. It is data, never inferred: normally `<base>` for a single PR or slice 1, and the preceding branch for later slices, but a follow-up plan amending an **unmerged** PR names that PR's branch instead (`create-pr.md` `Shipped, and what comes after`). Both `execute-feature` (worktree `<parent>`) and `create-pr` (`gh pr create --base`) read this column and nothing else, so an unrecorded parent is a plan defect, not something a later phase may guess.
+**Default: one deployable unit → single branch `<type>/<slug>`.** Chain only when migrations must precede code or slices are independently deployable:
 
 ```text
 Type: chain
@@ -129,30 +104,36 @@ Type: chain
 | 2 | feat/quota-api  | feat/quota-db   | 3-5   | enforcement + API  |
 ```
 
-Show name, type, requirement, AC/TC/step counts, and path. Ask for design changes. Never ask for spec approval here — that pause belongs to `approval.md`, after review-feature returns READY.
+Every row carries its own `Parent` — `execute-feature` and `create-pr` read this column and nothing else.
+
+## Planning Rules
+
+- **Design altitude:** follow `altitude.md`. The plan is language-neutral design notation.
+- **Cite stable symbols for design instructions.** Use `file:line` only when quoting source as evidence, per `altitude.md`.
+- Feature/fix TCs name initially failing observable behavior; refactor TCs name behavior that passes before and after. Tests must not mirror the proposed implementation.
+- Derive Affected Components from exploration. Map code-requiring Non-functional commitments to steps or mark `ops-only`.
+- For every affected component, dependency, and contract, ask *what happens when this fails*. New/changed failure behavior → failure AC/TC; accepted risk → Risk Flag; no credible answer → Open Question.
+- Before removing an existing guard or externally observable behavior, investigate why it exists in proportion to its compatibility, safety, and data-integrity risk. If a material rationale remains unknown, record the uncertainty and preserve the behavior unless the user accepts the risk.
+- A new structure requires its operational invariant, initialization/identity guard, and boundary TC.
+- For orthogonal behavior axes, cover combinations that change observable behavior; do not enumerate equivalent permutations.
 
 ## Issue
 
-**Every plan links exactly one issue.** Creating one is the fallback, not the default: where the requirement, user, or `frame-goal` already named an issue — including a **parent issue** several sibling plans share — link it. Linking happens before handoff, so the omission surfaces while the plan is being written rather than after approval.
+**Every plan links exactly one issue.** Creating one is the fallback, not the default: where the requirement, user, or `frame-goal` already named an issue — including a **parent issue** several sibling plans share — link it. Linking happens before handoff.
 
-1. **Resolve the issue** — three cases:
+1. **Resolve the issue:**
    - **None named** → build a body from Goal, Requirement, expected outcome, and Scope; `gh issue create` and record the number.
-   - **A dedicated issue named** → do **not** open a second one: fetch it, confirm it is open, update its body where Goal/Requirement/Scope changed.
-   - **A parent issue named** → link it. Tracking **several** → **leave the body alone**: put anything this plan needs to say in a comment, and expect the PR to reference rather than close it. Tracking exactly **one** → enrich the body as in the dedicated case above.
-2. **Record it.** The header reads exactly `Issue: #<n>` — `gate-check` matches `#<digits>` only. When the issue is a shared parent, note it in `## Context`.
+   - **A dedicated issue named** → fetch it, confirm it is open, update its body where Goal/Requirement/Scope changed.
+   - **A parent issue named** → link it. Tracking **several** → leave the body alone: put anything this plan needs to say in a comment. Tracking exactly **one** → enrich the body as above.
+2. **Record it.** The header reads exactly `Issue: #<n>`.
 
-A named issue that is closed or belongs to different work → STOP and ask. Credentials: PROCESS `Git credentials`. `create-issue` stays restricted to standalone issues.
+A named issue that is closed or belongs to different work → STOP and ask. Credentials: PROCESS `Git credentials`.
 
 ## Self-Check (BLOCKING)
 
-- [ ] **Schema and questions:** every section that applies is filled; Open Questions empty; `Status: planning`; `Review:` empty; `Rounds:` is 1 on a fresh plan and untouched on a re-entry.
-- [ ] **Issue:** exactly one issue backs this plan — linked when one was named, created only when none was, never duplicated; it is open; a dedicated issue's body carries Goal, Requirement, expected outcome, and Scope, while a shared parent's body was left intact and its sharing noted in `## Context`; the header reads exactly `Issue: #<n>`, no suffix.
-- [ ] **Goal and ACs:** Goal is preserved; each AC is atomic, observable, sourced, pass/fail decidable, and implementation-independent; `## Counterexamples Attempted` names each attempt, its target, and the AC/TC that defeated it — never a bare "none found", never an undefeated attempt left standing.
-- [ ] **Approach/impact:** requirement and scope are measurable; components/contracts/data/non-functional effects and decisions are concrete; every affected component, dependency, and contract has its failure behavior answered.
-- [ ] **BDD/TDD:** every TC has a one-line intent, one owning AC, and correct fail/pass intent; **every clause of every AC's Success and Failure is named by at least one TC**; Goal → AC ↔ TC ↔ Step mapping is complete; affected existing tests are reasoned. No Given/When/Then is written here.
-- [ ] **Budget and narrowing:** the AC set is ≤8 with ≤3 clauses per AC (else the plan was decomposed); on a re-entry from review the AC set did not grow — new outcomes went to extension plans; `## Amendments` is empty pre-approval, and any post-approval entry carries the user's sign-off; plan citations name symbols, not line numbers.
-- [ ] **Conditional rigor:** each new structure has guard/invariant/boundary TC; behavior-axis combinations are covered or excluded with reason.
-- [ ] **Execution shape:** steps are dependency-ordered, each names the TC it satisfies, and are ≤10 (else split); provisional PR Pattern partitions steps and does not split a TC.
-- [ ] **Altitude:** `altitude.md`'s drafting standard was applied — target-language syntax rewritten as notation before handoff. Review-feature treats a violation as only a Should Fix, so this checkbox is where the standard is actually held.
+- [ ] **Behavior complete:** Goal preserved; every AC atomic, observable, sourced, pass/fail decidable, implementation-independent. Every clause of every AC has a TC naming it. Counterexamples are live — each names an implementation, its target, and the AC/TC that defeated it; no undefeated attempt stands.
+- [ ] **Size:** AC/clauses and steps are the smallest coherent set that proves the Goal; approaching the heuristics triggered a split check, not automatic decomposition.
+- [ ] **Execution sound:** steps are dependency-ordered and each names its TCs. PR Pattern defaults to single, partitions steps when chained, never splits a TC. Affected existing tests are reasoned. Design instructions cite stable symbols; evidence quotes may use `file:line`.
+- [ ] **Form correct:** new structures (if any) have guard/invariant/boundary TC; non-trivial behavior-axis combinations covered or excluded; every affected component's failure behavior is answered. Material removed behavior has an evidence-backed reason or an explicit accepted uncertainty, and credible de facto contract changes are explicit. Open Questions empty. Notation, not target-language syntax. Header: `Status: planning`, `Review:` empty, `Rounds: 1` on a fresh plan and preserved on re-entry, `Issue: #<n>`.
 
 All checked → emit: `Plan drafted. Run the review-feature skill.`

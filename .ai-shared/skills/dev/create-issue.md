@@ -4,7 +4,7 @@ For plan-linked issues, use the design-feature skill instead.
 
 Collect from $ARGUMENTS or ask: title, problem/context, and expected outcome (required); labels and milestone (optional). Build the body from the required problem/context and expected outcome.
 
-This skill loads no core file, so read PROCESS `Git credentials` — the single source for the identity `gh` uses — before the command below.
+Before the command below, read PROCESS `Git credentials`, the single source for the identity `gh` uses.
 
 ```bash
 gh issue create --title "..." --body "..." [--label "..."] [--milestone "..."]
