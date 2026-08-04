@@ -1,7 +1,7 @@
 ---
 name: dev-frame-goal
 description: "Frame a raw requirement into one or more confirmed goals before design: split a too-broad goal along capability, deployment, and failure-domain boundaries, question ambiguity with competing examples, and push back for the user's confirmation; deferred goals become issues."
-model: gpt-5.6-sol
+model: gpt-5.6-terra
 effort: medium
 ---
 

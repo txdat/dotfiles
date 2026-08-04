@@ -1,7 +1,7 @@
 ---
 name: dev-review-feature
 description: "Review a planning-stage feature/fix/refactor plan for approach, system fit, test completeness, impact, scope, and independently mergeable PR slices before human approval."
-model: gpt-5.6-sol
+model: gpt-5.6-terra
 effort: medium
 ---
 
