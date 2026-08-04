@@ -13,7 +13,7 @@ A bare `<requirement>` always starts a new design and adopts no existing plan; r
 | Status | `Review:` | Next |
 |---|---|---|
 | no plan | — | frame-goal, then design-feature with the first confirmed goal (explore first when the area is unfamiliar — optional, per PROCESS #10; a boundary-shaped goal detours through design-system → review-system before its feature plans, per frame-goal's routing) |
-| `planning` | empty | review-feature, once Open Questions are empty |
+| `planning` | empty | review-feature once Open Questions are empty and `Rounds:` is 1 or 2; at 3, stop for replacement, decomposition, or abandonment |
 | `planning` | `READY <date>` | `approval.md` spec pause |
 | `approved` / `in-progress` | `READY <date>` | execute-feature |
 | `approved` / `in-progress` | empty | STOP — approved without a recorded review; return to review-feature |
@@ -30,7 +30,7 @@ Read and follow `approval.md` (single source). ship-feature runs its pause; it n
 
 ## Rework
 
-A contradiction or blocking plan defect found during execution or review clears `Review:`, returns the plan to `planning`, and sends it through review-feature and back to the approval pause. Cosmetic observations do not.
+A contradiction or blocking plan defect found during execution or review clears `Review:` and returns the plan to `planning`. If `Rounds:` is 1 or 2, send it through review-feature and back to the approval pause; at 3, stop for replacement, decomposition, or abandonment. Cosmetic observations do not.
 
 ## Self-Check (BLOCKING)
 

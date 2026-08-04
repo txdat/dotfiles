@@ -12,7 +12,7 @@ Write `docs/plans/<basename>_<date>_<type>_<slug>.md`, where type is feature/fix
 
 ```text
 # Task: <name>
-Status: planning | Type: feature|fix|refactor | Issue: #N | Review: | Rounds: 1 | Worktree:
+Status: planning | Type: feature|fix|refactor | Issue: #N | Review: | Rounds: 1 | Code Rounds: 0 | Worktree:
 ## Goal
 ## Requirement
 ## Scope (In / Out)
@@ -24,6 +24,8 @@ Status: planning | Type: feature|fix|refactor | Issue: #N | Review: | Rounds: 1 
 ## Implementation Steps       # dependency-ordered; each names its TCs
 ## PR Pattern (provisional)   # single branch unless forced to chain
 ```
+
+`Rounds:` starts at 1 and is incremented after each feature-review verdict; at review entry it names the attempt being run. `Code Rounds:` starts at 0 and counts completed code-review verdicts.
 
 Add `Context`, `Impact Analysis`, `Design Decisions`, `Mechanism Invariants`, `Risk Flags`, and `Out of Scope` only when the change demands them.
 
@@ -134,6 +136,6 @@ A named issue that is closed or belongs to different work → STOP and ask. Cred
 - [ ] **Behavior complete:** Goal preserved; every AC atomic, observable, sourced, pass/fail decidable, implementation-independent. Every clause of every AC has a TC naming it. Counterexamples are live — each names an implementation, its target, and the AC/TC that defeated it; no undefeated attempt stands.
 - [ ] **Size:** AC/clauses and steps are the smallest coherent set that proves the Goal; approaching the heuristics triggered a split check, not automatic decomposition.
 - [ ] **Execution sound:** steps are dependency-ordered and each names its TCs. PR Pattern defaults to single, partitions steps when chained, never splits a TC. Affected existing tests are reasoned. Design instructions cite stable symbols; evidence quotes may use `file:line`.
-- [ ] **Form correct:** new structures (if any) have guard/invariant/boundary TC; non-trivial behavior-axis combinations covered or excluded; every affected component's failure behavior is answered. Material removed behavior has an evidence-backed reason or an explicit accepted uncertainty, and credible de facto contract changes are explicit. Open Questions empty. Notation, not target-language syntax. Header: `Status: planning`, `Review:` empty, `Rounds: 1` on a fresh plan and preserved on re-entry, `Issue: #<n>`.
+- [ ] **Form correct:** new structures (if any) have guard/invariant/boundary TC; non-trivial behavior-axis combinations covered or excluded; every affected component's failure behavior is answered. Material removed behavior has an evidence-backed reason or an explicit accepted uncertainty, and credible de facto contract changes are explicit. Open Questions empty. Notation, not target-language syntax. Header: `Status: planning`, `Review:` empty, `Rounds: 1`, `Code Rounds: 0` on a fresh plan; both preserved on re-entry; `Issue: #<n>`.
 
 All checked → emit: `Plan drafted. Run the review-feature skill.`

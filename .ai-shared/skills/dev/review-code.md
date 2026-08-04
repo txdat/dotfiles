@@ -4,13 +4,17 @@
 
 Behavior is locked to the approved Goal and AC set. **You are the first reviewer of every TC body.** `design-feature` wrote each TC as a one-line intent; `execute-feature` authored its Given/When/Then at RED, which settles only that the test fails first and is constructible. Under-constraint, a misrouted `Proves:`, an assertion mirroring the implementation, and an AC clause no assertion reaches all arrive here unreviewed — and they arrive with the code, which is why this is the right place for them. A plan defect that makes work incorrect, insecure, lossy, or unverifiable is blocking and returns through `approval.md`.
 
-The main agent names an exact `docs/plans/<file>.md` per PROCESS `Named plan and entry gates`; a delegated reviewer uses the worktree plan path in its packet and resolves nothing. Entry status is `implemented`, and `gate-check` owns plan, issue, worktree, and proof-order gates. Read plan/config and inspect `<base>..HEAD` diff, stat, and log inside `<worktree>`; changed-file reads and test runs resolve there too — a bare repo-relative path lands on `$MAIN_ROOT`'s pre-change copy and silently reviews the wrong tree. The worktree plan is authoritative for status and the AC/TC spec; `$MAIN_ROOT`'s copy is only the locator and never advances past its pre-execution status (worktree.md `Plan resolution vs. truth`).
+The main agent names an exact `docs/plans/<file>.md` per PROCESS `Named plan and entry gates`; a delegated reviewer uses the worktree plan path in its packet and resolves nothing. Entry status is `implemented`, with `Code Rounds:` 0, 1, or 2; `gate-check` owns plan, issue, worktree, round, and proof-order gates. Read plan/config and inspect `<base>..HEAD` diff, stat, and log inside `<worktree>`; changed-file reads and test runs resolve there too — a bare repo-relative path lands on `$MAIN_ROOT`'s pre-change copy and silently reviews the wrong tree. The worktree plan is authoritative for status and the AC/TC spec; `$MAIN_ROOT`'s copy is only the locator and never advances past its pre-execution status (worktree.md `Plan resolution vs. truth`).
 
 ## Independence and Cost Boundary
 
 Follow `independence.md` (single source). Verdict actions — Should Fix resolution, PR Pattern finalization, `reviewed` status, and the review commit — belong to the main agent, on the reviewer's evidence.
 
 Cost boundary: load only the approved plan, project config, diff, changed files/tests, and definitions or callers needed to verify behavior or a suspected finding. Inventory once; do not reread the repository once per review category. Batch independent read-only commands when practical.
+
+## Hard Gate
+
+`Code Rounds:` starts at 0 and counts completed verdicts. **Three review cycles maximum.** `gate-check` admits exactly 0, 1, or 2 and rejects exhausted, missing, malformed, non-canonical, or duplicate values. Increment once after every verdict. Entry at 2 is the third and final cycle: `PASS` may proceed, and `PASS WITH NOTES` may proceed only if every note is skipped; any required edit or `REWORK REQUIRED` ends this plan's lane. Never reset the counter; the user must choose replacement, decomposition into new plans, or abandonment.
 
 ## Review
 
@@ -46,6 +50,7 @@ Verdict: any blocking finding → `REWORK REQUIRED`; none plus Should Fix → `P
 ## Self-Check (BLOCKING)
 
 - [ ] **Independence:** `independence.md` satisfied — fresh agent, or a session that did not implement; any in-session fallback re-derived every verdict from plan, diff, and test runs; every file read, test, and Git command ran inside `<worktree>`. Context: __.
+- [ ] **Rounds:** entry `Code Rounds:` was 0, 1, or 2; this verdict was produced and the counter incremented exactly once before any follow-up action. Value now: __.
 - [ ] **Goal/behavior:** every AC has independent PASS evidence against the Goal; a counterexample was attempted **per AC** and named with what defeated it in the actual code, not asserted as clean; **every clause of every AC's Success and Failure has a named assertion reaching it**; every TC's `Test:` names a real test whose body matches its intent and whose `Proves:` names the AC it constrains; edge/failure paths and meaningful assertions verified. Gaps: __.
 - [ ] **Proof and symbols:** proof contents independently checked; app symbols resolve. Issues: __.
 - [ ] **Architecture/data:** every Non-functional commitment and each concern applicable to changed paths were checked; no repository-wide audit was substituted. Issues: __.
@@ -56,8 +61,10 @@ Verdict: any blocking finding → `REWORK REQUIRED`; none plus Should Fix → `P
 
 Report verdict and Goal outcome first, then AC conclusions, the TC evidence table, counterexample, test commands/results, Blocking, Should Fix, relevant Skip decisions, and Plan Defects. Omit empty sections, repeated evidence, and generic praise.
 
-- `REWORK REQUIRED`: offer fixes; wait for approval before editing.
-- `PASS WITH NOTES`: ask which Should Fix items to apply/skip; wait. Continue only after all are resolved.
+Before acting on the verdict, increment `Code Rounds:` exactly once in the authoritative worktree plan. Commit that plan edit before implementation resumes; a passing round includes it in the existing review-passed commit.
+
+- `REWORK REQUIRED`: below 3, offer fixes and wait for approval before editing. At 3, stop for replacement, decomposition, or abandonment; a fourth review is forbidden.
+- `PASS WITH NOTES`: ask which Should Fix items to apply/skip; wait. Skipped notes need no new review. Applied edits require another independent round and therefore may proceed only while the incremented counter remains below 3.
 - `PASS`: compare the actual diff with the provisional PR Pattern and finalize it. **Match** = same slice count, each slice owns the same TC set, and each branch has the same parent. Step reordering *within* a slice is not drift; a step moving *between* slices is, as are merged, split, added, or dropped slices — including a slice absorbed because it turned out trivial. Match → remove `(provisional)`; drift → propose a corrected pattern and wait for approval; missing → REWORK.
 
 After PASS finalization, set the worktree plan to `reviewed`, commit `docs(<scope>): review passed`, and emit: `Review passed; every AC independently verified. Run the create-pr skill.`

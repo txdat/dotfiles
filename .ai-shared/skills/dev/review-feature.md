@@ -2,7 +2,7 @@
 
 `PROCESS.md` must be loaded before this skill runs — not in context → read it now.
 
-No code, no approval. Challenge the WHAT — the Goal, the AC set, and whether the TC intent lines cover it. TC bodies don't exist yet and aren't yours to judge (`execute-feature` authors them at RED; `review-code` reviews them). Entry: exact `docs/plans/<file>.md`, `Status: planning`. `gate-check` blocks on Open Questions and missing `Issue: #<n>`; the Goal/AC/TC/Step graph is yours to verify.
+No code, no approval. Challenge the WHAT — the Goal, the AC set, and whether the TC intent lines cover it. TC bodies don't exist yet and aren't yours to judge (`execute-feature` authors them at RED; `review-code` reviews them). Entry: exact `docs/plans/<file>.md`, `Status: planning`, and `Rounds:` 1 or 2. `gate-check` blocks unresolved questions, a missing issue, and any third review; the Goal/AC/TC/Step graph is yours to verify.
 
 ## Independence
 
@@ -17,7 +17,7 @@ Review reports behavior gaps; it does not silently rewrite the plan. Route findi
   - **Before approval:** report it as a missing AC; design-feature adds it through normal iteration. This counts as a round.
   - **After approval:** return through `approval.md`. Use an extension plan only when the outcome is a separate Goal.
 
-`Rounds:` is an audit counter, not a correctness gate. Repeated rework is a signal to reconsider the Goal or decomposition, never a reason to approve a defective plan.
+`Rounds:` starts at 1 and identifies the attempt being run. **Two attempts maximum.** `gate-check` admits exactly 1 or 2 and rejects exhausted, missing, malformed, non-canonical, or duplicate values. Increment once after every verdict. A second-attempt `NEEDS CHANGES` advances the counter to 3 and ends this plan's lane. Never reset the counter; the user must choose replacement, decomposition into new plans, or abandonment.
 
 **Report only what changes the built artifact.** Everything else — stale phrase, rotted citation — goes in one grouped `Nits:` line and is never a reason to withhold READY.
 
@@ -54,7 +54,7 @@ Undefined or unsupported expected behavior → Open Question for the user; never
 
 `READY` means the behavior is ready for the human's decision, not approved. Leave `Status: planning` — review never approves.
 
-On **every** verdict, the main agent increments `Rounds:`, appends to `## Review History`, and prunes to the last entry:
+On every verdict, append the `## Review History` entry, prune to the last entry, then increment `Rounds:` exactly once. A READY verdict proceeds normally. A round-2 `NEEDS CHANGES` leaves `Rounds: 3` and ends this plan's review lane as described above.
 
 ```text
 ### Review <ISO date> — READY | NEEDS CHANGES
@@ -75,10 +75,10 @@ Changed:  added TC-5 (sequential partial refunds); revised AC-2 to name remainin
 
 ## Self-Check (BLOCKING)
 
-- [ ] **Independence and authority:** `independence.md` satisfied. `## Counterexamples Attempted` and `## Review History` read only after my own attacks. Behavior findings returned through design and, when applicable, `approval.md`; review did not silently rewrite the plan. Every reported finding changes the artifact; the rest are one `Nits:` line.
+- [ ] **Independence, authority, and rounds:** `independence.md` satisfied. Entry `Rounds:` was 1 or 2, and the verdict was recorded before incrementing it exactly once. `## Counterexamples Attempted` and `## Review History` were read only after my own attacks. Review did not silently rewrite behavior. Every reported finding changes the artifact; the rest are one `Nits:` line.
 - [ ] **Behavioral coverage:** outcomes were derived from Goal/sources before TC inspection. Every AC clause has a TC naming it. Every `Proves:` names the AC its TC constrains. Critical and high-risk ACs faced concrete counterexamples; remaining ACs were checked for invalid-pass and valid-rejection gaps. Plan counterexamples were re-attacked, not accepted.
 - [ ] **System fit:** approach is simplest; alternatives challenged; boundaries, compatibility, blast radius, rollback, Non-functional effects sound. Steps are dependency-ordered and right-sized, each names its TCs; PR partition merges independently and splits no TC.
 
 Report summary, independently derived outcomes, blocking findings, the counterexamples **you** attempted, suggestions, and `READY` or `NEEDS CHANGES`.
 
-`NEEDS CHANGES`: clear `Review:`, offer fixes, wait. `READY`: leave `Status: planning`, write `Review: READY <ISO date>`, emit: `Plan READY. Run approval.md's spec pause.`
+`NEEDS CHANGES`: clear `Review:`. After attempt 1, offer fixes and wait; after attempt 2, stop and offer replacement, decomposition, or abandonment. `READY`: leave `Status: planning`, write `Review: READY <ISO date>`, emit: `Plan READY. Run approval.md's spec pause.`

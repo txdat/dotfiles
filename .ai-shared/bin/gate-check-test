@@ -51,10 +51,12 @@ write_plan() {
   local path="$1" status="$2" type="$3" issue="$4" worktree="$5" pattern="$6"
   local review="${7-READY 2026-01-01}"
   local graph="${8-$(valid_graph)}"
+  local rounds="${9-1}"
+  local code_rounds="${10-0}"
   {
     printf '# Task: gate test\n'
-    printf 'Status: %s | Type: %s | Issue: %s | Review: %s | Rounds: 1 | Worktree: %s\n\n' \
-      "$status" "$type" "$issue" "$review" "$worktree"
+    printf 'Status: %s | Type: %s | Issue: %s | Review: %s | Rounds: %s | Code Rounds: %s | Worktree: %s\n\n' \
+      "$status" "$type" "$issue" "$review" "$rounds" "$code_rounds" "$worktree"
     printf '%s\n\n' "$graph"
     printf '%s\n' "$pattern"
     printf 'Type: single\n'
@@ -105,11 +107,13 @@ make_registered_plan() {
   local repo="$1" type="$2" status="$3" issue="$4" pattern="$5"
   local review="${6-READY 2026-01-01}"
   local graph="${7-$(valid_graph)}"
+  local rounds="${8-1}"
+  local code_rounds="${9-0}"
   local worktree="$repo-worktree"
   git -C "$repo" worktree add -q -b "$type/gate-test" "$worktree" main
-  write_plan "$repo/docs/plans/gate.md" planning "$type" "$issue" "$worktree" "$pattern" "$review" "$graph"
+  write_plan "$repo/docs/plans/gate.md" planning "$type" "$issue" "$worktree" "$pattern" "$review" "$graph" "$rounds" "$code_rounds"
   mkdir -p "$worktree/docs/plans"
-  write_plan "$worktree/docs/plans/gate.md" "$status" "$type" "$issue" "$worktree" "$pattern" "$review" "$graph"
+  write_plan "$worktree/docs/plans/gate.md" "$status" "$type" "$issue" "$worktree" "$pattern" "$review" "$graph" "$rounds" "$code_rounds"
   printf '%s\n' "$worktree"
 }
 
@@ -150,6 +154,45 @@ wt_commit() {
   git -C "$worktree" add -A
   git -C "$worktree" commit -qm "$subject"
 }
+
+# The third code-review cycle is allowed; the fourth invocation is not.
+repo=$(new_repo)
+worktree=$(make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)' 'READY 2026-01-01' "$(valid_graph)" 1 2)
+wt_commit "$worktree" 'docs(gate): start plan execution' docs/plans/gate.md
+wt_commit "$worktree" 'test(red): gate' tests/gate_test.py
+wt_commit "$worktree" 'feat(gate): implement' src/gate.py
+wt_commit "$worktree" 'docs(gate): mark plan implemented' docs/plans/gate.md
+output=$(run_gate "$repo" dev-review-code 'docs/plans/gate.md')
+assert_pass "$output" 'code review permits the third cycle'
+
+repo=$(new_repo)
+make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)' 'READY 2026-01-01' "$(valid_graph)" 1 3 >/dev/null
+output=$(run_gate "$repo" dev-review-code 'docs/plans/gate.md')
+assert_block "$output" 'code-review limit is 3 completed cycles' 'code review blocks a fourth cycle'
+
+repo=$(new_repo)
+worktree=$(make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)')
+sed -i 's/ | Code Rounds: 0//' "$worktree/docs/plans/gate.md"
+output=$(run_gate "$repo" dev-review-code 'docs/plans/gate.md')
+assert_block "$output" "exactly one canonical 'Code Rounds:'" 'code review cannot bypass its limit by deleting the counter'
+
+repo=$(new_repo)
+worktree=$(make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)')
+sed -i 's/Code Rounds: 0/Code Rounds: many/' "$worktree/docs/plans/gate.md"
+output=$(run_gate "$repo" dev-review-code 'docs/plans/gate.md')
+assert_block "$output" "exactly one canonical 'Code Rounds:'" 'code review rejects a malformed counter'
+
+repo=$(new_repo)
+worktree=$(make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)')
+sed -i 's/ | Worktree:/ | Code Rounds: 2 | Worktree:/' "$worktree/docs/plans/gate.md"
+output=$(run_gate "$repo" dev-review-code 'docs/plans/gate.md')
+assert_block "$output" "exactly one canonical 'Code Rounds:'" 'code review rejects duplicate counters'
+
+repo=$(new_repo)
+worktree=$(make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)')
+sed -i 's/Code Rounds: 0/Code Rounds: 08/' "$worktree/docs/plans/gate.md"
+output=$(run_gate "$repo" dev-review-code 'docs/plans/gate.md')
+assert_block "$output" "exactly one canonical 'Code Rounds:'" 'code review rejects non-canonical numbers'
 
 # New-flow feature history: plan-only docs commit precedes test(red).
 repo=$(new_repo)
@@ -310,6 +353,40 @@ repo=$(new_repo)
 write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' ''
 output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
 assert_pass "$output" 'closed AC/TC/Step graph enters review-feature'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' "$(valid_graph)" 2 0
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_pass "$output" 'feature review permits the second round'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' "$(valid_graph)" 3 0
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" 'feature-review limit is 2 rounds' 'feature review blocks a third round'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' ''
+sed -i 's/ | Rounds: 1//' "$repo/docs/plans/gate.md"
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" "exactly one canonical 'Rounds:'" 'feature review cannot bypass its limit by deleting the counter'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' ''
+sed -i 's/Rounds: 1/Rounds: next/' "$repo/docs/plans/gate.md"
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" "exactly one canonical 'Rounds:'" 'feature review rejects a malformed counter'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' ''
+sed -i 's/ | Code Rounds:/ | Rounds: 2 | Code Rounds:/' "$repo/docs/plans/gate.md"
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" "exactly one canonical 'Rounds:'" 'feature review rejects duplicate counters'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' ''
+sed -i 's/Rounds: 1/Rounds: 01/' "$repo/docs/plans/gate.md"
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" "exactly one canonical 'Rounds:'" 'feature review rejects non-canonical numbers'
 
 # design-feature owns issue creation, so a missing issue must surface at review
 # entry — not at execution, after review and approval have been spent.
