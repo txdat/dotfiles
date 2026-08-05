@@ -18,10 +18,11 @@
 # archived and abandoned are the two terminal statuses: both leave the active
 # set, and neither is an entry status for any skill, so an abandoned plan
 # blocks at whatever gate it is aimed at.
-# Review entry also enforces durable round counters: feature review allows
-# rounds 1–2, and code review allows 0–2 completed cycles before the next
-# invocation. Review-code additionally requires proof-commit sequencing for
-# every plan slice.
+# Feature review entry also enforces the AC budget (at most 5) — a decision
+# still cheap to act on while the plan is unapproved. No review is round-limited
+# here: every review cycle is bounded by requiring an explicit invocation
+# (skills/dev/independence.md `Re-review`), never by a header counter.
+# Review-code additionally requires proof-commit sequencing for every slice.
 # Plan-only commits (every changed path under docs/plans/) are workflow
 # metadata and are exempt from sequencing — the skills deliberately commit
 # the pre-RED status transition and other plan evidence as dedicated docs
@@ -258,34 +259,6 @@ has_review_ready() {
   [[ "${v^^}" =~ ^READY([[:space:]]|$) ]]
 }
 
-# Numeric counters stored as pipe-delimited fields on the Status line.
-# Exact field matching keeps "Rounds" distinct from "Code Rounds". Duplicate
-# fields are invalid rather than silently accepting whichever appears first.
-plan_counter() {
-  local plan="$1" key="$2"
-  awk -v key="$key" '
-    function trim(s) {
-      gsub(/^[[:space:]]+|[[:space:]]+$/, "", s)
-      return s
-    }
-    /^Status:/ {
-      count = split($0, fields, "|")
-      prefix = key ":"
-      matches = 0
-      for (i = 1; i <= count; i++) {
-        field = trim(fields[i])
-        if (substr(field, 1, length(prefix)) == prefix) {
-          matches++
-          value = trim(substr(field, length(prefix) + 1))
-        }
-      }
-      if (matches == 1) print value
-      else if (matches > 1) print "__duplicate__"
-      exit
-    }
-  ' "$plan" 2>/dev/null
-}
-
 # Plan header Worktree path (same Status line: "... | Worktree: <path> | ...").
 plan_worktree() {
   awk '
@@ -351,6 +324,24 @@ open_questions_count() {
       if (line !~ /^<.*>$/ && !is_empty_marker(line)) count++
     }
     END { print count+0 }
+  ' "$1" 2>/dev/null
+}
+
+# Distinct AC IDs declared under ## Acceptance Criteria — the same declaration
+# shape traceability_report parses, and identifiers only, for the same reason.
+# A count is all the budget needs: whether five criteria are the *right* five
+# is review-feature's judgment, not a parser's.
+ac_count() {
+  awk '
+    /^## / { sec = "" }
+    /^## Acceptance Criteria/ { sec = "ac"; next }
+    sec != "ac" { next }
+    /^[[:space:]]*([-*][[:space:]]*)?AC-[0-9]+/ {
+      match($0, /AC-[0-9]+/)
+      id = substr($0, RSTART, RLENGTH)
+      if (!(id in seen)) { seen[id] = 1; n++ }
+    }
+    END { print n+0 }
   ' "$1" 2>/dev/null
 }
 
@@ -704,14 +695,18 @@ case "$SKILL_SLUG" in
         archived)              block "Plan is shipped. Nothing to review." ;;
         *)                                block "Plan status is '$STATUS' — expected 'planning'. Run design-feature first." ;;
       esac
-      FEATURE_ROUND=$(plan_counter "$PLAN" "Rounds")
-      case "$FEATURE_ROUND" in
-        1|2) ;;
-        3|[4-9]|[1-9][0-9]*)
-          block "Plan records Rounds: $FEATURE_ROUND, but the feature-review limit is 2 rounds. Do not reset the counter or start another review; ask the user to replace, decompose, or abandon the plan." ;;
-        *)
-          block "Plan header must contain exactly one canonical 'Rounds:' counter. Valid review-entry values are 1 or 2; fresh plans start at 1." ;;
-      esac
+      # No round counter here either (see the review-code branch): review-feature
+      # is bounded by explicit invocation, and ## Review History records the
+      # attempts a plan has taken.
+      # Ahead of the traceability and Open Question gates on purpose: an
+      # over-cap plan is about to be split, and repairing a graph or answering
+      # questions for ACs that are moving to another plan is wasted work. An ID
+      # range can undercount here, but require_traceability rejects ranges
+      # outright, so the cap is re-applied on the enumerated plan that follows.
+      ACS=$(ac_count "$PLAN")
+      if [[ "$ACS" -gt 5 ]]; then
+        block "Plan declares $ACS acceptance criteria; review-feature reviews at most 5. Return to design-feature and either cut the set to the smallest one that proves the Goal, or split the Goal into separate plans (frame-goal) and review each on its own. Merging outcomes into one AC to fit the cap is not a fix."
+      fi
       OQ=$(open_questions_count "$PLAN")
       if [[ "$OQ" -gt 0 ]]; then
         block "Plan has $OQ unresolved Open Question(s). Resolve them in design-feature before review."
@@ -762,14 +757,9 @@ case "$SKILL_SLUG" in
         archived) block "Plan is shipped. Nothing to review." ;;
         *)             block "Plan status is '$STATUS' — expected 'implemented'." ;;
       esac
-      CODE_ROUNDS=$(plan_counter "$PLAN" "Code Rounds")
-      case "$CODE_ROUNDS" in
-        0|1|2) ;;
-        3|[4-9]|[1-9][0-9]*)
-          block "Plan records Code Rounds: $CODE_ROUNDS; the code-review limit is 3 completed cycles. Do not reset the counter or start another review; ask the user to replace, decompose, or abandon the plan." ;;
-        *)
-          block "Plan header must contain exactly one canonical 'Code Rounds:' counter. Valid review-entry values are 0, 1, or 2; fresh plans start at 0." ;;
-      esac
+      # No round counter here by design: code review is bounded by requiring an
+      # explicit invocation per cycle (review-code.md `Explicit invocation`),
+      # not by a header field. Re-adding one would gate the wrong thing.
       # Catches plans that entered implemented without the normal execution gate.
       if ! has_issue "$PLAN"; then
         block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. Link an existing issue or create one ('gh issue create'), record it as 'Issue: #<n>', then re-run."

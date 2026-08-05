@@ -4,9 +4,9 @@
 
 Entry: exact `docs/architecture/<file>.md`, `Status: draft`. No latest-document fallback. Read it, relevant source, project config, and the configs that invoke and host the system — scheduler cadence, retry/delivery semantics, concurrency, IAM — these are design surface, not deployment detail. Challenge the decision, not field presence. Review the chain: goal + constraints → options → recommendation → contracts → reversible phases → measured outcome.
 
-## Independence
+## Independence and invocation
 
-Follow `independence.md` (single source). The approval pause and any `Status` change stay with the main agent.
+Follow `independence.md` (single source). The approval pause and any `Status` change stay with the main agent. Per `Re-review`, review is uncounted and explicitly invoked: once the revisions a `NEEDS REVISION` verdict demanded are written, emit `Architecture revised. Run the review-system skill when you want it re-reviewed.` and stop.
 
 ## Review
 
@@ -24,7 +24,7 @@ Blocking: lost user goal, unmeasurable/gameable success metric, no baseline/meas
 
 ## Self-Check (BLOCKING)
 
-- [ ] **Independence, outcome, and options:** `independence.md` satisfied. `## Review History` read only after my own attacks; entries naming a superseded recommendation were not inherited. Goal and measurable outcome hold; each metric attacked for gameability. Simpler option and simpler evolution path were independently challenged; complexity beyond that start has current evidence.
+- [ ] **Independence, outcome, and options:** `independence.md` satisfied, including `Re-review` — this cycle was explicitly invoked, not a continuation of revisions I just made. `## Review History` read only after my own attacks; entries naming a superseded recommendation were not inherited. Goal and measurable outcome hold; each metric attacked for gameability. Simpler option and simpler evolution path were independently challenged; complexity beyond that start has current evidence.
 - [ ] **Contracts and migration:** documented contracts and credible de facto dependencies were checked; boundaries and relevant failure semantics are sufficient; critical failures have detection/recovery. Applicable Change/Verify/Rollback gates are credible; omissions are justified rather than padded.
 - [ ] **Handoff:** the required plan graph is actionable; contract↔plan↔phase ownership is complete. Every contract has an observable proof strategy for later feature review; architecture review did not require nonexistent test bodies.
 

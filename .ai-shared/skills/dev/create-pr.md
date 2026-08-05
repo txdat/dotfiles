@@ -10,7 +10,7 @@ Default is draft; `$ARGUMENTS` may include `ready`.
 
 1. Resolve every branch **and its parent** from the finalized `## PR Pattern` table's `Parent` column; never infer a parent from the current checkout, and never substitute `<base>` for a recorded parent. Usually that is `<base>` for a single PR or slice 1 and the preceding branch for later slices — but a follow-up amending an unmerged PR records that PR's branch, and its own PR must target it (`Shipped, and what comes after` below). A row with no parent → STOP; return through review-code to finalize the pattern.
 2. Require an empty `git status --porcelain` before switching branches. Dirty state returns to execution/review; create-pr never commits it.
-3. For each branch, require it exists and has commits above its parent; empty slice → absorb or drop it, then return through review-code.
+3. For each branch, require it exists and has commits above its parent; empty slice → absorb or drop it, then return through review-code. For a chain, require the finalized pattern's `Slice N (<branch>): green at <sha>` line for every row, with `<sha>` either that branch's current tip or separated from it only by commits that touch nothing outside `docs/plans/` — review-code's own `review passed` commit and create-pr's archive commit land after the tips are verified and cannot change what a test does. Missing, or stale because code moved after review → return through review-code; publishing a slice that is not green alone is publishing a PR that cannot merge or revert alone.
 4. Run `dev-check artifacts <parent> <branch>`.
 
 ## Publish
@@ -62,7 +62,7 @@ Chain note: the archive commit lands only on the final branch. Earlier PRs keep 
 
 - [ ] **Committed scope:** every branch has reviewed commits above its correct parent; worktree remained clean; artifact scan passed.
 - [ ] **Description:** title, WHAT, HOW, Testing, and checklist are accurate to the actual diff; the issue verb was resolved, not assumed — `Closes` only where both conditions held (no other active plan links it **and** no unchecked deferred goal remains on it), `Refs` otherwise; a shared parent's entry for this goal was ticked with its PR number.
-- [ ] **Chain, if used:** all rows/parents/order match the finalized pattern; each created number is linked from PR 1.
+- [ ] **Chain, if used:** all rows/parents/order match the finalized pattern; every row carries a green-tip record whose `<sha>` is that branch's tip up to plan-only commits; each created number is linked from PR 1.
 - [ ] **Archive safety:** the `archived` flip was committed on the last branch and pushed; locator identity and archived persistence were verified before removing that exact locator — never content equality, which the frozen locator is expected to fail; no uncommitted work in `<worktree>` and no forced teardown.
 
 The first two checks gate publication. After PR creation, complete the chain and archive checks before copying or teardown. Then archive safely, remove the worktree, and emit PR URL(s) plus `Feature shipped.`

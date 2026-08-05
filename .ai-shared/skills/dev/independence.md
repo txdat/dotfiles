@@ -38,6 +38,12 @@ Never include authoring rationale, exploration notes, design alternatives you re
 
 ## Re-review
 
+**Every review cycle is explicitly invoked.** No review skill re-enters itself, and none is triggered by finishing the work its own last verdict demanded. Once the revisions for a verdict are written and committed, the session **stops** — report what changed, say it is unreviewed, and name the skill the user runs when they want it re-reviewed. Do not re-enter, do not dispatch a reviewer, and do not read the user's approval of a revision as authorization for the review after it: it authorizes the edit alone. This holds for review-feature, review-code, and review-system alike, and `ship-feature` stops at the same point.
+
+Requiring that invocation is what bounds the loop — there is no round counter behind it. Repeated revision without convergence is therefore a signal to surface, not a limit to hit: say so, and offer replacement, decomposition into new plans, or abandonment.
+
+Scope, precisely: this governs the **second and later** reviews of an artifact. The *first* review of a freshly drafted plan or document is ordinary routing — `ship-feature` runs it unprompted, and the session that drafted the artifact stays independent by delegating under `The rule` above. What may never be automatic is a review whose subject is a revision this flow just produced.
+
 A revision authored in-session is unreviewed text: re-review it as adversarially as the original, or delegate again. After piecewise edits, re-read the whole artifact — a lexical consistency pass catches stale identifiers, not a contradiction between two sections.
 
 Plans and architecture documents carry their own adversarial record (`## Counterexamples Attempted`, `## Review History`), so a re-review meets prior rounds inside the artifact rather than through the packet. That is not a licence to import them early: it is evidence to audit, not a map of what is settled, and each reviewing skill fixes when it may be read. The packet rule above is unchanged — never add the prior round's *conversation* to it.

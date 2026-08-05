@@ -47,7 +47,7 @@ These override all other tendencies. Violating one → STOP and self-correct. Nu
 
 | Layer | What | Scope | Proves |
 |---|---|---|---|
-| `gate-check` (mechanical) | Plan resolution, entry status, review-round ceilings, `Issue: #<n>`, `Review: READY` before approved execution, registered worktree, proof-commit ordering, ID-graph closure, finalized PR Pattern | Artifact metadata and Git history only — closure proves every ID is *referenced*, never that an edge is *true* | Shape |
+| `gate-check` (mechanical) | Plan resolution, entry status, the AC budget, `Issue: #<n>`, `Review: READY` before approved execution, registered worktree, proof-commit ordering, ID-graph closure, finalized PR Pattern | Artifact metadata and Git history only — closure proves every ID is *referenced*, never that an edge is *true* | Shape |
 | `## Self-Check` (judgment) | Whether ACs express the Goal, meaningful assertions, coverage interpretation, symbol validity, deviations, scope, dependents, output completeness | Prose and evidence | Correctness |
 | Approval pause | Explicit human answer to `approval.md`'s question | Consent | Consent |
 

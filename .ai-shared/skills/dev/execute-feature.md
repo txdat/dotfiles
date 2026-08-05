@@ -44,13 +44,13 @@ At first scoring read `coverage.md`. Measure touched/changed files, run `dev-che
 
 After GREEN/BLUE, follow `dependents.md` for every changed externally reachable symbol. Breakage or unresolved reachability → log `## Discovered Scope`, STOP, and ask: re-plan/re-review, separate, or narrow via a recorded PROCESS #5 deviation. Never ship a known-broken caller.
 
-Run lint, build, the TC tests, and `## Affected Existing Tests`. Root-cause failures: regression → fix implementation; incomplete implementation → finish its step. A conflict among Goal, AC, TC, domain contract, or observed intended behavior is not a free deviation: STOP and go back through `approval.md`. Run `dev-check artifacts <base> HEAD`.
+Run lint, build, the TC tests, and `## Affected Existing Tests`. **In a chain, run them at each slice's tip before starting the next slice** — atomicity is a per-slice property (`design-feature` `PR Pattern`), and a slice whose tests need a later slice's code is a slice boundary in the wrong place: STOP and route the correction through `approval.md` rather than carrying the dependency forward. Root-cause failures: regression → fix implementation; incomplete implementation → finish its step. A conflict among Goal, AC, TC, domain contract, or observed intended behavior is not a free deviation: STOP and go back through `approval.md`. Run `dev-check artifacts <base> HEAD`.
 
 Scope discovered beyond the approved plan follows PROCESS #7; divergence of means within unchanged behavior follows PROCESS #5. Which of the two you are looking at, and what a behavior change costs, is `approval.md` — do not re-derive it here.
 
 ## Self-Check (BLOCKING)
 
-- [ ] **Behavior:** every TC is implemented, its parent AC and the Goal are satisfied, and targeted/affected tests, lint, and build pass; failures were root-caused.
+- [ ] **Behavior:** every TC is implemented, its parent AC and the Goal are satisfied, and targeted/affected tests, lint, and build pass; failures were root-caused. Chain: each slice tip was green on its own before the next slice began. Tips verified: __.
 - [ ] **TC authorship:** every TC body was authored in its RED commit and observed failing **individually**, on a stub-free baseline (or at GREEN-minus-one where the stub was load-bearing), for the absence of its named behavior — not for a stub, an import error, or a suite-level exit code; its plan line carries `Test: path::name`, back-filled in the docs commit after proof; no test was made to fail by weakening implementation or stubbing; any unconstructible arrangement was STOP-routed through `approval.md`, never substituted. Per-test baseline results: __.
 - [ ] **Symbols and implementation:** all new symbols resolve; no fake implementation or hollow test. Issues: __.
 - [ ] **Coverage:** each changed file is ✅ or ⚠️ logged; no unresolved ❌; BLUE-touched files remeasured. Gaps: __.

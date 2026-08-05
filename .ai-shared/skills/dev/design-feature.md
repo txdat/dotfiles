@@ -12,12 +12,12 @@ Write `docs/plans/<basename>_<date>_<type>_<slug>.md`, where type is feature/fix
 
 ```text
 # Task: <name>
-Status: planning | Type: feature|fix|refactor | Issue: #N | Review: | Rounds: 1 | Code Rounds: 0 | Worktree:
+Status: planning | Type: feature|fix|refactor | Issue: #N | Review: | Worktree:
 ## Goal
 ## Requirement
 ## Scope (In / Out)
 ## Assumptions & Open Questions
-## Acceptance Criteria        # fix: 1–2 ACs; feature: 3–5; rarely all 8
+## Acceptance Criteria        # 5 maximum — fix: 1–2; feature: 3–5
 ## Test Cases (intent)        # one line per TC; each names exactly one AC
 ## Counterexamples Attempted
 ## Affected Existing Tests
@@ -25,7 +25,7 @@ Status: planning | Type: feature|fix|refactor | Issue: #N | Review: | Rounds: 1 
 ## PR Pattern (provisional)   # single branch unless forced to chain
 ```
 
-`Rounds:` starts at 1 and is incremented after each feature-review verdict; at review entry it names the attempt being run. `Code Rounds:` starts at 0 and counts completed code-review verdicts.
+No review carries a round counter: every review cycle is explicitly invoked instead (`independence.md` `Re-review`), and `## Review History` is the durable record of what each verdict attacked.
 
 Add `Context`, `Impact Analysis`, `Design Decisions`, `Mechanism Invariants`, `Risk Flags`, and `Out of Scope` only when the change demands them.
 
@@ -73,11 +73,14 @@ TC-5 — two sequential partial refunds cannot exceed the balance together
 
 1. Preserve the user's original outcome in `## Goal`.
 2. Decompose into atomic observable outcomes, constraints, prohibited outcomes, and failure behavior. Each becomes one AC, sourced and implementation-independent. Subjective terms (`fast`, `safe`) → replace with observable measures or ask.
-3. Derive TC intent lines only after the AC set is complete. Each TC names exactly one `Proves: AC-N`; every clause of every AC is named by at least one TC. An AC whose Success/Failure cannot be judged without reading a TC is under-specified: fix the AC.
+3. Derive TC intent lines only after the AC set is complete. Each TC names exactly one `Proves: AC-N`. An AC whose Success/Failure cannot be judged without reading a TC is under-specified: fix the AC.
+4. **Clause-coverage audit.** Before handoff, enumerate each AC's clauses (the separable conditions in its Success and Failure) and confirm each clause is exercised by at least one TC's scenario — the scenario described would necessarily exercise it, not that the TC quotes the clause's words. A clause with no exercising TC is a gap: add a TC or widen an existing one. This is the last step before the self-check.
 
 ## AC Budget
 
-**≤8 ACs, ≤3 clauses per AC.** A fix: 1–2 ACs. A feature: 3–5. These are heuristics — approaching them means reconsider whether the Goal is too broad. Split when cohesion suffers, not by rule. Start from the smallest set that proves the Goal and stop.
+**5 ACs maximum, ≤3 clauses per AC.** A fix: 1–2 ACs. A feature: 3–5. Start from the smallest set that proves the Goal and stop. The clause limit is what stops the AC limit from being met by cramming two outcomes under one ID.
+
+A sixth AC is a **Goal** that is too broad: narrow it, or split it into separate plans (`frame-goal`). `gate-check` enforces this at review entry rather than here — splitting is only available while the plan is unapproved, so the cap must bind before review, not after.
 
 Before approval, missing ACs found in review return through design as ordinary iteration. After approval, any behavior change—add, update, or remove—follows `approval.md`. Split an extension plan only when the outcome is independently valuable or would make the current Goal incoherent.
 
@@ -108,6 +111,8 @@ Type: chain
 
 Every row carries its own `Parent` — `execute-feature` and `create-pr` read this column and nothing else.
 
+**Every slice is atomic:** one coherent change that is reviewable, mergeable, and revertable on its own, and whose branch tip is **green by itself** — lint, build, and that slice's tests pass at its own tip, against its own parent, with no later slice merged. This is why a TC is never split across slices: the test and the code that makes it pass must land together. A slice whose tests only pass once a later slice merges is not a slice; fold it into the one it depends on, or move the dependency earlier. Atomicity is cohesion, not size — a large migration can be one atomic slice, and three unrelated small fixes are not.
+
 ## Planning Rules
 
 - **Design altitude:** follow `altitude.md`. The plan is language-neutral design notation.
@@ -133,9 +138,9 @@ A named issue that is closed or belongs to different work → STOP and ask. Cred
 
 ## Self-Check (BLOCKING)
 
-- [ ] **Behavior complete:** Goal preserved; every AC atomic, observable, sourced, pass/fail decidable, implementation-independent. Every clause of every AC has a TC naming it. Counterexamples are live — each names an implementation, its target, and the AC/TC that defeated it; no undefeated attempt stands.
-- [ ] **Size:** AC/clauses and steps are the smallest coherent set that proves the Goal; approaching the heuristics triggered a split check, not automatic decomposition.
-- [ ] **Execution sound:** steps are dependency-ordered and each names its TCs. PR Pattern defaults to single, partitions steps when chained, never splits a TC. Affected existing tests are reasoned. Design instructions cite stable symbols; evidence quotes may use `file:line`.
-- [ ] **Form correct:** new structures (if any) have guard/invariant/boundary TC; non-trivial behavior-axis combinations covered or excluded; every affected component's failure behavior is answered. Material removed behavior has an evidence-backed reason or an explicit accepted uncertainty, and credible de facto contract changes are explicit. Open Questions empty. Notation, not target-language syntax. Header: `Status: planning`, `Review:` empty, `Rounds: 1`, `Code Rounds: 0` on a fresh plan; both preserved on re-entry; `Issue: #<n>`.
+- [ ] **Behavior complete:** Goal preserved; every AC atomic, observable, sourced, pass/fail decidable, implementation-independent. Clause-coverage audit done — each AC's clauses enumerated, each exercised by a TC scenario (not literal wording). Counterexamples are live — each names an implementation, its target, and the AC/TC that defeated it; no undefeated attempt stands.
+- [ ] **Size:** at most 5 ACs — a sixth was resolved by narrowing or splitting the Goal, never by merging outcomes into one AC. ACs, clauses, and steps are the smallest coherent set that proves the Goal.
+- [ ] **Execution sound:** steps are dependency-ordered and each names its TCs. PR Pattern defaults to single, partitions steps when chained, never splits a TC, and gives every slice a tip that can be green with no later slice merged. Affected existing tests are reasoned. Design instructions cite stable symbols; evidence quotes may use `file:line`.
+- [ ] **Form correct:** new structures (if any) have guard/invariant/boundary TC; non-trivial behavior-axis combinations covered or excluded; every affected component's failure behavior is answered. Material removed behavior has an evidence-backed reason or an explicit accepted uncertainty, and credible de facto contract changes are explicit. Open Questions empty. Notation, not target-language syntax. Header: `Status: planning`, `Review:` empty on a fresh plan and on re-entry; `Issue: #<n>`.
 
 All checked → emit: `Plan drafted. Run the review-feature skill.`

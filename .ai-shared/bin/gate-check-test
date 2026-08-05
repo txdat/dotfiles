@@ -51,12 +51,10 @@ write_plan() {
   local path="$1" status="$2" type="$3" issue="$4" worktree="$5" pattern="$6"
   local review="${7-READY 2026-01-01}"
   local graph="${8-$(valid_graph)}"
-  local rounds="${9-1}"
-  local code_rounds="${10-0}"
   {
     printf '# Task: gate test\n'
-    printf 'Status: %s | Type: %s | Issue: %s | Review: %s | Rounds: %s | Code Rounds: %s | Worktree: %s\n\n' \
-      "$status" "$type" "$issue" "$review" "$rounds" "$code_rounds" "$worktree"
+    printf 'Status: %s | Type: %s | Issue: %s | Review: %s | Worktree: %s\n\n' \
+      "$status" "$type" "$issue" "$review" "$worktree"
     printf '%s\n\n' "$graph"
     printf '%s\n' "$pattern"
     printf 'Type: single\n'
@@ -107,13 +105,11 @@ make_registered_plan() {
   local repo="$1" type="$2" status="$3" issue="$4" pattern="$5"
   local review="${6-READY 2026-01-01}"
   local graph="${7-$(valid_graph)}"
-  local rounds="${8-1}"
-  local code_rounds="${9-0}"
   local worktree="$repo-worktree"
   git -C "$repo" worktree add -q -b "$type/gate-test" "$worktree" main
-  write_plan "$repo/docs/plans/gate.md" planning "$type" "$issue" "$worktree" "$pattern" "$review" "$graph" "$rounds" "$code_rounds"
+  write_plan "$repo/docs/plans/gate.md" planning "$type" "$issue" "$worktree" "$pattern" "$review" "$graph"
   mkdir -p "$worktree/docs/plans"
-  write_plan "$worktree/docs/plans/gate.md" "$status" "$type" "$issue" "$worktree" "$pattern" "$review" "$graph" "$rounds" "$code_rounds"
+  write_plan "$worktree/docs/plans/gate.md" "$status" "$type" "$issue" "$worktree" "$pattern" "$review" "$graph"
   printf '%s\n' "$worktree"
 }
 
@@ -155,44 +151,28 @@ wt_commit() {
   git -C "$worktree" commit -qm "$subject"
 }
 
-# The third code-review cycle is allowed; the fourth invocation is not.
+# Code review is uncounted: a header with no counter enters, and a stale plan
+# still carrying the retired field is not judged on its value — an exhausted
+# 9 would have blocked under the old gate. Explicit re-invocation, not a hook
+# limit, is what bounds the cycle (review-code.md `Explicit invocation`).
 repo=$(new_repo)
-worktree=$(make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)' 'READY 2026-01-01' "$(valid_graph)" 1 2)
+worktree=$(make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)')
 wt_commit "$worktree" 'docs(gate): start plan execution' docs/plans/gate.md
 wt_commit "$worktree" 'test(red): gate' tests/gate_test.py
 wt_commit "$worktree" 'feat(gate): implement' src/gate.py
 wt_commit "$worktree" 'docs(gate): mark plan implemented' docs/plans/gate.md
 output=$(run_gate "$repo" dev-review-code 'docs/plans/gate.md')
-assert_pass "$output" 'code review permits the third cycle'
-
-repo=$(new_repo)
-make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)' 'READY 2026-01-01' "$(valid_graph)" 1 3 >/dev/null
-output=$(run_gate "$repo" dev-review-code 'docs/plans/gate.md')
-assert_block "$output" 'code-review limit is 3 completed cycles' 'code review blocks a fourth cycle'
+assert_pass "$output" 'code review enters with no Code Rounds counter in the header'
 
 repo=$(new_repo)
 worktree=$(make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)')
-sed -i 's/ | Code Rounds: 0//' "$worktree/docs/plans/gate.md"
+sed -i 's/ | Worktree:/ | Code Rounds: 9 | Worktree:/' "$worktree/docs/plans/gate.md"
+wt_commit "$worktree" 'docs(gate): start plan execution' docs/plans/gate.md
+wt_commit "$worktree" 'test(red): gate' tests/gate_test.py
+wt_commit "$worktree" 'feat(gate): implement' src/gate.py
+wt_commit "$worktree" 'docs(gate): mark plan implemented' docs/plans/gate.md
 output=$(run_gate "$repo" dev-review-code 'docs/plans/gate.md')
-assert_block "$output" "exactly one canonical 'Code Rounds:'" 'code review cannot bypass its limit by deleting the counter'
-
-repo=$(new_repo)
-worktree=$(make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)')
-sed -i 's/Code Rounds: 0/Code Rounds: many/' "$worktree/docs/plans/gate.md"
-output=$(run_gate "$repo" dev-review-code 'docs/plans/gate.md')
-assert_block "$output" "exactly one canonical 'Code Rounds:'" 'code review rejects a malformed counter'
-
-repo=$(new_repo)
-worktree=$(make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)')
-sed -i 's/ | Worktree:/ | Code Rounds: 2 | Worktree:/' "$worktree/docs/plans/gate.md"
-output=$(run_gate "$repo" dev-review-code 'docs/plans/gate.md')
-assert_block "$output" "exactly one canonical 'Code Rounds:'" 'code review rejects duplicate counters'
-
-repo=$(new_repo)
-worktree=$(make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)')
-sed -i 's/Code Rounds: 0/Code Rounds: 08/' "$worktree/docs/plans/gate.md"
-output=$(run_gate "$repo" dev-review-code 'docs/plans/gate.md')
-assert_block "$output" "exactly one canonical 'Code Rounds:'" 'code review rejects non-canonical numbers'
+assert_pass "$output" 'an exhausted retired Code Rounds counter no longer gates code review'
 
 # New-flow feature history: plan-only docs commit precedes test(red).
 repo=$(new_repo)
@@ -354,39 +334,67 @@ write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (
 output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
 assert_pass "$output" 'closed AC/TC/Step graph enters review-feature'
 
-repo=$(new_repo)
-write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' "$(valid_graph)" 2 0
-output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
-assert_pass "$output" 'feature review permits the second round'
+# ── AC budget ──
+# review-feature is the cap's enforcement point: design-feature may draft past
+# it, but nothing downstream reviews an unsplit Goal.
+
+# A closed graph of exactly $1 ACs, one TC and one step each.
+graph_with_acs() {
+  awk -v n="$1" 'BEGIN {
+    print "## Acceptance Criteria"
+    for (i = 1; i <= n; i++) {
+      printf "AC-%d — outcome %d\n  Source: PROCESS #11\n  Success: it holds\n  Failure: it does not\n", i, i
+    }
+    print ""
+    print "## Test Cases"
+    for (i = 1; i <= n; i++) printf "TC-%d — scenario %d\n  Proves: AC-%d\n", i, i, i
+    print ""
+    print "## Implementation Steps"
+    for (i = 1; i <= n; i++) printf "Step %d — do %d — satisfies TC-%d\n", i, i, i
+  }'
+}
 
 repo=$(new_repo)
-write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' "$(valid_graph)" 3 0
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' "$(graph_with_acs 5)"
 output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
-assert_block "$output" 'feature-review limit is 2 rounds' 'feature review blocks a third round'
+assert_pass "$output" 'five ACs enter review-feature'
+
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' "$(graph_with_acs 6)"
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" 'review-feature reviews at most 5' 'six ACs are refused at review entry'
+
+# The cap reports ahead of the Open Question gate: an over-cap plan is about to
+# be split, so answering questions for ACs that are leaving is wasted work.
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' "$(graph_with_acs 6)"
+printf '\n## Assumptions & Open Questions\nOpen Questions: which store owns the balance?\n' >> "$repo/docs/plans/gate.md"
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_block "$output" 'review-feature reviews at most 5' 'the AC cap reports before unresolved Open Questions'
+
+# The cap belongs to review-feature alone: an approved plan is not re-litigated
+# at execution or code review, where splitting is no longer available.
+repo=$(new_repo)
+worktree=$(make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)' 'READY 2026-01-01' "$(graph_with_acs 6)")
+wt_commit "$worktree" 'docs(gate): start plan execution' docs/plans/gate.md
+wt_commit "$worktree" 'test(red): gate' tests/gate_test.py
+wt_commit "$worktree" 'feat(gate): implement' src/gate.py
+wt_commit "$worktree" 'docs(gate): mark plan implemented' docs/plans/gate.md
+output=$(run_gate "$repo" dev-review-code 'docs/plans/gate.md')
+assert_pass "$output" 'the AC cap does not gate code review'
+
+# No review carries a round counter: a plan with no counter enters, and a stale
+# plan still holding an exhausted one is not judged on its value.
+repo=$(new_repo)
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' ''
+output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
+assert_pass "$output" 'feature review enters with no Rounds counter in the header'
 
 repo=$(new_repo)
 write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' ''
-sed -i 's/ | Rounds: 1//' "$repo/docs/plans/gate.md"
+sed -i 's/ | Worktree:/ | Rounds: 7 | Worktree:/' "$repo/docs/plans/gate.md"
 output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
-assert_block "$output" "exactly one canonical 'Rounds:'" 'feature review cannot bypass its limit by deleting the counter'
-
-repo=$(new_repo)
-write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' ''
-sed -i 's/Rounds: 1/Rounds: next/' "$repo/docs/plans/gate.md"
-output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
-assert_block "$output" "exactly one canonical 'Rounds:'" 'feature review rejects a malformed counter'
-
-repo=$(new_repo)
-write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' ''
-sed -i 's/ | Code Rounds:/ | Rounds: 2 | Code Rounds:/' "$repo/docs/plans/gate.md"
-output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
-assert_block "$output" "exactly one canonical 'Rounds:'" 'feature review rejects duplicate counters'
-
-repo=$(new_repo)
-write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' ''
-sed -i 's/Rounds: 1/Rounds: 01/' "$repo/docs/plans/gate.md"
-output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
-assert_block "$output" "exactly one canonical 'Rounds:'" 'feature review rejects non-canonical numbers'
+assert_pass "$output" 'an exhausted retired Rounds counter no longer gates feature review'
 
 # design-feature owns issue creation, so a missing issue must surface at review
 # entry — not at execution, after review and approval have been spent.

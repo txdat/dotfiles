@@ -26,7 +26,7 @@ Approving an architecture approves *boundaries*, never application behavior: eac
 
 ## Changing an approved spec
 
-Never edit approved behavior in place. Any later change to the Goal, an AC, or a TC — during execution, review, or re-planning — clears `Review:`, returns `Status: approved` to `planning`, and takes the plan back through review-feature and this pause. The feature-review ceiling still applies: if the plan has reached `Rounds: 3`, do not reset it; ask the user to replace, decompose, or abandon the plan.
+Never edit approved behavior in place. Any later change to the Goal, an AC, or a TC — during execution, review, or re-planning — clears `Review:`, returns `Status: approved` to `planning`, and takes the plan back through review-feature and this pause. That re-review is explicitly invoked like any other (`independence.md` `Re-review`): amend the plan, then stop and let the user start it.
 
 A **deviation** is the opposite case: same approved behavior, different *means*. Log it under `## Deviations` per PROCESS #5 and keep going. If you cannot tell which one you are looking at, it is this one.
 
@@ -54,7 +54,7 @@ Dropping a plan before it ships is the human's call, on the same authority as gr
 
 Abandonment is the inverse of archival, so the record lives in the opposite place. `archived` survives on a merged branch, which is why create-pr commits it there and deletes the locator; a dropped branch takes its plan copy with it, leaving the locator as the only surviving record `gate-check` can see. Write `abandoned` anywhere else and the locator keeps reading as active, letting a later phase be gated on it as live work.
 
-`abandoned` and `archived` are the two terminal statuses: both leave the active set, and neither is an entry status, so an abandoned plan blocks at whatever gate it is aimed at. Revival requires a fresh planning artifact and returns through review-feature and the spec pause; never reopen the terminal plan or reset its counters.
+`abandoned` and `archived` are the two terminal statuses: both leave the active set, and neither is an entry status, so an abandoned plan blocks at whatever gate it is aimed at. Revival requires a fresh planning artifact and returns through review-feature and the spec pause; never reopen the terminal plan.
 
 ## What is enforced, and what is not
 

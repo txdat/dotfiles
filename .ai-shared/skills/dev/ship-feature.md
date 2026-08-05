@@ -13,11 +13,11 @@ A bare `<requirement>` always starts a new design and adopts no existing plan; r
 | Status | `Review:` | Next |
 |---|---|---|
 | no plan | — | frame-goal, then design-feature with the first confirmed goal (explore first when the area is unfamiliar — optional, per PROCESS #10; a boundary-shaped goal detours through design-system → review-system before its feature plans, per frame-goal's routing) |
-| `planning` | empty | review-feature once Open Questions are empty and `Rounds:` is 1 or 2; at 3, stop for replacement, decomposition, or abandonment |
+| `planning` | empty | review-feature once Open Questions are empty, unless this run produced the plan revisions (see `Rework`) |
 | `planning` | `READY <date>` | `approval.md` spec pause |
 | `approved` / `in-progress` | `READY <date>` | execute-feature |
 | `approved` / `in-progress` | empty | STOP — approved without a recorded review; return to review-feature |
-| `implemented` | — | review-code |
+| `implemented` | — | review-code, unless this run produced the fixes (see `Rework`) |
 | `reviewed` | — | create-pr |
 | `archived` | — | STOP — already shipped |
 | `abandoned` | — | STOP — dropped; reviving re-enters at `planning` (`approval.md`) |
@@ -30,10 +30,12 @@ Read and follow `approval.md` (single source). ship-feature runs its pause; it n
 
 ## Rework
 
-A contradiction or blocking plan defect found during execution or review clears `Review:` and returns the plan to `planning`. If `Rounds:` is 1 or 2, send it through review-feature and back to the approval pause; at 3, stop for replacement, decomposition, or abandonment. Cosmetic observations do not.
+A contradiction or blocking plan defect found during execution or review clears `Review:` and returns the plan to `planning`, to go back through review-feature and the approval pause. Cosmetic observations do not.
+
+**Rework of any kind ends this run.** No review is counted, and none is automatic: once ship-feature has written the revisions a verdict demanded — plan or code — it stops and the user starts the next review (`independence.md` `Re-review`). Resuming afterwards is a fresh invocation and routes normally off the live header.
 
 ## Self-Check (BLOCKING)
 
 - [ ] **Route:** live `Status:` + `Review:` and the explicit plan path select the correct next phase.
 - [ ] **Approval:** `Status: approved` came from an explicit human answer at `approval.md`'s pause, never from me, and the plan carried `Review: READY` when asked; re-planning got fresh review and a fresh pause.
-- [ ] **Completion:** each owning phase completed before advancing; shipping ends only with PR URL(s) and `archived` status.
+- [ ] **Completion:** each owning phase completed before advancing; shipping ends with PR URL(s) and `archived` status, or at written rework — plan or code — awaiting the user's explicit re-review.
