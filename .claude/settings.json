@@ -8,6 +8,7 @@
       "Bash(*gitnexus*)"
     ]
   },
+  "model": "sonnet",
   "hooks": {
     "PreToolUse": [
       {

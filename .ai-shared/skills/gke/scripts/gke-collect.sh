@@ -1,9 +1,9 @@
 #!/usr/bin/env bash
-# gke-collect.sh — single-pass, read-only evidence collector for the gke-service-incident skill.
+# gke-collect.sh — single-pass, read-only evidence collector for the gke-inspect-incident skill.
 #
 # Runs the full Phase 1 broad sweep (1a-1i) plus every auto-discoverable Phase 3 deep-dive query,
 # and prints results under "===== <section> =====" headers that map 1:1 to the interpretation
-# tables in service-incident.md. Nothing here mutates cluster or project state.
+# tables in inspect-incident.md. Nothing here mutates cluster or project state.
 #
 # Usage:
 #   export GCP_PROJECT_ID=... GKE_CLUSTER=... GKE_REGION=... GKE_NAMESPACE=... GKE_SERVICES=...
@@ -133,7 +133,7 @@ GET_CREDENTIALS=0
 [ "${1:-}" = "--get-credentials" ] && GET_CREDENTIALS=1
 
 # ============================================================================
-# Pre-Flight — resolve inputs (mirrors service-incident.md Pre-Flight exactly)
+# Pre-Flight — resolve inputs (mirrors inspect-incident.md Pre-Flight exactly)
 # ============================================================================
 PROJECT="${PROJECT:-${GCP_PROJECT_ID:-}}"
 CLUSTER="${CLUSTER:-${GKE_CLUSTER:-}}"
@@ -1488,5 +1488,5 @@ gcloud container operations list --project=$PROJECT --region=$REGION \
   --format="value(name,operationType,status,startTime,endTime)" | grep -Ei "REPAIR_CLUSTER|UPGRADE|SET_NODE_POOL_SIZE" | head
 
 section "Done"
-echo "Collector finished. Interpret each ===== section ===== against the corresponding table in service-incident.md."
+echo "Collector finished. Interpret each ===== section ===== against the corresponding table in inspect-incident.md."
 echo "gke-collect: report complete → $REPORT" >&3
