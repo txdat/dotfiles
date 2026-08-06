@@ -6,7 +6,7 @@ Entry: exact `docs/architecture/<file>.md`, `Status: draft`. No latest-document 
 
 ## Independence and invocation
 
-Follow `independence.md` (single source). The approval pause and any `Status` change stay with the main agent. Per `Re-review`, review is uncounted and explicitly invoked: once the revisions a `NEEDS REVISION` verdict demanded are written, emit `Architecture revised. Run the review-system skill when you want it re-reviewed.` and stop.
+Follow `independence.md` (single source). The approval pause and any `Status` change stay with the main agent. Per `Re-review`, review is uncounted and explicitly invoked: once the revisions a `NEEDS REVISION` verdict demanded are written, emit `Architecture revised. Run the dev-review-system skill when you want it re-reviewed.` and stop.
 
 ## Review
 

@@ -6,7 +6,7 @@ No code, no approval. Challenge the WHAT — the Goal, the AC set, and whether t
 
 ## Independence and invocation
 
-Follow `independence.md` (single source), including `Re-review`: review is uncounted, and a `NEEDS CHANGES` verdict ends this session once the design fixes are written. Emit `Plan revised. Run the review-feature skill when you want it re-reviewed.` and stop — the next round is the user's to start.
+Follow `independence.md` (single source), including `Re-review`: review is uncounted, and a `NEEDS CHANGES` verdict ends this session once the design fixes are written. Emit `Plan revised. Run the dev-review-feature skill when you want it re-reviewed.` and stop — the next round is the user's to start.
 
 ## Review authority
 

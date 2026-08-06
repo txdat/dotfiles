@@ -58,4 +58,4 @@ Scope discovered beyond the approved plan follows PROCESS #7; divergence of mean
 - [ ] **Scope:** all deviations have four PROCESS #5 fields; discoveries follow PROCESS #7. Open: __.
 - [ ] **Delegation, if used:** exclusive ownership held; main agent verified file union and reran combined tests/coverage. Violations: __.
 
-All checked → set the worktree plan to `implemented`, commit `docs(<scope>): mark plan implemented`, and emit: `Implementation complete. Run review-code for independent AC verification.` Surface non-empty Coverage Gaps and Deviations.
+All checked → set the worktree plan to `implemented`, commit `docs(<scope>): mark plan implemented`, and emit: `Implementation complete. Run the dev-review-code skill for independent AC verification.` Surface non-empty Coverage Gaps and Deviations.

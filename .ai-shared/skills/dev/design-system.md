@@ -66,4 +66,4 @@ When multiple plans are needed, list each by name, owning phase, dependencies, d
 - [ ] **Migration:** applicable phases are ordered and independently deployable; each has Change/Verify/Rollback. Destructive steps, cutover, synchronization, and reconciliation are handled where present; omissions have a concrete reason.
 - [ ] **Handoff:** when multiple plans are needed, decomposition is acyclic and actionable; every contract has a plan and every plan a phase. A single-plan design says so directly. Contract behavior is assigned to later AC/TC proof without replacing plan Goals.
 
-All checked → save and emit: `Run the review-system skill.`
+All checked → save and emit: `Run the dev-review-system skill.`

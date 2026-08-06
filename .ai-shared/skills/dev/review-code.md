@@ -14,7 +14,7 @@ Cost boundary: load only the approved plan, project config, diff, changed files/
 
 ## Explicit invocation
 
-Code review is uncounted and unlimited; `independence.md` `Re-review` owns the rule (single source). Applied here: once fixes for a verdict are committed, stop and emit `Fixes applied and committed. Run the review-code skill when you want them re-reviewed.` The plan stays `implemented` and the diff stays unverified until the user invokes the next cycle.
+Code review is uncounted and unlimited; `independence.md` `Re-review` owns the rule (single source). Applied here: once fixes for a verdict are committed, stop and emit `Fixes applied and committed. Run the dev-review-code skill when you want them re-reviewed.` The plan stays `implemented` and the diff stays unverified until the user invokes the next cycle.
 
 ## Review
 
@@ -67,4 +67,4 @@ Report verdict and Goal outcome first, then AC conclusions, the TC evidence tabl
 
   **A chain finalizes only on proven atomicity.** Finalization is the main agent's action, and so is this: checking out each slice is a Git mutation the delegated reviewer may not perform (`independence.md`). For each slice in turn, check out its tip in `<worktree>` and run lint, build, and that slice's tests **there** — `HEAD` being green says nothing about the tips beneath it. Record one `Slice N (<branch>): green at <sha>` row under the pattern, then return the worktree to the branch it started on. A red tip is blocking: it would ship a PR that cannot merge or revert alone (`design-feature` `PR Pattern`). Execution already proved this slice by slice, but BLUE, rework, and back-fills all land afterwards, which is why it is re-proved here. A single-slice pattern needs nothing extra — its tip is the `HEAD` the reviewer already ran.
 
-After PASS finalization, set the worktree plan to `reviewed`, commit `docs(<scope>): review passed`, and emit: `Review passed; every AC independently verified. Run the create-pr skill.`
+After PASS finalization, set the worktree plan to `reviewed`, commit `docs(<scope>): review passed`, and emit: `Review passed; every AC independently verified. Run the dev-create-pr skill.`

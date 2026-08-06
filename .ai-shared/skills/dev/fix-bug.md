@@ -55,4 +55,4 @@ Cause: <file:line> | AC: <AC-N> | TC: <TC-N/test> | Change: <what> | Callers: <c
 - [ ] **Coverage/dependents:** changed files satisfy PROCESS #6 or have accepted logged gaps; dependent evidence is complete and open breakage was STOP-asked.
 - [ ] **Approval/scope:** no behavior changed during execution; contradictions went back through `approval.md`; evidence and PR Pattern are complete.
 
-All checked → set the worktree plan to `implemented`, commit `docs(<scope>): mark plan implemented`, and emit: `Bug fix implementation complete. Run review-code for independent AC verification.`
+All checked → set the worktree plan to `implemented`, commit `docs(<scope>): mark plan implemented`, and emit: `Bug fix implementation complete. Run the dev-review-code skill for independent AC verification.`

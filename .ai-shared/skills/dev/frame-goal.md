@@ -39,7 +39,7 @@ Before any `gh` command below, read PROCESS `Git credentials`, the single source
 - **Every goal links the parent by default.** Splitting a requirement is not a reason to split its issue: the single issue keeps a multi-goal framing legible. Each goal's plan links it as a parent. Record deferred goals as a GitHub task list — `- [ ] <goal sentence> — depends on <n>` — so each survives the session; `create-pr` ticks an entry when that goal's PR is created, and an unticked entry stops an earlier sibling from closing the parent.
 - **A separate issue per goal only when the user explicitly asks for one** — never inferred from goal count, dependency depth, or how unrelated two goals look. Asked → open it per goal and hand each design skill its own number; the parent still tracks the set.
 
-Emit: `Goal framed (#<parent>). Run design-feature.` (or `design-system`) — or `Goals framed (<n>). Run <design lane> for goal 1; #<parent> tracks the set.` Name per-goal numbers instead only where they were explicitly requested.
+Emit: `Goal framed (#<parent>). Run the dev-design-feature skill.` (or `dev-design-system`) — or `Goals framed (<n>). Run the dev-<design lane> skill for goal 1; #<parent> tracks the set.` Name per-goal numbers instead only where they were explicitly requested.
 
 ## Self-Check (BLOCKING)
 
