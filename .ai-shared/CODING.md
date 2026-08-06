@@ -38,7 +38,7 @@ Universal rules for every agent that reads or writes code. Loaded on demand — 
 
 **Project commands:** a command written as `dev-check <cmd>` always means `~/.dotfiles/.ai-shared/bin/dev-check` — the bin dir is not on PATH; invoke by full path.
 
-**Blast-radius:** `LSP` (`findReferences`, call hierarchy) first, then `rg`/`fd`/glob. Never install external code-index or dependency-graph tools — skip them and note the conflict. Built-in `LSP` is exempt.
+**Blast-radius:** prefer code-index or dependency-graph MCP tools (`impact`, `refs`, `test_map`, etc.) when available — they surface callers, dependents, and affected tests from an indexed graph. Fall back to `LSP` (`findReferences`, call hierarchy), then `rg`/`fd`/glob.
 
 **Spend tool calls well.** Issue independent calls together in one block; chain only what is genuinely dependent. Pipelines over sequences. Never repeat a call whose answer you already have — but never substitute memory for a call you have not made (`Evidence, not memory`).
 
