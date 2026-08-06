@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Read(~/.dotfiles/.ai-shared/**)",
-      "Bash(~/.dotfiles/.ai-shared/bin/**)"
+      "Bash(~/.dotfiles/.ai-shared/bin/**)",
+      "mcp__sverklo__*"
     ]
   },
   "model": "claude-opus-4-6",
@@ -47,5 +48,11 @@
   "tui": "fullscreen",
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
-  "fileCheckpointingEnabled": true
+  "fileCheckpointingEnabled": true,
+  "mcpServers": {
+    "sverklo": {
+      "command": "npx",
+      "args": ["sverklo"]
+    }
+  }
 }

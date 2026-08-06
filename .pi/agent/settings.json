@@ -1,0 +1,13 @@
+{
+  "lastChangelogVersion": "0.83.0",
+  "theme": "dark",
+  "enableInstallTelemetry": false,
+  "defaultProvider": "opencode-go",
+  "defaultModel": "deepseek-v4-flash",
+  "skills": [
+    "~/.claude/skills"
+  ],
+  "packages": [
+    "npm:pi-mcp-adapter"
+  ]
+}
