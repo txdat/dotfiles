@@ -6,7 +6,7 @@
       "mcp__sverklo__*"
     ]
   },
-  "model": "claude-opus-4-6",
+  "model": "claude-sonnet-4-6",
   "hooks": {
     "PreToolUse": [
       {
@@ -52,7 +52,9 @@
   "mcpServers": {
     "sverklo": {
       "command": "npx",
-      "args": ["sverklo"]
+      "args": [
+        "sverklo"
+      ]
     }
   }
 }

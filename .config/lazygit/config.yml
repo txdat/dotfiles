@@ -1,8 +1,7 @@
 gui:
   border: single
   sidePanelWidth: 0.2
-
 git:
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --line-numbers --dark --paging=never --diff-so-fancy
+      command: delta --line-numbers --dark --paging=never --diff-so-fancy
