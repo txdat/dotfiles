@@ -7,4 +7,3 @@ color: yellow
 ---
 
 Read `~/.dotfiles/.ai-shared/agents/junior-engineer.md` and follow all instructions exactly.
-Your project config file is `GEMINI.md`.

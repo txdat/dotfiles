@@ -1,8 +1,6 @@
 # AI Rules
 
 ## Precedence
-Highest to lowest: **user instruction in this session** → **this file / PROCESS / CODING** → **dev-skill files** → **project config for AI**.
-
 A project config for AI may override exactly one thing: *how code is written* — style, naming, layout, file organization, stack-local patterns, and project-specific commands. It may not touch any rule here or in a dev skill, or mandate a banned tool. A project config that tries → follow the core rule and note the conflict.
 
 Precedence settles *conflicts* only. A dev skill adding detail not stated elsewhere is not a conflict — follow both. Where two rules disagree, the more specific governs (phase rule over general core rule; single-source file over summary). Only an irreducible contradiction — both govern the same act and cannot both be satisfied — is a defect: STOP, quote both, and ask.
@@ -43,6 +41,7 @@ Load the skill for the current phase via the Skill tool. Each skill loads the si
 | Frame goal | `dev-frame-goal` | — |
 | Design | `dev-design-feature` / `dev-design-system` | `altitude.md` |
 | Review design | `dev-review-feature` / `dev-review-system` | `independence.md` |
+| Infra runbook (read-only lane; human executes) | `dev-design-infra` → `dev-review-infra` → `dev-review-infra post` | `independence.md` |
 | Approve | (user pause) | `approval.md` |
 | Execute | `dev-execute-feature` | `tdd.md`, `coverage.md`, `worktree.md`, `dependents.md` |
 | Review code | `dev-review-code` | `independence.md`, `tdd.md`, `coverage.md` |

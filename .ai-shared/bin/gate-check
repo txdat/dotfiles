@@ -70,7 +70,7 @@ fi
 
 HOOK_INPUT=$(cat)
 
-DEV_SKILL_SLUG_RE='create-issue|create-pr|design-feature|design-system|execute-feature|explore|fix-bug|frame-goal|review-code|review-feature|review-system|ship-feature'
+DEV_SKILL_SLUG_RE='create-issue|create-pr|design-feature|design-infra|design-system|execute-feature|explore|fix-bug|frame-goal|review-code|review-feature|review-infra|review-system|ship-feature'
 
 is_dev_skill_slug() {
   [[ "$1" =~ ^($DEV_SKILL_SLUG_RE)$ ]]
@@ -850,12 +850,15 @@ case "$SKILL_SLUG" in
     ;;
 
   # ── planning and read-only entry points: no entry gate ──
-  design-feature|design-system|review-system|explore|create-issue)
+  design-feature|design-system|review-system|design-infra|review-infra|explore|create-issue)
     # Entry-point skills: read-only, or they produce a plan/issue/architecture
     # doc rather than touching application code. Nothing that mutates
     # application code reaches this branch — that is what makes PROCESS #10's
     # "no planless mutation" true. The architecture lane (design-system,
-    # review-system) works on docs/architecture/ and has no plan state.
+    # review-system) works on docs/architecture/ and has no plan state; the
+    # infra lane (design-infra, review-infra) works on docs/runbooks/ and has
+    # none either. Both are listed rather than left to fall off the slug
+    # regex, so the ungated set stays explicit and auditable.
     ;;
 
   *) exit 0 ;;

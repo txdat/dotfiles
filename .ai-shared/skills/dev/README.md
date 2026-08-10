@@ -10,6 +10,14 @@
 /design-feature → /review-feature → spec approval → RED → GREEN → BLUE
 ```
 
+A third lane runs beside these, for work on live infrastructure:
+
+```
+/design-infra → /review-infra → READY → human executes → /review-infra post
+```
+
+**The agent never executes it** (`design-infra` `The agent never executes`) — every phase is read-only, and the human runs the runbook on their own authority. That is why the lane has no `approval.md` pause: the decision to execute is the human's and happens outside this flow. No worktree, no execute/review-code/PR phase, and its own statuses (`draft → executed`, or `abandoned`) rather than plan state. Infra work that also changes application code splits, and the code half takes the feature lane on its own plan.
+
 Architecture uses a separate falsifiable chain: goal and constraints → options → recommendation → boundary contracts → reversible phases → measured outcome. Independent review precedes human approval. Each approved contract is assigned to a feature plan, where observable behavior enters Goal → AC → TC → RED → GREEN → BLUE; architecture never replaces the feature Goal.
 
 ## Full Feature Cycle
@@ -53,6 +61,7 @@ Read by the skills that need them. Phase files may name their gates but do not r
 | `/dev:frame-goal`     | Frame a requirement into confirmed goal(s); split too-broad, question ambiguous; runs ahead of both design lanes | goal list, routed by shape; deferred goals tracked in the parent issue |
 | `/dev:design-system`  | Boundaries, communication, decomposition                                                                         | `docs/architecture/<date>_<slug>.md`                   |
 | `/dev:design-feature` | Feature/fix/refactor                                                                                             | `docs/plans/<basename>_<date>_<type>_<slug>.md`        |
+| `/dev:design-infra`   | Infrastructure runbook (migration, shutdown, DNS cutover, terraform, maintenance)                                 | `docs/runbooks/<date>_<slug>.md`                       |
 
 ## Review Skills
 
@@ -60,6 +69,8 @@ Read by the skills that need them. Phase files may name their gates but do not r
 | --------------------- | ------------------- |
 | `/dev:review-system`  | Architecture design |
 | `/dev:review-feature` | Feature plan        |
+| `/dev:review-infra`      | Infrastructure runbook before execution (live-state validation) |
+| `/dev:review-infra post` | What actually ran, after the human executed (audit + Execution Record) |
 | `/dev:review-code`    | Code changes        |
 
 ## Execution Skills

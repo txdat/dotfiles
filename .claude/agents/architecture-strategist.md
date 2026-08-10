@@ -8,4 +8,3 @@ tools: Read, Grep, Glob, Bash, LSP, ToolSearch, Agent(code-explorer)
 ---
 
 Read `~/.dotfiles/.ai-shared/agents/architecture-strategist.md` and follow all instructions exactly.
-Your project config file is `CLAUDE.md`.

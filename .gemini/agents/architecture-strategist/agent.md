@@ -7,4 +7,3 @@ effort: high
 ---
 
 Read `~/.dotfiles/.ai-shared/agents/architecture-strategist.md` and follow all instructions exactly.
-Your project config file is `GEMINI.md`.

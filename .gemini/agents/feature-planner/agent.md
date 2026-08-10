@@ -7,4 +7,3 @@ effort: medium
 ---
 
 Read `~/.dotfiles/.ai-shared/agents/feature-planner.md` and follow all instructions exactly.
-Your project config file is `GEMINI.md`.

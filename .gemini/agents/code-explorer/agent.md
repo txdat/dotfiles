@@ -7,4 +7,3 @@ color: cyan
 ---
 
 Read `~/.dotfiles/.ai-shared/agents/code-explorer.md` and follow all instructions exactly.
-Your project config file is `GEMINI.md`.

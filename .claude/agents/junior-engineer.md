@@ -8,4 +8,3 @@ tools: Read, Write, Edit, Grep, Glob, Bash, LSP, ToolSearch
 ---
 
 Read `~/.dotfiles/.ai-shared/agents/junior-engineer.md` and follow all instructions exactly.
-Your project config file is `CLAUDE.md`.

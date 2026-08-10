@@ -7,4 +7,3 @@ effort: high
 ---
 
 Read `~/.dotfiles/.ai-shared/agents/code-quality-auditor.md` and follow all instructions exactly.
-Your project config file is `GEMINI.md`.
