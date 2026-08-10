@@ -143,6 +143,8 @@ alias claude1="ANTHROPIC_AUTH_TOKEN=$(echo $CLAUDE1_API_KEY) claude"
 
 alias deepseek="ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic' ANTHROPIC_AUTH_TOKEN=$(echo $DEEPSEEK_API_KEY) ANTHROPIC_MODEL='deepseek-v4-pro[1m]' ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro[1m]' ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-flash[1m]' ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash' CLAUDE_CODE_SUBAGENT_MODEL='deepseek-v4-flash' claude"
 
+alias gemini="agy"
+
 alias k=kubectl
 complete -o default -F __start_kubectl k
 

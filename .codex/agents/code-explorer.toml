@@ -5,4 +5,5 @@ model_reasoning_effort = "medium"
 
 developer_instructions = """
 Read `~/.dotfiles/.ai-shared/agents/code-explorer.md` and follow all instructions exactly.
+Your project config file is `CODEX.md`.
 """

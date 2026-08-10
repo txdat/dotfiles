@@ -1,0 +1,15 @@
+{
+  "gate-check": {
+    "PreToolUse": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "~/.dotfiles/.ai-shared/bin/gate-check"
+          }
+        ]
+      }
+    ]
+  }
+}
