@@ -10,5 +10,10 @@
   "packages": [
     "npm:pi-mcp-adapter"
   ],
-  "defaultThinkingLevel": "high"
+  "defaultThinkingLevel": "high",
+  "compaction": {
+    "enabled": true,
+    "reserveTokens": 600000,
+    "keepRecentTokens": 20000
+  }
 }

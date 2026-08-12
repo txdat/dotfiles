@@ -18,7 +18,7 @@
 # archived and abandoned are the two terminal statuses: both leave the active
 # set, and neither is an entry status for any skill, so an abandoned plan
 # blocks at whatever gate it is aimed at.
-# Feature review entry also enforces the AC budget (at most 5) — a decision
+# Feature review entry also enforces the AC budget (at most 7) — a decision
 # still cheap to act on while the plan is unapproved. No review is round-limited
 # here: every review cycle is bounded by requiring an explicit invocation
 # (skills/dev/independence.md `Re-review`), never by a header counter.
@@ -704,8 +704,8 @@ case "$SKILL_SLUG" in
       # range can undercount here, but require_traceability rejects ranges
       # outright, so the cap is re-applied on the enumerated plan that follows.
       ACS=$(ac_count "$PLAN")
-      if [[ "$ACS" -gt 5 ]]; then
-        block "Plan declares $ACS acceptance criteria; review-feature reviews at most 5. Return to design-feature and either cut the set to the smallest one that proves the Goal, or split the Goal into separate plans (frame-goal) and review each on its own. Merging outcomes into one AC to fit the cap is not a fix."
+      if [[ "$ACS" -gt 7 ]]; then
+        block "Plan declares $ACS acceptance criteria; review-feature reviews at most 7. Return to design-feature and narrow the Goal, or split it into separate plans (frame-goal) and review each on its own. Merging outcomes into one AC to fit the cap is not a fix."
       fi
       OQ=$(open_questions_count "$PLAN")
       if [[ "$OQ" -gt 0 ]]; then

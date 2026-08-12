@@ -355,27 +355,27 @@ graph_with_acs() {
 }
 
 repo=$(new_repo)
-write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' "$(graph_with_acs 5)"
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' "$(graph_with_acs 7)"
 output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
-assert_pass "$output" 'five ACs enter review-feature'
+assert_pass "$output" 'seven ACs enter review-feature'
 
 repo=$(new_repo)
-write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' "$(graph_with_acs 6)"
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' "$(graph_with_acs 8)"
 output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
-assert_block "$output" 'review-feature reviews at most 5' 'six ACs are refused at review entry'
+assert_block "$output" 'review-feature reviews at most 7' 'eight ACs are refused at review entry'
 
 # The cap reports ahead of the Open Question gate: an over-cap plan is about to
 # be split, so answering questions for ACs that are leaving is wasted work.
 repo=$(new_repo)
-write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' "$(graph_with_acs 6)"
+write_plan "$repo/docs/plans/gate.md" planning feature '#12' '' '## PR Pattern (provisional)' '' "$(graph_with_acs 8)"
 printf '\n## Assumptions & Open Questions\nOpen Questions: which store owns the balance?\n' >> "$repo/docs/plans/gate.md"
 output=$(run_gate "$repo" dev-review-feature 'docs/plans/gate.md')
-assert_block "$output" 'review-feature reviews at most 5' 'the AC cap reports before unresolved Open Questions'
+assert_block "$output" 'review-feature reviews at most 7' 'the AC cap reports before unresolved Open Questions'
 
 # The cap belongs to review-feature alone: an approved plan is not re-litigated
 # at execution or code review, where splitting is no longer available.
 repo=$(new_repo)
-worktree=$(make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)' 'READY 2026-01-01' "$(graph_with_acs 6)")
+worktree=$(make_registered_plan "$repo" feature implemented '#12' '## PR Pattern (provisional)' 'READY 2026-01-01' "$(graph_with_acs 8)")
 wt_commit "$worktree" 'docs(gate): start plan execution' docs/plans/gate.md
 wt_commit "$worktree" 'test(red): gate' tests/gate_test.py
 wt_commit "$worktree" 'feat(gate): implement' src/gate.py

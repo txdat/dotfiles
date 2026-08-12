@@ -2,7 +2,7 @@
 
 `PROCESS.md` must be loaded before this skill runs — not in context → read it now.
 
-No code, no approval. Challenge the WHAT — the Goal, the AC set, and whether the TC intent lines cover it. TC bodies don't exist yet and aren't yours to judge (`execute-feature` authors them at RED; `review-code` reviews them). Entry: exact `docs/plans/<file>.md`, `Status: planning`. `gate-check` blocks unresolved questions, a missing issue, and **any plan declaring more than 5 ACs**; the Goal/AC/TC/Step graph is yours to verify. An over-cap plan goes back to design-feature to narrow or split the Goal (`design-feature` `AC Budget`).
+No code, no approval. Challenge the WHAT — the Goal, the AC set, and whether the TC intent lines cover it. TC bodies don't exist yet and aren't yours to judge (`execute-feature` authors them at RED; `review-code` reviews them). Entry: exact `docs/plans/<file>.md`, `Status: planning`. `gate-check` blocks unresolved questions, a missing issue, and **any plan declaring more than 7 ACs**; the Goal/AC/TC/Step graph is yours to verify. An over-cap plan goes back to design-feature to narrow or split the Goal (`design-feature` `AC Budget`).
 
 ## Independence and invocation
 
@@ -14,10 +14,10 @@ Review reports behavior gaps; it does not silently rewrite the plan. Route findi
 
 - **An existing AC is wrong or ambiguous** → report it; design-feature fixes or drops it.
 - **Behavior is missing** — the Goal needs an outcome no AC states:
-  - **Before approval:** report it as a missing AC; design-feature adds it through normal iteration. When the plan already holds 5, report the split the missing outcome implies — never a sixth AC, and never an outcome folded into an existing AC to stay under the cap.
+  - **Before approval:** report it as a missing AC; design-feature adds it through normal iteration. When the plan already holds 7, report the split the missing outcome implies — never an eighth AC, and never an outcome folded into an existing AC to stay under the cap.
   - **After approval:** return through `approval.md`. Use an extension plan only when the outcome is a separate Goal.
 
-**Report only what changes the built artifact.** Everything else — stale phrase, rotted citation — goes in one grouped `Nits:` line and is never a reason to withhold READY.
+**Report only what changes the built artifact.** Everything else — wording preference, stale phrase, rotted citation — goes in one grouped `Nits:` line, is never a finding, and is never a reason for `NEEDS CHANGES`.
 
 ## Independent Semantic Review
 
@@ -37,7 +37,7 @@ Then attack:
 - Are relevant negative, boundary, failure, retry, concurrency, and security cases represented?
 - Does the plan remove a material guard or externally observable behavior without proportionate evidence for why it exists or an explicit accepted uncertainty?
 
-Undefined or unsupported expected behavior → Open Question for the user; never silently choose.
+Undefined or unsupported expected behavior → Open Question for the user; never silently choose. A choice only the user can make — a policy, a threshold, a consistency contract — is an Open Question, never an AC defect: do not report it as a finding the designer is expected to resolve alone.
 
 ## System and Execution Review
 
@@ -52,7 +52,15 @@ Undefined or unsupported expected behavior → Open Question for the user; never
 
 `READY` means the behavior is ready for the human's decision, not approved. Leave `Status: planning` — review never approves.
 
-On every verdict, append the `## Review History` entry and prune to the last three. With no counter in the header this history is the plan's only durable record of what it has already survived — three retained entries all reading `NEEDS CHANGES` is the non-convergence `independence.md` `Re-review` says to surface, not to answer with a quieter fourth round.
+**Two-round cap.** Governs pre-approval design iteration only; a review re-entered after approval (execution rework, `approval.md`) is not bound by a prior cycle's history and starts fresh. If the plan is unapproved and `## Review History` already contains a `NEEDS CHANGES` entry (this is round 2), route every finding, then verdict:
+
+- **Blocking** — a wrong AC, a missing AC, or a structural defect that would lead execution off a cliff. Only these hold `NEEDS CHANGES`.
+- **Open Question** — a choice only the user can make, including an unset threshold. Ask it in the report, never in `## Assumptions & Open Questions`: written there it blocks re-entry and routes the plan back through review, which is the third round this cap exists to prevent. Left unanswered it becomes an Open Risk.
+- **Open Risk** — everything else: edge-case TC gaps, coverage holes for unlikely scenarios. Into `## Open Risks` for execution to resolve at RED.
+
+No blocking finding → `READY`. Design cannot reach full coverage; execution's RED phase is the second safety net.
+
+On every verdict, append the `## Review History` entry and prune to the last three.
 
 ```text
 ### Review <ISO date> — READY | NEEDS CHANGES
@@ -73,7 +81,7 @@ Changed:  added TC-5 (sequential partial refunds); revised AC-2 to name remainin
 
 ## Self-Check (BLOCKING)
 
-- [ ] **Independence and authority:** `independence.md` satisfied, including `Re-review` — this cycle was explicitly invoked, not a continuation of revisions I just made. `## Counterexamples Attempted` and `## Review History` were read only after my own attacks. Review did not silently rewrite behavior. Every reported finding changes the artifact; the rest are one `Nits:` line.
+- [ ] **Independence and authority:** `independence.md` satisfied, including `Re-review` — this cycle was explicitly invoked, not a continuation of revisions I just made. `## Counterexamples Attempted` and `## Review History` were read only after my own attacks. Review did not silently rewrite behavior. Every reported finding changes the built artifact; wording-only issues are nits and cannot produce `NEEDS CHANGES`.
 - [ ] **Behavioral coverage:** outcomes were derived from Goal/sources before TC inspection. Every AC clause is exercised by a TC scenario; a clause gap is blocking only when a plausible implementation could pass all TCs while violating it. Every `Proves:` names the AC its TC constrains. Critical and high-risk ACs faced concrete counterexamples; remaining ACs were checked for invalid-pass and valid-rejection gaps. Plan counterexamples were re-attacked, not accepted.
 - [ ] **System fit:** approach is simplest; alternatives challenged; boundaries, compatibility, blast radius, rollback, Non-functional effects sound. Steps are dependency-ordered and right-sized, each names its TCs; PR partition merges independently and splits no TC.
 

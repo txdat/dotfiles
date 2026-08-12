@@ -24,7 +24,7 @@ Architecture uses a separate falsifiable chain: goal and constraints → options
 
 `/dev:ship-feature <requirement>` — [explore] → frame-goal → design-feature → review-feature → spec approval → execute → review-code → PR. The six phases after `frame-goal` are mandatory; `explore` is optional (PROCESS #10). Resume by naming the plan: `/dev:ship-feature docs/plans/<file>.md from <phase>`. A bare `<requirement>` always starts a new design.
 
-Plan review independently derives expected outcomes from `## Goal` before reading proposed TC intents. It returns READY; it never approves. Hard ceilings prevent endless rework: feature review admits attempts 1 and 2; code review admits completed-cycle counts 0, 1, and 2. Every verdict increments its counter once, so exhaustion blocks the next invocation. Counters never reset on the same plan; the user chooses replacement, decomposition, or abandonment. A ceiling never turns a defective artifact into a pass.
+Plan review independently derives expected outcomes from `## Goal` before reading proposed TC intents. It returns READY; it never approves. Rework is bounded by explicit invocation, not counters (`independence.md` `Re-review`): feature-plan review caps at two rounds — round 2 moves non-critical findings to `## Open Risks` and verdicts `READY` — while code review is uncounted and unlimited. Non-convergence is a signal to surface, not a ceiling that turns a defective artifact into a pass.
 
 Plan statuses are enumerated in `README.md` `Lifecycle`, and `approval.md` owns the two terminal ones. `archived` is create-pr's own last step once the PRs exist; `abandoned` is a human decision.
 

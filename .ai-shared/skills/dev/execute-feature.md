@@ -2,7 +2,7 @@
 
 `PROCESS.md` must be loaded before this skill runs — not in context → read it now.
 
-Takes an exact `docs/plans/<file>.md` per PROCESS `Named plan and entry gates`. Entry status is `approved` or `in-progress`; `gate-check` owns plan/issue/status. Read the Goal, every AC and TC, the plan, and project config for AI. `$ARGUMENTS`: `<plan> [from N|N]`; partial execution must preserve dependency order. No TODO placeholders.
+Takes an exact `docs/plans/<file>.md` per PROCESS `Named plan and entry gates`. Entry status is `approved` or `in-progress`; `gate-check` owns plan/issue/status. Read the Goal, every AC and TC, `## Open Risks`, the plan, and project config for AI. Open Risks are gaps deferred from design review — resolve each during RED by adding a TC that covers it, or confirm existing TCs already cover it and remove the entry. `$ARGUMENTS`: `<plan> [from N|N]`; partial execution must preserve dependency order. No TODO placeholders.
 
 ## Setup
 

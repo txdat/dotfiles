@@ -46,12 +46,12 @@ Load the skill for the current phase via the Skill tool. Each skill loads the si
 | Execute | `dev-execute-feature` | `tdd.md`, `coverage.md`, `worktree.md`, `dependents.md` |
 | Review code | `dev-review-code` | `independence.md`, `tdd.md`, `coverage.md` |
 | Publish PR | `dev-create-pr` | `worktree.md` |
-| Fix bug | `dev-fix-bug` | — |
+| Fix bug | `dev-fix-bug` | `tdd.md`, `coverage.md`, `worktree.md`, `dependents.md` |
 | Explore | `dev-explore` | — |
 | Create issue | `dev-create-issue` | — |
 
 ## Lifecycle
-Plan statuses: `planning → approved → in-progress → implemented → reviewed → archived`; `abandoned` = dropped early. Both terminal; `approval.md` owns their semantics and revival re-enters at planning.
+Plan statuses: `planning → approved → in-progress → implemented → reviewed → archived`; `abandoned` = dropped at any non-archived status. Both terminal; `approval.md` owns their semantics and revival re-enters at planning.
 
 Every application-code change runs the full chain: frame-goal → design → plan review → user approval → execute (TDD) → code review → PR. The no-skip, no-reorder, and no-planless-mutation rules are PROCESS #10.
 

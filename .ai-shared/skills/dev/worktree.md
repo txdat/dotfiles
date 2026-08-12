@@ -5,7 +5,7 @@ Referenced by execute-feature, fix-bug, review-code, and create-pr. Skills bind 
 - **Create (first run):** `<parent>` is always explicit — never implicit HEAD. Only the main agent runs these Git commands.
   ```bash
   MAIN_ROOT=$(git rev-parse --show-toplevel)
-  WORKTREE="/tmp/ai-worktrees/$(basename "$MAIN_ROOT")-<slug>"
+  WORKTREE="$HOME/work/ai-worktrees/$(basename "$MAIN_ROOT")-<slug>"
   git worktree add "$WORKTREE" -b <branch> <parent>
   ```
   Record `Worktree: <path>` (the resolved `$WORKTREE`) in the main-tree plan frontmatter immediately.

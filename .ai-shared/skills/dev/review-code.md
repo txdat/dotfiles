@@ -28,6 +28,7 @@ Read `tdd.md` first — it is the standard the proof commits are judged against.
 - **walk every AC clause** (`design-feature` defines the term). For each clause of an AC's Success and Failure, name the assertion that reaches it. A clause with no assertion is blocking — it is promised behavior nothing verifies, invisible to a green suite;
 - verify which production entry point each test invokes: the behavior it proves must execute as a consequence of that entry point, not be asserted by joining below it;
 - then verify every TC's `Test: path::name` names a real test in the diff, its `Proves: AC-N` names the AC the test actually constrains, and the test body matches the TC's intent line — not an adjacent scenario; extra behavioral tests require `## Discovered Scope`;
+- confirm `## Open Risks` is empty. Each entry was a gap design review deferred to execution; a surviving entry is deferred work nothing resolved, and is blocking until a TC covers it or the review shows existing TCs already do;
 - each test would fail when its named behavior breaks — apply `coverage.md` `Quality bar`; any smell it lists is blocking here;
 - independently rerun TC tests plus `## Affected Existing Tests`;
 - verify new calls/fields/imports resolve to their target type/module;
@@ -54,7 +55,7 @@ Verdict: any blocking finding → `REWORK REQUIRED`; none plus Should Fix → `P
 - [ ] **Goal/behavior:** every AC has independent PASS evidence against the Goal; a counterexample was attempted **per AC** and named with what defeated it in the actual code, not asserted as clean; **every clause of every AC's Success and Failure has a named assertion reaching it**; every TC's `Test:` names a real test whose body matches its intent and whose `Proves:` names the AC it constrains; edge/failure paths and meaningful assertions verified. Gaps: __.
 - [ ] **Proof and symbols:** proof contents independently checked; app symbols resolve. Issues: __.
 - [ ] **Architecture/data:** every Non-functional commitment and each concern applicable to changed paths were checked; no repository-wide audit was substituted. Issues: __.
-- [ ] **Scope/hygiene:** deviations complete; no unplanned change, secret, TODO, or debug/conflict artifact. Issues: __.
+- [ ] **Scope/hygiene:** deviations complete; `## Open Risks` empty, each entry resolved by a TC or shown already covered; no unplanned change, secret, TODO, or debug/conflict artifact. Issues: __.
 - [ ] **PR Pattern:** actual diff remains independently mergeable under the provisional slices; every step is owned and no TC spans slices; no chain slice depends on a later slice's code to pass its own tests. Suspected dependencies to prove at finalization: __.
 
 ## Output and Actions

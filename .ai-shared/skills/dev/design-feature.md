@@ -17,10 +17,11 @@ Status: planning | Type: feature|fix|refactor | Issue: #N | Review: | Worktree:
 ## Requirement
 ## Scope (In / Out)
 ## Assumptions & Open Questions
-## Acceptance Criteria        # 5 maximum — fix: 1–2; feature: 3–5
-## Test Cases (intent)        # one line per TC; each names exactly one AC
+## Acceptance Criteria
+## Test Cases (intent)        # each names exactly one AC
 ## Counterexamples Attempted
 ## Affected Existing Tests
+## Open Risks                 # gaps deferred to execution; empty on first draft
 ## Implementation Steps       # dependency-ordered; each names its TCs
 ## PR Pattern (provisional)   # single branch unless forced to chain
 ```
@@ -73,20 +74,19 @@ TC-5 — two sequential partial refunds cannot exceed the balance together
 
 1. Preserve the user's original outcome in `## Goal`.
 2. Decompose into atomic observable outcomes, constraints, prohibited outcomes, and failure behavior. Each becomes one AC, sourced and implementation-independent. Subjective terms (`fast`, `safe`) → replace with observable measures or ask.
-3. Derive TC intent lines only after the AC set is complete. Each TC names exactly one `Proves: AC-N`. An AC whose Success/Failure cannot be judged without reading a TC is under-specified: fix the AC.
-4. **Clause-coverage audit.** Before handoff, enumerate each AC's clauses (the separable conditions in its Success and Failure) and confirm each clause is exercised by at least one TC's scenario — the scenario described would necessarily exercise it, not that the TC quotes the clause's words. A clause with no exercising TC is a gap: add a TC or widen an existing one. This is the last step before the self-check.
+3. **Goal-completeness check.** Can all ACs pass while the Goal still fails? If yes, an outcome is missing — add an AC.
+4. Derive TC intent lines only after the AC set is complete. Each TC names exactly one `Proves: AC-N`. An AC whose Success/Failure cannot be judged without reading a TC is under-specified: fix the AC. Cover each AC's happy-path, failure paths, and boundary conditions — one TC per AC is almost never enough. Thin coverage that technically passes clause-audit while leaving obvious scenarios untested is a design defect.
+5. **Clause-coverage audit.** Before handoff, enumerate each AC's clauses (the separable conditions in its Success and Failure) and confirm each clause is exercised by at least one TC's scenario — the scenario described would necessarily exercise it, not that the TC quotes the clause's words. A clause with no exercising TC is a gap: add a TC or widen an existing one. This is the last step before the self-check.
 
 ## AC Budget
 
-**5 ACs maximum, ≤3 clauses per AC.** A fix: 1–2 ACs. A feature: 3–5. Start from the smallest set that proves the Goal and stop. The clause limit is what stops the AC limit from being met by cramming two outcomes under one ID.
-
-A sixth AC is a **Goal** that is too broad: narrow it, or split it into separate plans (`frame-goal`). `gate-check` enforces this at review entry rather than here — splitting is only available while the plan is unapproved, so the cap must bind before review, not after.
+**≤3 clauses per AC.** Derive ACs from the Goal — no more and no less than what the Goal needs. `gate-check` enforces the upper cap at review entry; if it blocks, narrow the Goal or split it into separate plans (`frame-goal`), never merge outcomes into one AC.
 
 Before approval, missing ACs found in review return through design as ordinary iteration. After approval, any behavior change—add, update, or remove—follows `approval.md`. Split an extension plan only when the outcome is independently valuable or would make the current Goal incoherent.
 
 ## Counterexamples
 
-Attempt at least one adversarial implementation against the most critical AC: "Can an implementation pass all proposed TCs while violating this AC or the Goal?" Record each with what defeated it — the AC or TC that constrains the cheat. An attempt nothing defeats is a missing TC.
+Attempt an adversarial implementation against every AC: "Can an implementation pass all proposed TCs while violating this AC or the Goal?" Record each with what defeated it — the AC or TC that constrains the cheat. An attempt nothing defeats is a missing TC.
 
 ```text
 Target: AC-2 / TC-4
@@ -138,8 +138,8 @@ A named issue that is closed or belongs to different work → STOP and ask. Cred
 
 ## Self-Check (BLOCKING)
 
-- [ ] **Behavior complete:** Goal preserved; every AC atomic, observable, sourced, pass/fail decidable, implementation-independent. Clause-coverage audit done — each AC's clauses enumerated, each exercised by a TC scenario (not literal wording). Counterexamples are live — each names an implementation, its target, and the AC/TC that defeated it; no undefeated attempt stands.
-- [ ] **Size:** at most 5 ACs — a sixth was resolved by narrowing or splitting the Goal, never by merging outcomes into one AC. ACs, clauses, and steps are the smallest coherent set that proves the Goal.
+- [ ] **Behavior complete:** Goal preserved; all ACs passing does not leave the Goal unfulfilled. Every AC atomic, observable, sourced, pass/fail decidable, implementation-independent. Each AC has happy-path, failure, and boundary TCs. Clause-coverage audit done — each clause exercised by a TC scenario (not literal wording). Every AC faced a counterexample attempt — each names an implementation, its target, and the AC/TC that defeated it; no undefeated attempt stands.
+- [ ] **Size:** ACs, clauses, and steps are the coherent set that proves the Goal — no outcome omitted, none inflated. Each AC ≤3 clauses.
 - [ ] **Execution sound:** steps are dependency-ordered and each names its TCs. PR Pattern defaults to single, partitions steps when chained, never splits a TC, and gives every slice a tip that can be green with no later slice merged. Affected existing tests are reasoned. Design instructions cite stable symbols; evidence quotes may use `file:line`.
 - [ ] **Form correct:** new structures (if any) have guard/invariant/boundary TC; non-trivial behavior-axis combinations covered or excluded; every affected component's failure behavior is answered. Material removed behavior has an evidence-backed reason or an explicit accepted uncertainty, and credible de facto contract changes are explicit. Open Questions empty. Notation, not target-language syntax. Header: `Status: planning`, `Review:` empty on a fresh plan and on re-entry; `Issue: #<n>`.
 

@@ -41,7 +41,7 @@ Never include authoring rationale, exploration notes, design alternatives you re
 
 **Every review cycle is explicitly invoked.** No review skill re-enters itself, and none is triggered by finishing the work its own last verdict demanded. Once the revisions for a verdict are written and committed, the session **stops** — report what changed, say it is unreviewed, and name the skill the user runs when they want it re-reviewed. Do not re-enter, do not dispatch a reviewer, and do not read the user's approval of a revision as authorization for the review after it: it authorizes the edit alone. This holds for review-feature, review-code, review-system, and review-infra alike, and `ship-feature` stops at the same point.
 
-Requiring that invocation is what bounds the loop — there is no round counter behind it. Repeated revision without convergence is therefore a signal to surface, not a limit to hit: say so, and offer replacement, decomposition into new plans, or abandonment.
+Requiring that invocation is what bounds the loop. Feature-plan review caps at two rounds: round 2 moves non-critical findings to `## Open Risks` and verdicts `READY` — execution's RED phase resolves what design could not. Review-code, review-system, and review-infra have no round cap; repeated revision without convergence there is a signal to surface, not a limit to hit.
 
 Scope, precisely: this governs the **second and later** reviews of an artifact. The *first* review of a freshly drafted plan or document is ordinary routing — `ship-feature` runs it unprompted, and the session that drafted the artifact stays independent by delegating under `The rule` above. What may never be automatic is a review whose subject is a revision this flow just produced.
 
