@@ -130,7 +130,7 @@ export CLAUDE_CODE_AUTO_COMPACT_WINDOW="400000"
 export CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1
 export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
 export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
-export ANTHROPIC_MODEL="claude-opus-4-6"
+# export ANTHROPIC_MODEL="claude-opus-4-6"
 export ANTHROPIC_DEFAULT_OPUS_MODEL="claude-opus-4-6"
 export ANTHROPIC_DEFAULT_SONNET_MODEL="claude-sonnet-4-6"
 export ANTHROPIC_DEFAULT_HAIKU_MODEL="claude-haiku-4-5"
@@ -139,11 +139,20 @@ export CLAUDE_CODE_SUBAGENT_MODEL="claude-sonnet-4-6"
 export ENABLE_LSP_TOOL=1
 export ENABLE_CLAUDEAI_MCP_SERVERS=false
 
-alias claude1="ANTHROPIC_AUTH_TOKEN=$(echo $CLAUDE1_API_KEY) claude"
+alias claude1="ANTHROPIC_AUTH_TOKEN=$(echo $CLAUDE1_API_KEY) \
+  claude"
 
-alias deepseek="ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic' ANTHROPIC_AUTH_TOKEN=$(echo $DEEPSEEK_API_KEY) ANTHROPIC_MODEL='deepseek-v4-pro[1m]' ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro[1m]' ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-flash[1m]' ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash' CLAUDE_CODE_SUBAGENT_MODEL='deepseek-v4-flash' claude"
+alias deepseek="ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic' \
+  ANTHROPIC_AUTH_TOKEN=$(echo $DEEPSEEK_API_KEY) \
+  # ANTHROPIC_MODEL='deepseek-v4-pro[1m]' \
+  ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro[1m]' \
+  ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-flash[1m]' \
+  ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash' \
+  CLAUDE_CODE_SUBAGENT_MODEL='deepseek-v4-flash' \
+  claude"
 
 alias gemini="agy"
+alias dsh="npx @deepseek-ai/dsh web"
 
 alias k=kubectl
 complete -o default -F __start_kubectl k
