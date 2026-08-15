@@ -24,7 +24,7 @@ Independence buys nothing if the fresh agent cannot do adversarial work — an a
 Write it to `/tmp/ai-ctx/<slug>.md` and name **only**:
 
 - the artifact path — for review-code, the **worktree** plan copy and the worktree/base refs, never the `$MAIN_ROOT` locator;
-- the project config for AI;
+- the AI project configuration;
 - the reviewing skill file (`review-feature.md` / `review-code.md` / `review-system.md` / `review-infra.md`).
 
 Never include authoring rationale, exploration notes, design alternatives you rejected, or a conversation summary. Each of those re-imports the anchor the delegation exists to remove.

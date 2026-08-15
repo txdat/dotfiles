@@ -1,8 +1,8 @@
 {
-  "lastChangelogVersion": "0.84.1",
+  "lastChangelogVersion": "0.84.2",
   "theme": "2026-dark",
   "enableInstallTelemetry": false,
-  "defaultProvider": "opencode-go",
+  "defaultProvider": "deepseek",
   "defaultModel": "deepseek-v4-flash",
   "skills": [
     "~/.claude/skills"
@@ -13,7 +13,7 @@
   "defaultThinkingLevel": "high",
   "compaction": {
     "enabled": true,
-    "reserveTokens": 600000,
+    "reserveTokens": 700000,
     "keepRecentTokens": 20000
   }
 }

@@ -1,8 +1,6 @@
 # /review-infra — Infrastructure Runbook Review
 
-`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
-
-Entry: exact `docs/runbooks/<file>.md`. No latest-document fallback. Read the runbook, the project config for AI, and any referenced IaC files, orchestration manifests, and CI/CD workflows. Challenge correctness against live state, not field presence.
+Entry: exact `docs/runbooks/<file>.md`. No latest-document fallback. Read the runbook, the AI project configuration, and any referenced IaC files, orchestration manifests, and CI/CD workflows. Challenge correctness against live state, not field presence.
 
 **This skill is the pre-execution review** — `## Review process` below, validating a `Status: draft` runbook before a human runs it. That is what a bare invocation does. `post <file>` is the one opt-in variant: an audit of what actually happened after they ran it. Nothing else selects it, and an ambiguous request resolves to the default — auditing a runbook nobody ran produces nothing, while re-validating one that already ran costs only time.
 

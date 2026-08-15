@@ -28,7 +28,7 @@ Approving an architecture approves *boundaries*, never application behavior: eac
 
 Never edit approved behavior in place. Any later change to the Goal, an AC, or a TC — during execution, review, or re-planning — clears `Review:`, returns `Status: approved` to `planning`, and takes the plan back through review-feature and this pause. That re-review is explicitly invoked like any other (`independence.md` `Re-review`): amend the plan, then stop and let the user start it.
 
-A **deviation** is the opposite case: same approved behavior, different *means*. Log it under `## Deviations` per PROCESS #5 and keep going. If you cannot tell which one you are looking at, it is this one.
+A **deviation** is the opposite case: same approved behavior, different *means*. Log it under `## Deviations` per PROCESS #4 and keep going. If you cannot tell which one you are looking at, it is this one.
 
 ### What happens to work already committed
 

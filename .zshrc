@@ -71,7 +71,21 @@ export FZF_DEFAULT_OPTS="
  --bind=ctrl-p:toggle-preview,alt-w:toggle-preview-wrap,alt-j:preview-page-down,alt-k:preview-page-up
 "
 
-# conda
+export PATH="$HOME/.local/bin:$PATH"
+
+# gcloud
+export PATH="$HOME/.google-cloud-sdk/bin:$PATH"
+export USE_GKE_GCLOUD_AUTH_PLUGIN=True
+if [ -f "$HOME/.google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/.google-cloud-sdk/path.zsh.inc"; fi
+if [ -f "$HOME/.google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/.google-cloud-sdk/completion.zsh.inc"; fi
+
+# kubernetes
+export KUBECONFIG=$HOME/.kube/config
+
+alias k=kubectl
+complete -o default -F __start_kubectl k
+
+# python
 CONDA_HOME="$HOME/.miniconda3"
 
 if [[ -n "$CONDA_HOME" ]]; then
@@ -90,79 +104,86 @@ if [[ -n "$CONDA_HOME" ]]; then
     }
 fi
 
-export QT_QPA_PLATFORM=xcb
-
-export PATH="$HOME/.local/bin:$PATH"
-
 # rust
 export PATH="$HOME/.cargo/env:$HOME/.rustup/toolchains/stable-x86_64-unknown-linux-gnu/bin:$PATH"
 
 # go
 export PATH="$HOME/go/bin:$PATH"
 
-# flutter
-export PATH="$HOME/fvm/bin:$HOME/fvm/default/bin:$PATH"
-
 # nodejs
 export PATH="$HOME/.local/share/fnm:$PATH"
 eval "`fnm env`"
 
-# opencode
-export PATH=/home/txdat/.opencode/bin:$PATH
+# flutter
+export PATH="$HOME/fvm/bin:$HOME/fvm/default/bin:$PATH"
 
 export CHROME_EXECUTABLE=/usr/bin/chromium-browser
 
-# gcloud
-export PATH="$HOME/.google-cloud-sdk/bin:$PATH"
-export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-if [ -f "$HOME/.google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/.google-cloud-sdk/path.zsh.inc"; fi
-if [ -f "$HOME/.google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/.google-cloud-sdk/completion.zsh.inc"; fi
+claude() {
+    export CLAUDE_CODE_ENABLE_TELEMETRY=0
+    # export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
+    # export CLAUDE_CODE_DISABLE_1M_CONTEXT=1
+    export CLAUDE_CODE_AUTO_COMPACT_WINDOW="300000"
+    # export CLAUDE_AUTOCOMPACT_PCT_OVERRIDE="75"
+    export CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1
+    export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
+    export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+    # export ANTHROPIC_MODEL="claude-opus-4-6"
+    export ANTHROPIC_DEFAULT_OPUS_MODEL="claude-opus-4-6"
+    export ANTHROPIC_DEFAULT_SONNET_MODEL="claude-sonnet-4-6"
+    export ANTHROPIC_DEFAULT_HAIKU_MODEL="claude-haiku-4-5"
+    export CLAUDE_CODE_SUBAGENT_MODEL="claude-sonnet-4-6"
+    # export CLAUDE_CODE_EFFORT_LEVEL="high"
+    export ENABLE_LSP_TOOL=1
+    export ENABLE_CLAUDEAI_MCP_SERVERS=false
 
-# kubernetes
-export KUBECONFIG=$HOME/.kube/config
-
-# claude
-export CLAUDE_CODE_ENABLE_TELEMETRY=0
-# export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
-# export CLAUDE_CODE_DISABLE_1M_CONTEXT=1
-export CLAUDE_CODE_AUTO_COMPACT_WINDOW="400000"
-# export CLAUDE_AUTOCOMPACT_PCT_OVERRIDE="75"
-export CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1
-export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
-export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
-# export ANTHROPIC_MODEL="claude-opus-4-6"
-export ANTHROPIC_DEFAULT_OPUS_MODEL="claude-opus-4-6"
-export ANTHROPIC_DEFAULT_SONNET_MODEL="claude-sonnet-4-6"
-export ANTHROPIC_DEFAULT_HAIKU_MODEL="claude-haiku-4-5"
-export CLAUDE_CODE_SUBAGENT_MODEL="claude-sonnet-4-6"
-# export CLAUDE_CODE_EFFORT_LEVEL="high"
-export ENABLE_LSP_TOOL=1
-export ENABLE_CLAUDEAI_MCP_SERVERS=false
+    local args=()
+    for arg in "$@"; do
+        [[ "$arg" == "--dng" ]] && args+=("--dangerously-skip-permissions") || args+=("$arg")
+    done
+    command claude "${args[@]}"
+}
 
 alias claude1="ANTHROPIC_AUTH_TOKEN=$(echo $CLAUDE1_API_KEY) \
   claude"
 
-alias deepseek="ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic' \
-  ANTHROPIC_AUTH_TOKEN=$(echo $DEEPSEEK_API_KEY) \
-  # ANTHROPIC_MODEL='deepseek-v4-pro[1m]' \
-  ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro[1m]' \
-  ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-flash[1m]' \
-  ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash' \
-  CLAUDE_CODE_SUBAGENT_MODEL='deepseek-v4-flash' \
-  claude"
+agy() {
+    local args=()
+    for arg in "$@"; do
+        [[ "$arg" == "--dng" ]] && args+=("--dangerously-skip-permissions") || args+=("$arg")
+    done
+    command agy "${args[@]}"
+}
 
-alias gemini="agy"
-alias dsh="npx @deepseek-ai/dsh web"
+codex() {
+    local args=()
+    for arg in "$@"; do
+        [[ "$arg" == "--dng" ]] && args+=("--yolo") || args+=("$arg")
+    done
+    command codex "${args[@]}"
+}
 
-alias k=kubectl
-complete -o default -F __start_kubectl k
+xc() {
+    case "$1" in
+        -f|--file)
+            shift
+            xclip -selection clipboard < "$1"
+            ;;
+        -o|--out)
+            shift
+            if [ -n "$1" ]; then
+                xclip -selection clipboard -o > "$1"
+            else
+                xclip -selection clipboard -o
+            fi
+            ;;
+        *)
+            xclip -selection clipboard "$@"
+            ;;
+    esac
+}
 
-alias ls="ls --color"
-alias xsc="xclip -sel c" # copy stdout to clipboard
-alias xfc="xclip -sel c < " # copy data from file to clipboard
-alias xcf="xclip -sel c -o > " # copy data from clipboard to file
-
-update_zsh () {
+update_zsh() {
     dir=$(pwd)
 
     ZSH_PLUGINS=(
@@ -178,18 +199,20 @@ update_zsh () {
     cd $dir
 }
 
-# update_arch() {
-#   local ignore_packages=""
+update_arch() {
+  grep -q '^ID=arch$' /etc/os-release || return 0
 
-#   if [[ "$1" != "--no-skip" ]]; then
-#     local pattern="^(linux|systemd|nvidia|cuda|cudnn)($|-)"
-#     ignore_packages=$(pacman -Qq | grep -E "$pattern" | paste -sd, -)
-#   fi
+  local ignore_packages=""
 
-#   if [[ -n "$ignore_packages" ]]; then
-#     sudo pacman -Syyu --ignore "$ignore_packages" && paru -Syyu --ignore "$ignore_packages"
-#   else
-#     sudo pacman -Syyu && paru -Syyu
-#   fi
-#   flatpak update
-# }
+  if [[ "$1" == "--skip" ]]; then
+    local pattern="^(linux|systemd|nvidia|cuda|cudnn)($|-)"
+    ignore_packages=$(pacman -Qq | grep -E "$pattern" | paste -sd, -)
+  fi
+
+  if [[ -n "$ignore_packages" ]]; then
+    sudo pacman -Syyu --ignore "$ignore_packages" && paru -Syyu --ignore "$ignore_packages"
+  else
+    sudo pacman -Syyu && paru -Syyu
+  fi
+  flatpak update
+}

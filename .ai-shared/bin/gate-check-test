@@ -31,7 +31,7 @@ valid_graph() {
   cat <<'EOF'
 ## Acceptance Criteria
 AC-1 — the gate blocks an unapproved plan
-  Source: PROCESS #11
+  Source: PROCESS #9
   Success: execution is refused
   Failure: execution proceeds
 
@@ -343,7 +343,7 @@ graph_with_acs() {
   awk -v n="$1" 'BEGIN {
     print "## Acceptance Criteria"
     for (i = 1; i <= n; i++) {
-      printf "AC-%d — outcome %d\n  Source: PROCESS #11\n  Success: it holds\n  Failure: it does not\n", i, i
+      printf "AC-%d — outcome %d\n  Source: PROCESS #9\n  Success: it holds\n  Failure: it does not\n", i, i
     }
     print ""
     print "## Test Cases"

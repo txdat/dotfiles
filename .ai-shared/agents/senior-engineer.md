@@ -12,7 +12,7 @@ Your caller assigns the Goal, the owning ACs, the approved TCs, the steps, the c
 
 ## Process
 
-1. Read project config for AI — architecture, naming, errors, boundaries
+1. Read AI project configuration — architecture, naming, errors, boundaries
 2. Read the assigned Goal, ACs, TCs, steps, and invariants
 3. Find the existing pattern in source
 4. List edge cases — null, empty, boundaries, invalid input, failures

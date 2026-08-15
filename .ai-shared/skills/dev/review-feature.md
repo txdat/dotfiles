@@ -1,6 +1,6 @@
 # /review-feature — Review a Feature Plan
 
-`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
+If `~/.dotfiles/.ai-shared/PROCESS.md` is not yet loaded, read it first.
 
 No code, no approval. Challenge the WHAT — the Goal, the AC set, and whether the TC intent lines cover it. TC bodies don't exist yet and aren't yours to judge (`execute-feature` authors them at RED; `review-code` reviews them). Entry: exact `docs/plans/<file>.md`, `Status: planning`. `gate-check` blocks unresolved questions, a missing issue, and **any plan declaring more than 7 ACs**; the Goal/AC/TC/Step graph is yours to verify. An over-cap plan goes back to design-feature to narrow or split the Goal (`design-feature` `AC Budget`).
 

@@ -1,8 +1,8 @@
 # /create-pr — Publish Reviewed Work
 
-`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
+If `~/.dotfiles/.ai-shared/PROCESS.md` is not yet loaded, read it first.
 
-Takes an exact `docs/plans/<file>.md` per PROCESS `Named plan and entry gates`. Entry status is `reviewed`; `gate-check` also requires issue, worktree, and finalized PR Pattern. Read the plan and project config for AI, then run everything in `<worktree>`.
+Takes an exact `docs/plans/<file>.md` per PROCESS `Named plan and entry gates`. Entry status is `reviewed`; `gate-check` also requires issue, worktree, and finalized PR Pattern. Read the plan and AI project configuration, then run everything in `<worktree>`.
 
 Default is draft; `$ARGUMENTS` may include `ready`.
 

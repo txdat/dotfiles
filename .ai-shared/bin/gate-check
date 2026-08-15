@@ -853,7 +853,7 @@ case "$SKILL_SLUG" in
   design-feature|design-system|review-system|design-infra|review-infra|explore|create-issue)
     # Entry-point skills: read-only, or they produce a plan/issue/architecture
     # doc rather than touching application code. Nothing that mutates
-    # application code reaches this branch — that is what makes PROCESS #10's
+    # application code reaches this branch — that is what makes PROCESS #8's
     # "no planless mutation" true. The architecture lane (design-system,
     # review-system) works on docs/architecture/ and has no plan state; the
     # infra lane (design-infra, review-infra) works on docs/runbooks/ and has

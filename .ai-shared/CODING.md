@@ -1,6 +1,6 @@
 # AI — Coding
 
-Universal rules for every agent that reads or writes code. Loaded on demand — read by the main session (per `README.md`) and every subagent (per its role doc) before the first code read or write. Orchestration rules live in `PROCESS.md`, main session only.
+Universal rules for every agent that reads or writes code. Loaded before the first code read or write — by the main session and every subagent (per its role doc).
 
 ## Code
 **Match before inventing.** Mirror existing patterns and style.
@@ -17,9 +17,9 @@ Universal rules for every agent that reads or writes code. Loaded on demand — 
 
 **Confirm destructive actions.** No exceptions.
 
-**Git ownership.** Main agent: mutate Git, edit plans. Reviewers: read-only Git (`status`/`diff`/`log`/`show`), tests, `dev-check`; mutate nothing. Workers: edit assigned files only, run assigned tests only; never Git, plans, or claim unproduced results.
+**Git ownership.** Main agent: mutate Git. Subagents: only the scope their task assigns — read-only Git (`status`/`diff`/`log`/`show`) unless explicitly granted write; never claim unproduced results.
 
-**Never run the full test suite.** Run only the targeted tests for changed files plus relevant/affected tests — the plan's `## Affected Existing Tests` set, or (planless) the callers and dependents the change touches. Broad regressions are CI's job. **Two exceptions:** the project config documents the suite as fast (e.g. `Full suite: ~40s`), or the user explicitly asks. An undocumented suite is presumed slow — never run it to find out.
+**Never run the full test suite.** Run only the targeted tests for changed files plus relevant/affected tests — the callers and dependents the change touches. Broad regressions are CI's job. **Two exceptions:** the project config documents the suite as fast (e.g. `Full suite: ~40s`), or the user explicitly asks. An undocumented suite is presumed slow — never run it to find out.
 
 ## Discipline (non-negotiable)
 
@@ -27,7 +27,7 @@ Universal rules for every agent that reads or writes code. Loaded on demand — 
 
 **Evidence, not memory.** Every claim about code, test results, coverage, or file contents must cite actual tool output — never training data or assumption. Haven't read the file or run the command → you don't know; not found → say so. Diagnostic commands before consequential action: quote verbatim, never substitute a summary. Code-review suggestions need concrete backing (`file:line` + quoted code); no backing → omit or escalate.
 
-**Report, don't decide.** Executing a plan: divergence of means or new work → STOP and report; never deviate or expand silently. A contradiction involving Goal, AC, TC, expected outcome, or domain contract → STOP and return for design/review + human reapproval; never set `Status: approved` yourself. Coverage: report the real number; never write a test to raise it. The disqualifying smells are `coverage.md` `Quality bar`. Can't assert meaningfully → report the gap.
+**Report, don't decide.** Divergence from agreed approach or new work → STOP and report; never deviate or expand silently. A contradiction involving expected outcome or domain contract → STOP and return for human decision. Coverage: report the real number; never write a test to raise it. Can't assert meaningfully → report the gap.
 
 ## Tooling
 **File I/O:** Prefer platform-native file read/edit tools over shell equivalents (`cat`, `sed`, `head`, `tail`, `echo`) when available.
@@ -42,4 +42,4 @@ Universal rules for every agent that reads or writes code. Loaded on demand — 
 
 **Spend tool calls well.** Issue independent calls together in one block; chain only what is genuinely dependent. Pipelines over sequences. Never repeat a call whose answer you already have — but never substitute memory for a call you have not made (`Evidence, not memory`).
 
-**Subagent context:** Delegate only when the owning workflow permits. Write the minimal task packet to `/tmp/ai-ctx/<slug>.md`, start the agent **without conversation inheritance**: "Read `/tmp/ai-ctx/<slug>.md` first, then…" Context must start empty except for its packet — any mode that forks, inherits, or summarizes is not fresh. If isolation is unavailable, stay in the main session. Never spawn multiple agents to reread the same plan or diff. Review delegation: `~/.dotfiles/.ai-shared/skills/dev/independence.md`.
+**Subagent context:** Delegate only when the owning workflow permits. Write the minimal task packet to `/tmp/ai-ctx/<slug>.md`, start the agent **without conversation inheritance**: "Read `/tmp/ai-ctx/<slug>.md` first, then…" Context must start empty except for its packet — any mode that forks, inherits, or summarizes is not fresh. If isolation is unavailable, stay in the main session. Never spawn multiple agents to reread the same diff.

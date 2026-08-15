@@ -1,8 +1,8 @@
 # /design-system — Architecture Design
 
-`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
+If `~/.dotfiles/.ai-shared/PROCESS.md` is not yet loaded, read it first.
 
-Use only when work creates or changes a system boundary, communication pattern, service decomposition, or cross-system integration. **A new endpoint on an existing service is not a system change** — that belongs to design-feature. Bundled/ambiguous goal? → frame-goal first. No code. Write `docs/architecture/<date>_<slug>.md` after reading project config for AI. Heavy analysis may delegate to `architecture-strategist`; the main agent owns the document and the later human decision.
+Use only when work creates or changes a system boundary, communication pattern, service decomposition, or cross-system integration. **A new endpoint on an existing service is not a system change** — that belongs to design-feature. Bundled/ambiguous goal? → frame-goal first. No code. Write `docs/architecture/<date>_<slug>.md` after reading AI project configuration. Heavy analysis may delegate to `architecture-strategist`; the main agent owns the document and the later human decision.
 
 Architecture's falsifiable chain: **goal + constraints → options → recommendation → boundary contracts → reversible phases → measured outcome**. Feature plans then prove observable behavior through Goal → AC → TC → RED → GREEN → BLUE.
 

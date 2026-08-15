@@ -6,7 +6,6 @@
       "mcp__sverklo__*"
     ]
   },
-  "model": "claude-sonnet-4-6",
   "hooks": {
     "PreToolUse": [
       {
@@ -42,7 +41,7 @@
       }
     }
   },
-  "effortLevel": "medium",
+  "effortLevel": "high",
   "promptSuggestionEnabled": false,
   "awaySummaryEnabled": false,
   "tui": "fullscreen",

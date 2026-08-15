@@ -1,6 +1,6 @@
 # /review-system — Architecture Review
 
-`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
+If `~/.dotfiles/.ai-shared/PROCESS.md` is not yet loaded, read it first.
 
 Entry: exact `docs/architecture/<file>.md`, `Status: draft`. No latest-document fallback. Read it, relevant source, project config, and the configs that invoke and host the system — scheduler cadence, retry/delivery semantics, concurrency, IAM — these are design surface, not deployment detail. Challenge the decision, not field presence. Review the chain: goal + constraints → options → recommendation → contracts → reversible phases → measured outcome.
 

@@ -2,7 +2,6 @@
 name: senior-engineer
 description: "Accurate executor for complex and critical tasks — including concurrency, security-sensitive, data-integrity and performance-critical work. Follows plans strictly, copies patterns, reasons from invariants and failure modes on critical steps. Use for: complex features, critical logic, edge-case-heavy work."
 model: sonnet
-color: orange
 effort: medium
 tools: Read, Write, Edit, Grep, Glob, Bash, LSP, ToolSearch
 ---

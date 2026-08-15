@@ -1,6 +1,6 @@
 # /review-code — Review Implemented Plan Work
 
-`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
+If `~/.dotfiles/.ai-shared/PROCESS.md` is not yet loaded, read it first.
 
 Behavior is locked to the approved Goal and AC set. **You are the first reviewer of every TC body.** `design-feature` wrote each TC as a one-line intent; `execute-feature` authored its Given/When/Then at RED, which settles only that the test fails first and is constructible. Under-constraint, a misrouted `Proves:`, an assertion mirroring the implementation, and an AC clause no assertion reaches all arrive here unreviewed — and they arrive with the code, which is why this is the right place for them. A plan defect that makes work incorrect, insecure, lossy, or unverifiable is blocking and returns through `approval.md`.
 

@@ -1,8 +1,6 @@
 # /design-infra — Infrastructure Runbook Design
 
-`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
-
-Use when work touches live infrastructure: migrations, deployments, DNS cutover, IaC changes, load balancer reconfiguration, networking, database operations, scheduled maintenance. **Not** for application features (→ design-feature) or architecture boundaries (→ design-system). Bundled/ambiguous goal? → frame-goal first. Read project config for AI.
+Use when work touches live infrastructure: migrations, deployments, DNS cutover, IaC changes, load balancer reconfiguration, networking, database operations, scheduled maintenance. **Not** for application features (→ design-feature) or architecture boundaries (→ design-system). Bundled/ambiguous goal? → frame-goal first. Read AI project configuration.
 
 **No mutations. Design only.** The runbook is the artifact; execution is the human's call.
 
@@ -10,7 +8,7 @@ Write `docs/runbooks/<date>_<slug>.md` — its own tree, like `docs/architecture
 
 **The agent never executes.** Every phase of this lane is read-only — in both skills, and in any subagent they delegate to. No infrastructure mutation of any kind, ever: not a "safe" step, not a single command lifted out of the runbook, not on direct request. The runbook is written to be run **by a human, on their own authority**. Asked to run it → decline and hand over the phase. That invariant is what lets the lane skip the `approval.md` pause: the human's decision to execute *is* the approval, and it happens outside this flow.
 
-**Lane shape.** `design-infra → review-infra → human executes → review-infra post`. It does not enter `execute-feature`, `review-code`, or `create-pr`, and has no worktree. Statuses are the lane's own — `draft → executed`, or `abandoned` — and are not the plan lifecycle in `README.md`. Infra work that also changes application code splits: the code half goes through the feature lane on its own plan.
+**Lane shape.** `design-infra → review-infra → human executes → review-infra post`. It does not enter `execute-feature`, `review-code`, or `create-pr`, and has no worktree. Statuses are the lane's own — `draft → executed`, or `abandoned` — and are not the plan lifecycle in `PROCESS.md`. Infra work that also changes application code splits: the code half goes through the feature lane on its own plan.
 
 `altitude.md` does not apply. Command-level detail is the point of a runbook, not a violation.
 

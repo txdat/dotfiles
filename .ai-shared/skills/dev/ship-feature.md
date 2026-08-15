@@ -1,8 +1,8 @@
 # /ship-feature — Gated Delivery Router
 
-`PROCESS.md` must be loaded before this skill runs — not in context → read it now.
+If `~/.dotfiles/.ai-shared/PROCESS.md` is not yet loaded, read it first.
 
-Flow: [explore] → frame-goal → design-feature → review-feature → spec approval → execute-feature → review-code → create-pr. `explore` is optional (PROCESS #10); `frame-goal` always runs on a fresh requirement but collapses to a one-line pass-through when it is already a single clear goal — its pause fires only on a split, rewrite, or question. Read project config for AI. `$ARGUMENTS`: `<requirement>` to start, or `docs/plans/<file>.md [from <phase>]` to resume.
+Flow: [explore] → frame-goal → design-feature → review-feature → spec approval → execute-feature → review-code → create-pr. `explore` is optional (PROCESS #8); `frame-goal` always runs on a fresh requirement but collapses to a one-line pass-through when it is already a single clear goal — its pause fires only on a split, rewrite, or question. Read AI project configuration. `$ARGUMENTS`: `<requirement>` to start, or `docs/plans/<file>.md [from <phase>]` to resume.
 
 ship-feature drives **one goal's lane at a time**: frame-goal's goal 1 proceeds through design and onward; deferred goals wait as checklist entries in the requirement's parent issue and each ships later through its own ship-feature run, its plan linking that same parent.
 
@@ -12,7 +12,7 @@ A bare `<requirement>` always starts a new design and adopts no existing plan; r
 
 | Status | `Review:` | Next |
 |---|---|---|
-| no plan | — | frame-goal, then design-feature with the first confirmed goal (explore first when the area is unfamiliar — optional, per PROCESS #10; a boundary-shaped goal detours through design-system → review-system before its feature plans, per frame-goal's routing) |
+| no plan | — | frame-goal, then design-feature with the first confirmed goal (explore first when the area is unfamiliar — optional, per PROCESS #8; a boundary-shaped goal detours through design-system → review-system before its feature plans, per frame-goal's routing) |
 | `planning` | empty | review-feature once Open Questions are empty, unless this run produced the plan revisions (see `Rework`) |
 | `planning` | `READY <date>` | `approval.md` spec pause |
 | `approved` / `in-progress` | `READY <date>` | execute-feature |

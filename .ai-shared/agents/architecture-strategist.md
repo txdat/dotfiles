@@ -19,7 +19,7 @@ Two boundaries that are yours, not design-system's:
 
 ## Process
 
-1. Read project config for AI — patterns, stack, constraints
+1. Read AI project configuration — patterns, stack, constraints
 2. Dispatch code-explorer (very thorough) to map boundaries, ownership, data flow, and integration patterns
 3. Map current state, pain, coupling, constraints, failure paths, and credible de facto consumer contracts
 4. Produce the document per design-system.md: frame, options, recommendation, contracts, phases, decomposition. Include the simpler-option counterexample.

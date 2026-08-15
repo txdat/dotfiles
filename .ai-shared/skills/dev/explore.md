@@ -1,6 +1,8 @@
 # /explore — Codebase Exploration
 
-Target from $ARGUMENTS or ask. Read project config for AI. Read-only: modify nothing.
+If `~/.dotfiles/.ai-shared/CODING.md` is not yet loaded, read it first.
+
+Target from $ARGUMENTS or ask. Read AI project configuration. Read-only: modify nothing.
 
 ## Area Decomposition
 

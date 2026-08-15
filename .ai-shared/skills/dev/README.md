@@ -4,7 +4,7 @@
 
 ```
 /frame-goal — every fresh requirement enters here, then routes by shape
-    ↓ boundary-shaped goal                ↓ feature-shaped goal
+    ↓ boundary-shaped/feature-shaped goal
 /design-system → /review-system → architecture approval
     ↓ each phase enters the application lane when dependencies permit
 /design-feature → /review-feature → spec approval → RED → GREEN → BLUE
@@ -22,15 +22,15 @@ Architecture uses a separate falsifiable chain: goal and constraints → options
 
 ## Full Feature Cycle
 
-`/dev:ship-feature <requirement>` — [explore] → frame-goal → design-feature → review-feature → spec approval → execute → review-code → PR. The six phases after `frame-goal` are mandatory; `explore` is optional (PROCESS #10). Resume by naming the plan: `/dev:ship-feature docs/plans/<file>.md from <phase>`. A bare `<requirement>` always starts a new design.
+`/dev:ship-feature <requirement>` — [explore] → frame-goal → design-feature → review-feature → spec approval → execute → review-code → PR. The six phases after `frame-goal` are mandatory; `explore` is optional (PROCESS #8). Resume by naming the plan: `/dev:ship-feature docs/plans/<file>.md from <phase>`. A bare `<requirement>` always starts a new design.
 
 Plan review independently derives expected outcomes from `## Goal` before reading proposed TC intents. It returns READY; it never approves. Rework is bounded by explicit invocation, not counters (`independence.md` `Re-review`): feature-plan review caps at two rounds — round 2 moves non-critical findings to `## Open Risks` and verdicts `READY` — while code review is uncounted and unlimited. Non-convergence is a signal to surface, not a ceiling that turns a defective artifact into a pass.
 
-Plan statuses are enumerated in `README.md` `Lifecycle`, and `approval.md` owns the two terminal ones. `archived` is create-pr's own last step once the PRs exist; `abandoned` is a human decision.
+Plan statuses are enumerated in `PROCESS.md` `Lifecycle`, and `approval.md` owns the two terminal ones. `archived` is create-pr's own last step once the PRs exist; `abandoned` is a human decision.
 
 `archived` means the PR exists and the cycle is closed — **not merged, not deployed**. What that implies for follow-up work, and where a follow-up parents, is `create-pr.md` `Shipped, and what comes after`.
 
-**Every approval is the human's, and `approval.md` is the single source** for both the application spec and the architecture decision. A plan reaches the pause only carrying `Review: READY <date>`; `gate-check` refuses execution without it (PROCESS #11, `approval.md`).
+**Every approval is the human's, and `approval.md` is the single source** for both the application spec and the architecture decision. A plan reaches the pause only carrying `Review: READY <date>`; `gate-check` refuses execution without it (PROCESS #9, `approval.md`).
 
 Know what enforces what: PROCESS `Self-check boundary`. Short version — the hook proves state, the self-checks prove correctness, and the pause proves consent.
 
@@ -42,11 +42,11 @@ Know what enforces what: PROCESS `Self-check boundary`. Short version — the ho
 
 ## Loading
 
-Nothing in this tree is preloaded; only `README.md` auto-loads. Everything else is read at its trigger (`README.md` `Load on demand`): `PROCESS.md` before plan-backed work, `CODING.md` before the first code read or write, this file when you need the flow overview, `approval.md` at its pause, and each skill — plus the single-source files it names — at invocation.
+Nothing in this tree is preloaded. `PROCESS.md` loads before plan-backed work and includes the phase skills table. `CODING.md` loads before the first code read or write. Each skill — plus the single-source files it names — loads at invocation.
 
-## Project Config For AI
+## AI project configuration
 
-Every skill opens with "read project config for AI" — the nearest `CLAUDE.md`/`AGENTS.md`, plus includes. Read once per phase. Overrides only _how code is written_; never a core rule, skill gate, or banned tool (`README.md` Precedence).
+Every skill opens with "read AI project configuration" — the nearest `CLAUDE.md`/`AGENTS.md`, plus includes. Read once per phase. Overrides only _how code is written_; never a core rule, skill gate, or banned tool.
 
 ---
 

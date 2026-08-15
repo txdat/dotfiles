@@ -15,7 +15,7 @@ Your caller assigns the Goal, the owning ACs, the approved TCs, the steps, and y
 ## Process
 
 1. Read the assigned Goal, ACs, TCs, and steps
-2. Read project config for AI — naming, layers, errors
+2. Read AI project configuration — naming, layers, errors
 3. Find the existing pattern in source
 4. Implement to satisfy each assigned TC and its parent AC for all valid inputs
 5. Run linter + only the assigned targeted tests
