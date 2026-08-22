@@ -5,6 +5,10 @@
       "args": [
         "sverklo"
       ]
+    },
+    "playwright": {
+      "command": "npx",
+      "args": ["@playwright/mcp@latest"]
     }
   }
 }

@@ -117,7 +117,7 @@ eval "`fnm env`"
 # flutter
 export PATH="$HOME/fvm/bin:$HOME/fvm/default/bin:$PATH"
 
-export CHROME_EXECUTABLE=/usr/bin/chromium-browser
+export CHROME_EXECUTABLE=/usr/bin/google-chrome
 
 claude() {
     export CLAUDE_CODE_ENABLE_TELEMETRY=0
@@ -139,7 +139,22 @@ claude() {
 
     local args=()
     for arg in "$@"; do
-        [[ "$arg" == "--dng" ]] && args+=("--dangerously-skip-permissions") || args+=("$arg")
+        case "$arg" in
+            --dsk)
+                export ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic'
+                export ANTHROPIC_AUTH_TOKEN=$(echo $DEEPSEEK_API_KEY)
+                export ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro[1m]'
+                export ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-flash[1m]'
+                export ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash'
+                export CLAUDE_CODE_SUBAGENT_MODEL='deepseek-v4-flash'
+                ;;
+            -d)
+                args+=("--dangerously-skip-permissions")
+                ;;
+            *)
+                args+=("$arg")
+                ;;
+        esac
     done
     command claude "${args[@]}"
 }
@@ -150,7 +165,14 @@ alias claude1="ANTHROPIC_AUTH_TOKEN=$(echo $CLAUDE1_API_KEY) \
 agy() {
     local args=()
     for arg in "$@"; do
-        [[ "$arg" == "--dng" ]] && args+=("--dangerously-skip-permissions") || args+=("$arg")
+        case "$arg" in
+            -d)
+                args+=("--dangerously-skip-permissions")
+                ;;
+            *)
+                args+=("$arg")
+                ;;
+        esac
     done
     command agy "${args[@]}"
 }
@@ -158,7 +180,14 @@ agy() {
 codex() {
     local args=()
     for arg in "$@"; do
-        [[ "$arg" == "--dng" ]] && args+=("--yolo") || args+=("$arg")
+        case "$arg" in
+            -d)
+                args+=("--yolo")
+                ;;
+            *)
+                args+=("$arg")
+                ;;
+        esac
     done
     command codex "${args[@]}"
 }
