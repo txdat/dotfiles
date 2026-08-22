@@ -60,15 +60,15 @@ Load the skill for the current phase via the Skill tool. Each skill loads the si
 |---|---|---|
 | Full cycle (orchestrator) | `dev-ship-feature` | — |
 | Frame goal | `dev-frame-goal` | — |
-| Design | `dev-design-feature` / `dev-design-system` | `altitude.md` |
-| Review design | `dev-review-feature` / `dev-review-system` | `independence.md` |
+| Design | `dev-design-feature` / `dev-design-system` | `altitude.md`, `dependents.md` |
+| Review design | `dev-review-feature` / `dev-review-system` | `independence.md`, `dependents.md` |
 | Infra runbook (read-only lane; human executes) | `dev-design-infra` → `dev-review-infra` → `dev-review-infra post` | `independence.md` |
 | Approve | (user pause) | `approval.md` |
 | Execute | `dev-execute-feature` | `tdd.md`, `coverage.md`, `worktree.md`, `dependents.md` |
-| Review code | `dev-review-code` | `independence.md`, `tdd.md`, `coverage.md` |
+| Review code | `dev-review-code` | `independence.md`, `tdd.md`, `coverage.md`, `dependents.md` |
 | Publish PR | `dev-create-pr` | `worktree.md` |
 | Fix bug | `dev-fix-bug` | `tdd.md`, `coverage.md`, `worktree.md`, `dependents.md` |
-| Explore | `dev-explore` | — |
+| Explore | `dev-explore` | `dependents.md` |
 | Create issue | `dev-create-issue` | — |
 
 ## Lifecycle

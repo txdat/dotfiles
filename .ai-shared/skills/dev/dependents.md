@@ -28,3 +28,20 @@ Dependents: <symbol>
 ```
 
 The calling skill owns the verdict. Never claim `none`, safe removal, or compatibility until every applicable evidence field is resolved.
+
+## Shared Mutable State
+
+**Shared mutable state** = any state written by code and readable by another flow: DB field, cache key, queue, file, in-memory global, environment variable.
+
+When the change reads shared mutable state as a decision input or writes it as a signal, apply the same rigor as symbol dependents. Scope: decision inputs and signals only — not every field the change touches.
+
+1. Search the repo for all writers. Single writer → stop.
+2. Multiple writers → classify each semantic. Same semantic → stop.
+3. Different semantics → compatibility finding. Report like a broken caller.
+
+```text
+Shared state: <identifier>
+  Writers: <file:line — flow (semantic)> | ...
+  Readers: <file:line — flow (usage)> | ...
+  Semantic consistency: consistent | <conflict>
+```

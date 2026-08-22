@@ -14,7 +14,7 @@ Once the worktree copy exists, set `Status: in-progress` and commit `docs(<scope
 
 ## Strategy
 
-Execute inline by default. Delegation is permitted **only** when more than three steps are genuinely independent and each owns an exclusive set of source/test files; otherwise every step runs inline, whatever its difficulty. When that bar is met, route each delegated step by its nature, not by convenience: critical → `senior-engineer`; simple and well-patterned → `junior-engineer`. Workers receive the Goal, owning ACs, TCs, steps, critical invariants, file ownership, and off-limits paths, and may neither edit plans nor run Git. The main agent verifies the resulting file union, reruns the union of targeted tests and coverage, and alone commits.
+Execute inline by default. UI/frontend implementation → the plan's `## Design Decisions` carry the visual direction from `frontend-design.md`; follow it for palette, type, layout, and signature choices. Delegation is permitted **only** when more than three steps are genuinely independent and each owns an exclusive set of source/test files; otherwise every step runs inline, whatever its difficulty. When that bar is met, route each delegated step by its nature, not by convenience: critical → `senior-engineer`; simple and well-patterned → `junior-engineer`. Workers receive the Goal, owning ACs, TCs, steps, critical invariants, file ownership, and off-limits paths, and may neither edit plans nor run Git. The main agent verifies the resulting file union, reruns the union of targeted tests and coverage, and alone commits.
 
 Security, concurrency, or data-integrity steps are critical: state invariants and failure modes before editing, whether inline or delegated.
 
@@ -42,7 +42,7 @@ For every changed file, derive targeted tests using project conventions, semanti
 
 At first scoring read `coverage.md`. Measure touched/changed files, run `dev-check coverage <percent> [uncovered-critical]`, and apply PROCESS #5 judgment. Log every ⚠️/❌ in `## Coverage Gaps`, naming the uncovered lines and the behavior each belongs to. **⚠️ → log and continue; ❌ → STOP and ask.** Coverage-driven new behavior must enter through a reviewed, re-approved plan TC.
 
-After GREEN/BLUE, follow `dependents.md` for every changed externally reachable symbol. Breakage or unresolved reachability → log `## Discovered Scope`, STOP, and ask: re-plan/re-review, separate, or narrow via a recorded PROCESS #4 deviation. Never ship a known-broken caller.
+After GREEN/BLUE, follow `dependents.md` for every changed externally reachable symbol and every shared mutable state the change reads as a decision input or writes as a signal. Breakage or unresolved reachability → log `## Discovered Scope`, STOP, and ask: re-plan/re-review, separate, or narrow via a recorded PROCESS #4 deviation. Never ship a known-broken caller.
 
 Run lint, build, the TC tests, and `## Affected Existing Tests`. **In a chain, run them at each slice's tip before starting the next slice** — atomicity is a per-slice property (`design-feature` `PR Pattern`), and a slice whose tests need a later slice's code is a slice boundary in the wrong place: STOP and route the correction through `approval.md` rather than carrying the dependency forward. Root-cause failures: regression → fix implementation; incomplete implementation → finish its step. A conflict among Goal, AC, TC, domain contract, or observed intended behavior is not a free deviation: STOP and go back through `approval.md`. Run `dev-check artifacts <base> HEAD`.
 

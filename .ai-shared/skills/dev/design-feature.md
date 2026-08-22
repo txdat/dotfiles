@@ -2,7 +2,7 @@
 
 If `~/.dotfiles/.ai-shared/PROCESS.md` is not yet loaded, read it first.
 
-**Gates before design:** active plan? → warn. Unfamiliar area? → suggest explore. Bundled/ambiguous goal? → frame-goal first. System-boundary scope? → design-system first. Read AI project configuration. Heavy analysis may delegate to `feature-planner`; the main agent owns the plan and approval. **No code, no approval decisions.** Design-feature proposes behavior; `approval.md` decides it.
+**Gates before design:** active plan? → warn. Unfamiliar area? → suggest explore. Bundled/ambiguous goal? → frame-goal first. System-boundary scope? → design-system first. UI/frontend feature? → read `frontend-design.md`; capture visual direction (palette, type, layout, signature) in `## Design Decisions`. Read AI project configuration. Heavy analysis may delegate to `feature-planner`; the main agent owns the plan and approval. **No code, no approval decisions.** Design-feature proposes behavior; `approval.md` decides it.
 
 Write `docs/plans/<basename>_<date>_<type>_<slug>.md`, where type is feature/fix/refactor.
 
@@ -33,7 +33,7 @@ Add `Context`, `Impact Analysis`, `Design Decisions`, `Mechanism Invariants`, `R
 Conditional sections stay compact:
 
 - `Context` — current behavior, dependencies, or ordering that changes the design. When the change relies on, removes, or bypasses existing behavior, include the constraint, incident, compatibility need, or invariant that produced it when discoverable.
-- `Impact Analysis` — only affected components, data, or non-functional behavior; contract impact includes credible consumer dependencies on errors, defaults, ordering, timing, and side effects beyond documented interfaces.
+- `Impact Analysis` — only affected components, data, or non-functional behavior; contract impact includes credible consumer dependencies on errors, defaults, ordering, timing, and side effects beyond documented interfaces. For every shared mutable state (`dependents.md`) used as a decision input or signal: list all writers, verify semantic consistency — a conflict is a finding, not a footnote.
 - `Design Decisions` — only a choice the executor must preserve.
 - `Mechanism Invariants` — only for a new structure.
 - `Risk Flags` / `Out of Scope` — only material risks or tempting adjacent work.

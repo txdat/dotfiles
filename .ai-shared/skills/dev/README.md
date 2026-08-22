@@ -52,7 +52,7 @@ Every skill opens with "read AI project configuration" — the nearest `CLAUDE.m
 
 ## Single-Source Files
 
-Read by the skills that need them. Phase files may name their gates but do not redefine these rules: `approval.md` (both human decisions) · `independence.md` (delegated review) · `altitude.md` (plan is design, not code) · `tdd.md` (RED→GREEN→BLUE) · `coverage.md` (measurement, bands, test quality bar) · `worktree.md` (lifecycle) · `dependents.md` (blast radius).
+Read by the skills that need them. Phase files may name their gates but do not redefine these rules: `approval.md` (both human decisions) · `independence.md` (delegated review) · `altitude.md` (plan is design, not code) · `tdd.md` (RED→GREEN→BLUE) · `coverage.md` (measurement, bands, test quality bar) · `worktree.md` (lifecycle) · `dependents.md` (blast radius) · `frontend-design.md` (visual design direction for UI/frontend work).
 
 ## Design Skills
 

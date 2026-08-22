@@ -38,7 +38,7 @@ Passing all TCs is insufficient when any AC or the Goal fails. Implementation fa
 
 ### B. Architecture and data
 
-Check every plan Non-functional commitment. For changed paths, check applicable concerns: boundaries, query safety, transactions/concurrency, compatibility, security/data exposure, observability, and performance. Treat the rest as not applicable without reporting them; do not expand into a repository-wide audit.
+Check every plan Non-functional commitment. For changed paths, check applicable concerns: boundaries, query safety, transactions/concurrency, compatibility, security/data exposure, observability, and performance. For every shared mutable state (`dependents.md`) the diff reads as a decision input or writes as a signal: verify no other flow writes it with different semantics — a conflict is blocking. Treat the rest as not applicable without reporting them; do not expand into a repository-wide audit.
 
 ### C. Scope and hygiene
 

@@ -35,6 +35,7 @@ Then attack:
 - What valid implementation would an AC's Failure clause incorrectly condemn?
 - Does any AC or TC name a proposed mechanism instead of observable behavior?
 - Are relevant negative, boundary, failure, retry, concurrency, and security cases represented?
+- Does the plan use shared mutable state (`dependents.md`) as a decision input or signal? If yes: do other flows write it with different semantics? Does a concurrent or sequential write invalidate the decision? Unanalyzed shared state is blocking.
 - Does the plan remove a material guard or externally observable behavior without proportionate evidence for why it exists or an explicit accepted uncertainty?
 
 Undefined or unsupported expected behavior → Open Question for the user; never silently choose. A choice only the user can make — a policy, a threshold, a consistency contract — is an Open Question, never an AC defect: do not report it as a finding the designer is expected to resolve alone.

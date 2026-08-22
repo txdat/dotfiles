@@ -39,6 +39,9 @@ Explore: <area>. Report: entry points, key files, data flow, patterns, gotchas.
 ### Patterns
 - <pattern>: <where>
 
+### Shared Mutable State
+- `<identifier>` — writers: <flow (semantic), ...>; readers: <flow (usage), ...>
+
 ### Gotchas
 - <constraint or issue>
 
