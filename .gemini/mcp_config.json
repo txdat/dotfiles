@@ -1,14 +1,4 @@
 {
   "mcpServers": {
-    "sverklo": {
-      "command": "npx",
-      "args": [
-        "sverklo"
-      ]
-    },
-    "playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@latest"]
-    }
   }
 }

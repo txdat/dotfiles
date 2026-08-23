@@ -5,7 +5,8 @@ export EDITOR="vim --clean"
 
 # set prompt
 function _git_branch() {
-    git branch 2> /dev/null | sed -n -e 's/^\* \(.*\)/\1 /p'
+    local b
+    b=$(git symbolic-ref --short HEAD 2>/dev/null) && echo -n "$b "
 }
 
 setopt PROMPT_SUBST
@@ -40,7 +41,11 @@ fi
 zstyle ':completion:*' matcher-list "m:{a-z}={A-Z}"
 zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 
-source <(kubectl completion zsh)
+KUBECTL_COMPLETION="$HOME/.zsh/kubectl.completion.zsh"
+if [[ ! -s "$KUBECTL_COMPLETION" ]]; then
+    kubectl completion zsh > "$KUBECTL_COMPLETION" 2>/dev/null || true
+fi
+[[ -f "$KUBECTL_COMPLETION" ]] && source "$KUBECTL_COMPLETION"
 
 # highlighting
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
@@ -67,26 +72,27 @@ export FZF_DEFAULT_OPTS="
  --highlight-line
  --pointer=󰁕
  --marker=▶
- --preview-window=hidden:noborder
+ --preview-window=right:80%:noborder:hidden
  --bind=ctrl-p:toggle-preview,alt-w:toggle-preview-wrap,alt-j:preview-page-down,alt-k:preview-page-up
 "
 
 export PATH="$HOME/.local/bin:$PATH"
 
-# gcloud
-export PATH="$HOME/.google-cloud-sdk/bin:$PATH"
+# gcloud (installed via dnf — /usr/bin/gcloud is already on PATH,
+# no path.zsh.inc needed; only completion is sourced from the sdk dir)
 export USE_GKE_GCLOUD_AUTH_PLUGIN=True
-if [ -f "$HOME/.google-cloud-sdk/path.zsh.inc" ]; then . "$HOME/.google-cloud-sdk/path.zsh.inc"; fi
-if [ -f "$HOME/.google-cloud-sdk/completion.zsh.inc" ]; then . "$HOME/.google-cloud-sdk/completion.zsh.inc"; fi
+if [ -f /usr/lib64/google-cloud-sdk/completion.zsh.inc ]; then
+    source /usr/lib64/google-cloud-sdk/completion.zsh.inc
+fi
 
 # kubernetes
 export KUBECONFIG=$HOME/.kube/config
 
 alias k=kubectl
-complete -o default -F __start_kubectl k
+compdef k=kubectl
 
 # python
-CONDA_HOME="$HOME/.miniconda3"
+CONDA_HOME="$HOME/miniconda3"
 
 if [[ -n "$CONDA_HOME" ]]; then
     export PATH="$CONDA_HOME/bin:$PATH"
@@ -111,8 +117,8 @@ export PATH="$HOME/.cargo/env:$HOME/.rustup/toolchains/stable-x86_64-unknown-lin
 export PATH="$HOME/go/bin:$PATH"
 
 # nodejs
-export PATH="$HOME/.local/share/fnm:$PATH"
-eval "`fnm env`"
+export FNM_NODE_VERSION="v24.19.0"
+export PATH="$HOME/.local/share/fnm:$HOME/.local/share/fnm/node-versions/$FNM_NODE_VERSION/installation/bin:$PATH"
 
 # flutter
 export PATH="$HOME/fvm/bin:$HOME/fvm/default/bin:$PATH"
@@ -140,7 +146,10 @@ claude() {
     local args=()
     for arg in "$@"; do
         case "$arg" in
-            --dsk)
+            --a1)
+                export ANTHROPIC_AUTH_TOKEN=$(echo $CLAUDE1_API_KEY)
+                ;;
+            --ds)
                 export ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic'
                 export ANTHROPIC_AUTH_TOKEN=$(echo $DEEPSEEK_API_KEY)
                 export ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro[1m]'
@@ -158,9 +167,6 @@ claude() {
     done
     command claude "${args[@]}"
 }
-
-alias claude1="ANTHROPIC_AUTH_TOKEN=$(echo $CLAUDE1_API_KEY) \
-  claude"
 
 agy() {
     local args=()
@@ -225,10 +231,13 @@ update_zsh() {
         cd ~/.zsh/$plg && git pull
     done
 
+    # regenerate cached kubectl completion after kubectl updates
+    kubectl completion zsh > ~/.zsh/kubectl.completion.zsh 2>/dev/null
+
     cd $dir
 }
 
-update_arch() {
+update_sys() {
   grep -q '^ID=arch$' /etc/os-release || return 0
 
   local ignore_packages=""

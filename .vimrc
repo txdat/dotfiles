@@ -313,6 +313,7 @@ call plug#end()
 
 " fzf{{{
 let g:fzf_vim = {}
+let g:fzf_vim.preview_window = ['right,80%', 'ctrl-p']
 "let g:fzf_vim.command_prefix = 'Fzf'
 "let g:fzf_layout = { 'window': { 'width': 1.0, 'height': 1.0, 'relative': v:true } }
 let g:fzf_layout = { 'down': '100%' }

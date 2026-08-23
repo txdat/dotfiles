@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.84.2",
+  "lastChangelogVersion": "0.84.3",
   "theme": "2026-dark",
   "enableInstallTelemetry": false,
   "defaultProvider": "deepseek",
@@ -15,5 +15,7 @@
     "enabled": true,
     "reserveTokens": 700000,
     "keepRecentTokens": 20000
-  }
+  },
+  "quietStartup": true,
+  "collapseChangelog": true
 }
