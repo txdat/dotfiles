@@ -6,7 +6,7 @@ No code, no approval. Challenge the WHAT — the Goal, the AC set, and whether t
 
 ## Independence and invocation
 
-Follow `independence.md` (single source), including `Re-review`: review is uncounted, and a `NEEDS CHANGES` verdict ends this session once the design fixes are written. Emit `Plan revised. Run the dev-review-feature skill when you want it re-reviewed.` and stop — the next round is the user's to start.
+Follow `independence.md` for reviewer context, authorized revisions, re-review, and non-convergence. Review-only requests produce findings; authorized delivery can continue through in-scope revisions and independent re-review. Human spec approval remains separate.
 
 ## Review authority
 
@@ -48,20 +48,21 @@ Undefined or unsupported expected behavior → Open Question for the user; never
 - **Traceability:** `gate-check` proves ID closure; you verify edge correctness — every `Proves:` names the right AC, every step satisfies its TCs, every Goal outcome has an AC.
 - **Execution:** ordered, right-sized steps; PR slices partition steps, follow dependencies, are independently mergeable, never split a TC.
 - **Conditional rigor:** new structures have invariants, guards, and boundary TCs; non-trivial behavior-axis combinations covered or excluded.
+- **UI/frontend:** `## Design Decisions` names palette, type, layout, and signature, and each choice either cites an existing token/pattern or is declared as an explicit extension with its gap named (`frontend-design.md` `Extending the system`). A UI plan carrying no `## Design Decisions` is a finding — execution has nothing to follow.
 
 ## Readiness
 
 `READY` means the behavior is ready for the human's decision, not approved. Leave `Status: planning` — review never approves.
 
-**Two-round cap.** Governs pre-approval design iteration only; a review re-entered after approval (execution rework, `approval.md`) is not bound by a prior cycle's history and starts fresh. If the plan is unapproved and `## Review History` already contains a `NEEDS CHANGES` entry (this is round 2), route every finding, then verdict:
+Apply the same readiness criteria on every review:
 
-- **Blocking** — a wrong AC, a missing AC, or a structural defect that would lead execution off a cliff. Only these hold `NEEDS CHANGES`.
-- **Open Question** — a choice only the user can make, including an unset threshold. Ask it in the report, never in `## Assumptions & Open Questions`: written there it blocks re-entry and routes the plan back through review, which is the third round this cap exists to prevent. Left unanswered it becomes an Open Risk.
-- **Open Risk** — everything else: edge-case TC gaps, coverage holes for unlikely scenarios. Into `## Open Risks` for execution to resolve at RED.
+- **Blocking** — a wrong or missing AC, a required TC amendment, or a structural defect that would make execution incorrect. These hold `NEEDS CHANGES`.
+- **Open Question** — a choice only the user can make, including an unset threshold. Report it and have the main agent record it under `## Assumptions & Open Questions` → `Open Questions:`. An unanswered question holds `NEEDS CHANGES`. Resolve it before re-entry.
+- **Open Risk** — non-critical verification uncertainty that existing TC intents can settle during execution. Record the owning TC IDs in `## Open Risks`. A known missing or changed TC returns through design before approval; it is not deferred to execution.
 
-No blocking finding → `READY`. Design cannot reach full coverage; execution's RED phase is the second safety net.
+No blocking finding, unanswered question, or required semantic TC amendment → `READY`. Optional refinements never delay readiness. Execution settles test arrangements and assertions within approved TC intents. Editorial corrections follow `approval.md` without reopening approved behavior.
 
-On every verdict, append the `## Review History` entry and prune to the last three.
+The main agent appends a concise `## Review History` entry for each verdict. Record evidence and unresolved findings; no round or cycle counters govern readiness. Older counter fields may remain as history and have no control effect.
 
 ```text
 ### Review <ISO date> — READY | NEEDS CHANGES
@@ -78,14 +79,14 @@ Attacked: satisfy TC-4 by rejecting any refund ≠ capture amount — passes wit
 Changed:  added TC-5 (sequential partial refunds); revised AC-2 to name remaining balance.
 ```
 
-"Reviewed — READY" is not an entry: it records no attack. The reviewer reports findings; only the main agent writes the history entry and, on `READY`, sets `Review: READY <ISO date>` in the header. On `NEEDS CHANGES`, clear `Review:`.
+"Reviewed — READY" is not an entry: it records no attack. The reviewer reports findings; only the main agent writes the history entry.
 
 ## Self-Check (BLOCKING)
 
-- [ ] **Independence and authority:** `independence.md` satisfied, including `Re-review` — this cycle was explicitly invoked, not a continuation of revisions I just made. `## Counterexamples Attempted` and `## Review History` were read only after my own attacks. Review did not silently rewrite behavior. Every reported finding changes the built artifact; wording-only issues are nits and cannot produce `NEEDS CHANGES`.
+- [ ] **Independence and authority:** reviewer context and revision authority satisfy `independence.md`. `## Counterexamples Attempted` and `## Review History` were read only after my own attacks. Review did not silently rewrite behavior. Every reported finding changes the built artifact; wording-only issues are nits and cannot produce `NEEDS CHANGES`.
 - [ ] **Behavioral coverage:** outcomes were derived from Goal/sources before TC inspection. Every AC clause is exercised by a TC scenario; a clause gap is blocking only when a plausible implementation could pass all TCs while violating it. Every `Proves:` names the AC its TC constrains. Critical and high-risk ACs faced concrete counterexamples; remaining ACs were checked for invalid-pass and valid-rejection gaps. Plan counterexamples were re-attacked, not accepted.
-- [ ] **System fit:** approach is simplest; alternatives challenged; boundaries, compatibility, blast radius, rollback, Non-functional effects sound. Steps are dependency-ordered and right-sized, each names its TCs; PR partition merges independently and splits no TC.
+- [ ] **System fit:** approach is simplest; alternatives challenged; boundaries, compatibility, blast radius, rollback, Non-functional effects sound. Steps are dependency-ordered and right-sized, each names its TCs; PR partition merges independently and splits no TC. UI plan: `## Design Decisions` present, each choice sourced or declared an extension.
 
 Report summary, independently derived outcomes, blocking findings, the counterexamples **you** attempted, suggestions, and `READY` or `NEEDS CHANGES`.
 
-`NEEDS CHANGES`: clear `Review:`, offer fixes and wait; once the approved revisions are written, stop per `Independence and invocation`. `READY`: leave `Status: planning`, write `Review: READY <ISO date>`, emit: `Plan READY. Run approval.md's spec pause.`
+`NEEDS CHANGES`: the main agent routes revisions and re-review under `independence.md`; unresolved user decisions still pause dependent work. `READY`: leave `Status: planning`, emit: `Plan READY. Run approval.md's spec pause.`

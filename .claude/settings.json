@@ -1,4 +1,9 @@
 {
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
   "permissions": {
     "allow": [
       "Read(~/.dotfiles/.ai-shared/**)",
@@ -56,5 +61,6 @@
   "skipDangerousModePermissionPrompt": true,
   "theme": "dark",
   "fileCheckpointingEnabled": true,
+  "agentPushNotifEnabled": false,
   "mcpServers": {}
 }

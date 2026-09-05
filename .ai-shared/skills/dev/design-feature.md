@@ -2,7 +2,7 @@
 
 If `~/.dotfiles/.ai-shared/PROCESS.md` is not yet loaded, read it first.
 
-**Gates before design:** active plan? → warn. Unfamiliar area? → suggest explore. Bundled/ambiguous goal? → frame-goal first. System-boundary scope? → design-system first. UI/frontend feature? → read `frontend-design.md`; capture visual direction (palette, type, layout, signature) in `## Design Decisions`. Read AI project configuration. Heavy analysis may delegate to `feature-planner`; the main agent owns the plan and approval. **No code, no approval decisions.** Design-feature proposes behavior; `approval.md` decides it.
+**Gates before design:** active plan? → warn. Unfamiliar area? → suggest explore. Bundled/ambiguous goal? → frame-goal first. System-boundary scope? → design-system first. Base branch not explicit? → ask the user which branch to base off (never silently default). UI/frontend feature? → read `frontend-design.md`; capture visual direction (palette, type, layout, signature) in `## Design Decisions`. Read AI project configuration. Heavy analysis may delegate to `feature-planner`; the main agent owns the plan and approval. **No code, no approval decisions.** Design-feature proposes behavior; `approval.md` decides it.
 
 Write `docs/plans/<basename>_<date>_<type>_<slug>.md`, where type is feature/fix/refactor.
 
@@ -12,7 +12,7 @@ Write `docs/plans/<basename>_<date>_<type>_<slug>.md`, where type is feature/fix
 
 ```text
 # Task: <name>
-Status: planning | Type: feature|fix|refactor | Issue: #N | Review: | Worktree:
+Status: planning | Type: feature|fix|refactor | Base: <branch> | Issue: #N | Worktree:
 ## Goal
 ## Requirement
 ## Scope (In / Out)
@@ -21,12 +21,14 @@ Status: planning | Type: feature|fix|refactor | Issue: #N | Review: | Worktree:
 ## Test Cases (intent)        # each names exactly one AC
 ## Counterexamples Attempted
 ## Affected Existing Tests
-## Open Risks                 # gaps deferred to execution; empty on first draft
+## Open Risks                 # verification uncertainty assigned to existing TCs; empty on first draft
 ## Implementation Steps       # dependency-ordered; each names its TCs
 ## PR Pattern (provisional)   # single branch unless forced to chain
 ```
 
-No review carries a round counter: every review cycle is explicitly invoked instead (`independence.md` `Re-review`), and `## Review History` is the durable record of what each verdict attacked.
+**Sections later phases add.** Design writes none of these — each is created by its owner the first time it has something to record. Named here because this is the plan's only canonical section list, and a later phase that invents a variant spelling is invisible to the skill that reads it: `## Review History` (review-feature), `## Deviations` (PROCESS #4), `## Discovered Scope` (PROCESS #6), `## Coverage Gaps` (PROCESS #5). An absent section means its owner logged nothing — never that a reader verified nothing (`review-code` `C. Scope and hygiene`).
+
+`## Review History` records findings and evidence. Readiness does not depend on round counters; `independence.md` governs revision and re-review authority.
 
 Add `Context`, `Impact Analysis`, `Design Decisions`, `Mechanism Invariants`, `Risk Flags`, and `Out of Scope` only when the change demands them.
 
@@ -80,7 +82,7 @@ TC-5 — two sequential partial refunds cannot exceed the balance together
 
 ## AC Budget
 
-**≤3 clauses per AC.** Derive ACs from the Goal — no more and no less than what the Goal needs. `gate-check` enforces the upper cap at review entry; if it blocks, narrow the Goal or split it into separate plans (`frame-goal`), never merge outcomes into one AC.
+**≤3 clauses per AC, ≤7 ACs per plan.** Derive ACs from the Goal — no more and no less than what the Goal needs. `gate-check` enforces **only the AC count** at review entry; clauses are prose the hook cannot read (PROCESS `Self-check boundary`), so the clause limit is yours to hold. If the hook blocks, narrow the Goal or split it into separate plans (`frame-goal`), never merge outcomes into one AC to fit the cap.
 
 Before approval, missing ACs found in review return through design as ordinary iteration. After approval, any behavior change—add, update, or remove—follows `approval.md`. Split an extension plan only when the outcome is independently valuable or would make the current Goal incoherent.
 
@@ -99,17 +101,26 @@ An entry naming no implementation is not an entry. Keep only live rows: a row in
 
 ## PR Pattern
 
-**Default: one deployable unit → single branch `<type>/<slug>`.** Chain only when migrations must precede code or slices are independently deployable:
+**Default: one deployable unit → single branch `<type>/<slug>`.** It still gets the table, as one row:
+
+```text
+Type: single
+| # | Branch          | Parent          | Steps | Summary            |
+|---|-----------------|-----------------|-------|--------------------|
+| 1 | feat/quota      | develop         | 1-5   | quota enforcement  |
+```
+
+Chain only when migrations must precede code or slices are independently deployable:
 
 ```text
 Type: chain
 | # | Branch          | Parent          | Steps | Summary            |
 |---|-----------------|-----------------|-------|--------------------|
-| 1 | feat/quota-db   | main            | 1-2   | migration          |
+| 1 | feat/quota-db   | develop         | 1-2   | migration          |
 | 2 | feat/quota-api  | feat/quota-db   | 3-5   | enforcement + API  |
 ```
 
-Every row carries its own `Parent` — `execute-feature` and `create-pr` read this column and nothing else.
+Every row carries its own `Parent` — `execute-feature`, `review-code`, and `create-pr` read this column and nothing else, and `gate-check` blocks review-feature when any row leaves it empty. Row 1's parent is normally `Base:`. It differs only when this plan builds on an unmerged PR (`create-pr.md` `Shipped, and what comes after`).
 
 **Every slice is atomic:** one coherent change that is reviewable, mergeable, and revertable on its own, and whose branch tip is **green by itself** — lint, build, and that slice's tests pass at its own tip, against its own parent, with no later slice merged. This is why a TC is never split across slices: the test and the code that makes it pass must land together. A slice whose tests only pass once a later slice merges is not a slice; fold it into the one it depends on, or move the dependency earlier. Atomicity is cohesion, not size — a large migration can be one atomic slice, and three unrelated small fixes are not.
 
@@ -141,6 +152,6 @@ A named issue that is closed or belongs to different work → STOP and ask. Cred
 - [ ] **Behavior complete:** Goal preserved; all ACs passing does not leave the Goal unfulfilled. Every AC atomic, observable, sourced, pass/fail decidable, implementation-independent. Each AC has happy-path, failure, and boundary TCs. Clause-coverage audit done — each clause exercised by a TC scenario (not literal wording). Every AC faced a counterexample attempt — each names an implementation, its target, and the AC/TC that defeated it; no undefeated attempt stands.
 - [ ] **Size:** ACs, clauses, and steps are the coherent set that proves the Goal — no outcome omitted, none inflated. Each AC ≤3 clauses.
 - [ ] **Execution sound:** steps are dependency-ordered and each names its TCs. PR Pattern defaults to single, partitions steps when chained, never splits a TC, and gives every slice a tip that can be green with no later slice merged. Affected existing tests are reasoned. Design instructions cite stable symbols; evidence quotes may use `file:line`.
-- [ ] **Form correct:** new structures (if any) have guard/invariant/boundary TC; non-trivial behavior-axis combinations covered or excluded; every affected component's failure behavior is answered. Material removed behavior has an evidence-backed reason or an explicit accepted uncertainty, and credible de facto contract changes are explicit. Open Questions empty. Notation, not target-language syntax. Header: `Status: planning`, `Review:` empty on a fresh plan and on re-entry; `Issue: #<n>`.
+- [ ] **Form correct:** new structures (if any) have guard/invariant/boundary TC; non-trivial behavior-axis combinations covered or excluded; every affected component's failure behavior is answered. Material removed behavior has an evidence-backed reason or an explicit accepted uncertainty, and credible de facto contract changes are explicit. Open Questions empty. Notation, not target-language syntax. Header: `Status: planning`, `Base:` is a user-confirmed concrete branch name (never a silent default); `Issue: #<n>`.
 
 All checked → emit: `Plan drafted. Run the dev-review-feature skill.`

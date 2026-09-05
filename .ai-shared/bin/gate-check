@@ -5,7 +5,7 @@
 #
 # Valid transitions:
 #   design-feature  → planning
-#   review-feature  → planning + "Review: READY <date>" (verdict only; no status flip)
+#   review-feature  → planning (self-correction, no status flip)
 #   (human approve) → approved (manual, or confirmed at ship-feature's plan-phase PAUSE)
 #   execute-feature → approved → in-progress → implemented
 #   review-code     → implemented → reviewed
@@ -19,20 +19,14 @@
 # set, and neither is an entry status for any skill, so an abandoned plan
 # blocks at whatever gate it is aimed at.
 # Feature review entry also enforces the AC budget (at most 7) — a decision
-# still cheap to act on while the plan is unapproved. No review is round-limited
-# here: every review cycle is bounded by requiring an explicit invocation
-# (skills/dev/independence.md `Re-review`), never by a header counter.
+# still cheap to act on while the plan is unapproved. Review authorization and
+# non-convergence follow skills/dev/independence.md `Re-review`; header counters
+# do not govern readiness.
 # Review-code additionally requires proof-commit sequencing for every slice.
-# Plan-only commits (every changed path under docs/plans/) are workflow
-# metadata and are exempt from sequencing — the skills deliberately commit
-# the pre-RED status transition and other plan evidence as dedicated docs
-# commits ahead of the proof commit.
 #
 # Approval is a human decision recorded as `Status: approved`, set at the
 # spec-approval pause (see skills/dev/approval.md). The hook checks that the
-# status is there before execution, and that the plan also carries review-
-# feature's `Review: READY` marker — so an approval that skipped review is
-# mechanically detectable. It still cannot tell who wrote either field, and it
+# status is there before execution. It cannot tell who wrote the field, and it
 # deliberately does not validate plan prose. The AC/TC/Step ID graph is checked
 # for referential closure (see traceability_report) — identifiers only. Whether
 # the ACs are right, whether a TC can admit a wrong implementation, and whether
@@ -48,9 +42,9 @@
 # Worktree model (skills/dev/worktree.md): the main-tree plan is only the
 # locator — its Status goes stale once execution starts. When its header
 # records "Worktree:", live Status/Issue/PR-Pattern are read from the
-# worktree's plan copy, and proof-commit checks run against the worktree's
-# HEAD (the slice branch); the main tree stays parked on its own branch for
-# the whole lifecycle, so checks against it would always fail.
+# worktree's untracked plan copy, and proof-commit checks run against the
+# worktree's HEAD (the slice branch). The plan file is never committed
+# anywhere; at cleanup, create-pr posts it as an issue comment.
 
 set -euo pipefail
 
@@ -233,30 +227,19 @@ plan_issue() {
   ' "$1" 2>/dev/null
 }
 
-# Plan header Review marker (same Status line: "... | Review: READY <date> | ...").
-# review-feature writes it on a READY verdict and clears it on NEEDS CHANGES,
-# so its presence is script-checkable evidence that a review preceded approval.
-plan_review() {
+# Plan header Base branch (same Status line: "... | Base: <branch> | ...").
+plan_base() {
   awk '
     /^Status:/ {
-      if (match($0, /Review:[[:space:]]*[^|]+/)) {
+      if (match($0, /Base:[[:space:]]*[^|]+/)) {
         t = substr($0, RSTART, RLENGTH)
-        sub(/^Review:[[:space:]]*/, "", t)
+        sub(/^Base:[[:space:]]*/, "", t)
         gsub(/^[[:space:]]+|[[:space:]]+$/, "", t)
         print t
       }
       exit
     }
   ' "$1" 2>/dev/null
-}
-
-# True when the Review field records a READY verdict. Placeholders, "pending",
-# and empty all fail — the hook cannot tell who wrote it, only that the
-# workflow's review step left its marker before the approval.
-has_review_ready() {
-  local v
-  v=$(plan_review "$1")
-  [[ "${v^^}" =~ ^READY([[:space:]]|$) ]]
 }
 
 # Plan header Worktree path (same Status line: "... | Worktree: <path> | ...").
@@ -518,28 +501,6 @@ fix_bug_mode() {
   printf '%s' "${first:-}"
 }
 
-resolve_base() {
-  local remote_ref branch
-  remote_ref=$(git -C "$GIT_TREE" symbolic-ref refs/remotes/origin/HEAD 2>/dev/null || true)
-  if [[ -n "$remote_ref" ]]; then
-    branch="${remote_ref#refs/remotes/origin/}"
-    if git -C "$GIT_TREE" rev-parse --verify --quiet "$branch" >/dev/null; then
-      echo "$branch"
-    else
-      echo "origin/$branch"
-    fi
-    return 0
-  fi
-
-  if git -C "$GIT_TREE" rev-parse --verify --quiet main >/dev/null; then
-    echo "main"
-  elif git -C "$GIT_TREE" rev-parse --verify --quiet master >/dev/null; then
-    echo "master"
-  else
-    echo "HEAD"
-  fi
-}
-
 red_commit_count() {
   local base="$1"
   git -C "$GIT_TREE" log --format=%s "${base}..HEAD" 2>/dev/null | grep -Ec '^test\(red\):' || true
@@ -552,40 +513,15 @@ baseline_commit_count() {
   git -C "$GIT_TREE" log --format=%s "${base}..HEAD" 2>/dev/null | grep -Ec '^test:[[:space:]]*baseline' || true
 }
 
-# True when the commit touches only plan files (docs/plans/**). The skills
-# keep plan metadata in dedicated commits — the pre-RED status transition,
-# deviation/coverage/evidence logs — so these may legally appear anywhere in the
-# history, including before the first proof commit. Classified by content,
-# not subject, so a mislabeled "docs:" commit that smuggles implementation
-# still participates in sequencing. Empty/merge commits are NOT plan-only.
-plan_only_commit() {
-  local hash="$1" f found=0
-  while IFS= read -r f; do
-    [[ -n "$f" ]] || continue
-    found=1
-    [[ "$f" == docs/plans/* ]] || return 1
-  done < <(git -C "$GIT_TREE" diff-tree --no-commit-id --name-only -r "$hash" 2>/dev/null)
-  [[ "$found" -eq 1 ]]
-}
-
 proof_sequence_ok() {
-  local base="$1" mode="$2" expected="$3" proof_re="" hash subject subjects=""
-  # awk -v re-processes escape sequences, so backslashes must be doubled or
-  # the parens in test\(red\): become a bare ERE group that never matches.
+  local base="$1" mode="$2" expected="$3" proof_re=""
   case "$mode" in
     red) proof_re='^test\\(red\\):' ;;
     baseline) proof_re='^test:[[:space:]]*baseline' ;;
     *) return 1 ;;
   esac
 
-  # Sequence only substantive commits — plan-only commits are invisible here.
-  while IFS=$'\t' read -r hash subject; do
-    [[ -n "$hash" ]] || continue
-    plan_only_commit "$hash" && continue
-    subjects+="$subject"$'\n'
-  done < <(git -C "$GIT_TREE" log --format='%H%x09%s' --reverse "${base}..HEAD" 2>/dev/null)
-
-  printf '%s' "$subjects" | awk \
+  git -C "$GIT_TREE" log --format='%s' --reverse "${base}..HEAD" 2>/dev/null | awk \
     -v proof_re="$proof_re" \
     -v expected="$expected" '
       BEGIN { proofs=0; waiting_for_impl=0; seen_proof=0; bad=0 }
@@ -619,6 +555,44 @@ slice_count() {
 has_final_pr_pattern() {
   local plan="$1"
   grep -q '^## PR Pattern$' "$plan" 2>/dev/null && ! grep -q '^## PR Pattern (provisional)$' "$plan" 2>/dev/null
+}
+
+# One line per PR-Pattern row, in table order: that row's Parent, or empty
+# when the column or the cell is missing. Callers decide which absence matters.
+plan_parents() {
+  awk '
+    function trim(s) {
+      gsub(/^[[:space:]]+|[[:space:]]+$/, "", s)
+      return s
+    }
+    /^## PR Pattern/ { in_pattern=1; next }
+    /^## / && in_pattern { exit }
+    in_pattern && /^\|/ {
+      n=split($0, cells, "|")
+      if (trim(cells[2]) ~ /^[0-9]+$/) {
+        print parent_col ? trim(cells[parent_col]) : ""
+        next
+      }
+      for (i=2; i<=n; i++)
+        if (trim(cells[i]) == "Parent") parent_col=i
+    }
+  ' "$1" 2>/dev/null
+}
+
+# The integration Base can exclude an unmerged parent. Proof for this plan
+# starts at the first slice's explicit Parent, including for a single PR.
+plan_first_parent() {
+  # awk, not head: head exits early, and the SIGPIPE it can hand back would
+  # fail the capturing assignment under set -e and pipefail.
+  plan_parents "$1" | awk 'NR==1'
+}
+
+# Rows whose Parent is missing. design-feature requires one on every row, and
+# create-pr targets each PR at it, so a gap anywhere is a defect.
+parentless_row_count() {
+  # Piped, not captured: $( ) strips trailing newlines, which would hide a
+  # missing parent on the last row — the row most likely to be added late.
+  plan_parents "$1" | grep -c '^[[:space:]]*$' || true
 }
 
 block() {
@@ -695,9 +669,8 @@ case "$SKILL_SLUG" in
         archived)              block "Plan is shipped. Nothing to review." ;;
         *)                                block "Plan status is '$STATUS' — expected 'planning'. Run design-feature first." ;;
       esac
-      # No round counter here either (see the review-code branch): review-feature
-      # is bounded by explicit invocation, and ## Review History records the
-      # attempts a plan has taken.
+      # Review History records findings and evidence; readiness is independent
+      # of historical round counters.
       # Ahead of the traceability and Open Question gates on purpose: an
       # over-cap plan is about to be split, and repairing a graph or answering
       # questions for ACs that are moving to another plan is wasted work. An ID
@@ -717,6 +690,16 @@ case "$SKILL_SLUG" in
         block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. Link an existing issue (a parent issue may back several plans) or create one ('gh issue create'); record it as 'Issue: #<n>', then re-run."
       fi
       require_traceability "$PLAN"
+      # Parents are required here, not at review-code: a gap caught at
+      # 'implemented' blocks a plan whose execution is already finished, over a
+      # table cell design should have written. Row 1's is review-code's review
+      # base; later rows are what create-pr targets each PR at.
+      if [[ -n "$(plan_first_parent "$PLAN")" ]]; then
+        PARENTLESS=$(parentless_row_count "$PLAN")
+        [[ "$PARENTLESS" -eq 0 ]] || block "Plan PR Pattern leaves $PARENTLESS slice row(s) without a Parent. Every row records its own (design-feature 'PR Pattern'): normally the preceding branch, or the Base branch for row 1."
+      else
+        block "Plan PR Pattern has no Parent for row 1. Give every slice an explicit parent (design-feature 'PR Pattern') — normally the Base branch, or an unmerged PR's branch when this plan builds on one."
+      fi
     fi
     ;;
 
@@ -736,11 +719,6 @@ case "$SKILL_SLUG" in
       if ! has_issue "$PLAN"; then
         block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. Link an existing issue (a parent issue may back several plans) or create one ('gh issue create'); record it as 'Issue: #<n>', then re-run."
       fi
-      # Approval is only reachable through review: an approved plan with no
-      # review marker was approved out of order (see approval.md).
-      if ! has_review_ready "$PLAN"; then
-        block "Plan is '$STATUS' but its header has no 'Review: READY <date>' marker — it was approved without a recorded review-feature verdict. Run review-feature, record the marker, then take the plan through approval.md's pause."
-      fi
     fi
     ;;
 
@@ -757,9 +735,8 @@ case "$SKILL_SLUG" in
         archived) block "Plan is shipped. Nothing to review." ;;
         *)             block "Plan status is '$STATUS' — expected 'implemented'." ;;
       esac
-      # No round counter here by design: code review is bounded by requiring an
-      # explicit invocation per cycle (review-code.md `Explicit invocation`),
-      # not by a header field. Re-adding one would gate the wrong thing.
+      # Re-review authority and non-convergence belong to independence.md.
+      # A header counter is not evidence of readiness or authorization.
       # Catches plans that entered implemented without the normal execution gate.
       if ! has_issue "$PLAN"; then
         block "Plan has no linked issue — the 'Issue:' field in the plan header is empty. Link an existing issue or create one ('gh issue create'), record it as 'Issue: #<n>', then re-run."
@@ -769,24 +746,28 @@ case "$SKILL_SLUG" in
       # gained no owning step during execution would otherwise never be caught.
       require_traceability "$PLAN"
     fi
-    BASE=$(resolve_base)
+    BASE=$(plan_base "$PLAN")
+    [[ -n "$BASE" ]] || block "Plan has no Base branch — the 'Base:' field in the plan header is empty. Set it to the branch this work is based off, then re-run."
+    REVIEW_BASE=$(plan_first_parent "$PLAN")
+    [[ -n "$REVIEW_BASE" ]] || block "Plan PR Pattern has no first-slice Parent — record the explicit parent before code review."
+    git -C "$GIT_TREE" merge-base --is-ancestor "$REVIEW_BASE" HEAD 2>/dev/null || block "Plan PR Pattern Parent '$REVIEW_BASE' is missing or is not an ancestor of the reviewed branch."
     SLICES=$(slice_count "$PLAN")
     [[ "$SLICES" -gt 0 ]] || SLICES=1
     PLAN_TYPE=$(plan_type "$PLAN")
     if [[ "$PLAN_TYPE" == "refactor" ]]; then
-      BASELINES=$(baseline_commit_count "$BASE")
+      BASELINES=$(baseline_commit_count "$REVIEW_BASE")
       if [[ "$BASELINES" -lt "$SLICES" ]]; then
-        block "Found $BASELINES 'test: baseline' commit(s) between $BASE and HEAD; expected at least $SLICES for the plan slice count. Commit the passing baseline before refactor review."
+        block "Found $BASELINES 'test: baseline' commit(s) between $REVIEW_BASE and HEAD; expected at least $SLICES for the plan slice count. Commit the passing baseline before refactor review."
       fi
-      if ! proof_sequence_ok "$BASE" baseline "$SLICES"; then
+      if ! proof_sequence_ok "$REVIEW_BASE" baseline "$SLICES"; then
         block "Baseline proof is out of sequence. Each slice must have a 'test: baseline' commit followed by at least one refactor commit before the next slice."
       fi
     else
-      REDS=$(red_commit_count "$BASE")
+      REDS=$(red_commit_count "$REVIEW_BASE")
       if [[ "$REDS" -lt "$SLICES" ]]; then
-        block "Found $REDS test(red) commit(s) between $BASE and HEAD; expected at least $SLICES for the plan slice count. Run RED phase before code review."
+        block "Found $REDS test(red) commit(s) between $REVIEW_BASE and HEAD; expected at least $SLICES for the plan slice count. Run RED phase before code review."
       fi
-      if ! proof_sequence_ok "$BASE" red "$SLICES"; then
+      if ! proof_sequence_ok "$REVIEW_BASE" red "$SLICES"; then
         block "RED/GREEN proof is out of sequence. Each slice must have a 'test(red)' commit followed by at least one implementation commit before the next slice."
       fi
     fi
@@ -842,9 +823,6 @@ case "$SKILL_SLUG" in
       esac
       if ! has_issue "$PLAN"; then
         block "Active plan '$PLAN' has no linked issue — the 'Issue:' field is empty. Link an existing issue or create one ('gh issue create'), record it as 'Issue: #<n>', then re-run."
-      fi
-      if ! has_review_ready "$PLAN"; then
-        block "Active plan '$PLAN' is '$STATUS' but has no 'Review: READY <date>' marker — the fix plan was approved without a recorded review-feature verdict. Run review-feature, then approval.md's pause."
       fi
     fi
     ;;

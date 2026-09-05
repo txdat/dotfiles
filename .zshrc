@@ -121,7 +121,7 @@ export FNM_NODE_VERSION="v24.19.0"
 export PATH="$HOME/.local/share/fnm:$HOME/.local/share/fnm/node-versions/$FNM_NODE_VERSION/installation/bin:$PATH"
 
 # flutter
-export PATH="$HOME/fvm/bin:$HOME/fvm/default/bin:$PATH"
+export PATH="$HOME/fvm/bin:$PATH"
 
 export CHROME_EXECUTABLE=/usr/bin/google-chrome
 
@@ -153,7 +153,7 @@ claude() {
                 export ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic'
                 export ANTHROPIC_AUTH_TOKEN=$(echo $DEEPSEEK_API_KEY)
                 export ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro[1m]'
-                export ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-flash[1m]'
+                export ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-flash-vision-exp[1m]'
                 export ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash'
                 export CLAUDE_CODE_SUBAGENT_MODEL='deepseek-v4-flash'
                 ;;
@@ -253,4 +253,14 @@ update_sys() {
     sudo pacman -Syyu && paru -Syyu
   fi
   flatpak update
+}
+
+md2pdf() {
+  npx prettier --write "$1"
+  pandoc "$1" -o "${1%.md}.pdf" \
+    --pdf-engine=xelatex \
+    --template=eisvogel \
+    -V mainfont='Maple Mono NF CN' \
+    -V monofont='Maple Mono NF CN' \
+    -V fontsize=8pt
 }

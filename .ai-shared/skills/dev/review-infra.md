@@ -12,7 +12,7 @@ Review the chain: **current state (verified) → placement rules → phased exec
 
 ## Independence and invocation
 
-Follow `independence.md` (single source). Any `Status` change stays with the main agent. Per `Re-review`, review is uncounted and explicitly invoked: once the revisions a `NEEDS CHANGES` verdict demanded are written, emit `Runbook revised. Run the dev-review-infra skill when you want it re-reviewed.` and stop.
+Follow `independence.md` for reviewer context, revision authority, re-review, and non-convergence. Any `Status` change stays with the main agent. Authorized runbook authoring and review may continue through document revisions; review-only requests end with findings. Neither scope authorizes infrastructure execution.
 
 READY is not an approval. The infra lane has no `approval.md` pause (`design-infra` `Lane shape`) — READY says only that the runbook is safe to hand a human. Whether to run it is theirs to decide.
 
@@ -123,7 +123,7 @@ Verdict ladder, first match wins:
 | **INCOMPLETE** | Runbook followed as written; phases remain. Name what remains and whether its preconditions still hold. |
 | **COMPLETE** | Every Success criterion verified by command, no residue, nothing remains. |
 
-Append one entry per execution attempt to `## Execution Record`. **Never pruned** — unlike `## Review History`, this is the audit trail, and an entry describing an irreversible action stays for as long as the runbook does:
+The main agent appends the reviewer's evidence as one entry per execution attempt to `## Execution Record`. **Never pruned** — this is the execution audit trail, and an entry describing an irreversible action stays for as long as the runbook does:
 
 ```text
 ### Executed <ISO date> — UNSAFE | DIVERGED | INCOMPLETE | COMPLETE
@@ -150,7 +150,7 @@ Remains:  <phases not run; preconditions re-verified?> | none
 Always:
 
 - [ ] **Read-only:** every command run was read-only. No infrastructure state was mutated, and nothing in the runbook was executed, resumed, or remediated.
-- [ ] **Authority and independence:** `independence.md` satisfied, including `Re-review` — this cycle was explicitly invoked, not a continuation of revisions I just made. Prior verdicts were read only after my own checks. Review reported findings and did not rewrite the runbook. Non-execution findings are in one `Nits:` line.
+- [ ] **Authority and independence:** reviewer context and revision authority satisfy `independence.md`. Prior verdicts were read only after my own checks. Review reported findings and did not rewrite the runbook. Non-execution findings are in one `Nits:` line.
 
 Default review:
 
@@ -170,7 +170,7 @@ Default review:
 
 Report: severity-ranked findings table, then the verdict — READY or NEEDS CHANGES by default, UNSAFE / DIVERGED / INCOMPLETE / COMPLETE in `post`.
 
-On every READY or NEEDS CHANGES verdict, append to `## Review History` and prune to the last three. With no counter in the header this history is the runbook's only durable record of what it has survived — three retained entries all reading `NEEDS CHANGES` is the non-convergence `independence.md` `Re-review` says to surface, not to answer with a quieter fourth round.
+On every READY or NEEDS CHANGES verdict, the main agent appends a concise `## Review History` entry. Preserve unresolved findings and the evidence needed to assess progress; non-convergence follows `independence.md`, not a count of prior verdicts.
 
 ```text
 ### Review <ISO date> — READY | NEEDS CHANGES
@@ -179,6 +179,6 @@ Findings:  <HIGH: N, MEDIUM: N, LOW: N — key issues named>
 Changed:   <what was fixed in response> | none
 ```
 
-Blocking finding → `NEEDS CHANGES`; leave `Status: draft`. Otherwise `READY`; write `Review: READY <date>` in header. `post` verdicts write `## Execution Record` instead, per `Post-execution audit`.
+Blocking finding → `NEEDS CHANGES`; leave `Status: draft`. Otherwise `READY`; the main agent writes `Review: READY <date>` in the header. For `post`, the main agent records the reviewer's evidence under `## Execution Record` instead, per `Post-execution audit`. The delegated reviewer edits neither record.
 
 READY is a handoff, not a start. End the review by naming the human as the executor — never offer to run a phase, and never read the user's approval of a revision as authorization to execute the runbook.

@@ -1,10 +1,12 @@
 # /explore — Codebase Exploration
 
-If `~/.dotfiles/.ai-shared/CODING.md` is not yet loaded, read it first.
+Resolve `~/.dotfiles/.ai-shared/CODING.md`'s code navigation cascade before any file read, grep, or agent spawn. (Load CODING.md first if not yet read this session.)
 
-Target from $ARGUMENTS or ask. Read AI project configuration. Read-only: modify nothing.
+## Step 1 — Target
 
-## Area Decomposition
+From $ARGUMENTS or ask. Read AI project config. Read-only: modify nothing.
+
+## Step 2 — Area Decomposition
 
 Identify distinct areas (e.g. auth, API, DB). Single area → explore inline.
 
@@ -14,6 +16,7 @@ Target: <feature/module/question>
 Stack: <detected>
 Standards: <from project config>
 Constraints: Read-only. Report findings only.
+Tooling: Read ~/.dotfiles/.ai-shared/CODING.md; use the highest available tier from its code navigation cascade.
 ```
 
 Spawn parallel `code-explorer` per area:
@@ -51,6 +54,7 @@ Explore: <area>. Report: entry points, key files, data flow, patterns, gotchas.
 
 ## Self-Check (BLOCKING)
 
+- [ ] **Tooling gate:** highest available navigation tier was identified and used for all exploration.
 - [ ] **Read-only:** no file modified.
 - [ ] **Evidence:** every Entry Point, Key File, and Pattern carries a real `file:line` from tool output; data flow traced input → transform → output.
 - [ ] **Honest blanks:** Gotchas and Open Questions are filled or explicitly `none` — never omitted.

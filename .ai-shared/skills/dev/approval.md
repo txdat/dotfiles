@@ -4,15 +4,17 @@ Owns the exact prompt, pause, and revision procedure for every human approval in
 
 ## Application spec
 
-One decision, one pause. Precondition: the plan carries `Review: READY <date>` from an actual review-feature verdict. Missing → there is nothing to approve yet; run review-feature.
+One decision, one pause.
 
 1. Show the Goal, then every AC and TC by ID — each on its own line, full text, no summarizing. Add slice/step counts, key risks, and issue state.
 2. Ask: **`Approve this spec? Reply "approve", or name the AC/TC IDs to revise or drop.`**
 3. Pause. Only an explicit approval sets `Status: approved`.
 
-A response that names IDs is a revision: apply the edit, delete a dropped item outright (git history is the audit trail — do not keep tombstones), and route back through review-feature before asking again.
+A response that names IDs is a revision: apply the edit, delete a dropped item outright (the issue comment preserves the final plan — do not keep tombstones), and route back through review-feature before asking again.
 
 Silence, a general "proceed", prior agreement on the Goal, urgency, and a bug report are **not** approvals. Neither is your own confidence. Nothing else in the flow may set `Status: approved`.
+
+Explicit acceptance in native plan mode also satisfies this gate when it presents the same reviewed spec for approval. Preserve valid approval of that unchanged spec on resume; do not ask twice.
 
 ## Architecture
 
@@ -26,20 +28,19 @@ Approving an architecture approves *boundaries*, never application behavior: eac
 
 ## Changing an approved spec
 
-Never edit approved behavior in place. Any later change to the Goal, an AC, or a TC — during execution, review, or re-planning — clears `Review:`, returns `Status: approved` to `planning`, and takes the plan back through review-feature and this pause. That re-review is explicitly invoked like any other (`independence.md` `Re-review`): amend the plan, then stop and let the user start it.
+Edit the main-tree plan before a worktree exists; afterwards edit only its authoritative worktree copy.
 
-A **deviation** is the opposite case: same approved behavior, different *means*. Log it under `## Deviations` per PROCESS #4 and keep going. If you cannot tell which one you are looking at, it is this one.
+Classify the change by meaning. An editorial correction preserves outcomes, scenarios, thresholds, contracts, and verification obligations. Record it briefly under `## Review History`; retain approval and status. Correcting `Test: path::name` is evidence maintenance only when the reference still identifies the same scenario with applicable proof. Missing or previously unreviewed evidence is a verification gap: a `reviewed` plan returns to `implemented` until independent review settles it. If equivalence is uncertain, investigate before treating the change as editorial.
+
+A semantic amendment adds, removes, or changes an approved outcome, scenario, constraint, or verification obligation. Set the authoritative plan to `planning`, record the affected Goal/AC/TC IDs and reason in `## Review History`, and prepare the revised spec. It must pass review-feature and the human approval pause before dependent implementation resumes. `independence.md` governs whether existing authorization includes revision and re-review. An Open Risk never authorizes a semantic amendment.
+
+A **deviation** preserves approved behavior and scope while changing specified implementation details. PROCESS #4 owns its record and risk checks: routine changes continue, material changes require a decision. If behavioral impact is uncertain, investigate first and ask if the uncertainty remains; do not classify uncertainty as permission to proceed.
 
 ### What happens to work already committed
 
-A behavior change found mid-execution leaves proof and implementation commits for a spec no longer approved. The worktree and branch survive the round trip; reversion is scoped by commit boundaries, not by TC:
+Preserve the worktree, branch, and unaffected commits. Editorial corrections invalidate no behavioral proof. For a semantic amendment, identify which tests, proof, and implementation no longer satisfy the revised spec; do not count historical evidence as proof of changed behavior.
 
-1. **Revert whole proof/GREEN pairs.** A slice's TCs are bundled into one pair, so a TC cannot be extracted from its siblings. The pair holding the amended TC comes out entirely; that slice re-enters at RED with its revised TC set, siblings included.
-2. **Other slices keep everything.** Unaffected slices keep their proof and GREEN commits.
-3. **Revert, never reset.** The branch keeps the record of what was built and withdrawn. Survivors re-enter at RED after re-approval; the old proof is gone, not reused.
-4. **Flip status in the worktree copy** (`planning`, `Review:` cleared) and commit it. `gate-check` refuses execution until `Review: READY` and explicit approval again.
-
-Never carry a reverted TC's implementation forward "since it's already written" — code whose only warrant was a spec that no longer exists.
+After reapproval, rework the affected behavior with the applicable `tdd.md` proof and rerun affected tests. Revert or replace only invalidated changes when they can be separated safely. Revert a whole proof/GREEN pair only when the affected portion cannot be separated without breaking its remaining behavior or evidence. Preserve Git history rather than resetting it. Review must account for retained and replaced evidence against the current spec before publication.
 
 ### Scope of the re-approval
 
@@ -51,11 +52,12 @@ Dropping a plan before it ships is the human's call, on the same authority as gr
 
 1. `Worktree:` recorded → remove the worktree and its branch from `$MAIN_ROOT`, requiring a clean tree first and showing any refusal instead of forcing it. A plan dropped at `planning` or `approved` never had one; skip this.
 2. In `$MAIN_ROOT`'s locator copy, set `Status: abandoned`, clear `Worktree:`, and record in one line what was dropped and why.
+3. Plan links a shared parent issue → tick and strike this goal's entry, mirroring `frame-goal`'s spike convention: `- [x] ~<goal sentence>~ — abandoned (plan)`. An abandoned goal ships no PR, so nothing else will ever tick it — and `create-pr`'s closure check reads exactly these boxes, so skipping this strands the parent open forever.
 
-Abandonment is the inverse of archival, so the record lives in the opposite place. `archived` survives on a merged branch, which is why create-pr commits it there and deletes the locator; a dropped branch takes its plan copy with it, leaving the locator as the only surviving record `gate-check` can see. Write `abandoned` anywhere else and the locator keeps reading as active, letting a later phase be gated on it as live work.
+Each terminal status has exactly one surviving record. `archived` → create-pr posts the plan as an issue comment and deletes local copies. `abandoned` → the branch is removed, taking the worktree copy; the locator stays as the only record `gate-check` can see. Write `abandoned` anywhere else and the locator keeps reading as active, letting a later phase be gated on it as live work.
 
-`abandoned` and `archived` are the two terminal statuses: both leave the active set, and neither is an entry status, so an abandoned plan blocks at whatever gate it is aimed at. Revival requires a fresh planning artifact and returns through review-feature and the spec pause; never reopen the terminal plan.
+`abandoned` and `archived` are the two terminal statuses: both leave the active set, and neither is an entry status, so an abandoned plan blocks at whatever gate it is aimed at. Revival requires a fresh planning artifact, review-feature, and the spec pause; never reopen the terminal plan.
 
 ## What is enforced, and what is not
 
-`gate-check` blocks execution unless `Status: approved` **and** `Review: READY` are both set — it proves a review happened before approval, nothing more. The pause is the enforcement; the judgment lives in review-feature's adversarial self-check. Treat a plan that reached `approved` without a human answering the question above as unapproved, whatever the file says.
+`gate-check` blocks execution unless `Status: approved` is set. Human approval is the consent requirement; the judgment lives in review-feature's adversarial self-check. Treat a plan that reached `approved` without valid human approval under this procedure as unapproved, whatever the file says.

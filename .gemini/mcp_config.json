@@ -1,4 +1,7 @@
 {
   "mcpServers": {
+    "sverklo": {
+      "command": "/home/txdat/.local/share/fnm/node-versions/v24.19.0/installation/bin/sverklo"
+    }
   }
 }

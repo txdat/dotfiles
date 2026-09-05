@@ -6,14 +6,14 @@ Referenced by review-feature, review-code, review-system, and review-infra. A re
 
 **Did this session produce the artifact under review?** The session that authored the plan/diff/architecture doc is the only session that must delegate. Every other session IS the fresh reviewer — delegating from one adds latency, burns a model×context slot, and gains nothing.
 
-- **No, this session did not author it** → review directly. Nothing else applies. Do not spawn an agent — you are the independent reviewer the rule calls for.
+- **No, this session did not author it** → review directly; delegation adds no independence. The remaining authority and evidence rules still apply.
 - **Yes, this session authored it** → delegate the whole review to exactly one fresh agent with no conversation inheritance (CODING `Subagent context`): its context starts empty except for the packet below. Any delegation mode that forks, inherits, or summarizes this conversation is not fresh and is never valid here, whatever the platform calls it.
 - **Yes, authored here but isolation is unavailable** → review in-session, treating authoring memory as untrusted: re-derive every judgment from the artifact file and source reads, never from what you remember deciding.
 
 | Skill | Reviewer | Artifact |
 |---|---|---|
 | review-feature | `feature-planner` (review mode) | the plan file |
-| review-code | `code-quality-auditor` | the worktree plan + `<base>..HEAD` diff |
+| review-code | `code-quality-auditor` | the worktree plan + `<review-base>..HEAD` diff (first slice's Parent) |
 | review-system | `architecture-strategist` (review mode) | the architecture document |
 | review-infra | `architecture-strategist` (review mode) | the runbook file |
 
@@ -35,16 +35,22 @@ Never include authoring rationale, exploration notes, design alternatives you re
 - Runs in **one context and spawns nothing** — process large work as dependency-ordered batches in the same context.
 - May read files, run tests, run `dev-check`, and run read-only Git inspection (`status`/`diff`/`log`/`show`) inside its assigned worktree.
 - May **not** mutate Git state, edit files, edit `docs/plans/**`, `docs/architecture/**`, or `docs/runbooks/**`, set any `Status:`, or finalize a PR Pattern. For review-infra this extends past the repository: no cloud, cluster, DNS, IaC, or database mutation — read-only commands only. Those are the main agent's, acting on the reviewer's evidence.
-- Reports findings, counterexamples, and its verdict in the reviewing skill's output shape. The main agent relays them verbatim.
+- Reports findings, counterexamples, and its verdict in the reviewing skill's output shape. The main agent may consolidate the report while preserving the verdict, material findings, evidence, uncertainty, and unresolved decisions.
 
 ## Re-review
 
-**Every review cycle is explicitly invoked.** No review skill re-enters itself, and none is triggered by finishing the work its own last verdict demanded. Once the revisions for a verdict are written and committed, the session **stops** — report what changed, say it is unreviewed, and name the skill the user runs when they want it re-reviewed. Do not re-enter, do not dispatch a reviewer, and do not read the user's approval of a revision as authorization for the review after it: it authorizes the edit alone. This holds for review-feature, review-code, review-system, and review-infra alike, and `ship-feature` stops at the same point.
+**Use the authorized scope.** A review-only request ends with findings; it does not authorize edits. If the user later authorizes only an edit, report its verification and leave a full re-review for a new request. An end-to-end delivery request, or explicit authorization to revise and verify, includes independent re-review of those in-scope revisions. The main agent routes it without another permission pause; the reviewer itself remains read-only. Initial reviews follow the same authority and independence rules.
 
-Requiring that invocation is what bounds the loop. Feature-plan review caps at two rounds: round 2 moves non-critical findings to `## Open Risks` and verdicts `READY` — execution's RED phase resolves what design could not. Review-code, review-system, and review-infra have no round cap; repeated revision without convergence there is a signal to surface, not a limit to hit.
+Before an automatic repair/re-review pass, confirm all three:
 
-Scope, precisely: this governs the **second and later** reviews of an artifact. The *first* review of a freshly drafted plan or document is ordinary routing — `ship-feature` runs it unprompted, and the session that drafted the artifact stays independent by delegating under `The rule` above. What may never be automatic is a review whose subject is a revision this flow just produced.
+- The user's request includes delivery or revision-and-verification for this named artifact.
+- The repair stays within that scope; implementation preserves the approved spec. Unresolved spec, dependency, external-effect, or risk decisions pause dependent work.
+- Fewer than two automatic repair/re-review passes have run for this artifact under the current authorization.
 
-A revision authored in-session is unreviewed text: re-review it as adversarially as the original, or delegate again. After piecewise edits, re-read the whole artifact — a lexical consistency pass catches stale identifiers, not a contradiction between two sections.
+Record `Repair pass: 1/2` or `2/2` with the changes and verification in `## Review History`. A pass consists of applying findings and independently reviewing that revision. After the second pass, remaining findings that require another repair → report them and pause for user direction. Renaming a finding, changing its hypothesis, or spawning another reviewer does not reset the budget. Optional refinements may be explicitly skipped. A successful review proceeds to the next authorized phase. Only explicit user direction renews an exhausted repair budget.
 
-Plans, architecture documents, and runbooks carry their own adversarial record (`## Counterexamples Attempted`, `## Review History`), so a re-review meets prior rounds inside the artifact rather than through the packet. That is not a licence to import them early: it is evidence to audit, not a map of what is settled, and each reviewing skill fixes when it may be read. The packet rule above is unchanged — never add the prior round's *conversation* to it.
+After revisions, verify the changed behavior and affected dependencies, and reread the artifact for cross-section conflicts. Reuse evidence only when its code, spec, dependencies, and environment remain applicable. The current artifact must satisfy the full readiness criteria; focused re-verification cannot conceal an unresolved finding. User decisions, spec amendments, and material scope or risk changes still follow `approval.md` and PROCESS #4/#6. Runbook revision and review never authorize infrastructure execution.
+
+Stop earlier if the same blocking finding recurs without new evidence or reduced uncertainty. Report attempts, the unresolved cause, and the decision or evidence needed. Optional refinements do not block readiness, and exhausting a retry budget never converts a defect into a pass.
+
+Prior findings remain in the artifact's `## Review History`. Read them at the reviewing skill's prescribed point, after forming an independent view. Preserve the packet boundary: do not import the author's conversation or prior verdict as instructions to agree.

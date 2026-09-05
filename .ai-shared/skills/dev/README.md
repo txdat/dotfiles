@@ -24,13 +24,13 @@ Architecture uses a separate falsifiable chain: goal and constraints → options
 
 `/dev:ship-feature <requirement>` — [explore] → frame-goal → design-feature → review-feature → spec approval → execute → review-code → PR. The six phases after `frame-goal` are mandatory; `explore` is optional (PROCESS #8). Resume by naming the plan: `/dev:ship-feature docs/plans/<file>.md from <phase>`. A bare `<requirement>` always starts a new design.
 
-Plan review independently derives expected outcomes from `## Goal` before reading proposed TC intents. It returns READY; it never approves. Rework is bounded by explicit invocation, not counters (`independence.md` `Re-review`): feature-plan review caps at two rounds — round 2 moves non-critical findings to `## Open Risks` and verdicts `READY` — while code review is uncounted and unlimited. Non-convergence is a signal to surface, not a ceiling that turns a defective artifact into a pass.
+Plan review derives expected outcomes from `## Goal` before reading proposed TC intents. It returns READY; it never approves. Required decisions and semantic AC/TC amendments block readiness; optional refinements do not. Non-critical verification uncertainty may enter `## Open Risks` when existing TC intents can settle it. Authorized delivery includes independent re-review of in-scope fixes; review-only requests remain read-only. `independence.md` owns these boundaries and escalation when revisions stop making progress.
 
 Plan statuses are enumerated in `PROCESS.md` `Lifecycle`, and `approval.md` owns the two terminal ones. `archived` is create-pr's own last step once the PRs exist; `abandoned` is a human decision.
 
 `archived` means the PR exists and the cycle is closed — **not merged, not deployed**. What that implies for follow-up work, and where a follow-up parents, is `create-pr.md` `Shipped, and what comes after`.
 
-**Every approval is the human's, and `approval.md` is the single source** for both the application spec and the architecture decision. A plan reaches the pause only carrying `Review: READY <date>`; `gate-check` refuses execution without it (PROCESS #9, `approval.md`).
+**Every approval is the human's, and `approval.md` is the single source** for both the application spec and the architecture decision. `gate-check` refuses execution without `Status: approved` (`approval.md`).
 
 Know what enforces what: PROCESS `Self-check boundary`. Short version — the hook proves state, the self-checks prove correctness, and the pause proves consent.
 
@@ -53,6 +53,8 @@ Every skill opens with "read AI project configuration" — the nearest `CLAUDE.m
 ## Single-Source Files
 
 Read by the skills that need them. Phase files may name their gates but do not redefine these rules: `approval.md` (both human decisions) · `independence.md` (delegated review) · `altitude.md` (plan is design, not code) · `tdd.md` (RED→GREEN→BLUE) · `coverage.md` (measurement, bands, test quality bar) · `worktree.md` (lifecycle) · `dependents.md` (blast radius) · `frontend-design.md` (visual design direction for UI/frontend work).
+
+`sverklo.md` sits in this tree but is not one of them: it is a tool guide that `CODING.md`'s navigation cascade loads when the MCP server is present. No dev skill reads it.
 
 ## Design Skills
 

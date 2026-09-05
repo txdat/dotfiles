@@ -1,71 +1,82 @@
 # /review-code — Review Implemented Plan Work
 
-If `~/.dotfiles/.ai-shared/PROCESS.md` is not yet loaded, read it first.
+Main agent: load `PROCESS.md` if needed. A delegated reviewer uses its packet, this file, and the references below; it does not load PROCESS or resolve the main-tree locator.
 
-Behavior is locked to the approved Goal and AC set. **You are the first reviewer of every TC body.** `design-feature` wrote each TC as a one-line intent; `execute-feature` authored its Given/When/Then at RED, which settles only that the test fails first and is constructible. Under-constraint, a misrouted `Proves:`, an assertion mirroring the implementation, and an AC clause no assertion reaches all arrive here unreviewed — and they arrive with the code, which is why this is the right place for them. A plan defect that makes work incorrect, insecure, lossy, or unverifiable is blocking and returns through `approval.md`.
+Entry: exact `docs/plans/<file>.md`, `Status: implemented`. The worktree plan is authoritative. `gate-check` checks metadata, traceability closure, and proof ordering; those checks do not establish behavioral correctness. Bind `<review-base>` from the first PR slice's recorded `Parent`. `Base:` is presence-checked for create-pr only. Review `<review-base>..HEAD` inside `<worktree>`, including reads, tests, and Git inspection. This includes all plan slices and excludes inherited work from an unmerged parent.
 
-The main agent names an exact `docs/plans/<file>.md` per PROCESS `Named plan and entry gates`; a delegated reviewer uses the worktree plan path in its packet and resolves nothing. Entry status is `implemented`; `gate-check` owns plan, issue, worktree, and proof-order gates. Read plan/config and inspect `<base>..HEAD` diff, stat, and log inside `<worktree>`; changed-file reads and test runs resolve there too — a bare repo-relative path lands on `$MAIN_ROOT`'s pre-change copy and silently reviews the wrong tree. The worktree plan is authoritative for status and the AC/TC spec; `$MAIN_ROOT`'s copy is only the locator and never advances past its pre-execution status (worktree.md `Plan resolution vs. truth`).
+## Independence and scope
 
-## Independence and Cost Boundary
+Follow `independence.md` for reviewer context, authority, re-review, and escalation. The reviewer reports findings; the main agent owns edits, status changes, and PR Pattern finalization. Review-only authorization permits no fixes. Authorized delivery or revision-and-verification includes in-scope repairs and independent re-review.
 
-Follow `independence.md` (single source). Verdict actions — Should Fix resolution, PR Pattern finalization, `reviewed` status, and the review commit — belong to the main agent, on the reviewer's evidence.
+Load the approved plan, project config, diff, changed files/tests, and only the definitions or callers needed to verify behavior or a concrete concern. Inventory once and batch independent reads. On re-review, focus new checks on the revision and affected dependencies. Reusable independent evidence must identify its reviewed revision, commands, per-test results, and relevant dependency/environment state. Inspect it and verify that intervening changes preserve its inputs; a previous verdict alone is insufficient. Missing or stale evidence requires fresh checks. Reference reusable evidence from the plan's Review History so a fresh reviewer can find it.
 
-Cost boundary: load only the approved plan, project config, diff, changed files/tests, and definitions or callers needed to verify behavior or a suspected finding. Inventory once; do not reread the repository once per review category. Batch independent read-only commands when practical.
+## Review procedure
 
-## Explicit invocation
+Read `tdd.md` for proof requirements and `coverage.md` for measurement and test quality. Start with the Goal, ACs, diff name/status, stat, and proof history. Use one integrated pass and one evidence table:
 
-Code review is uncounted and unlimited; `independence.md` `Re-review` owns the rule (single source). Applied here: once fixes for a verdict are committed, stop and emit `Fixes applied and committed. Run the dev-review-code skill when you want them re-reviewed.` The plan stays `implemented` and the diff stays unverified until the user invokes the next cycle.
+`TC | AC | test path | proof/baseline result | implementation/assertion evidence | current result`
 
-## Review
+### A. Goal, contracts, and tests
 
-Read `tdd.md` first — it is the standard the proof commits are judged against. Start with diff name/status, stat, log, and the plan's Goal/AC/TC set. Create one row per TC (`TC | AC | test | implementation evidence | result`) and fill it during one integrated changed-file pass. Roll TC evidence up to an `AC-N: PASS|FAIL — evidence` conclusion; never infer an AC pass only from green tests. Evaluate behavior, architecture/data, and scope together instead of rereading the diff by category. Cite findings as `file:line — issue — impact — required fix`.
+Independently describe the required outcome before treating tests as an oracle. For each AC:
 
-### A. Goal and acceptance evidence
+- Verify its Source, Success, and Failure against the Goal and delivered behavior.
+- Map every clause to an assertion that reaches it. A clause without meaningful evidence is blocking.
+- Attempt a concrete implementation that passes its TCs while violating the AC or Goal; record the counterexample and what defeats it.
+- Check each TC's `Proves:` and `Test: path::name` against the actual scenario, production entry point, and assertion. A test joined below the relevant production behavior does not prove that entry point.
+- Verify tests fail when their named behavior breaks. Apply `coverage.md`'s quality bar, including vacuous assertions, implementation mirroring, and untested failure paths.
 
-- read the original Goal before using tests as an oracle; independently describe the delivered observable outcome;
-- verify each AC one by one against its Source, Success, and Failure fields; report `AC-N: PASS|FAIL — <evidence>`;
-- attempt at least one counterexample **per AC** where all its TCs pass but the AC or Goal fails; write the cheating implementation concretely against the actual code. This catches a TC weaker than the AC it claims to prove — a test that goes RED then GREEN while the clause it exists to force is never implemented;
-- **walk every AC clause** (`design-feature` defines the term). For each clause of an AC's Success and Failure, name the assertion that reaches it. A clause with no assertion is blocking — it is promised behavior nothing verifies, invisible to a green suite;
-- verify which production entry point each test invokes: the behavior it proves must execute as a consequence of that entry point, not be asserted by joining below it;
-- then verify every TC's `Test: path::name` names a real test in the diff, its `Proves: AC-N` names the AC the test actually constrains, and the test body matches the TC's intent line — not an adjacent scenario; extra behavioral tests require `## Discovered Scope`;
-- confirm `## Open Risks` is empty. Each entry was a gap design review deferred to execution; a surviving entry is deferred work nothing resolved, and is blocking until a TC covers it or the review shows existing TCs already do;
-- each test would fail when its named behavior breaks — apply `coverage.md` `Quality bar`; any smell it lists is blocking here;
-- independently rerun TC tests plus `## Affected Existing Tests`;
-- verify new calls/fields/imports resolve to their target type/module;
-- inspect every proof commit with `dev-check proof <commit> [--test <in-source-test-path>] [--stub <throwing-stub-path>]`, then confirm its failure/baseline evidence against `tdd.md` step 2 — each test observed failing individually on a stub-free baseline, or a recorded GREEN-minus-one where the stub was load-bearing — and its meaningful assertion. `gate-check` already verifies proof ordering.
+TC bodies are first reviewed here; plan review assessed their intent only. Run `dev-check proof <commit> [--test <path>] [--stub <path>]` for relevant proof commits, inspect their contents, and verify per-test baseline/failure evidence under `tdd.md`. Targeted batches are valid when they expose each test's result and failure reason. Independently run TC tests and `## Affected Existing Tests`, subject to the evidence-reuse rule above.
 
-Passing all TCs is insufficient when any AC or the Goal fails. Implementation failure against a sound AC/TC is rework; a wrong or ambiguous AC or TC is a plan defect and goes back through `approval.md`.
+Confirm `## Open Risks` is empty: existing approved TCs must settle each recorded verification uncertainty. New or changed TC semantics follow `approval.md`; the risk entry itself grants no authority. Editorial corrections preserve meaning and follow that same file's classification rule.
+
+Roll the table into an `AC-N: PASS|FAIL — evidence` conclusion for every AC. Passing tests cannot override a failed AC or Goal. Implementation failure against a sound spec is rework; a wrong or ambiguous spec returns through `approval.md`.
 
 ### B. Architecture and data
 
-Check every plan Non-functional commitment. For changed paths, check applicable concerns: boundaries, query safety, transactions/concurrency, compatibility, security/data exposure, observability, and performance. For every shared mutable state (`dependents.md`) the diff reads as a decision input or writes as a signal: verify no other flow writes it with different semantics — a conflict is blocking. Treat the rest as not applicable without reporting them; do not expand into a repository-wide audit.
+Check applicable boundaries, query safety, transactions/concurrency, compatibility, security/data exposure, observability, performance, and each Non-functional commitment. Verify new calls, fields, and imports against actual types/modules. For shared mutable state used as a decision input or signal, follow `dependents.md`: inspect other writers and invalidate assumptions contradicted by their semantics. Restrict this to affected paths and credible consumers.
 
 ### C. Scope and hygiene
 
-Require every out-of-plan change to appear in `## Deviations` with all four fields present and substantive — **Plan said / Doing instead / Why (what forced it) / Tradeoff (gained vs lost, risk introduced)**. A missing or empty field is a finding, not a formatting nit. Check secrets and TODOs, then run `dev-check artifacts <base> HEAD`.
+Compare the diff with Implementation Steps and `## Design Decisions`. Verify deviations have substantive `Plan said / Doing instead / Why / Tradeoff` fields; report missing entries for the main agent to record. An absent `## Deviations` section is not evidence of alignment. Dropping a required design decision is a scope finding, not a style preference. Material risk changes require the decision described by PROCESS #4; new scope follows #6. A delegated reviewer reports either for the main agent to resolve.
 
-Classify non-blocking observations as **Should fix** (material minor risk/debt) or **Skip** (negligible, intentional, or out of scope) with reasons.
+Check secrets, TODO/debug/conflict artifacts, then run `dev-check artifacts <review-base> HEAD`. Verify coverage evidence, affected callers, and any retained proof after a spec amendment.
 
-Verdict: any blocking finding → `REWORK REQUIRED`; none plus Should Fix → `PASS WITH NOTES`; otherwise `PASS`.
+### D. Efficiency and readability
+
+Inspect changed paths for excessive complexity, N+1 queries, inefficient queries, redundant computation, hot-path allocations, unsuitable data structures, misleading names, unnecessary duplication or abstractions, unexplained constants, and newly introduced dead code. Report concrete consequences rather than generic preferences. A performance defect that risks failure or data loss is blocking; readability preferences are non-blocking.
+
+For UI changes, inspect applicable requirements in `frontend-design.md`. A failed AC is blocking; other quality-floor misses are Should fix unless they independently cause a blocking correctness or safety defect. Required design decisions remain scope checks under C.
+
+## Verdict and evidence
+
+A blocking correctness, security, data-integrity, spec, or verification defect → `REWORK REQUIRED`. Otherwise classify observations as `Should fix` (material minor risk/debt) or `Skip` (negligible, intentional, or outside scope). Should fix items yield `PASS WITH NOTES`; none yields `PASS`.
+
+Report the verdict and Goal outcome, AC conclusions, the single TC evidence table, and findings as `file:line — issue — consequence — required change`. Include counterexamples and commands/results with the evidence they support; do not repeat them in a second checklist report. Omit empty categories. Preserve uncertainty and unrun checks.
 
 ## Self-Check (BLOCKING)
 
-- [ ] **Independence:** `independence.md` satisfied — fresh agent, or a session that did not implement; any in-session fallback re-derived every verdict from plan, diff, and test runs; every file read, test, and Git command ran inside `<worktree>`. Context: __.
-- [ ] **Invocation:** this cycle began with an explicit user invocation of review-code, not as a continuation of a previous verdict's fixes. Trigger: __.
-- [ ] **Goal/behavior:** every AC has independent PASS evidence against the Goal; a counterexample was attempted **per AC** and named with what defeated it in the actual code, not asserted as clean; **every clause of every AC's Success and Failure has a named assertion reaching it**; every TC's `Test:` names a real test whose body matches its intent and whose `Proves:` names the AC it constrains; edge/failure paths and meaningful assertions verified. Gaps: __.
-- [ ] **Proof and symbols:** proof contents independently checked; app symbols resolve. Issues: __.
-- [ ] **Architecture/data:** every Non-functional commitment and each concern applicable to changed paths were checked; no repository-wide audit was substituted. Issues: __.
-- [ ] **Scope/hygiene:** deviations complete; `## Open Risks` empty, each entry resolved by a TC or shown already covered; no unplanned change, secret, TODO, or debug/conflict artifact. Issues: __.
-- [ ] **PR Pattern:** actual diff remains independently mergeable under the provisional slices; every step is owned and no TC spans slices; no chain slice depends on a later slice's code to pass its own tests. Suspected dependencies to prove at finalization: __.
+Reference evidence already recorded in the table/report. Conditional domain checks may be N/A with a reason; required behavioral and proof checks may not.
 
-## Output and Actions
+- [ ] Authority, reviewer independence, correct worktree/range, and repair budget verified.
+- [ ] Every AC and clause has outcome/assertion evidence and a concrete counterexample check.
+- [ ] Every TC maps to the correct scenario, production entry point, and actual test.
+- [ ] Proof commits and per-test baseline results inspected; no pending new-API sensitivity check remains.
+- [ ] TC and affected tests have current independent results; reused evidence has verified inputs.
+- [ ] Applicable architecture, security, data-integrity, concurrency, and Non-functional requirements checked; symbols resolve.
+- [ ] Coverage gates and affected callers checked; no unresolved critical path or dependency breakage.
+- [ ] Deviations/spec amendments accounted for and Open Risks settled.
+- [ ] Artifact scan passes; efficiency/readability findings are classified by consequence.
+- [ ] PR slices have complete step/TC ownership and can pass independently without later slices.
 
-Report verdict and Goal outcome first, then AC conclusions, the TC evidence table, counterexample, test commands/results, Blocking, Should Fix, relevant Skip decisions, and Plan Defects. Omit empty sections, repeated evidence, and generic praise.
+If a correctness check fails, report `REWORK REQUIRED` with the gap; the checklist does not suppress a failing verdict. A passing verdict cannot advance status until all checks pass.
 
-- `REWORK REQUIRED`: offer fixes and wait for approval before editing. Once the approved fixes are committed, stop per `Explicit invocation` — the next review is the user's call.
-- `PASS WITH NOTES`: ask which Should Fix items to apply/skip; wait. **Every note skipped** → nothing changed since the verdict, so finalize as `PASS` below. **Any note applied** → the diff is no longer the one reviewed: commit the edits, leave the plan `implemented`, and stop per `Explicit invocation`.
-- `PASS`: compare the actual diff with the provisional PR Pattern and finalize it. **Match** = same slice count, each slice owns the same TC set, and each branch has the same parent. Step reordering *within* a slice is not drift; a step moving *between* slices is, as are merged, split, added, or dropped slices — including a slice absorbed because it turned out trivial. Match → remove `(provisional)`; drift → propose a corrected pattern and wait for approval; missing → REWORK.
+## Actions and PR finalization
 
-  **A chain finalizes only on proven atomicity.** Finalization is the main agent's action, and so is this: checking out each slice is a Git mutation the delegated reviewer may not perform (`independence.md`). For each slice in turn, check out its tip in `<worktree>` and run lint, build, and that slice's tests **there** — `HEAD` being green says nothing about the tips beneath it. Record one `Slice N (<branch>): green at <sha>` row under the pattern, then return the worktree to the branch it started on. A red tip is blocking: it would ship a PR that cannot merge or revert alone (`design-feature` `PR Pattern`). Execution already proved this slice by slice, but BLUE, rework, and back-fills all land afterwards, which is why it is re-proved here. A single-slice pattern needs nothing extra — its tip is the `HEAD` the reviewer already ran.
+- `REWORK REQUIRED`: keep the plan `implemented` for implementation defects; semantic spec amendments return it to `planning` under `approval.md`. The main agent may fix within existing delivery authorization and route independent re-review. Otherwise report findings and the decision needed.
+- `PASS WITH NOTES`: during authorized delivery, apply justified in-scope fixes or record why a non-blocking item is skipped. Ask about material tradeoffs outside authorization. Review-only requests end with the report. Any implementation edit requires verification and re-review before finalization; otherwise finalize when all notes are dispositioned.
+- `PASS`: the main agent compares actual slices with the provisional PR Pattern. Matching slice count, TC ownership, and parents permits removing `(provisional)`. Within-slice step reordering is allowed. Changed slice boundaries, TC ownership, or parents require a corrected pattern and approval. A missing pattern is REWORK.
 
-After PASS finalization, set the worktree plan to `reviewed`, commit `docs(<scope>): review passed`, and emit: `Review passed; every AC independently verified. Run the dev-create-pr skill.`
+For a chain, the main agent checks out each slice tip in `<worktree>`, runs lint, build, and that slice's tests there, and records `Slice N (<branch>): green at <sha>`. Existing evidence can be reused only for that exact tip with unchanged verification inputs. A green final HEAD does not prove earlier tips. Return to the original branch. The delegated reviewer never checks out branches. A single slice uses the HEAD evidence already gathered.
+
+After successful finalization, set the untracked worktree plan to `reviewed` and emit: `Review passed; every AC independently verified. Run the dev-create-pr skill.`

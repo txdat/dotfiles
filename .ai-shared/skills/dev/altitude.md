@@ -11,4 +11,4 @@ Referenced by design-feature (drafting standard) and design-system (boundary-con
 
 Target-language text anchors the executor to one implementation and substitutes premature detail for behavior, hiding the gaps the AC/TC graph exists to expose.
 
-**Verdict:** in design-feature this is the drafting standard — write notation, and rewrite target-language syntax before handoff. In review-feature it is at most a nit — never a finding, never a `NEEDS CHANGES` on its own. It does not clear `Review:` and it does not gate the approval pause: a plan whose ACs and TCs are sound is not made unsound by a stray type annotation. Altitude blocks nothing; the AC/TC graph and the counterexamples do.
+**Verdict:** in design-feature this is the drafting standard — write notation, and rewrite target-language syntax before handoff. In review-feature it is at most a nit — never a finding, never a `NEEDS CHANGES` on its own: a plan whose ACs and TCs are sound is not made unsound by a stray type annotation. Altitude blocks nothing; the AC/TC graph and the counterexamples do.
