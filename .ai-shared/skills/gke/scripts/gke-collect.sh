@@ -118,13 +118,40 @@ mon_ts() {
 #   INFO    = condition held but a benign cause (planned op / recovered state) explains it
 verdict() { printf '[VERDICT: %s] %s\n' "$1" "$2"; }
 
+# Container operations for THIS cluster only, as TAB-separated
+# <operationType> <status> <startTime> <endTime>.
+#
+# Two reasons this is not a bare `gcloud container operations list`:
+# (1) The API is LOCATION-scoped, not cluster-scoped. An unrelated cluster's REPAIR_CLUSTER in the
+#     same location would fire H13 (false positive) AND downgrade a real H14/H15 reclamation to INFO
+#     via the planned-op guard (false negative) — one call producing both error directions.
+#     targetLink is .../clusters/<cluster>[/nodePools/<pool>], so scope on that.
+# (2) `value()` emits TABs and a RUNNING op has an EMPTY endTime. Under awk's default FS that empty
+#     field collapses and targetLink slides into $4, so every consumer must split on TAB.
+# If no row carries a targetLink at all, fall back to unscoped rather than silently reporting
+# nothing (a false CLEAR), and say so.
+cluster_ops() {
+  gcloud container operations list --project="$PROJECT" --location="$REGION" \
+    --format="value(operationType,status,startTime,endTime,targetLink)" 2>/dev/null \
+  | awk -F'\t' -v cl="$CLUSTER" '
+      { rows++; row[rows] = $1 FS $2 FS $3 FS $4
+        if ($5 != "") linked++
+        if ($5 ~ ("/clusters/" cl "(/|$)")) sel[rows] = 1 }
+      END {
+        if (rows == 0) exit
+        if (linked == 0) {
+          print "[WARNING] container operations carry no targetLink — H13 and the planned-op guard are NOT scoped to cluster " cl "; another cluster in this location can fire or mask them." > "/dev/stderr"
+          for (i = 1; i <= rows; i++) print row[i]
+        } else for (i = 1; i <= rows; i++) if (i in sel) print row[i]
+      }'
+}
+
 # Planned/benign GKE ops overlapping the critical window — used as false-positive guards for
 # H13/H14/H15 (a delete/rebuild during a planned resize/upgrade/repair is intentional cycling,
 # not reclamation). Overlap = op started before window end AND (still running OR ended after start).
 planned_ops_in_window() {
-  gcloud container operations list --project="$PROJECT" --region="$REGION" \
-    --format="value(operationType,status,startTime,endTime)" 2>/dev/null \
-  | awk -v s="$T_START_CRITICAL" -v e="$T_END" \
+  cluster_ops \
+  | awk -F'\t' -v s="$T_START_CRITICAL" -v e="$T_END" \
       '($1=="SET_NODE_POOL_SIZE" || $1 ~ /^UPGRADE/ || $1=="REPAIR_CLUSTER") \
        && $3<=e && ($4=="" || $4>=s) { print $1"@"$3 }'
 }
@@ -221,6 +248,9 @@ LB_LOG_LIMIT="${LB_LOG_LIMIT:-5000}"           # 1d.2: max LB log entries read f
 # All collected evidence goes to a single report file the agent then reads; only the
 # path (and any fatal pre-flight error above) reaches the terminal. Override with $REPORT.
 REPORT="${REPORT:-/tmp/gke-incident-${CLUSTER}-$(date -u +%Y%m%dT%H%M%SZ).txt}"
+# The report carries app logs, IAM bindings, SA identities and deployment env — create it 0600
+# rather than leaving it world-readable in a shared /tmp under the usual umask 022.
+( umask 077 && : >"$REPORT" ) 2>/dev/null || true
 exec 3>&1                 # fd 3 = real terminal
 echo "gke-collect: writing report to $REPORT" >&3
 exec >"$REPORT" 2>&1      # stdout+stderr of the sweep now land in the report file
@@ -239,7 +269,16 @@ if [ -n "$CLUSTER_LOCATION" ] && [ "$CLUSTER_LOCATION" != "$REGION" ]; then
 elif [ -z "$CLUSTER_LOCATION" ]; then
   echo "[WARNING] Could not resolve '$CLUSTER' location via 'gcloud container clusters list' (permission or wrong name?) — proceeding with the supplied REGION='$REGION' unverified. Cluster-scoped sections that come back empty may be 404s, not clean results."
 fi
-echo "PROJECT=$PROJECT CLUSTER=$CLUSTER REGION=$REGION NAMESPACE=$NAMESPACE"
+# A GKE location is a REGION for a regional cluster and a ZONE for a zonal one; the skill documents
+# both, and the correction above can itself hand us a zone. `gcloud container` accepts either via
+# --location, but compute/redis are region-scoped and 404 on a zone — which surfaced as CAP_COMPUTE=0
+# and an empty 1g.4 quota block, i.e. a missing-permission story for a supported topology. Derive the
+# enclosing region once (a zone is "<region>-<letter>").
+case "$REGION" in
+  *-*-[a-z]) REGION_ONLY="${REGION%-*}" ;;
+  *)         REGION_ONLY="$REGION" ;;
+esac
+echo "PROJECT=$PROJECT CLUSTER=$CLUSTER REGION=$REGION (location; enclosing region $REGION_ONLY) NAMESPACE=$NAMESPACE"
 echo "Services=$SERVICES  SVC_RE=$SVC_RE  primary=$SERVICE  deployment=$DEPLOYMENT"
 echo "T_START=$T_START  T_END=$T_END"
 echo "T_START_MINUS_2H=$T_START_MINUS_2H  T_START_CRITICAL=$T_START_CRITICAL ($T_CRITICAL_LOOKBACK)"
@@ -259,7 +298,7 @@ section "Phase 0 — Auth Validation"
 gcloud auth list --filter="status:ACTIVE" --format="value(account)"
 gcloud config get-value project
 if [ "$GET_CREDENTIALS" = "1" ]; then
-  gcloud container clusters get-credentials "$CLUSTER" --region "$REGION" --project "$PROJECT"
+  gcloud container clusters get-credentials "$CLUSTER" --location "$REGION" --project "$PROJECT"
 else
   note "Skipped 'gcloud container clusters get-credentials' (mutates local kubeconfig). Re-run with --get-credentials after confirming with the user, or run it manually if the current context doesn't already target $CLUSTER."
 fi
@@ -274,9 +313,9 @@ kubectl cluster-info --request-timeout=5s 2>/dev/null
 section "Phase 0b — Capability Preflight (empty ≠ clear)"
 gcloud logging read 'timestamp>="'$T_START'"' --project="$PROJECT" --limit=1 --format='value(timestamp)' >/dev/null 2>&1 \
   && CAP_LOGGING=1 || CAP_LOGGING=0
-gcloud compute regions describe "$REGION" --project="$PROJECT" --format='value(name)' >/dev/null 2>&1 \
+gcloud compute regions describe "$REGION_ONLY" --project="$PROJECT" --format='value(name)' >/dev/null 2>&1 \
   && CAP_COMPUTE=1 || CAP_COMPUTE=0
-gcloud container operations list --project="$PROJECT" --region="$REGION" --limit=1 >/dev/null 2>&1 \
+gcloud container operations list --project="$PROJECT" --location="$REGION" --limit=1 >/dev/null 2>&1 \
   && CAP_OPS=1 || CAP_OPS=0
 BILLING_NOW=$(gcloud billing projects describe "$PROJECT" --format='value(billingEnabled)' 2>/dev/null) \
   && CAP_BILLING=1 || CAP_BILLING=0    # one call: capture current state and readability together
@@ -437,7 +476,7 @@ gcloud compute network-endpoint-groups list --project=$PROJECT --format="table(n
 LB_LOGGING_ENABLED="false"
 if [ -n "$LB_BACKEND_NAME" ]; then
   LB_LOGGING_ENABLED=$(gcloud compute backend-services describe "$LB_BACKEND_NAME" --global --project=$PROJECT --format="value(logConfig.enable)" 2>/dev/null || \
-                       gcloud compute backend-services describe "$LB_BACKEND_NAME" --region=$REGION --project=$PROJECT --format="value(logConfig.enable)" 2>/dev/null || echo false)
+                       gcloud compute backend-services describe "$LB_BACKEND_NAME" --region=$REGION_ONLY --project=$PROJECT --format="value(logConfig.enable)" 2>/dev/null || echo false)
 fi
 # gcloud prints the boolean as 'True'/'False' (Python repr), so a `= "true"` test never matched and
 # 1d.2-1d.5 were skipped even on a correctly-logging LB. Normalise before comparing.
@@ -779,7 +818,7 @@ gcloud logging read \
 
 section "1f.3 — GKE Automatic Upgrades" "H13"
 gcloud logging read \
-  'resource.type="gce_instance" OR resource.type="gke_cluster"
+  '(resource.type="gce_instance" OR resource.type="gke_cluster")
    (protoPayload.methodName=~"UpdateCluster|SetNodePoolVersion|UpdateNodePool"
     OR textPayload=~"upgrade|Upgrading")
    timestamp>="'$T_START_MINUS_2H'"
@@ -817,7 +856,7 @@ gcloud logging read \
   --format="table(timestamp,jsonPayload.involvedObject.name,jsonPayload.reason,jsonPayload.message)" --limit=50
 
 section "1f.7 — Maintenance Window" "H13"
-gcloud container clusters describe "$CLUSTER" --region=$REGION --project=$PROJECT \
+gcloud container clusters describe "$CLUSTER" --location=$REGION --project=$PROJECT \
   --format="value(maintenancePolicy.window.dailyMaintenanceWindow,maintenancePolicy.window.recurringWindow)"
 
 section "1f.8 — IAM / Workload Identity Policy Changes (critical window T-6h)" "H8"
@@ -866,11 +905,11 @@ section "1g.4 — Quota Headroom Check (rules out H4-quota)"
 # Keep only the quotas that gate GKE node autoscaling. Every per-family vCPU quota is
 # named <FAMILY>_CPUS, so the bare "CPUS" substring matches all machine families
 # (E2/N2/N2D/C2D/T2D/C3/N4/C4/…) automatically — no need to hardcode family names.
-gcloud compute regions describe "$REGION" --project=$PROJECT \
+gcloud compute regions describe "$REGION_ONLY" --project=$PROJECT \
   --format="table(quotas.metric,quotas.usage,quotas.limit)" | grep -iE "CPUS|IN_USE_ADDRESSES" || true
 
 section "1g.5 — Node Pool Topology" "H11 H15 H16"
-gcloud container node-pools list --cluster="$CLUSTER" --region=$REGION --project=$PROJECT \
+gcloud container node-pools list --cluster="$CLUSTER" --location=$REGION --project=$PROJECT \
   --format="table(name,config.machineType,initialNodeCount,autoscaling.enabled,locations)"
 
 section "1h.1 — VPC/Firewall/Route/NAT Changes (H12, T-2h)"
@@ -905,12 +944,12 @@ gcloud logging read \
 
 section "1h.4 — Subnet/Pod-IP Exhaustion (H12)"
 gcloud logging read \
-  'resource.type="gce_subnetwork" OR (resource.type="gce_instance" AND protoPayload.response.error.errors.code="IP_SPACE_EXHAUSTED")
+  '(resource.type="gce_subnetwork" OR (resource.type="gce_instance" AND protoPayload.response.error.errors.code="IP_SPACE_EXHAUSTED"))
    timestamp>="'$T_START'"
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc \
   --format="table(timestamp,protoPayload.methodName,protoPayload.status.message)" --limit=50
-gcloud container clusters describe "$CLUSTER" --region=$REGION --project=$PROJECT \
+gcloud container clusters describe "$CLUSTER" --location=$REGION --project=$PROJECT \
   --format="value(ipAllocationPolicy.clusterSecondaryRangeName,ipAllocationPolicy.servicesSecondaryRangeName,ipAllocationPolicy.podCidrOverprovisionConfig)" 2>/dev/null
 
 section "1h.5 — LB Backend Health, Network Side (H12)"
@@ -954,12 +993,11 @@ section "1i — H13 Repair/Upgrade Op Scan (critical window T-6h)"
 if [ "${CAP_OPS:-0}" = 0 ]; then
   verdict UNKNOWN "H13: container operations unreadable — cannot rule out an in-window repair/upgrade op."
 else
-  H13_OPS=$(gcloud container operations list --project=$PROJECT --region=$REGION \
-    --format="value(operationType,status,startTime,endTime)" \
-    | awk -v s="$T_START_CRITICAL" -v e="$T_END" '$3>=s && $3<=e && ($1=="REPAIR_CLUSTER" || $1 ~ /^UPGRADE/) {print}')
+  H13_OPS=$(cluster_ops \
+    | awk -F'\t' -v s="$T_START_CRITICAL" -v e="$T_END" '$3>=s && $3<=e && ($1=="REPAIR_CLUSTER" || $1 ~ /^UPGRADE/) {print}')
   printf '%s\n' "$H13_OPS"
   # maintenance-window guard: a scheduled UPGRADE inside the cluster's window is expected, not an incident.
-  MAINT=$(gcloud container clusters describe "$CLUSTER" --region=$REGION --project=$PROJECT \
+  MAINT=$(gcloud container clusters describe "$CLUSTER" --location=$REGION --project=$PROJECT \
     --format="value(maintenancePolicy.window.recurringWindow.recurrence,maintenancePolicy.window.dailyMaintenanceWindow.startTime)" 2>/dev/null)
   printf '%s' "$H13_OPS" | grep -q 'REPAIR_CLUSTER' && H13_REP=1 || H13_REP=0
   printf '%s' "$H13_OPS" | grep -q 'UPGRADE'        && H13_UP=1  || H13_UP=0
@@ -1004,7 +1042,7 @@ fi
 
 section "1i — H15 Node Count Loss / NotReady / Age Reset"
 kubectl get nodes -o wide
-POOLS=$(gcloud container node-pools list --cluster="$CLUSTER" --region=$REGION --project=$PROJECT \
+POOLS=$(gcloud container node-pools list --cluster="$CLUSTER" --location=$REGION --project=$PROJECT \
   --format="value(name,autoscaling.minNodeCount)" 2>/dev/null)
 printf '%s\n' "$POOLS"
 MIN_SUM=$(printf '%s\n' "$POOLS" | awk '{s+=$2} END{print s+0}')   # $2 = per-zone minNodeCount
@@ -1210,9 +1248,14 @@ gcloud logging read \
    timestamp>="'$T_START'"
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc --limit=50
+# Values are printed because the pool SIZE is the whole point of this check — but the same grep
+# also matches DATABASE_URL and friends, so strip embedded credentials and secret-shaped values
+# before they land in the report.
 kubectl get deployment "$DEPLOYMENT" -n "$NAMESPACE" \
   -o jsonpath='{range .spec.template.spec.containers[*]}{.name}{"\n"}{range .env[*]}{.name}{" = "}{.value}{"\n"}{end}{"\n"}{end}' 2>/dev/null | \
-  grep -iE "pool|conn|database|db_max|max_conn|pg_pool|hikari|c3p0|drizzle"
+  grep -iE "pool|conn|database|db_max|max_conn|pg_pool|hikari|c3p0|drizzle" | \
+  sed -E 's#(://[^:/@[:space:]]+:)[^@[:space:]]+@#\1***REDACTED***@#g' | \
+  sed -E 's#^([^=]*(PASS|PASSWORD|SECRET|TOKEN|KEY|CREDENTIAL)[^=]*= ).*#\1***REDACTED***#I' 
 
 section "H6 (Dependency/Redis) — App error signatures, instance state, blast radius, connectivity"
 gcloud logging read \
@@ -1226,7 +1269,7 @@ gcloud logging read \
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc \
   --format="table(timestamp,resource.labels.pod_name,jsonPayload.message,textPayload)" --limit=300
-gcloud redis instances list --region=$REGION --project=$PROJECT \
+gcloud redis instances list --region=$REGION_ONLY --project=$PROJECT \
   --format="table(name,tier,memorySizeGb,host,port,state,redisVersion)" 2>/dev/null
 gcloud logging read \
   'resource.type="redis_instance"
@@ -1399,7 +1442,7 @@ else
   STOCKOUT_HIT=0
   verdict CLEAR "H11: no ZONE_RESOURCE_POOL_EXHAUSTED/RESOURCE_POOL_EXHAUSTED in window (logging readable). If pods are still Pending, this is scale-up latency → see H16 below."
 fi
-gcloud container node-pools list --cluster="$CLUSTER" --region=$REGION --project=$PROJECT \
+gcloud container node-pools list --cluster="$CLUSTER" --location=$REGION --project=$PROJECT \
   --format="table(name,config.machineType,autoscaling.enabled,autoscaling.minNodeCount,autoscaling.maxNodeCount,locations)"
 
 section "H16 (Scale-up Pending Latency) — pods Pending awaiting new nodes past grace"
@@ -1484,8 +1527,8 @@ gcloud logging read \
   --project=$PROJECT --order=asc --limit=1 \
   --format="value(protoPayload.authenticationInfo.principalEmail,protoPayload.requestMetadata.callerSuppliedUserAgent)"
 echo "^ actor of first delete (expect cloudservices SA / 'GCE Managed Instance Group for GKE')"
-gcloud container operations list --project=$PROJECT --region=$REGION \
-  --format="value(name,operationType,status,startTime,endTime)" | grep -Ei "REPAIR_CLUSTER|UPGRADE|SET_NODE_POOL_SIZE" | head
+cluster_ops | grep -Ei "REPAIR_CLUSTER|UPGRADE|SET_NODE_POOL_SIZE" | head
+echo "^ THIS cluster's repair/upgrade/resize ops (operationType, status, startTime, endTime)"
 
 section "Done"
 echo "Collector finished. Interpret each ===== section ===== against the corresponding table in inspect-incident.md."

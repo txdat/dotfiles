@@ -46,8 +46,10 @@ Sanity-check that block before interpreting anything else.
 **`REGION` must be the cluster's location.** A zone passed for a regional cluster
 (`asia-southeast1-a` vs `asia-southeast1`) 404s every cluster-scoped call, and those sections then
 look *empty* rather than failed. The script asks GKE where the cluster lives and prints
-`[WARNING] REGION corrected: ...`. If you see it, fix the env var — and note that `CAP_COMPUTE=0`
-is usually this, not a missing permission.
+`[WARNING] REGION corrected: ...`. If you see it, fix the env var. A **zonal** cluster is fine:
+the script passes the location to `gcloud container` as `--location` and derives the enclosing
+region (printed as `enclosing region ...`) for the region-scoped compute/redis calls, so
+`CAP_COMPUTE=0` on a zonal cluster is a genuine permission gap, not a topology mismatch.
 
 **Duration inputs** (`T_DURATION`, the three `*_LOOKBACK`s) accept `\d+(s|m|h|d)` or `date`-native
 phrasings. The script normalises them and **aborts** if any resolves to an empty timestamp, rather
@@ -312,7 +314,7 @@ the fleet. `REPAIR_CLUSTER` is **not in Cloud Logging** — only the container o
 | Rule | Severity | Fires when |
 |------|----------|-----------|
 | **B1** | 🔴 CRITICAL | any billing-disabled log entry in the critical window |
-| **H13** | 🟡 WARNING | an in-window `REPAIR_CLUSTER` or `UPGRADE_*` container operation |
+| **H13** | 🟡 WARNING | an in-window `REPAIR_CLUSTER` or `UPGRADE_*` container operation **for this cluster** |
 | **H14** | 🟡 WARNING | in-window MIG node VM deletions reach `$NODE_DELETE_BURST` (default 3) |
 | **H15** | 🔴/🟡 | node count below `minNodeCount` (CRITICAL) · NotReady ≥ `$NOTREADY_MAX` (default 2, WARNING) · young/total ≥ `$AGE_RESET_FRAC` (default 0.5, WARNING) |
 
@@ -588,8 +590,17 @@ worst backend · traffic spike? · spike vs pod failure · causality direction
 **Never:** `kubectl apply/delete/edit/patch/exec/cp/port-forward` · `gcloud create/delete/update/set/patch`.
 Redact secrets.
 
+Also read-only and used by the collector: `gcloud projects get-iam-policy` ·
+`gcloud iam service-accounts keys list` · `gcloud redis instances list` ·
+`gcloud compute backend-services get-health` · `gcloud compute
+forwarding-rules/backend-services/network-endpoint-groups list` · `gcloud compute regions describe`.
+
 Every command in `gke-collect.sh` stays within the allowed list; the only state-mutating step
 (`get-credentials`, kubeconfig only) is gated behind an explicit flag.
+
+The report is created mode 0600 (it carries app logs, IAM bindings and deployment env), and
+connection strings / secret-shaped env values are redacted before they are written. Still treat the
+file as sensitive: do not paste it wholesale into a ticket.
 
 ---
 
@@ -637,6 +648,7 @@ Mechanical traps — things that make a query lie or hide evidence. For "is it H
 | H12 | Healthy pods but LB UNHEALTHY | Firewall change blocking 35.191.0.0/16 or 130.211.0.0/22 |
 | H12 | `IP_SPACE_EXHAUSTED` ≠ capacity | Subnet/pod-CIDR exhaustion is H12, not H11 |
 | H13 | Repair/upgrade ops invisible in logs | Only `gcloud container operations list` shows them |
+| H13 | Ops list is location-scoped, not cluster-scoped | A sibling cluster's repair would both fire H13 and mask H14/H15; the script filters on `targetLink`. If it prints `[WARNING] container operations carry no targetLink`, H13 and the planned-op guard are unscoped — verify the op belongs to this cluster before scoring it |
 | H14 | MIG deletes missed by system-change filters | The MIG acts as `cloudservices`, not `system:/gke-/container-engine` |
 | B1 | `BILLING_DISABLED` search comes back empty | The payload says "…requires billing to be enabled…" — field-scope `textPayload` |
 | B1 | Monitor silent during the outage | Billing kills the project, so in-project logging may not run — absent logs are themselves a B1 signal; page via an external budget alert |
