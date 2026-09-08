@@ -32,13 +32,13 @@ Universal rules for every agent that reads or writes code. Loaded before the fir
 ## Tooling
 **File I/O:** Prefer platform-native file read/edit tools over shell equivalents (`cat`, `sed`, `head`, `tail`, `echo`).
 
-**Code navigation cascade.** For semantic navigation, use the highest available tier that supports the target code:
+**Code navigation cascade.** For semantic navigation, use LSP → Sverklo → shell search/tracing. Move to the next tier when the current tier is unavailable, unsupported, stale, or inconclusive for the query:
 
-1. **Sverklo** (`mcp__sverklo__*`) — code search, symbol lookup, codebase navigation. If `mcp__sverklo__*` tools are present: read `~/.dotfiles/.ai-shared/skills/dev/sverklo.md` once, then use it first for supported semantic queries.
-2. **LSP** — definitions, callers, implementations, types. Load it once if deferred before concluding unavailable. Navigate via `goToDefinition`, `findReferences`, `goToImplementation`, `hover`, `incomingCalls`/`outgoingCalls`.
-3. **Shell search** — `rg` over `grep`, `fd` over `find`, `jq` for JSON. Use directly for literals, comments, and config; also use when semantic tools are unavailable, unsupported, or inconclusive. Explain a fallback only when it limits confidence in the result.
+1. **LSP** — definitions, callers, implementations, types. Load it once if deferred before concluding unavailable. Navigate via `goToDefinition`, `findReferences`, `goToImplementation`, `hover`, `incomingCalls`/`outgoingCalls`.
+2. **Sverklo** (`mcp__sverklo__*`) — code exploration and symbol lookup, limited to `overview`, `search`, and `lookup`. When this tier is needed and its tools are available, read `~/.dotfiles/.ai-shared/skills/dev/sverklo.md` once before use.
+3. **Shell search/tracing** — `rg` over `grep`, `fd` over `find`. Use directly for literals, comments, and config; otherwise follow the cascade above. Explain a fallback only when it limits confidence in the result.
 
-**Blast-radius.** Prefer code-index or dependency-graph MCP tools (`impact`, `refs`, `test_map`) when available for callers, dependents, and affected tests. Fall back through the navigation cascade above.
+**Blast-radius.** Start with LSP references/call hierarchy for callers, dependents, affected tests, and impact checks. If LSP cannot resolve the query, use Sverklo only where `overview`, `search`, or `lookup` can help; skip unsupported operations and continue to shell tracing. Do not switch to another code-index or dependency-graph provider.
 
 **Project commands:** `dev-check <cmd>` means `~/.dotfiles/.ai-shared/bin/dev-check` — not on PATH; invoke by full path.
 

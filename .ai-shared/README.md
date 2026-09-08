@@ -166,6 +166,7 @@ Symlink `~/.pi/agent/themes` → `~/.dotfiles/.pi/agent/themes`
 | dev-review-feature | Review a planning-stage feature/fix/refactor plan for approach, system fit, test completeness, impact, scope, and independently mergeable PR slices before human approval. | skills/dev/review-feature.md | medium | opus |
 | dev-review-infra | Review an infra/devops runbook against live state with read-only commands: phase ordering, rollback safety, DNS/traffic cutover sequencing, IaC completeness, and CI/CD coverage. | skills/dev/review-infra.md | high | sonnet |
 | dev-review-system | Review an architecture design for measurable outcomes, viable alternatives, boundary contracts, failure modes, migration and rollback safety, and dependency-ordered decomposition. | skills/dev/review-system.md | high | opus |
+| dev-recap | Session lessons and workflow improvement proposals from a plan-based session. | skills/dev/recap.md | — | — |
 | dev-ship-feature | Orchestrate the gated end-to-end delivery cycle—explore, design, plan review, human approval, execution, code review, and pull request—with resumable phase detection. | skills/dev/ship-feature.md | — | — |
 
 #### sre

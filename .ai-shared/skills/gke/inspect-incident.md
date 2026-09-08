@@ -45,8 +45,8 @@ Sanity-check that block before interpreting anything else.
 
 **`REGION` must be the cluster's location.** A zone passed for a regional cluster
 (`asia-southeast1-a` vs `asia-southeast1`) 404s every cluster-scoped call, and those sections then
-look *empty* rather than failed. The script asks GKE where the cluster lives and prints
-`[WARNING] REGION corrected: ...`. If you see it, fix the env var. A **zonal** cluster is fine:
+look *empty* rather than failed. The script checks the supplied project/location/name first and only corrects a location when the cluster name resolves uniquely in that project. It prints
+`[WARNING] REGION corrected: ...` for that correction. If you see it, fix the env var. A **zonal** cluster is fine:
 the script passes the location to `gcloud container` as `--location` and derives the enclosing
 region (printed as `enclosing region ...`) for the region-scoped compute/redis calls, so
 `CAP_COMPUTE=0` on a zonal cluster is a genuine permission gap, not a topology mismatch.
@@ -78,6 +78,8 @@ The script runs the read-only auth checks (`gcloud auth list`, `config get-value
 `gcloud container clusters get-credentials` — that mutates local kubeconfig — unless invoked with
 `--get-credentials`. Pass that flag only after confirming with the user, or have them run it
 manually.
+
+Resource reads require the full context `gke_<project>_<location>_<cluster>` to match; a same-named cluster in another project/location is insufficient. A mismatched, renamed, or unreachable context makes Kubernetes evidence UNKNOWN and skips its resource reads. Each allowed read pins the verified context explicitly, so changing the default context mid-run cannot redirect collection.
 
 ---
 
@@ -119,6 +121,8 @@ grep -F '[VERDICT:' "$REPORT"                                      # every detec
 UNKNOWN — an empty query under a missing permission is not an all-clear.** Fix the capability
 (grant `roles/logging.viewer`, run `--get-credentials`, correct `REGION`) and re-run before
 concluding "nothing found".
+
+A successful preflight is not proof that later queries succeeded. A failed detector query remains UNKNOWN even when its capability probe passed; inspect individual failures before interpreting empty output.
 
 False positives are caught by the `INFO` downgrade: H13 checks the maintenance window, H14/H15 check
 for an overlapping planned `SET_NODE_POOL_SIZE`/`UPGRADE`/`REPAIR_CLUSTER`, B1 checks current
@@ -212,6 +216,8 @@ itself a finding — it means requests are being excluded from LB logging, which
 under Blind Spots. "No 5xx in the logs" is **not** an all-clear; only `1d.2m` can issue `CLEAR` for
 G1. If `CAP_MONITORING=0` or no LB scope resolved, **G1 is UNKNOWN** — grant `roles/monitoring.viewer`,
 or set `$LB_BACKEND_NAME`/`$LB_NAME`, and re-run before concluding anything about error volume.
+
+If either metric source fails or paging is truncated, G1 remains UNKNOWN. Any collected rows are partial evidence; do not quote their totals or ratios as complete, or treat zero observed errors as an all-clear. Failure of one source is not canceled by success of the other.
 
 **What the metric changes about the denominator.** Because nothing is excluded, polling and
 health-check traffic is now *in* the denominator. That is the correct total, but on a service whose
@@ -598,9 +604,7 @@ forwarding-rules/backend-services/network-endpoint-groups list` · `gcloud compu
 Every command in `gke-collect.sh` stays within the allowed list; the only state-mutating step
 (`get-credentials`, kubeconfig only) is gated behind an explicit flag.
 
-The report is created mode 0600 (it carries app logs, IAM bindings and deployment env), and
-connection strings / secret-shaped env values are redacted before they are written. Still treat the
-file as sensitive: do not paste it wholesale into a ticket.
+The report is created mode 0600. The deployment-env check collects only allowlisted numeric pool settings; connection strings, DSNs, and arbitrary environment values are omitted. App logs, IAM bindings, and other collected evidence can still be sensitive: redact secrets before sharing excerpts and do not paste the report wholesale into a ticket.
 
 ---
 

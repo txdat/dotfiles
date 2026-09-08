@@ -117,8 +117,7 @@ export PATH="$HOME/.cargo/env:$HOME/.rustup/toolchains/stable-x86_64-unknown-lin
 export PATH="$HOME/go/bin:$PATH"
 
 # nodejs
-export FNM_NODE_VERSION="v24.19.0"
-export PATH="$HOME/.local/share/fnm:$HOME/.local/share/fnm/node-versions/$FNM_NODE_VERSION/installation/bin:$PATH"
+export PATH="$HOME/.local/share/fnm:$HOME/.local/share/fnm/aliases/default/bin/:$PATH"
 
 # flutter
 export PATH="$HOME/fvm/bin:$PATH"
@@ -126,37 +125,36 @@ export PATH="$HOME/fvm/bin:$PATH"
 export CHROME_EXECUTABLE=/usr/bin/google-chrome
 
 claude() {
-    export CLAUDE_CODE_ENABLE_TELEMETRY=0
-    # export CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC=1
-    # export CLAUDE_CODE_DISABLE_1M_CONTEXT=1
-    export CLAUDE_CODE_AUTO_COMPACT_WINDOW="300000"
-    # export CLAUDE_AUTOCOMPACT_PCT_OVERRIDE="75"
-    export CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1
-    export CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
-    export CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT=1
-    export CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
-    # export ANTHROPIC_MODEL="claude-opus-4-6"
-    export ANTHROPIC_DEFAULT_OPUS_MODEL="claude-opus-4-6"
-    export ANTHROPIC_DEFAULT_SONNET_MODEL="claude-sonnet-4-6"
-    export ANTHROPIC_DEFAULT_HAIKU_MODEL="claude-haiku-4-5"
-    export CLAUDE_CODE_SUBAGENT_MODEL="claude-sonnet-4-6"
-    # export CLAUDE_CODE_EFFORT_LEVEL="high"
-    export ENABLE_LSP_TOOL=1
-    export ENABLE_CLAUDEAI_MCP_SERVERS=false
+    local env_vars=(
+        CLAUDE_CODE_ENABLE_TELEMETRY=0
+        CLAUDE_CODE_AUTO_COMPACT_WINDOW=300000
+        CLAUDE_CODE_DISABLE_ADAPTIVE_THINKING=1
+        CLAUDE_CODE_DISABLE_AUTO_MEMORY=1
+        CLAUDE_CODE_SIMPLE_SYSTEM_PROMPT=1
+        CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1
+        ANTHROPIC_DEFAULT_OPUS_MODEL=claude-opus-4-6
+        ANTHROPIC_DEFAULT_SONNET_MODEL=claude-sonnet-4-6
+        ANTHROPIC_DEFAULT_HAIKU_MODEL=claude-haiku-4-5
+        CLAUDE_CODE_SUBAGENT_MODEL=claude-sonnet-4-6
+        ENABLE_LSP_TOOL=1
+        ENABLE_CLAUDEAI_MCP_SERVERS=false
+    )
 
     local args=()
     for arg in "$@"; do
         case "$arg" in
             --a1)
-                export ANTHROPIC_AUTH_TOKEN=$(echo $CLAUDE1_API_KEY)
+                env_vars+=("ANTHROPIC_AUTH_TOKEN=$CLAUDE1_API_KEY")
                 ;;
             --ds)
-                export ANTHROPIC_BASE_URL='https://api.deepseek.com/anthropic'
-                export ANTHROPIC_AUTH_TOKEN=$(echo $DEEPSEEK_API_KEY)
-                export ANTHROPIC_DEFAULT_OPUS_MODEL='deepseek-v4-pro[1m]'
-                export ANTHROPIC_DEFAULT_SONNET_MODEL='deepseek-v4-flash-vision-exp[1m]'
-                export ANTHROPIC_DEFAULT_HAIKU_MODEL='deepseek-v4-flash'
-                export CLAUDE_CODE_SUBAGENT_MODEL='deepseek-v4-flash'
+                env_vars+=(
+                    "ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic"
+                    "ANTHROPIC_AUTH_TOKEN=$DEEPSEEK_API_KEY"
+                    "ANTHROPIC_DEFAULT_OPUS_MODEL=deepseek-v4-pro[1m]"
+                    "ANTHROPIC_DEFAULT_SONNET_MODEL=deepseek-v4-flash-vision-exp[1m]"
+                    ANTHROPIC_DEFAULT_HAIKU_MODEL=deepseek-v4-flash
+                    CLAUDE_CODE_SUBAGENT_MODEL=deepseek-v4-flash
+                )
                 ;;
             -d)
                 args+=("--dangerously-skip-permissions")
@@ -166,7 +164,7 @@ claude() {
                 ;;
         esac
     done
-    command claude "${args[@]}"
+    env "${env_vars[@]}" command claude "${args[@]}"
 }
 
 agy() {

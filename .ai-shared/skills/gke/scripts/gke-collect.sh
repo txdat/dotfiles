@@ -81,8 +81,11 @@ mon_ts() {
       --data-urlencode "aggregation.groupByFields=metric.$lp.response_code"
     )
     [ -n "$token" ] && args+=(--data-urlencode "pageToken=$token")
-    resp=$(curl -sS --get "${args[@]}" \
-      "https://monitoring.googleapis.com/v3/projects/$PROJECT/timeSeries" 2>/dev/null)
+    if ! resp=$(curl -sS --get "${args[@]}" \
+      "https://monitoring.googleapis.com/v3/projects/$PROJECT/timeSeries" 2>/dev/null); then
+      printf 'ERROR\tMonitoring transport failed for %s\n' "$mt"
+      return 1
+    fi
     err=$(printf '%s' "$resp" | jq -r '.error.message // ""' 2>/dev/null)
     # An empty body or a non-JSON one (proxy/HTML error page, curl failure) leaves $err empty and
     # extracts to zero rows — indistinguishable from a genuine "no traffic" unless caught here.
@@ -261,8 +264,16 @@ section "Pre-Flight — Resolved Inputs"
 # detectors silently look "empty" rather than UNKNOWN. Ask GKE where the cluster actually lives
 # and correct the value once, here, instead of losing 1f.7/1g.4/1g.5/H13 to a typo.
 REGION_INPUT="$REGION"
-CLUSTER_LOCATION=$(gcloud container clusters list --project="$PROJECT" \
-  --filter="name=$CLUSTER" --format="value(location)" 2>/dev/null | head -1)
+CLUSTER_LOCATION=$(gcloud container clusters describe "$CLUSTER" --project="$PROJECT" \
+  --location="$REGION" --format="value(location)" 2>/dev/null)
+if [ -z "$CLUSTER_LOCATION" ]; then
+  CLUSTER_LOCATIONS=$(gcloud container clusters list --project="$PROJECT" \
+    --filter="name=$CLUSTER" --format="value(location)" 2>/dev/null)
+  # A name can occur in several locations. Correct a typo only when the name is unique.
+  if [ "$(printf '%s\n' "$CLUSTER_LOCATIONS" | awk 'NF {n++} END {print n+0}')" = 1 ]; then
+    CLUSTER_LOCATION="$CLUSTER_LOCATIONS"
+  fi
+fi
 if [ -n "$CLUSTER_LOCATION" ] && [ "$CLUSTER_LOCATION" != "$REGION" ]; then
   REGION="$CLUSTER_LOCATION"
   echo "[WARNING] REGION corrected: input '$REGION_INPUT' is not where '$CLUSTER' lives — GKE reports location '$CLUSTER_LOCATION'. Using the reported location for all cluster-scoped calls. Fix \$GKE_REGION to '$CLUSTER_LOCATION' to silence this."
@@ -334,8 +345,14 @@ if command -v curl >/dev/null 2>&1 && command -v jq >/dev/null 2>&1; then
 fi
 if kubectl cluster-info --request-timeout=5s >/dev/null 2>&1; then CAP_KUBECTL=1; else CAP_KUBECTL=0; fi
 CUR_CTX=$(kubectl config current-context 2>/dev/null)
-case "$CUR_CTX" in *"_${CLUSTER}") CAP_KUBECTL_CTX=1 ;; *) CAP_KUBECTL_CTX=0 ;; esac
+EXPECTED_CTX="gke_${PROJECT}_${REGION}_${CLUSTER}"
+[ "$CUR_CTX" = "$EXPECTED_CTX" ] && CAP_KUBECTL_CTX=1 || CAP_KUBECTL_CTX=0
 [ "$CAP_KUBECTL" = 1 ] && [ "$CAP_KUBECTL_CTX" = 1 ] && CAP_K8S=1 || CAP_K8S=0
+# Bind every resource read to the verified context even if another process changes the default.
+kube_read() {
+  [ "$CAP_K8S" = 1 ] || return 1
+  kubectl --context="$EXPECTED_CTX" "$@"
+}
 echo "CAP_LOGGING=$CAP_LOGGING (Cloud Logging read: log-based detectors B1/H13-partial/H14/H1-H12 audit)"
 echo "CAP_COMPUTE=$CAP_COMPUTE (Compute read: quota 1g.4, node instance-id, stockout)"
 echo "CAP_OPS=$CAP_OPS (container operations: H13 ops, planned-op guards)"
@@ -350,23 +367,23 @@ echo "CAP_KUBECTL=$CAP_KUBECTL  CAP_KUBECTL_CTX=$CAP_KUBECTL_CTX (context '$CUR_
 # Auto-discovery — read-only, feeds Phase 3 deep-dives
 # ============================================================================
 section "Auto-discovery"
-POD_SELECTOR_RAW=$(kubectl get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o jsonpath='{.spec.selector.matchLabels}' 2>/dev/null)
-POD_SELECTOR=$(kubectl get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o json 2>/dev/null | \
+POD_SELECTOR_RAW=$(kube_read get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o jsonpath='{.spec.selector.matchLabels}' 2>/dev/null)
+POD_SELECTOR=$(kube_read get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o json 2>/dev/null | \
   jq -r '.spec.selector.matchLabels | to_entries | map("\(.key)=\(.value)") | join(",")' 2>/dev/null)
 [ -z "$POD_SELECTOR" ] || [ "$POD_SELECTOR" = "null" ] && POD_SELECTOR="app=$SERVICE"
 echo "POD_SELECTOR=$POD_SELECTOR (raw matchLabels: $POD_SELECTOR_RAW)"
 
-POD_NAME="${POD_NAME:-$(kubectl get pods -n "$NAMESPACE" -l "$POD_SELECTOR" -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)}"
+POD_NAME="${POD_NAME:-$(kube_read get pods -n "$NAMESPACE" -l "$POD_SELECTOR" -o jsonpath='{.items[0].metadata.name}' 2>/dev/null)}"
 echo "POD_NAME=${POD_NAME:-<none found>}"
 
 NODE_NAME=""
 NODE_ZONE=""
 NODE_INSTANCE_ID=""
 if [ -n "$POD_NAME" ]; then
-  NODE_NAME=$(kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.spec.nodeName}' 2>/dev/null)
+  NODE_NAME=$(kube_read get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{.spec.nodeName}' 2>/dev/null)
   # GKE nodes carry no instance_id annotation — derive the numeric GCE id from providerID
   # (gce://PROJECT/ZONE/INSTANCE_NAME; the node name is the instance name).
-  PROVIDER_ID=$(kubectl get node "$NODE_NAME" -o jsonpath='{.spec.providerID}' 2>/dev/null)
+  PROVIDER_ID=$(kube_read get node "$NODE_NAME" -o jsonpath='{.spec.providerID}' 2>/dev/null)
   NODE_ZONE=$(printf '%s' "$PROVIDER_ID" | awk -F/ '{print $(NF-1)}')
   if [ -n "$NODE_NAME" ] && [ -n "$NODE_ZONE" ]; then
     NODE_INSTANCE_ID=$(gcloud compute instances describe "$NODE_NAME" --zone="$NODE_ZONE" --project="$PROJECT" --format="value(id)" 2>/dev/null || true)
@@ -379,10 +396,10 @@ LB_BACKEND_NAME="${LB_BACKEND_NAME:-}"
 # The fronting LB may be an Ingress OR a Gateway (GKE Gateway API creates forwarding rules with no
 # Ingress object at all). Try both before giving up, else 1d.2-1d.5 — the whole 5xx-ratio signal —
 # are skipped on every Gateway-fronted cluster.
-LB_VIP=$(kubectl get ingress -n "$NAMESPACE" -o jsonpath='{range .items[*]}{.status.loadBalancer.ingress[*].ip}{"\n"}{end}' 2>/dev/null | head -1)
+LB_VIP=$(kube_read get ingress -n "$NAMESPACE" -o jsonpath='{range .items[*]}{.status.loadBalancer.ingress[*].ip}{"\n"}{end}' 2>/dev/null | head -1)
 LB_SOURCE="ingress"
 if [ -z "$LB_VIP" ]; then
-  LB_VIP=$(kubectl get gateway -n "$NAMESPACE" -o jsonpath='{range .items[*]}{.status.addresses[*].value}{"\n"}{end}' 2>/dev/null | head -1)
+  LB_VIP=$(kube_read get gateway -n "$NAMESPACE" -o jsonpath='{range .items[*]}{.status.addresses[*].value}{"\n"}{end}' 2>/dev/null | head -1)
   [ -n "$LB_VIP" ] && LB_SOURCE="gateway"
 fi
 if [ -z "$LB_NAME" ] && [ -n "$LB_VIP" ]; then
@@ -444,8 +461,8 @@ gcloud logging read \
   --limit=100
 
 section "1b — Pod Restart Fingerprint" "H1"
-kubectl get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o jsonpath='{.spec.selector.matchLabels}' 2>/dev/null && echo
-kubectl get pods -n "$NAMESPACE" -l "$POD_SELECTOR" -o json 2>/dev/null | jq -r '
+kube_read get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o jsonpath='{.spec.selector.matchLabels}' 2>/dev/null && echo
+kube_read get pods -n "$NAMESPACE" -l "$POD_SELECTOR" -o json 2>/dev/null | jq -r '
   .items[] | .metadata.name as $pod |
   .status.containerStatuses[]? |
   [$pod, .name, .ready, .restartCount,
@@ -455,8 +472,8 @@ kubectl get pods -n "$NAMESPACE" -l "$POD_SELECTOR" -o json 2>/dev/null | jq -r 
   column -t -s $'\t' -N POD,CONTAINER,READY,RESTARTS,REASON,EXIT,FINISHED
 
 section "1c — Endpoint Availability" "H2"
-kubectl get endpoints -n "$NAMESPACE"
-kubectl describe endpoints -n "$NAMESPACE" 2>/dev/null | grep -A5 -E "^Name:|Addresses:|NotReadyAddresses:"
+kube_read get endpoints -n "$NAMESPACE"
+kube_read describe endpoints -n "$NAMESPACE" 2>/dev/null | grep -A5 -E "^Name:|Addresses:|NotReadyAddresses:"
 gcloud logging read \
   'resource.type="k8s_cluster"
    protoPayload.resourceName=~"namespaces/'$NAMESPACE'/endpoints"
@@ -469,8 +486,8 @@ gcloud logging read \
 section "1d.1 — LB Identification"
 gcloud compute forwarding-rules list --project=$PROJECT --format="table(name,IPAddress,target,region,loadBalancingScheme)"
 gcloud compute backend-services list --project=$PROJECT --format="table(name,protocol,loadBalancingScheme,backends[].group)"
-kubectl get ingress -n "$NAMESPACE" -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.loadBalancer.ingress[*].ip}{"\n"}{end}' 2>/dev/null
-kubectl get service "$SERVICE" -n "$NAMESPACE" -o jsonpath='{.metadata.annotations.cloud\.google\.com/neg}' 2>/dev/null && echo
+kube_read get ingress -n "$NAMESPACE" -o jsonpath='{range .items[*]}{.metadata.name}{"\t"}{.status.loadBalancer.ingress[*].ip}{"\n"}{end}' 2>/dev/null
+kube_read get service "$SERVICE" -n "$NAMESPACE" -o jsonpath='{.metadata.annotations.cloud\.google\.com/neg}' 2>/dev/null && echo
 gcloud compute network-endpoint-groups list --project=$PROJECT --format="table(name,zone,size)" 2>/dev/null | grep -i "$SERVICE" || true
 
 LB_LOGGING_ENABLED="false"
@@ -538,13 +555,15 @@ else
     "loadbalancing.googleapis.com/https/internal/request_count|internal_http_lb_rule|internal ALB"
   do
     IFS='|' read -r mon_mt mon_rt mon_kind <<<"$mon_combo"
+    mon_ok=0; mon_error=""
     for mon_lp in label labels; do
       mon_out=$(mon_ts "$mon_mt" "$mon_rt" "$mon_lp")
       if printf '%s' "$mon_out" | grep -q '^ERROR'; then
-        MON_ERR="$mon_out"                       # remembered only if nothing at all succeeds
+        mon_error="$mon_out"
         continue                                 # wrong label form (or real failure) — try the twin
       fi
       # This form is accepted; whether it carried points or not, don't retry its twin.
+      mon_ok=1
       printf '%s' "$mon_out" | grep -q '^#TRUNC' && MON_TRUNC=1
       mon_out=$(printf '%s' "$mon_out" | grep -v '^#TRUNC') || true
       if [ -n "$mon_out" ]; then
@@ -557,21 +576,26 @@ else
       fi
       break
     done
+    if [ "$mon_ok" = 0 ]; then
+      MON_ERR="${MON_ERR:+$MON_ERR$MON_NL}$mon_kind: $mon_error"
+    fi
   done
-  # An error on one metric type is irrelevant once the other returned data.
-  [ -n "$MON_TSV" ] && MON_ERR=""
+  MON_COMPLETE=1
+  if [ -n "$MON_ERR" ] || [ "$MON_TRUNC" = 1 ]; then MON_COMPLETE=0; fi
   [ "$MON_TRUNC" = 1 ] && note "Paging cap hit: the metric read stopped at 20 pages, so these totals are TRUNCATED and are a lower bound. Narrow the window before quoting any figure."
   echo "metric source: ${MON_KIND:-<none returned data>}   window: $T_START → $T_END   alignment: 60s ALIGN_DELTA"
   echo "note: 60s buckets are anchored to the query END time, not to wall-clock minutes, and are labelled by the bucket's end. So a bucket labelled 10:15 typically covers ~10:14:4x-10:15:4x, and the metric onset can read up to a minute later than the log onset in 1d.2a (which labels by request time). Do not call that a discrepancy."
   echo "note: LB metrics ingest with a delay of up to ~4 minutes, so for an ONGOING incident the last few minutes of the window are undercounted or absent. Judge onset and peak from the middle of the window, not its trailing edge."
   if [ -n "$MON_ERR" ]; then
     printf '%s\n' "$MON_ERR"
-    verdict UNKNOWN "G1: Monitoring API returned an error for every metric/label-form combination — see above. Not CLEAR."
-  elif [ -z "$MON_TSV" ]; then
+    note "One or more metric sources failed; any rows below are partial evidence, not complete totals."
+  fi
+  if [ -z "$MON_TSV" ]; then
     note "Query accepted (${MON_EMPTY_OK:-scope readable}) but returned no request_count points in window. Either the LB genuinely served no traffic, or the scope is wrong — check 'LB metric scope' above against the backend services in 1d.1."
     verdict UNKNOWN "G1: no metric data points — cannot distinguish 'no traffic' from 'wrong scope'."
   else
     printf '%s\n' "$MON_TSV" | awk -F'\t' \
+      -v complete="$MON_COMPLETE" \
       -v minreq="${MON_PEAK_MIN_REQ:-20}" -v kind="$MON_SCOPE_KIND" \
       -v backends="$LB_BACKEND_RE" -v rule="$LB_NAME" -v ns="$NS_SHORT" '
       BEGIN { n = split(backends, ba, "|"); for (i = 1; i <= n; i++) if (ba[i] != "") inset[ba[i]] = 1 }
@@ -601,7 +625,7 @@ else
           print "[VERDICT: UNKNOWN] G1: metric returned data but none of it matched this namespace scope — the scope is probably wrong. Check LB metric scope against 1d.1."
           exit
         }
-        print "-- per minute (complete: numerator AND denominator from the metric) --"; fflush()
+        print (complete ? "-- per minute (complete: numerator AND denominator from the metric) --" : "-- per minute (PARTIAL metric collection; totals and ratios may be incomplete) --"); fflush()
         for (m in tot) printf "%s  total=%-7d 5xx=%-6d 5xx_ratio=%.1f%%\n", \
           m, tot[m], err[m]+0, (tot[m] ? 100*(err[m]+0)/tot[m] : 0) | "sort"
         close("sort")
@@ -649,7 +673,8 @@ else
         r = rw; src = "window"
         if (peak  > r) { r = peak;  src = "peak minute " pm }
         if (worst > r) { r = worst; src = "worst backend " wb }
-        if (E+0 == 0)     printf "[VERDICT: CLEAR] G1: zero 5xx in the LB metric across the window for this scope.\n"
+        if (!complete)   printf "[VERDICT: UNKNOWN] G1: metric collection failed or was truncated; observed counts do not establish a complete error rate.\n"
+        else if (E+0 == 0) printf "[VERDICT: CLEAR] G1: zero 5xx in the LB metric across the window for this scope.\n"
         else if (r >= 10) printf "[VERDICT: FIRES-CRITICAL] G1: %.2f%% 5xx by %s (window %d of %d) — outage-level error rate; onset %s.\n", r, src, E, T, onset
         else if (r >= 1)  printf "[VERDICT: FIRES-WARNING] G1: %.2f%% 5xx by %s (window %d of %d) — partial degradation; onset %s.\n", r, src, E, T, onset
         else              printf "[VERDICT: INFO] G1: %.2f%% 5xx by %s (window %d of %d) — below the 1%% noise floor even at peak; %d errors did occur, so scan the per-minute rows before dismissing.\n", r, src, E, T, E
@@ -967,7 +992,7 @@ BILLING_LOG=$(gcloud logging read \
    timestamp>="'$T_START_CRITICAL'"
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc \
-  --format="table(timestamp,resource.type,textPayload)" --limit=50)
+  --format="table(timestamp,resource.type,textPayload)" --limit=50) && BILLING_LOG_OK=1 || BILLING_LOG_OK=0
 printf '%s\n' "$BILLING_LOG"
 gcloud billing projects describe "$PROJECT" --format="value(billingEnabled,billingAccountName)" 2>/dev/null
 gcloud logging read \
@@ -977,7 +1002,7 @@ gcloud logging read \
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc \
   --format="table(timestamp,protoPayload.methodName,protoPayload.authenticationInfo.principalEmail)" --limit=20
-if [ "${CAP_LOGGING:-0}" = 0 ]; then
+if [ "${CAP_LOGGING:-0}" = 0 ] || [ "$BILLING_LOG_OK" = 0 ]; then
   verdict UNKNOWN "B1: Cloud Logging unreadable — cannot confirm or deny a billing-disabled event."
 elif printf '%s' "$BILLING_LOG" | grep -q .; then
   if [ "${BILLING_NOW:-}" = "True" ]; then
@@ -994,7 +1019,7 @@ if [ "${CAP_OPS:-0}" = 0 ]; then
   verdict UNKNOWN "H13: container operations unreadable — cannot rule out an in-window repair/upgrade op."
 else
   H13_OPS=$(cluster_ops \
-    | awk -F'\t' -v s="$T_START_CRITICAL" -v e="$T_END" '$3>=s && $3<=e && ($1=="REPAIR_CLUSTER" || $1 ~ /^UPGRADE/) {print}')
+    | awk -F'\t' -v s="$T_START_CRITICAL" -v e="$T_END" '$3>=s && $3<=e && ($1=="REPAIR_CLUSTER" || $1 ~ /^UPGRADE/) {print}') && H13_READ_OK=1 || H13_READ_OK=0
   printf '%s\n' "$H13_OPS"
   # maintenance-window guard: a scheduled UPGRADE inside the cluster's window is expected, not an incident.
   MAINT=$(gcloud container clusters describe "$CLUSTER" --location=$REGION --project=$PROJECT \
@@ -1009,25 +1034,32 @@ else
       verdict FIRES-WARNING "H13: in-window UPGRADE_* op with NO maintenance window configured — unplanned upgrade during the incident."
     fi
   fi
-  [ "$H13_REP" = 0 ] && [ "$H13_UP" = 0 ] && verdict CLEAR "H13: no in-window REPAIR_CLUSTER/UPGRADE_* op (operations readable)."
+  if [ "$H13_READ_OK" = 0 ]; then
+    verdict UNKNOWN "H13: operations query failed after preflight; absence of an operation is unverified."
+  elif [ "$H13_REP" = 0 ] && [ "$H13_UP" = 0 ]; then
+    verdict CLEAR "H13: no in-window REPAIR_CLUSTER/UPGRADE_* op (operations readable)."
+  fi
 fi
 
 section "1i — H14 Node VM Delete Burst"
 if [ "${CAP_LOGGING:-0}" = 0 ]; then
   verdict UNKNOWN "H14: Cloud Logging unreadable — cannot count node-delete events (note: these are Admin Activity logs, always emitted; the gap is read permission)."
 else
-  DEL=$(gcloud logging read \
+  DEL_LOG=$(gcloud logging read \
     'resource.type="gce_instance"
      protoPayload.methodName=~"compute\.instances\.delete"
      protoPayload.resourceName:"gke-'$CLUSTER'-"
      protoPayload.authenticationInfo.principalEmail=~"cloudservices\.gserviceaccount\.com"
      timestamp>="'$T_START'"
      timestamp<="'$T_END'"' \
-    --project=$PROJECT --format="value(timestamp)" --limit=500 | wc -l)
+    --project=$PROJECT --format="value(timestamp)" --limit=500) && DEL_READ_OK=1 || DEL_READ_OK=0
+  DEL=$(printf '%s\n' "$DEL_LOG" | awk 'NF {n++} END {print n+0}')
   echo "in-window MIG node VM deletes: $DEL (burst threshold $NODE_DELETE_BURST)"
   PLANNED_OP=$(planned_ops_in_window | head -1)
   GUARD_NOTE=""; [ "${CAP_OPS:-0}" = 0 ] && GUARD_NOTE=" [planned-op guard unavailable — CAP_OPS=0]"
-  if [ "$DEL" -ge "$NODE_DELETE_BURST" ]; then
+  if [ "$DEL_READ_OK" = 0 ]; then
+    verdict UNKNOWN "H14: node-delete query failed after preflight; delete count is unverified."
+  elif [ "$DEL" -ge "$NODE_DELETE_BURST" ]; then
     if [ -n "$PLANNED_OP" ]; then
       verdict INFO "H14: $DEL deletes >= $NODE_DELETE_BURST but a planned op overlaps ($PLANNED_OP) — intentional node cycling from a resize/upgrade, not reclamation. Confirm the timeline before dismissing."
     else
@@ -1041,19 +1073,20 @@ else
 fi
 
 section "1i — H15 Node Count Loss / NotReady / Age Reset"
-kubectl get nodes -o wide
+kube_read get nodes -o wide
 POOLS=$(gcloud container node-pools list --cluster="$CLUSTER" --location=$REGION --project=$PROJECT \
-  --format="value(name,autoscaling.minNodeCount)" 2>/dev/null)
+  --format="value(name,autoscaling.minNodeCount)" 2>/dev/null) && POOLS_OK=1 || POOLS_OK=0
 printf '%s\n' "$POOLS"
 MIN_SUM=$(printf '%s\n' "$POOLS" | awk '{s+=$2} END{print s+0}')   # $2 = per-zone minNodeCount
-NODES_JSON=$(kubectl get nodes -o json 2>/dev/null)
+NODES_JSON=$(kube_read get nodes -o json 2>/dev/null) && NODES_OK=1 || NODES_OK=0
+printf '%s' "$NODES_JSON" | jq -e '.items | type == "array"' >/dev/null 2>&1 || NODES_OK=0
 NODES=$(printf '%s' "$NODES_JSON" | jq '.items | length' 2>/dev/null || echo 0)
 NOTREADY=$(printf '%s' "$NODES_JSON" | jq '[.items[] | select((.status.conditions[]? | select(.type=="Ready") | .status) != "True")] | length' 2>/dev/null || echo 0)
 YOUNG=$(printf '%s' "$NODES_JSON" | jq --arg t "$T_START" '[.items[] | select(.metadata.creationTimestamp > $t)] | length' 2>/dev/null || echo 0)
 NODES=${NODES:-0}; NOTREADY=${NOTREADY:-0}; YOUNG=${YOUNG:-0}   # jq emits empty (not 0) on empty stdin
 echo "nodes=$NODES notReady=$NOTREADY young=$YOUNG  minNodeCount_sum=${MIN_SUM:-?} (frac threshold $AGE_RESET_FRAC, NotReady threshold $NOTREADY_MAX)"
-if [ "${CAP_K8S:-0}" = 0 ]; then
-  verdict UNKNOWN "H15: kubectl not targeting $CLUSTER — node count/NotReady/age all unavailable; cannot rule out reclamation."
+if [ "${CAP_K8S:-0}" = 0 ] || [ "$NODES_OK" = 0 ] || [ "$POOLS_OK" = 0 ]; then
+  verdict UNKNOWN "H15: verified node/pool data unavailable — check context and individual query errors; cannot rule out reclamation."
 else
   PLANNED_OP=$(planned_ops_in_window | head -1)
   [ "${CAP_OPS:-0}" = 0 ] && note "H15: planned-op guard unavailable (CAP_OPS=0) — a FIRES here may actually be planned cycling; confirm operations manually."
@@ -1095,14 +1128,14 @@ gcloud logging read \
 
 section "H1 (OOMKill) — Container names, previous logs, memory limits, VPA"
 if [ -n "$POD_NAME" ]; then
-  kubectl get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{range .spec.containers[*]}{.name}{"\n"}{end}' 2>/dev/null
-  kubectl logs "$POD_NAME" -n "$NAMESPACE" --previous --timestamps=true 2>/dev/null | tail -300
-  kubectl get pod "$POD_NAME" -n "$NAMESPACE" \
+  kube_read get pod "$POD_NAME" -n "$NAMESPACE" -o jsonpath='{range .spec.containers[*]}{.name}{"\n"}{end}' 2>/dev/null
+  kube_read logs "$POD_NAME" -n "$NAMESPACE" --previous --timestamps=true 2>/dev/null | tail -300
+  kube_read get pod "$POD_NAME" -n "$NAMESPACE" \
     -o jsonpath='{range .spec.containers[*]}{.name}{"\t"}{"req: "}{.resources.requests.memory}{"\t"}{"lim: "}{.resources.limits.memory}{"\n"}{end}' 2>/dev/null
 else
   note "POD_NAME not discovered — set \$POD_NAME to the crashing pod and re-run for previous logs/limits."
 fi
-kubectl describe vpa -n "$NAMESPACE" 2>/dev/null
+kube_read describe vpa -n "$NAMESPACE" 2>/dev/null
 manual "fetch k8s_container | metric 'kubernetes.io/container/memory/limit_utilization' | filter resource.cluster_name == '$CLUSTER' && resource.namespace_name == '$NAMESPACE' && resource.pod_name =~ '$SERVICE.*' | within(30m, d'$T_UTC') | every 1m
 Values >0.85 in the 5min before crash = strong H1 confirmation."
 
@@ -1118,7 +1151,7 @@ gcloud logging read \
   --format="table(timestamp,jsonPayload.involvedObject.name,jsonPayload.message)" --limit=200
 
 section "H2 (Probe Failure) — Probe configs"
-kubectl get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o json 2>/dev/null | jq -r '
+kube_read get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o json 2>/dev/null | jq -r '
   .spec.template.spec.containers[] |
   "Container: \(.name)",
   "  startup:   \(.startupProbe // "none" | if type == "object" then tojson else . end)",
@@ -1126,7 +1159,7 @@ kubectl get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o json 2>/dev/null | jq -r
   "  readiness: \(.readinessProbe // "none" | if type == "object" then tojson else . end)"'
 
 section "H2 (Probe Failure) — Restart count / sub-variant + endpoint oscillation + app warnings"
-kubectl get pods -n "$NAMESPACE" -l "$POD_SELECTOR" -o json 2>/dev/null | jq -r '
+kube_read get pods -n "$NAMESPACE" -l "$POD_SELECTOR" -o json 2>/dev/null | jq -r '
   .items[] | .metadata.name as $pod |
   .status.containerStatuses[]? |
   [$pod, .name, .restartCount, .lastState.terminated.exitCode // "-"] | @tsv' | \
@@ -1192,13 +1225,13 @@ gcloud logging read \
    timestamp>="'$T_START'"
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc --limit=20
-kubectl get nodes -o wide
-kubectl get nodes -o json 2>/dev/null | jq -r '
+kube_read get nodes -o wide
+kube_read get nodes -o json 2>/dev/null | jq -r '
   .items[] | "\(.metadata.name): \(.status.conditions | map(select(.status=="True")) | map(.type) | join(", "))"'
 
 section "H4 (HPA/Quota) — HPA state, scale events, autoscaler, FailedScheduling, top pods, quota"
-kubectl get hpa -n "$NAMESPACE" 2>/dev/null
-kubectl describe hpa -n "$NAMESPACE" 2>/dev/null
+kube_read get hpa -n "$NAMESPACE" 2>/dev/null
+kube_read describe hpa -n "$NAMESPACE" 2>/dev/null
 gcloud logging read \
   'resource.type="k8s_cluster"
    log_name="projects/'$PROJECT'/logs/events"
@@ -1221,8 +1254,8 @@ gcloud logging read \
    timestamp>="'$T_START'"
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc --limit=50
-kubectl top pods -n "$NAMESPACE" 2>/dev/null
-kubectl describe resourcequota -n "$NAMESPACE" 2>/dev/null
+kube_read top pods -n "$NAMESPACE" 2>/dev/null
+kube_read describe resourcequota -n "$NAMESPACE" 2>/dev/null
 
 section "H5 (Pool Exhausted) — App logs, DB logs, pool config"
 gcloud logging read \
@@ -1248,14 +1281,13 @@ gcloud logging read \
    timestamp>="'$T_START'"
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc --limit=50
-# Values are printed because the pool SIZE is the whole point of this check — but the same grep
-# also matches DATABASE_URL and friends, so strip embedded credentials and secret-shaped values
-# before they land in the report.
-kubectl get deployment "$DEPLOYMENT" -n "$NAMESPACE" \
-  -o jsonpath='{range .spec.template.spec.containers[*]}{.name}{"\n"}{range .env[*]}{.name}{" = "}{.value}{"\n"}{end}{"\n"}{end}' 2>/dev/null | \
-  grep -iE "pool|conn|database|db_max|max_conn|pg_pool|hikari|c3p0|drizzle" | \
-  sed -E 's#(://[^:/@[:space:]]+:)[^@[:space:]]+@#\1***REDACTED***@#g' | \
-  sed -E 's#^([^=]*(PASS|PASSWORD|SECRET|TOKEN|KEY|CREDENTIAL)[^=]*= ).*#\1***REDACTED***#I' 
+# Collect numeric pool sizing only. Connection strings have too many credential formats
+# to safely redact by URI substitution, and their values are not needed for this check.
+kube_read get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o json 2>/dev/null | jq -r '
+  .spec.template.spec.containers[] | .name as $container | .env[]? |
+  select(.name | test("^(DB_POOL_SIZE|DB_MAX_CONNECTIONS|MAX_CONNECTIONS|MAX_CONN|PG_POOL_MAX|PG_POOL_MIN|HIKARI_MAX_POOL_SIZE|HIKARI_MIN_IDLE|C3P0_MAX_POOL_SIZE|C3P0_MIN_POOL_SIZE)$"; "i")) |
+  select((.value // "") | test("^[0-9]+$")) |
+  "\($container): \(.name) = \(.value)"'
 
 section "H6 (Dependency/Redis) — App error signatures, instance state, blast radius, connectivity"
 gcloud logging read \
@@ -1277,17 +1309,17 @@ gcloud logging read \
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc \
   --format="table(timestamp,severity,protoPayload.methodName,jsonPayload.message,textPayload)" --limit=100
-kubectl get pods -n "$NAMESPACE" -o json 2>/dev/null | jq -r '
+kube_read get pods -n "$NAMESPACE" -o json 2>/dev/null | jq -r '
   .items[] | select(.metadata.name | test("'$SERVICE'") | not) |
   [.metadata.name,
    ([.status.containerStatuses[]?.restartCount] | add // 0),
    ([.status.containerStatuses[]?.ready] | all)] | @tsv' | \
   column -t -s $'\t' -N POD,RESTARTS,READY | head -20
-kubectl get pods -n "$NAMESPACE" -l "$POD_SELECTOR" -o wide 2>/dev/null | head
+kube_read get pods -n "$NAMESPACE" -l "$POD_SELECTOR" -o wide 2>/dev/null | head
 manual "fetch redis_instance | metric 'redis.googleapis.com/stats/memory/usage_ratio' -- also clients/connected, clients/blocked, stats/reject_connections_count, stats/evicted_keys, stats/cpu_utilization, replication/master_slave_lag | filter resource.instance_id =~ '.*' | within(30m, d'$T_UTC') | every 1m"
 
 section "H7 (Bad Deploy) — New pod status, failure events, missing refs, rollout history"
-kubectl get pods -n "$NAMESPACE" -l "$POD_SELECTOR" -o json 2>/dev/null | jq -r '
+kube_read get pods -n "$NAMESPACE" -l "$POD_SELECTOR" -o json 2>/dev/null | jq -r '
   .items | sort_by(.metadata.creationTimestamp) | .[] |
   [.metadata.name, .metadata.creationTimestamp,
    (.status.phase),
@@ -1303,16 +1335,16 @@ gcloud logging read \
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc \
   --format="table(timestamp,jsonPayload.involvedObject.name,jsonPayload.reason,jsonPayload.message)" --limit=100
-kubectl get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o json 2>/dev/null | jq -r '
+kube_read get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o json 2>/dev/null | jq -r '
   .spec.template.spec |
   (.containers[].env[]?.valueFrom.secretKeyRef.name // empty),
   (.containers[].env[]?.valueFrom.configMapKeyRef.name // empty),
   (.volumes[]?.secret.secretName // empty),
   (.volumes[]?.configMap.name // empty)' | sort -u | while read -r ref; do
     [ -z "$ref" ] && continue
-    kubectl get secret "$ref" -n "$NAMESPACE" 2>/dev/null >/dev/null || kubectl get configmap "$ref" -n "$NAMESPACE" 2>/dev/null >/dev/null || echo "MISSING: $ref"
+    kube_read get secret "$ref" -n "$NAMESPACE" 2>/dev/null >/dev/null || kube_read get configmap "$ref" -n "$NAMESPACE" 2>/dev/null >/dev/null || echo "MISSING: $ref"
 done
-kubectl rollout history deployment/"$DEPLOYMENT" -n "$NAMESPACE" 2>/dev/null
+kube_read rollout history deployment/"$DEPLOYMENT" -n "$NAMESPACE" 2>/dev/null
 
 section "H8 (IAM/WI) — App auth errors, WI annotations, IAM changes (critical window), IAM policy, SA keys"
 gcloud logging read \
@@ -1326,7 +1358,7 @@ gcloud logging read \
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc \
   --format="table(timestamp,resource.labels.pod_name,jsonPayload.message,textPayload)" --limit=200
-kubectl get serviceaccount -n "$NAMESPACE" -o json 2>/dev/null | jq -r '
+kube_read get serviceaccount -n "$NAMESPACE" -o json 2>/dev/null | jq -r '
   .items[] | "\(.metadata.name): \(.metadata.annotations["iam.gke.io/gcp-service-account"] // "NO WI ANNOTATION")"'
 gcloud logging read \
   'protoPayload.serviceName="iam.googleapis.com"
@@ -1342,9 +1374,9 @@ gcloud projects get-iam-policy "$PROJECT" \
   --filter="bindings.members=serviceAccount:$PROJECT.svc.id.goog[*]" 2>/dev/null | head -40
 # Resolve the GSA from the Workload-Identity annotation on the pod's KSA (the KSA name
 # is NOT the GSA email — building <ksa>@<proj>.iam... would query a nonexistent account).
-DEPLOY_KSA=$(kubectl get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o jsonpath='{.spec.template.spec.serviceAccountName}' 2>/dev/null)
+DEPLOY_KSA=$(kube_read get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o jsonpath='{.spec.template.spec.serviceAccountName}' 2>/dev/null)
 DEPLOY_KSA="${DEPLOY_KSA:-default}"
-GSA_EMAIL=$(kubectl get serviceaccount "$DEPLOY_KSA" -n "$NAMESPACE" -o jsonpath='{.metadata.annotations.iam\.gke\.io/gcp-service-account}' 2>/dev/null)
+GSA_EMAIL=$(kube_read get serviceaccount "$DEPLOY_KSA" -n "$NAMESPACE" -o jsonpath='{.metadata.annotations.iam\.gke\.io/gcp-service-account}' 2>/dev/null)
 if [ -n "$GSA_EMAIL" ]; then
   echo "Workload-Identity GSA for KSA '$DEPLOY_KSA': $GSA_EMAIL"
   gcloud iam service-accounts keys list --iam-account="$GSA_EMAIL" --project=$PROJECT 2>/dev/null
@@ -1362,8 +1394,8 @@ gcloud logging read \
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc \
   --format="table(timestamp,resource.labels.namespace_name,resource.labels.pod_name,jsonPayload.message,textPayload)" --limit=200
-kubectl get pods -n kube-system -l k8s-app=kube-dns -o wide 2>/dev/null
-kubectl get pods -n kube-system -l k8s-app=kube-dns -o json 2>/dev/null | jq -r '
+kube_read get pods -n kube-system -l k8s-app=kube-dns -o wide 2>/dev/null
+kube_read get pods -n kube-system -l k8s-app=kube-dns -o json 2>/dev/null | jq -r '
   .items[] | [.metadata.name, .status.phase,
    ([.status.containerStatuses[]?.restartCount] | add // 0),
    (.status.containerStatuses[]?.ready)] | @tsv' | \
@@ -1377,7 +1409,7 @@ gcloud logging read \
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc \
   --format="table(timestamp,resource.labels.pod_name,textPayload,jsonPayload.message)" --limit=200
-kubectl top pods -n kube-system -l k8s-app=kube-dns 2>/dev/null
+kube_read top pods -n kube-system -l k8s-app=kube-dns 2>/dev/null
 gcloud logging read \
   'resource.type="k8s_cluster"
    log_name="projects/'$PROJECT'/logs/events"
@@ -1387,12 +1419,12 @@ gcloud logging read \
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc \
   --format="table(timestamp,jsonPayload.involvedObject.name,jsonPayload.reason,jsonPayload.message)" --limit=50
-kubectl get configmap coredns -n kube-system -o yaml 2>/dev/null
+kube_read get configmap coredns -n kube-system -o yaml 2>/dev/null
 
 section "H10 (CPU Throttling) — CPU limits, probe timeoutSeconds, Unhealthy events, node CPU"
-kubectl get deployment "$DEPLOYMENT" -n "$NAMESPACE" \
+kube_read get deployment "$DEPLOYMENT" -n "$NAMESPACE" \
   -o jsonpath='{range .spec.template.spec.containers[*]}{.name}{"\t"}{"req: "}{.resources.requests.cpu}{"\t"}{"lim: "}{.resources.limits.cpu}{"\n"}{end}' 2>/dev/null
-kubectl get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o json 2>/dev/null | jq -r '
+kube_read get deployment "$DEPLOYMENT" -n "$NAMESPACE" -o json 2>/dev/null | jq -r '
   .spec.template.spec.containers[] |
   "Container: \(.name)",
   "  liveness timeoutSeconds:  \(.livenessProbe.timeoutSeconds // "default(1)")",
@@ -1407,14 +1439,14 @@ gcloud logging read \
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc \
   --format="table(timestamp,jsonPayload.involvedObject.name,jsonPayload.message)" --limit=100
-kubectl get nodes -o json 2>/dev/null | jq -r '
+kube_read get nodes -o json 2>/dev/null | jq -r '
   .items[] | "\(.metadata.name): \(.status.conditions | map(select(.type=="Ready")) | .[0].status)"'
-kubectl top nodes 2>/dev/null
+kube_read top nodes 2>/dev/null
 manual "fetch k8s_container | metric 'kubernetes.io/container/cpu/limit_utilization' | filter resource.cluster_name == '$CLUSTER' && resource.namespace_name == '$NAMESPACE' && resource.pod_name =~ '$SERVICE.*' | within(30m, d'$T_UTC') | every 1m
 Values >0.8 sustained = strong H10 signal."
 
 section "H11 (Capacity Stockout) — Pending pods, stockout errors, quota, topology" "H16"
-kubectl get pods -A --field-selector=status.phase=Pending -o wide 2>/dev/null | head -40
+kube_read get pods -A --field-selector=status.phase=Pending -o wide 2>/dev/null | head -40
 gcloud logging read \
   'resource.type="k8s_cluster"
    log_name="projects/'$PROJECT'/logs/events"
@@ -1430,9 +1462,9 @@ STOCKOUT=$(gcloud logging read \
    timestamp>="'$T_START'"
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc \
-  --format="table(timestamp,protoPayload.response.error.errors.code,protoPayload.status.message)" --limit=100)
+  --format="table(timestamp,protoPayload.response.error.errors.code,protoPayload.status.message)" --limit=100) && STOCKOUT_OK=1 || STOCKOUT_OK=0
 printf '%s\n' "$STOCKOUT"
-if [ "${CAP_LOGGING:-0}" = 0 ]; then
+if [ "${CAP_LOGGING:-0}" = 0 ] || [ "$STOCKOUT_OK" = 0 ]; then
   STOCKOUT_HIT=0
   verdict UNKNOWN "H11: Cloud Logging unreadable — cannot detect ZONE_RESOURCE_POOL_EXHAUSTED; stockout can neither be confirmed nor ruled out."
 elif printf '%s' "$STOCKOUT" | grep -q .; then
@@ -1449,7 +1481,8 @@ section "H16 (Scale-up Pending Latency) — pods Pending awaiting new nodes past
 # Distinct from H11: nodes CAN be created, but pods have waited too long for scale-up.
 # Expected briefly (provisioning takes 1-5m); CRITICAL only once oldest Pending age >= grace
 # AND there is no stockout (a stockout is H11, not latency).
-PENDING_JSON=$(kubectl get pods -A --field-selector=status.phase=Pending -o json 2>/dev/null)
+PENDING_JSON=$(kube_read get pods -A --field-selector=status.phase=Pending -o json 2>/dev/null) && PENDING_OK=1 || PENDING_OK=0
+printf '%s' "$PENDING_JSON" | jq -e '.items | type == "array"' >/dev/null 2>&1 || PENDING_OK=0
 UNSCHED=$(printf '%s' "$PENDING_JSON" | jq '[.items[] | select(any(.status.conditions[]?; .type=="PodScheduled" and .status=="False"))] | length' 2>/dev/null || echo 0)
 OLDEST_PENDING_S=$(printf '%s' "$PENDING_JSON" | jq -r --argjson now "$(date -u +%s)" '
   [ .items[]
@@ -1468,20 +1501,22 @@ SCALEUP=$(gcloud logging read \
    timestamp>="'$T_START'"
    timestamp<="'$T_END'"' \
   --project=$PROJECT --order=asc \
-  --format="table(timestamp,jsonPayload.involvedObject.name,jsonPayload.reason,jsonPayload.message)" --limit=50)
+  --format="table(timestamp,jsonPayload.involvedObject.name,jsonPayload.reason,jsonPayload.message)" --limit=50) && SCALEUP_OK=1 || SCALEUP_OK=0
 printf '%s\n' "$SCALEUP"
 printf '%s' "$SCALEUP" | grep -q 'TriggeredScaleUp'  && TRIG=1    || TRIG=0
 printf '%s' "$SCALEUP" | grep -q 'NotTriggerScaleUp' && NOTRIG=1  || NOTRIG=0
 # NOTE: UNSCHED/OLDEST_PENDING_S are a LIVE kubectl snapshot (now), while the log queries above
 # are windowed to T_START..T_END. For a past/recovered incident the numeric verdict may read
 # "does not fire" even though the windowed TriggeredScaleUp/FailedScheduling events show the latency.
-if [ "${CAP_K8S:-0}" = 0 ]; then
+if [ "${CAP_K8S:-0}" = 0 ] || [ "$PENDING_OK" = 0 ]; then
   verdict UNKNOWN "H16: kubectl not targeting $CLUSTER — cannot measure Pending pods/age; scale-up latency can neither be confirmed nor ruled out."
 elif [ "${UNSCHED:-0}" -gt 0 ] 2>/dev/null; then
   if [ "${STOCKOUT_HIT:-0}" = 1 ]; then
     verdict INFO "H16: the Pending pods are explained by the H11 stockout above (fix capacity, not latency)."
   elif [ "${OLDEST_PENDING_S:-0}" -ge "$GRACE_S" ] 2>/dev/null; then
-    if [ "$TRIG" = 1 ]; then
+    if [ "$STOCKOUT_OK" = 0 ] || [ "$SCALEUP_OK" = 0 ]; then
+      verdict UNKNOWN "H16: stockout or scale-up query failed; cannot distinguish latency from blocked provisioning."
+    elif [ "$TRIG" = 1 ]; then
       verdict FIRES-CRITICAL "H16: scale-up TRIGGERED but pods Pending ${OLDEST_PENDING_S}s >= grace ${GRACE_S}s with no stockout — new nodes are not arriving. Check 1g.4 quota, IP space (H12), or node boot failures."
     elif [ "$NOTRIG" = 1 ]; then
       verdict INFO "H16 → H4: autoscaler logged NotTriggerScaleUp (max-nodes reached or pod fits no pool); pods stay Pending until replicas/quota/pool-max change. Score under H4, not H16."
@@ -1498,8 +1533,8 @@ else
 fi
 
 section "H12 (Network/VPC) — Confirm pods/CoreDNS healthy (deep-dive queries already run in 1h)"
-kubectl get pods -n "$NAMESPACE" -l "$POD_SELECTOR" -o wide 2>/dev/null | head
-kubectl get pods -n kube-system -l k8s-app=kube-dns -o wide 2>/dev/null
+kube_read get pods -n "$NAMESPACE" -l "$POD_SELECTOR" -o wide 2>/dev/null | head
+kube_read get pods -n kube-system -l k8s-app=kube-dns -o wide 2>/dev/null
 note "H12's log/audit queries are identical to 1h.1-1h.5 above — see those sections."
 
 section "B1/H13/H14/H15 (Billing & Node Reclamation) — outage span + REPAIR_CLUSTER op detail"

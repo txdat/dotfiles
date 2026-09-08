@@ -6,6 +6,8 @@ Flow: [explore] → frame-goal → design-feature → review-feature → spec ap
 
 ship-feature drives **one goal's lane at a time**: frame-goal's goal 1 proceeds through design and onward; deferred goals wait as checklist entries in the requirement's parent issue and each ships later through its own ship-feature run, its plan linking that same parent.
 
+If frame-goal routes a goal to design-infra, hand it to that runbook lane and end this application router for that goal. Do not create an application plan or apply the status table below to a runbook. Mixed work keeps separate runbook and application artifacts with their dependency recorded.
+
 ## Route
 
 A bare `<requirement>` always starts a new design and adopts no existing plan; resuming names its plan path (PROCESS `Named plan and entry gates`). Use an explicit `from` phase or the named plan's live header. Route on `Status:` — never on session memory of what already ran:

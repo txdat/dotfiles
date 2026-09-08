@@ -158,7 +158,7 @@ Unresolved items that block specific phases. Each names which phase it blocks.
 
 ### 12. Review History
 
-Empty heading on a fresh draft. `review-infra` appends one entry per READY / NEEDS CHANGES verdict and prunes to the last three; the drafting session never writes an entry. A separate `## Execution Record` is created later by `review-infra post` and never pruned — do not stub it here.
+Empty heading on a fresh draft. The main agent records one entry per READY / NEEDS CHANGES verdict under `review-infra`, preserving prior findings and evidence per `independence.md`; do not prune by entry count. The drafting phase never invents a review entry. A separate `## Execution Record` is created later by `review-infra post` and never pruned — do not stub it here.
 
 ## Validation discipline
 

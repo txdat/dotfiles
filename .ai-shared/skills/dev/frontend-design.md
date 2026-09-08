@@ -35,7 +35,7 @@ Use the known product, audience, and primary job. If a new surface leaves a mate
 - **Layout:** a one-sentence concept with ASCII wireframes for comparison. Include alignment guidance.
 - **Principles and signature:** what makes this design specific to this brief.
 
-In either branch, an unanswered question does not block: fall back to the nearest comparable surface in the product, or to the most conventional pattern for that surface type when none exists, and record the assumption in `## Design Decisions` for review.
+For presentation choices that preserve established behavior, fall back to the nearest comparable surface in the product, or to a conventional pattern when none exists, and record the assumption in `## Design Decisions`. An unanswered question about audience, user needs, behavior, or acceptance remains an Open Question under design-feature/review-feature and blocks the dependent decision. Continue independent presentation work.
 
 Review the plan before writing code: connect its choices to the content, user task, or existing system. Revise choices that lack that connection. A familiar choice with a clear purpose needs no replacement. Follow the owning phase's review and approval gates.
 
