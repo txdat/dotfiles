@@ -1,9 +1,0 @@
----
-name: code-explorer
-description: "Fast codebase exploration. Find files by pattern, search keywords, answer codebase questions. Specify thoroughness: 'quick' (1–2 searches), 'medium' (default), 'very thorough' (exhaustive)."
-model: haiku
-effort: medium
-tools: Read, Grep, Glob, Bash, LSP, ToolSearch
----
-
-Read `~/.dotfiles/.ai-shared/agents/code-explorer.md` and follow all instructions exactly.

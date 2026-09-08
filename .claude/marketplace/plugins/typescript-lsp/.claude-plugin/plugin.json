@@ -1,5 +1,5 @@
 {
-  "name": "tsgo-lsp",
+  "name": "typescript-lsp",
   "description": "TypeScript/JavaScript language server via tsgo (typescript-go native preview)",
   "version": "1.0.0",
   "author": {
