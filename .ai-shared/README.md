@@ -183,7 +183,7 @@ Symlink `~/.pi/agent/themes` → `~/.dotfiles/.pi/agent/themes`
 | ielts-mock | Record full or partial IELTS practice and exam results, preserve each score's provenance, calculate an overall only from four known components, and archive safely. | skills/ielts/mock.md | — | — |
 | ielts-reading | Diagnose IELTS reading errors: locate passage evidence, extract synonym pairs, show correct reasoning chain. Covers T/F/NG, Matching Headings, and guided practice. | skills/ielts/reading.md | — | — |
 | ielts-speaking | Prepare IELTS speaking topics and review transcript language. Transcript-only feedback cannot establish pronunciation, full fluency, or an overall Speaking band. | skills/ielts/speaking.md | — | — |
-| ielts-writing | Review IELTS Academic Task 1/2 responses, analyze prompts, and generate practice tasks. Give evidence-based coaching estimates and annotated revisions. | skills/ielts/writing.md | — | — |
+| ielts-writing | Plan IELTS Academic Task 1/2 responses with question breakdowns, required coverage, target-band guidance, and errors to avoid; review drafts or generate practice tasks. | skills/ielts/writing.md | — | — |
 
 #### misc
 

@@ -2,7 +2,7 @@
 
 | Skill | Use |
 |---|---|
-| /ielts-writing | Review responses, analyze prompts, generate practice tasks |
+| /ielts-writing | Plan with the writing assistant: question breakdown, required coverage, target-band expectations, and traps; review responses or generate practice tasks |
 | /ielts-speaking | Prepare adaptable material and review transcript evidence |
 | /ielts-reading | Explain answer logic and provide guided drills |
 | /ielts-listening | Analyze answers against scripts and guide listening practice |
